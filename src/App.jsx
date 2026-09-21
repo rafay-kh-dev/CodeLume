@@ -6,6 +6,7 @@ import Portfolio from './components/portfolio';
 import Testimonials from './components/testimonial';
 import Footer from './components/footer';
 import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 
 export default function App() {
   return (
@@ -19,6 +20,7 @@ export default function App() {
       </main>
       <Footer />
       <Analytics />
+      <SpeedInsights />
     </div>
   );
 }
