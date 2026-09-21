@@ -5,6 +5,7 @@ import Services from './components/services';
 import Portfolio from './components/portfolio';
 import Testimonials from './components/testimonial';
 import Footer from './components/footer';
+import { Analytics } from '@vercel/analytics/react';
 
 export default function App() {
   return (
@@ -17,6 +18,7 @@ export default function App() {
         <Testimonials />
       </main>
       <Footer />
+      <Analytics />
     </div>
   );
 }
