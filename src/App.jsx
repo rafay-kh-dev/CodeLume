@@ -1,12 +1,12 @@
 import React from "react";
 import Navbar from "./components/header";
 import Hero from "./components/hero";
+import About from "./components/about";
 import Services from "./components/services";
 import TechStack from "./components/techStack";
 import OurProcess from "./components/ourprocess";
 import Portfolio from "./components/portfolio";
 import Testimonials from "./components/testimonial";
-import About from "./components/about";
 import FAQ from "./components/faq";
 import Footer from "./components/footer";
 import { Analytics } from "@vercel/analytics/react";
@@ -18,12 +18,12 @@ export default function App() {
       <Navbar />
       <main>
         <Hero />
+        <About />
         <Services />
         <TechStack />
         <OurProcess />
         <Portfolio />
         <Testimonials />
-        <About />
         <FAQ />
       </main>
       <Footer />
