@@ -35,14 +35,14 @@ export default function Footer() {
     {
       name: "Telegram",
       icon: Telegram,
-      link: "#",
+      link: "https://t.me/RafayKH",
       glowColor:
         "group-hover:text-[#0088cc] shadow-[inset_0_0_15px_rgba(255,255,255,0.03)] hover:shadow-[inset_0_0_20px_rgba(0,136,204,0.15),0_10px_20px_rgba(0,136,204,0.3)]",
     },
     {
       name: "WhatsApp",
       icon: Whatsapp,
-      link: "#",
+      link: "https://wa.me/+923347835980",
       glowColor:
         "group-hover:text-[#25D366] shadow-[inset_0_0_15px_rgba(255,255,255,0.03)] hover:shadow-[inset_0_0_20px_rgba(37,211,102,0.15),0_10px_20px_rgba(37,211,102,0.3)]",
     },
@@ -56,7 +56,7 @@ export default function Footer() {
     {
       name: "Outlook",
       icon: MicrosoftOutlook,
-      link: "#",
+      link: "mailto:mrafaykh@outlook.com",
       glowColor:
         "group-hover:text-[#0078D4] shadow-[inset_0_0_15px_rgba(255,255,255,0.03)] hover:shadow-[inset_0_0_20px_rgba(0,120,212,0.15),0_10px_20px_rgba(0,120,212,0.3)]",
     },
