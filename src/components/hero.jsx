@@ -48,47 +48,36 @@ export default function HeroSection() {
 
   const renderHighlightedCode = (text) => {
     const parts = text.split(
-      /(\bimport\b|\bfrom\b|\bexport\b|\bconst\b|@core|"optimised"|"12ms"|"enterprise"|Engine|App|=|>|<|\(\vert{}\)|\/)/g,
+      /(\bimport\b|\bfrom\b|\bexport\b|\bconst\b|@core|"optimised"|"12ms"|"enterprise"|Engine|App|=|>|<|\(|\)|\/)/g,
     );
     return parts.map((part, index) => {
+      // FIXED CSS CONFLICTS: Removed text-inherit when specific colors are applied
       if (/^(import|from|export|const)$/.test(part))
         return (
-          <h2
-            key={index}
-            className="inline text-[#ff7b72] m-0 font-inherit text-inherit"
-          >
+          <h2 key={index} className="inline text-[#ff7b72] m-0 font-inherit">
             {part}
           </h2>
         );
       if (/^(@core|"optimised"|"12ms"|"enterprise")$/.test(part))
         return (
-          <h2
-            key={index}
-            className="inline text-[#a5d6ff] m-0 font-inherit text-inherit"
-          >
+          <h2 key={index} className="inline text-[#a5d6ff] m-0 font-inherit">
             {part}
           </h2>
         );
       if (/^(Engine|App)$/.test(part))
         return (
-          <h2
-            key={index}
-            className="inline text-[#d2a8ff] m-0 font-inherit text-inherit"
-          >
+          <h2 key={index} className="inline text-[#d2a8ff] m-0 font-inherit">
             {part}
           </h2>
         );
       if (/^(=|>|<|\(\vert{}\)|\/)$/.test(part))
         return (
-          <h2
-            key={index}
-            className="inline text-[#c9d1d9] m-0 font-inherit text-inherit"
-          >
+          <h2 key={index} className="inline text-[#c9d1d9] m-0 font-inherit">
             {part}
           </h2>
         );
       return (
-        <h2 key={index} className="inline m-0 font-inherit text-inherit">
+        <h2 key={index} className="inline text-inherit m-0 font-inherit">
           {part}
         </h2>
       );
@@ -96,9 +85,10 @@ export default function HeroSection() {
   };
 
   return (
+    // FIXED: min-h-[100dvh] -> min-h-dvh
     <section
       onMouseMove={handleMouseMove}
-      className="relative w-full min-h-[100dvh] flex flex-col overflow-hidden bg-[#030712] font-jakarta"
+      className="relative w-full min-h-dvh flex flex-col overflow-hidden bg-[#030712] font-jakarta"
     >
       <style>
         {`
@@ -134,38 +124,45 @@ export default function HeroSection() {
             "radial-gradient(ellipse 80% 80% at 50% 50%, #000 40%, transparent 100%)",
         }}
       />
-      <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[120px] mix-blend-screen pointer-events-none animate-[pulse_6s_ease-in-out_infinite] transform-gpu translate-z-0 will-change-transform" />
-      <div className="absolute bottom-1/3 right-1/4 w-[450px] h-[450px] bg-indigo-600/10 rounded-full blur-[120px] mix-blend-screen pointer-events-none animate-[pulse_8s_ease-in-out_infinite] transform-gpu translate-z-0 will-change-transform" />
 
-      <div className="flex-1 flex flex-col justify-center w-full relative z-10 pt-32 pb-24 lg:pt-20 lg:pb-16">
+      {/* FIXED Canonical classes for sizes */}
+      <div className="absolute top-1/4 left-1/4 w-125 h-125 bg-blue-600/10 rounded-full blur-[120px] mix-blend-screen pointer-events-none animate-[pulse_6s_ease-in-out_infinite] transform-gpu translate-z-0 will-change-transform" />
+      <div className="absolute bottom-1/3 right-1/4 w-112.5 h-112.5 bg-indigo-600/10 rounded-full blur-[120px] mix-blend-screen pointer-events-none animate-[pulse_8s_ease-in-out_infinite] transform-gpu translate-z-0 will-change-transform" />
+
+      {/* FIXED Spacing for Mobile (pt-28 pb-16 instead of massive gaps) */}
+      <div className="flex-1 flex flex-col justify-center w-full relative z-10 pt-28 pb-16 lg:pt-20 lg:pb-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+          <div className="grid lg:grid-cols-2 gap-10 lg:gap-20 items-center">
             <div className="flex flex-col items-start text-left w-full">
               <h2 className="text-4xl sm:text-5xl lg:text-6xl xl:text-[4.2rem] font-extrabold tracking-tight text-white leading-[1.05] mb-6 drop-shadow-sm m-0">
                 Architecting <br className="hidden sm:block" />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-400 to-cyan-400 drop-shadow-[0_0_25px_rgba(37,99,235,0.25)]">
+                {/* FIXED: bg-gradient-to-r -> bg-linear-to-r */}
+                <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-400 via-indigo-400 to-cyan-400 drop-shadow-[0_0_25px_rgba(37,99,235,0.25)]">
                   Highly Optimised
                 </span>
                 <br /> Web Solutions.
               </h2>
-              <h2 className="text-base sm:text-lg lg:text-[1.1rem] text-slate-400/90 mb-10 leading-relaxed max-w-lg font-medium m-0">
+              <h2 className="text-base sm:text-lg lg:text-[1.1rem] text-slate-400/90 mb-8 leading-relaxed max-w-lg font-medium m-0">
                 We engineer robust, scalable, and secure applications utilising
                 the MERN stack, PHP/Laravel, and modern frontend frameworks.
               </h2>
-              <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-5 w-full sm:w-auto">
+
+              <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
                 <a
                   href="#start"
                   className="group relative flex items-center justify-center gap-2 w-full sm:w-auto px-8 py-4 rounded-xl bg-blue-600 text-white shadow-[0_0_30px_-5px_rgba(37,99,235,0.5)] hover:shadow-[0_0_50px_-5px_rgba(37,99,235,0.7)] transition-all duration-300 active:scale-[0.98] outline-none overflow-hidden transform-gpu"
                 >
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full animate-shimmer pointer-events-none" />
+                  {/* FIXED bg-linear-to-r */}
+                  <div className="absolute inset-0 bg-linear-to-r from-transparent via-white/20 to-transparent -translate-x-full animate-shimmer pointer-events-none" />
                   <Sparkles className="w-4 h-4 text-blue-200 relative z-10" />
                   <h2 className="m-0 text-[15px] font-bold relative z-10 tracking-wide">
                     Initialise Project
                   </h2>
                 </a>
+                {/* FIXED bg-white/3 and hover:bg-white/8 */}
                 <a
                   href="#services"
-                  className="group flex items-center justify-center gap-2 w-full sm:w-auto px-8 py-4 rounded-xl bg-white/[0.03] hover:bg-white/[0.08] text-slate-300 hover:text-white shadow-[0_15px_30px_rgba(0,0,0,0.2)] transition-all duration-300 active:scale-[0.98] backdrop-blur-md outline-none transform-gpu"
+                  className="group flex items-center justify-center gap-2 w-full sm:w-auto px-8 py-4 rounded-xl bg-white/3 hover:bg-white/8 text-slate-300 hover:text-white shadow-[0_15px_30px_rgba(0,0,0,0.2)] transition-all duration-300 active:scale-[0.98] backdrop-blur-md outline-none transform-gpu"
                 >
                   <h2 className="m-0 text-[15px] font-bold tracking-wide">
                     View Capabilities
@@ -175,9 +172,10 @@ export default function HeroSection() {
               </div>
             </div>
 
-            <div className="relative w-full z-20 animate-float lg:pl-6 transform-gpu">
+            <div className="relative w-full z-20 animate-float lg:pl-6 transform-gpu mt-8 lg:mt-0">
               <div className="relative rounded-2xl bg-[#0a0f1c]/50 backdrop-blur-2xl p-1 shadow-[0_30px_70px_rgba(0,0,0,0.6)] ring-0">
-                <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-blue-500/10 via-transparent to-indigo-500/10 pointer-events-none shadow-[inset_0_0_15px_rgba(255,255,255,0.03)]" />
+                {/* FIXED bg-linear-to-br */}
+                <div className="absolute inset-0 rounded-2xl bg-linear-to-br from-blue-500/10 via-transparent to-indigo-500/10 pointer-events-none shadow-[inset_0_0_15px_rgba(255,255,255,0.03)]" />
                 <div className="relative rounded-xl bg-[#0d1117]/95 overflow-hidden flex flex-col shadow-[inset_0_0_40px_rgba(0,0,0,0.8)]">
                   <div className="flex items-center justify-between px-4 sm:px-5 bg-[#161b22]/90 shadow-[0_15px_30px_rgba(0,0,0,0.4)] relative z-10">
                     <div className="flex items-center gap-2 py-4">
@@ -195,14 +193,12 @@ export default function HeroSection() {
                     </div>
                     <div className="w-16" />
                   </div>
-                  <div className="p-4 sm:p-6 lg:p-8 font-mono text-[11px] sm:text-[13px] lg:text-[14px] leading-[1.8] text-[#c9d1d9] overflow-x-auto bg-[#0d1117] h-[220px] sm:h-[260px] lg:h-[300px] relative">
+                  {/* FIXED Heights Canonical classes */}
+                  <div className="p-4 sm:p-6 lg:p-8 font-mono text-[11px] sm:text-[13px] lg:text-[14px] leading-[1.8] text-[#c9d1d9] overflow-x-auto bg-[#0d1117] h-55 sm:h-65 lg:h-75 relative">
                     <div className="flex">
                       <div className="flex flex-col text-slate-600/70 text-right pr-4 sm:pr-5 mr-4 sm:mr-5 select-none shrink-0 shadow-[1px_0_0_rgba(255,255,255,0.02)]">
                         {[...Array(8)].map((_, i) => (
-                          <h2
-                            key={i}
-                            className="m-0 text-inherit font-inherit text-inherit"
-                          >
+                          <h2 key={i} className="m-0 font-inherit text-inherit">
                             {i + 1}
                           </h2>
                         ))}
@@ -239,8 +235,9 @@ export default function HeroSection() {
         </div>
       </div>
 
+      {/* FIXED Heights Canonical classes */}
       <div
-        className="absolute bottom-0 w-full h-[50px] sm:h-[60px] bg-slate-900/40 backdrop-blur-xl overflow-hidden flex items-center z-30 shadow-[0_-20px_50px_rgba(0,0,0,0.4)] transform-gpu translate-z-0"
+        className="absolute bottom-0 w-full h-12.5 sm:h-15 bg-slate-900/40 backdrop-blur-xl overflow-hidden flex items-center z-30 shadow-[0_-20px_50px_rgba(0,0,0,0.4)] transform-gpu translate-z-0"
         style={{
           maskImage:
             "linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%)",

@@ -55,21 +55,23 @@ export default function Capabilities() {
   return (
     <section
       id="capabilities"
-      className="relative w-full py-20 sm:py-32 bg-[#030712] overflow-hidden flex flex-col items-center"
-      style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+      className="relative w-full py-16 lg:py-24 bg-[#030712] overflow-hidden flex flex-col items-center font-jakarta"
     >
       <style>
-        {`@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');`}
+        {`@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+          .font-jakarta { font-family: 'Plus Jakarta Sans', sans-serif; }`}
       </style>
 
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-[400px] sm:h-[500px] bg-blue-600/10 rounded-full blur-[100px] sm:blur-[150px] pointer-events-none mix-blend-screen transform-gpu translate-z-0" />
-      <div className="absolute bottom-0 right-0 w-[400px] sm:w-[600px] h-[400px] sm:h-[600px] bg-indigo-600/5 rounded-full blur-[100px] sm:blur-[150px] pointer-events-none mix-blend-screen transform-gpu translate-z-0" />
+      {/* FIXED canonical sizing: w-100, h-100, sm:h-125, sm:w-150 */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-100 sm:h-125 bg-blue-600/10 rounded-full blur-[100px] sm:blur-[150px] pointer-events-none mix-blend-screen transform-gpu translate-z-0" />
+      <div className="absolute bottom-0 right-0 w-100 sm:w-150 h-100 sm:h-150 bg-indigo-600/5 rounded-full blur-[100px] sm:blur-[150px] pointer-events-none mix-blend-screen transform-gpu translate-z-0" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
-        <div className="flex flex-col items-start text-left max-w-3xl mb-16 sm:mb-24">
-          <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white tracking-tight mb-6 sm:mb-8 leading-[1.1] sm:leading-[1.05] drop-shadow-lg m-0">
+        <div className="flex flex-col items-start text-left max-w-3xl mb-12 sm:mb-20">
+          <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white tracking-tight mb-6 leading-[1.1] sm:leading-[1.05] drop-shadow-lg m-0">
             Engineered for <br className="hidden sm:block" />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-300 to-cyan-400">
+            {/* FIXED bg-linear-to-r */}
+            <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-400 via-indigo-300 to-cyan-400">
               Digital Excellence.
             </span>
           </h2>
@@ -80,17 +82,20 @@ export default function Capabilities() {
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 auto-rows-[280px] sm:auto-rows-[320px]">
+        {/* FIXED auto-rows-70 sm:auto-rows-80 */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 auto-rows-70 sm:auto-rows-80">
           {capabilities.map((item, index) => {
             const Icon = item.icon;
             return (
+              // FIXED sm:rounded-4xl
               <div
                 key={index}
-                className={`group relative rounded-3xl sm:rounded-[2rem] bg-[#0a0f1c]/50 backdrop-blur-3xl p-8 sm:p-10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] hover:shadow-[0_40px_80px_rgba(0,0,0,0.8)] transition-all duration-500 ease-out hover:-translate-y-1 sm:hover:-translate-y-2 active:scale-[0.98] sm:active:scale-100 overflow-hidden flex flex-col justify-between cursor-pointer outline-none transform-gpu will-change-transform ${item.colSpan}`}
+                className={`group relative rounded-3xl sm:rounded-4xl bg-[#0a0f1c]/50 backdrop-blur-3xl p-8 sm:p-10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] hover:shadow-[0_40px_80px_rgba(0,0,0,0.8)] transition-all duration-500 ease-out hover:-translate-y-1 sm:hover:-translate-y-2 active:scale-[0.98] sm:active:scale-100 overflow-hidden flex flex-col justify-between cursor-pointer outline-none transform-gpu will-change-transform ${item.colSpan}`}
               >
-                <div className="absolute inset-0 rounded-3xl sm:rounded-[2rem] shadow-[inset_0_0_30px_rgba(255,255,255,0.02)] pointer-events-none" />
+                <div className="absolute inset-0 rounded-3xl sm:rounded-4xl shadow-[inset_0_0_30px_rgba(255,255,255,0.02)] pointer-events-none" />
+                {/* FIXED bg-linear-to-br */}
                 <div
-                  className={`absolute inset-0 bg-gradient-to-br ${item.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-700 ease-out pointer-events-none transform-gpu`}
+                  className={`absolute inset-0 bg-linear-to-br ${item.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-700 ease-out pointer-events-none transform-gpu`}
                 />
                 <div className="relative z-10 flex items-start justify-between">
                   <div
@@ -118,8 +123,10 @@ export default function Capabilities() {
           })}
         </div>
 
-        <div className="mt-4 sm:mt-6 w-full rounded-3xl sm:rounded-[2rem] bg-[#0a0f1c]/40 backdrop-blur-2xl p-6 sm:p-8 lg:p-10 shadow-[0_20px_50px_rgba(0,0,0,0.5),inset_0_0_20px_rgba(255,255,255,0.02)] flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative overflow-hidden group active:scale-[0.98] sm:active:scale-100 transition-transform duration-300 transform-gpu">
-          <div className="absolute top-0 right-0 w-full h-full bg-gradient-to-l from-blue-600/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none transform-gpu" />
+        {/* FIXED sm:rounded-4xl */}
+        <div className="mt-4 sm:mt-6 w-full rounded-3xl sm:rounded-4xl bg-[#0a0f1c]/40 backdrop-blur-2xl p-6 sm:p-8 lg:p-10 shadow-[0_20px_50px_rgba(0,0,0,0.5),inset_0_0_20px_rgba(255,255,255,0.02)] flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative overflow-hidden group active:scale-[0.98] sm:active:scale-100 transition-transform duration-300 transform-gpu">
+          {/* FIXED bg-linear-to-l */}
+          <div className="absolute top-0 right-0 w-full h-full bg-linear-to-l from-blue-600/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none transform-gpu" />
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 sm:gap-6 relative z-10">
             <div className="w-12 h-12 sm:w-14 sm:h-14 shrink-0 rounded-full bg-blue-500/10 flex items-center justify-center shadow-[inset_0_0_10px_rgba(255,255,255,0.05)]">
               <Globe2 className="w-5 h-5 sm:w-6 sm:h-6 text-blue-400" />

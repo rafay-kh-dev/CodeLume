@@ -15,34 +15,30 @@ export default function Footer() {
     "Headless Shopify",
     "WordPress & WooCommerce",
   ];
-
   const tools = [
     { name: "Lighthouse Auditor", status: "Coming Soon" },
     { name: "CSS Glass Generator", status: "Coming Soon" },
     { name: "Meta Tag Extractor", status: "Coming Soon" },
     { name: "Regex Visualiser", status: "Coming Soon" },
   ];
-
   const resources = [
     { name: "Insights & Tech Blog", highlight: true },
     { name: "Client Case Studies" },
     { name: "Agency Architecture" },
     { name: "Consultation & Contact" },
   ];
-
-  // VIP Contact Channels integrated with @thesvg/react & Official Brand Hover Glows
   const contacts = [
     {
       name: "Telegram",
       icon: Telegram,
-      link: "https://t.me/RafayKH",
+      link: "#",
       glowColor:
         "group-hover:text-[#0088cc] shadow-[inset_0_0_15px_rgba(255,255,255,0.03)] hover:shadow-[inset_0_0_20px_rgba(0,136,204,0.15),0_10px_20px_rgba(0,136,204,0.3)]",
     },
     {
       name: "WhatsApp",
       icon: Whatsapp,
-      link: "https://wa.me/+923347835980",
+      link: "#",
       glowColor:
         "group-hover:text-[#25D366] shadow-[inset_0_0_15px_rgba(255,255,255,0.03)] hover:shadow-[inset_0_0_20px_rgba(37,211,102,0.15),0_10px_20px_rgba(37,211,102,0.3)]",
     },
@@ -56,45 +52,44 @@ export default function Footer() {
     {
       name: "Outlook",
       icon: MicrosoftOutlook,
-      link: "mailto:mrafaykh@outlook.com",
+      link: "#",
       glowColor:
         "group-hover:text-[#0078D4] shadow-[inset_0_0_15px_rgba(255,255,255,0.03)] hover:shadow-[inset_0_0_20px_rgba(0,120,212,0.15),0_10px_20px_rgba(0,120,212,0.3)]",
     },
   ];
 
   return (
-    <footer className="relative w-full bg-[#030712] pt-20 pb-10 font-jakarta overflow-hidden">
+    // FIXED Spacing py-16
+    <footer className="relative w-full bg-[#030712] py-16 lg:py-24 font-jakarta overflow-hidden">
       <style>
-        {`
-          @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap');
-          .font-jakarta { font-family: 'Plus Jakarta Sans', sans-serif; }
-        `}
+        {`@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap');
+          .font-jakarta { font-family: 'Plus Jakarta Sans', sans-serif; }`}
       </style>
 
-      {/* Deep Ambient Background Glows */}
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-blue-900/10 rounded-full blur-[150px] pointer-events-none transform-gpu translate-z-0" />
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-900/5 rounded-full blur-[120px] pointer-events-none transform-gpu translate-z-0" />
+      {/* FIXED w-200 h-125 w-125 h-125 */}
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-200 h-125 bg-blue-900/10 rounded-full blur-[150px] pointer-events-none transform-gpu translate-z-0" />
+      <div className="absolute top-0 right-0 w-125 h-125 bg-indigo-900/5 rounded-full blur-[120px] pointer-events-none transform-gpu translate-z-0" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Massive Glassmorphism CTA */}
-        <div className="w-full rounded-[2.5rem] sm:rounded-[3.5rem] bg-[#0a0f1c]/80 backdrop-blur-3xl p-10 sm:p-16 lg:p-20 shadow-[0_40px_100px_rgba(0,0,0,0.8),inset_0_0_30px_rgba(255,255,255,0.02)] mb-20 flex flex-col lg:flex-row items-center justify-between gap-10 transform-gpu overflow-hidden relative group">
-          <div className="absolute inset-0 bg-gradient-to-br from-blue-600/5 via-transparent to-indigo-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none transform-gpu" />
-
+        <div className="w-full rounded-[2.5rem] sm:rounded-[3.5rem] bg-[#0a0f1c]/80 backdrop-blur-3xl p-10 sm:p-16 lg:p-20 shadow-[0_40px_100px_rgba(0,0,0,0.8),inset_0_0_30px_rgba(255,255,255,0.02)] mb-16 lg:mb-20 flex flex-col lg:flex-row items-center justify-between gap-10 transform-gpu overflow-hidden relative group">
+          {/* FIXED bg-linear-to-br */}
+          <div className="absolute inset-0 bg-linear-to-br from-blue-600/5 via-transparent to-indigo-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none transform-gpu" />
           <div className="flex flex-col items-center lg:items-start text-center lg:text-left relative z-10">
-            <div className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-full bg-white/[0.03] shadow-[inset_0_0_10px_rgba(255,255,255,0.02)] mb-6">
+            {/* FIXED bg-white/3 */}
+            <div className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-full bg-white/3 shadow-[inset_0_0_10px_rgba(255,255,255,0.02)] mb-6">
               <Sparkles className="w-4 h-4 text-blue-400" />
               <h2 className="text-[11px] sm:text-[12px] font-extrabold text-slate-300 uppercase tracking-[0.2em] m-0 drop-shadow-md">
                 Initialise Project
               </h2>
             </div>
+            {/* FIXED bg-linear-to-r */}
             <h2 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-[1.1] m-0 drop-shadow-lg">
               Ready to build something <br className="hidden md:block" />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">
+              <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-400 to-indigo-400">
                 extraordinary?
               </span>
             </h2>
           </div>
-
           <a
             href="#contact"
             className="relative z-10 flex items-center justify-center gap-3 px-8 py-5 rounded-2xl bg-white text-[#030712] hover:bg-slate-200 transition-all duration-300 active:scale-[0.98] outline-none group/btn shadow-[0_15px_30px_rgba(255,255,255,0.1)] transform-gpu"
@@ -106,9 +101,7 @@ export default function Footer() {
           </a>
         </div>
 
-        {/* Footer Navigation Grid (100% Borderless, Strictly H2 Tags) */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8 mb-20">
-          {/* Brand & Direct Contacts Column */}
           <div className="lg:col-span-4 flex flex-col items-start">
             <a
               href="/"
@@ -128,8 +121,6 @@ export default function Footer() {
               We engineer highly specialised, lightning-fast digital experiences
               and robust server architectures tailored for modern enterprises.
             </h2>
-
-            {/* VIP Direct Messaging Row utilizing @thesvg/react icons */}
             <div className="flex items-center gap-4">
               {contacts.map((contact, idx) => {
                 const Icon = contact.icon;
@@ -137,6 +128,8 @@ export default function Footer() {
                   <a
                     key={idx}
                     href={contact.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     aria-label={contact.name}
                     className={`w-11 h-11 rounded-full bg-[#0a0f1c] flex items-center justify-center group outline-none transition-all duration-300 hover:-translate-y-1 transform-gpu ${contact.glowColor}`}
                   >
@@ -146,8 +139,6 @@ export default function Footer() {
               })}
             </div>
           </div>
-
-          {/* Capabilities / Services */}
           <div className="lg:col-span-3 flex flex-col">
             <h2 className="text-[13px] font-extrabold text-white uppercase tracking-[0.15em] mb-6 m-0">
               Capabilities
@@ -166,8 +157,6 @@ export default function Footer() {
               ))}
             </div>
           </div>
-
-          {/* Developer Tools */}
           <div className="lg:col-span-3 flex flex-col">
             <div className="flex items-center gap-2 mb-6">
               <Terminal className="w-4 h-4 text-blue-500" />
@@ -193,8 +182,6 @@ export default function Footer() {
               ))}
             </div>
           </div>
-
-          {/* Resources & Blogging */}
           <div className="lg:col-span-2 flex flex-col">
             <h2 className="text-[13px] font-extrabold text-white uppercase tracking-[0.15em] mb-6 m-0">
               Company
@@ -217,7 +204,6 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Bottom Copyright Bar (100% Shadow based, no borders) */}
         <div className="w-full pt-8 flex flex-col md:flex-row items-center justify-between gap-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.03)] relative z-10">
           <h2 className="text-[13px] font-medium text-slate-500 m-0">
             © 2026 CodeLume. All rights reserved.
