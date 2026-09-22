@@ -16,7 +16,8 @@ export default function Testimonial() {
         "CodeLume engineered a massive, highly optimised data pipeline. The latency is practically zero. It is an absolute masterclass in modern digital architecture.",
       rating: 5,
       accent: "text-blue-400",
-      bgGlow: "bg-blue-600/15",
+      // 🚀 Replacing heavy 'bg-blue-600/15 blur-[160px]' with Hardware-Accelerated Radial Gradients
+      bgGlow: "bg-[radial-gradient(circle,rgba(37,99,235,0.15)_0%,transparent_60%)]",
       avatarGlow: "shadow-[inset_0_0_15px_rgba(59,130,246,0.4)]",
       progressGlow: "bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.8)]",
     },
@@ -29,7 +30,7 @@ export default function Testimonial() {
         "The bespoke storefront exceeded all our expectations. With their specialised frontend architecture, our conversion rates maximised immediately after launch.",
       rating: 5,
       accent: "text-indigo-400",
-      bgGlow: "bg-indigo-600/15",
+      bgGlow: "bg-[radial-gradient(circle,rgba(79,70,229,0.15)_0%,transparent_60%)]",
       avatarGlow: "shadow-[inset_0_0_15px_rgba(99,102,241,0.4)]",
       progressGlow: "bg-indigo-500 shadow-[0_0_10px_rgba(99,102,241,0.8)]",
     },
@@ -42,7 +43,7 @@ export default function Testimonial() {
         "Migrating our legacy ERP was completely seamless. They delivered fully customised cloud solutions that instantly scaled our global operations.",
       rating: 5,
       accent: "text-cyan-400",
-      bgGlow: "bg-cyan-600/15",
+      bgGlow: "bg-[radial-gradient(circle,rgba(6,182,212,0.15)_0%,transparent_60%)]",
       avatarGlow: "shadow-[inset_0_0_15px_rgba(6,182,212,0.4)]",
       progressGlow: "bg-cyan-500 shadow-[0_0_10px_rgba(6,182,212,0.8)]",
     },
@@ -55,7 +56,7 @@ export default function Testimonial() {
         "Remarkable speed and flawless code quality. CodeLume delivered our entire MVP weeks ahead of schedule, fully optimised for global distribution.",
       rating: 5,
       accent: "text-purple-400",
-      bgGlow: "bg-purple-600/15",
+      bgGlow: "bg-[radial-gradient(circle,rgba(168,85,247,0.15)_0%,transparent_60%)]",
       avatarGlow: "shadow-[inset_0_0_15px_rgba(168,85,247,0.4)]",
       progressGlow: "bg-purple-500 shadow-[0_0_10px_rgba(168,85,247,0.8)]",
     },
@@ -103,8 +104,9 @@ export default function Testimonial() {
           .animate-progress { animation: progress-fill 6s linear forwards; }`}
       </style>
 
+      {/* 🚀 FIXED: Replaced 'blur-[160px]' with radial gradient class. Kept dynamic bgGlow variable. */}
       <div
-        className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-150 h-150 rounded-full blur-[160px] pointer-events-none transition-colors duration-1000 ease-in-out transform-gpu translate-z-0 ${reviews[activeIndex].bgGlow}`}
+        className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[50rem] h-[50rem] rounded-full pointer-events-none transition-colors duration-1000 ease-in-out transform-gpu translate-z-0 ${reviews[activeIndex].bgGlow}`}
       />
 
       <div className="w-full max-w-6xl relative z-10 flex flex-col items-center">
@@ -123,8 +125,8 @@ export default function Testimonial() {
         >
           <div
             ref={cardRef}
-            // FIXED warning: rounded-[2rem] -> rounded-4xl
-            className="relative w-full rounded-4xl sm:rounded-4xl bg-[#0a0f1c]/70 backdrop-blur-3xl p-6 sm:p-10 lg:p-12 shadow-[0_30px_80px_rgba(0,0,0,0.8),inset_0_0_25px_rgba(255,255,255,0.03)] flex flex-col justify-between transform-gpu transition-transform duration-200 ease-out overflow-hidden will-change-transform"
+            // 🚀 FIXED: Optimized shadows and reduced backdrop-blur-3xl -> xl
+            className="relative w-full rounded-4xl sm:rounded-4xl bg-[#0a0f1c]/75 backdrop-blur-xl p-6 sm:p-10 lg:p-12 shadow-[0_20px_60px_rgba(0,0,0,0.6),inset_0_0_20px_rgba(255,255,255,0.02)] flex flex-col justify-between transform-gpu transition-transform duration-200 ease-out overflow-hidden will-change-transform"
             onMouseMove={handleMouseMove}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={handleMouseLeave}
@@ -133,7 +135,7 @@ export default function Testimonial() {
 
             <Quote className="absolute top-6 left-6 sm:top-10 sm:left-10 w-16 h-16 sm:w-24 sm:h-24 text-white/2 transform -scale-x-100 pointer-events-none" />
 
-            <div className="grid w-full relative z-10 min-h-55 sm:min-h-45 lg:min-h-40 items-center">
+            <div className="grid w-full relative z-10 min-h-[14rem] sm:min-h-[11rem] lg:min-h-[10rem] items-center">
               {reviews.map((review, i) => (
                 <div
                   key={review.id}

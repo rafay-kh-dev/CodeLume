@@ -1,12 +1,12 @@
 import React from "react";
 import { Sparkles } from "lucide-react";
-import {
-  React as ReactLogo,
-  Laravel,
-  Tailwindcss,
-  Wordpress,
-  Shopify,
-} from "@thesvg/react";
+import { 
+  React as ReactLogo, 
+  Laravel, 
+  Tailwindcss, 
+  Wordpress, 
+  Shopify 
+} from '@thesvg/react';
 
 export default function TechStack() {
   const stack = [
@@ -69,12 +69,11 @@ export default function TechStack() {
           .font-jakarta { font-family: 'Plus Jakarta Sans', sans-serif; }`}
       </style>
 
-      {/* Abstract Background Ambient Glows */}
-      <div className="absolute top-1/2 left-0 -translate-y-1/2 w-150 h-150 bg-blue-600/5 rounded-full blur-[150px] pointer-events-none transform-gpu translate-z-0" />
-      <div className="absolute bottom-0 right-0 w-125 h-125 bg-indigo-600/5 rounded-full blur-[120px] pointer-events-none transform-gpu translate-z-0" />
+      {/* 🚀 FIXED: Replaced 'blur-[150px]' with GPU-friendly radial gradients */}
+      <div className="absolute top-1/2 left-0 -translate-y-1/2 w-150 h-150 bg-[radial-gradient(circle_at_center,var(--tw-gradient-stops))] from-blue-600/10 via-blue-600/5 to-transparent pointer-events-none transform-gpu translate-z-0" />
+      <div className="absolute bottom-0 right-0 w-125 h-125 bg-[radial-gradient(circle_at_center,var(--tw-gradient-stops))] from-indigo-600/10 via-indigo-600/5 to-transparent pointer-events-none transform-gpu translate-z-0" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* VIP Header */}
         <div className="flex flex-col items-center text-center mb-12 sm:mb-24">
           <div className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-full bg-white/3 shadow-[inset_0_0_10px_rgba(255,255,255,0.02)] mb-6">
             <Sparkles className="w-4 h-4 text-blue-400" />
@@ -90,16 +89,15 @@ export default function TechStack() {
           </h2>
         </div>
 
-        {/* 3D Bento Grid Container */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-5 sm:gap-6">
           {stack.map((item, index) => {
             const Icon = item.icon;
             return (
               <div
                 key={index}
-                className={`group relative rounded-4xl bg-[#0a0f1c]/50 backdrop-blur-3xl p-8 sm:p-10 flex flex-col justify-between overflow-hidden outline-none cursor-default shadow-[inset_0_0_15px_rgba(255,255,255,0.02),0_15px_40px_rgba(0,0,0,0.4)] hover:-translate-y-2 transition-all duration-500 ease-out transform-gpu will-change-transform ${item.colSpan} ${item.glow}`}
+                // 🚀 FIXED: Reduced backdrop-blur-3xl to backdrop-blur-xl and softened default shadow
+                className={`group relative rounded-4xl bg-[#0a0f1c]/70 backdrop-blur-xl p-8 sm:p-10 flex flex-col justify-between overflow-hidden outline-none cursor-default shadow-[inset_0_0_15px_rgba(255,255,255,0.02),0_10px_30px_rgba(0,0,0,0.3)] hover:-translate-y-2 transition-all duration-500 ease-out transform-gpu ${item.colSpan} ${item.glow}`}
               >
-                {/* Dynamic Gradient Blobs inside the card */}
                 <div
                   className={`absolute top-0 right-0 w-full h-full bg-linear-to-bl ${item.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none transform-gpu`}
                 />

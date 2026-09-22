@@ -11,7 +11,7 @@ export default function CaseStudies() {
         "A highly optimised financial dashboard engineered for real-time data processing, secure transactions, and predictive analytics.",
       tech: ["React", "TypeScript", "Node.js"],
       gradient: "from-blue-600/20 to-cyan-600/5",
-      visualGlow: "bg-blue-500/20",
+      visualGlow: "bg-[radial-gradient(circle,rgba(59,130,246,0.3)_0%,transparent_70%)]",
       offset: "top-20 sm:top-24 md:top-32",
       zIndex: "z-10",
       metricIcon: Activity,
@@ -25,7 +25,7 @@ export default function CaseStudies() {
         "A specialised, headless Shopify architecture designed for maximised conversion rates and lightning-fast load times.",
       tech: ["Next.js", "Shopify API", "Tailwind"],
       gradient: "from-indigo-600/20 to-purple-600/5",
-      visualGlow: "bg-indigo-500/20",
+      visualGlow: "bg-[radial-gradient(circle,rgba(99,102,241,0.3)_0%,transparent_70%)]",
       offset: "top-24 sm:top-28 md:top-40",
       zIndex: "z-20",
       metricIcon: Zap,
@@ -39,7 +39,7 @@ export default function CaseStudies() {
         "Robust and secure backend systems tailored precisely for complex business logic and flawless third-party API integrations.",
       tech: ["Laravel", "Vue.js", "AWS"],
       gradient: "from-emerald-600/20 to-teal-600/5",
-      visualGlow: "bg-emerald-500/20",
+      visualGlow: "bg-[radial-gradient(circle,rgba(16,185,129,0.3)_0%,transparent_70%)]",
       offset: "top-28 sm:top-32 md:top-48",
       zIndex: "z-30",
       metricIcon: ShieldCheck,
@@ -57,7 +57,8 @@ export default function CaseStudies() {
           .font-jakarta { font-family: 'Plus Jakarta Sans', sans-serif; }`}
       </style>
 
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-150 bg-blue-600/5 rounded-full blur-[150px] pointer-events-none transform-gpu translate-z-0" />
+      {/* 🚀 FIXED: Replaced 'blur-[150px]' with pure radial gradient class */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[37.5rem] bg-[radial-gradient(ellipse_at_center,rgba(37,99,235,0.05)_0%,transparent_60%)] pointer-events-none transform-gpu translate-z-0" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="flex flex-col items-center text-center max-w-3xl mx-auto mb-12 sm:mb-20">
@@ -86,18 +87,20 @@ export default function CaseStudies() {
             return (
               <div
                 key={index}
-                // FIXED warning: rounded-[2rem] -> rounded-4xl
-                className={`sticky ${project.offset} ${project.zIndex} group w-full rounded-4xl sm:rounded-4xl bg-[#0a0f1c]/90 backdrop-blur-xl p-2 shadow-[0_-10px_40px_rgba(0,0,0,0.4),0_30px_60px_rgba(0,0,0,0.7)] transform-gpu will-change-transform translate-z-0 transition-transform duration-500`}
+                // 🚀 FIXED: Optimized shadows and reduced backdrop-blur-xl
+                className={`sticky ${project.offset} ${project.zIndex} group w-full rounded-4xl sm:rounded-4xl bg-[#0a0f1c]/80 backdrop-blur-xl p-2 shadow-[0_-5px_20px_rgba(0,0,0,0.3),0_20px_40px_rgba(0,0,0,0.6)] transform-gpu will-change-transform translate-z-0 transition-transform duration-500`}
               >
                 <div
-                  className={`relative w-full rounded-[1.8rem] sm:rounded-4xl overflow-hidden bg-linear-to-br ${project.gradient} shadow-[inset_0_0_40px_rgba(255,255,255,0.02)]`}
+                  className={`relative w-full rounded-[1.8rem] sm:rounded-4xl overflow-hidden bg-linear-to-br ${project.gradient} shadow-[inset_0_0_30px_rgba(255,255,255,0.02)]`}
                 >
                   <div className="grid grid-cols-1 lg:grid-cols-12 gap-0 relative z-10">
-                    <div className="lg:col-span-7 relative h-70 sm:h-100 lg:h-137.5 bg-[#050811] overflow-hidden flex items-center justify-center shadow-[inset_0_0_80px_rgba(0,0,0,0.9)]">
+                    <div className="lg:col-span-7 relative h-[17.5rem] sm:h-[25rem] lg:h-[34.375rem] bg-[#050811] overflow-hidden flex items-center justify-center shadow-[inset_0_0_60px_rgba(0,0,0,0.7)]">
+                      
                       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,var(--tw-gradient-stops))] from-transparent via-[#030712]/60 to-[#030712] z-0 transform-gpu" />
 
+                      {/* 🚀 FIXED: Heavy blur glowing balls replaced with pure radial gradients */}
                       <div
-                        className={`w-50 sm:w-75 h-50 sm:h-75 rounded-full ${project.visualGlow} blur-[60px] sm:blur-[90px] group-hover:scale-125 transition-transform duration-1000 ease-out z-0 transform-gpu`}
+                        className={`w-full h-full absolute inset-0 ${project.visualGlow} group-hover:scale-125 transition-transform duration-1000 ease-out z-0 transform-gpu opacity-60`}
                       />
 
                       <div
@@ -109,7 +112,7 @@ export default function CaseStudies() {
                         }}
                       />
 
-                      <div className="absolute w-[80%] h-[70%] bg-white/1 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.5),inset_0_0_2px_rgba(255,255,255,0.05)] backdrop-blur-sm group-hover:-translate-y-4 group-hover:scale-[1.02] transition-all duration-700 ease-out z-10 flex flex-col p-6 overflow-hidden transform-gpu">
+                      <div className="absolute w-[80%] h-[70%] bg-white/1 rounded-3xl shadow-[0_20px_40px_rgba(0,0,0,0.4),inset_0_0_2px_rgba(255,255,255,0.05)] backdrop-blur-sm group-hover:-translate-y-4 group-hover:scale-[1.02] transition-all duration-700 ease-out z-10 flex flex-col p-6 overflow-hidden transform-gpu">
                         <div className="w-1/3 h-3 bg-white/5 rounded-full mb-4 shadow-[inset_0_0_2px_rgba(255,255,255,0.02)]" />
                         <div className="w-1/2 h-3 bg-white/3 rounded-full mb-8 shadow-[inset_0_0_2px_rgba(255,255,255,0.02)]" />
                         <div className="flex-1 w-full bg-white/2 rounded-xl shadow-[inset_0_0_2px_rgba(255,255,255,0.02)]" />
