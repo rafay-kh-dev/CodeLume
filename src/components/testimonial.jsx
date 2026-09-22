@@ -1,152 +1,247 @@
-import React from "react";
-import { Star, Quote } from "lucide-react";
+import React, { useState, useEffect, useRef } from "react";
+import { Quote, ArrowLeft, ArrowRight, Star } from "lucide-react";
 
 export default function Testimonials() {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
+  const cardRef = useRef(null);
+
   const reviews = [
     {
       id: 1,
       name: "Sarah Auburn",
       role: "Chief Technical Officer",
       company: "Aura Financial",
-      content: "CodeLume completely transformed our data processing capabilities. The custom dashboard they built is visually stunning and handles thousands of concurrent users with zero latency. Truly elite engineering.",
+      content:
+        "CodeLume engineered a massive, highly optimised data pipeline. The latency is practically zero. It is an absolute masterclass in modern digital architecture.",
       rating: 5,
-      gradient: "from-blue-600/20 via-blue-900/10 to-transparent",
       accent: "text-blue-400",
-      glow: "shadow-[0_0_30px_rgba(37,99,235,0.2)]"
+      bgGlow: "bg-blue-600/15",
+      avatarGlow: "shadow-[inset_0_0_15px_rgba(59,130,246,0.4)]",
+      progressGlow: "bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.8)]",
     },
     {
       id: 2,
       name: "Marcus Thorne",
       role: "E-Commerce Director",
       company: "Luxe Retail",
-      content: "The bespoke storefront exceeded all our expectations. Our conversion rates jumped by 40% immediately after launch. Their attention to UI/UX detail and technical architecture is unmatched.",
+      content:
+        "The bespoke storefront exceeded all our expectations. With their specialised frontend architecture, our conversion rates maximised immediately after launch.",
       rating: 5,
-      gradient: "from-indigo-600/20 via-indigo-900/10 to-transparent",
       accent: "text-indigo-400",
-      glow: "shadow-[0_0_30px_rgba(99,102,241,0.2)]"
+      bgGlow: "bg-indigo-600/15",
+      avatarGlow: "shadow-[inset_0_0_15px_rgba(99,102,241,0.4)]",
+      progressGlow: "bg-indigo-500 shadow-[0_0_10px_rgba(99,102,241,0.8)]",
     },
     {
       id: 3,
       name: "Elena Rodriguez",
       role: "VP of Operations",
       company: "Nova Corp",
-      content: "Migrating our legacy ERP was a daunting task, but CodeLume made it completely seamless. They understood our complex business structure and delivered a highly optimised cloud solution.",
+      content:
+        "Migrating our legacy ERP was completely seamless. They delivered fully customised cloud solutions that instantly scaled our global operations.",
       rating: 5,
-      gradient: "from-cyan-600/20 via-teal-900/10 to-transparent",
       accent: "text-cyan-400",
-      glow: "shadow-[0_0_30px_rgba(6,182,212,0.2)]"
+      bgGlow: "bg-cyan-600/15",
+      avatarGlow: "shadow-[inset_0_0_15px_rgba(6,182,212,0.4)]",
+      progressGlow: "bg-cyan-500 shadow-[0_0_10px_rgba(6,182,212,0.8)]",
     },
     {
       id: 4,
       name: "David Vance",
       role: "Head of Product",
       company: "Aether Systems",
-      content: "Remarkable speed, flawless code quality, and exceptional communication. CodeLume delivered our entire MVP weeks ahead of schedule without sacrificing a single detail.",
+      content:
+        "Remarkable speed and flawless code quality. CodeLume delivered our entire MVP weeks ahead of schedule, fully optimised for global distribution.",
       rating: 5,
-      gradient: "from-purple-600/20 via-purple-900/10 to-transparent",
       accent: "text-purple-400",
-      glow: "shadow-[0_0_30px_rgba(168,85,247,0.2)]"
-    }
+      bgGlow: "bg-purple-600/15",
+      avatarGlow: "shadow-[inset_0_0_15px_rgba(168,85,247,0.4)]",
+      progressGlow: "bg-purple-500 shadow-[0_0_10px_rgba(168,85,247,0.8)]",
+    },
   ];
 
-  // Doubling array for seamless 360-degree marquee loop
-  const duplicatedReviews = [...reviews, ...reviews];
+  useEffect(() => {
+    if (isHovered) return;
+    const timer = setInterval(() => {
+      setActiveIndex((prev) => (prev + 1) % reviews.length);
+    }, 6000);
+    return () => clearInterval(timer);
+  }, [isHovered, reviews.length]);
+
+  const handleNext = () =>
+    setActiveIndex((prev) => (prev + 1) % reviews.length);
+  const handlePrev = () =>
+    setActiveIndex((prev) => (prev - 1 + reviews.length) % reviews.length);
+
+  const handleMouseMove = (e) => {
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+
+    const rotateX = ((y - centerY) / centerY) * -2.5;
+    const rotateY = ((x - centerX) / centerX) * 2.5;
+
+    cardRef.current.style.transform = `perspective(1200px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+    if (!cardRef.current) return;
+    cardRef.current.style.transform = `perspective(1200px) rotateX(0deg) rotateY(0deg)`;
+  };
 
   return (
-    <section className="relative w-full bg-[#030712] pt-0 pb-16 sm:pt-0 sm:pb-28 font-jakarta overflow-hidden">
+    <section className="relative w-full min-h-[100dvh] flex flex-col justify-center items-center py-24 px-4 sm:px-6 lg:px-8 bg-[#030712] font-jakarta overflow-hidden">
       <style>
         {`
-          @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+          @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap');
           .font-jakarta { font-family: 'Plus Jakarta Sans', sans-serif; }
-
-          @keyframes marquee {
-            0% { transform: translateX(0%); }
-            100% { transform: translateX(-50%); }
+          
+          @keyframes progress-fill {
+            0% { width: 0%; opacity: 0.5; }
+            100% { width: 100%; opacity: 1; }
           }
-
-          .animate-marquee-smooth {
-            display: flex;
-            width: max-content;
-            animation: marquee 35s linear infinite;
-          }
-
-          .animate-marquee-smooth:hover {
-            animation-play-state: paused;
+          .animate-progress {
+            animation: progress-fill 6s linear forwards;
           }
         `}
       </style>
 
-      {/* Global Ambient Background Glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-5xl h-[350px] bg-blue-900/10 rounded-full blur-[140px] pointer-events-none" />
+      {/* Dynamic Background Ambient Glow */}
+      <div
+        className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full blur-[160px] pointer-events-none transition-colors duration-1000 ease-in-out transform-gpu translate-z-0 ${reviews[activeIndex].bgGlow}`}
+      />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        
-        {/* Compact Header */}
-        <div className="flex flex-col items-center text-center max-w-2xl mx-auto mb-8 sm:mb-12">
-          <h2 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight mb-3 leading-[1.15] drop-shadow-lg m-0">
-            Proof of <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-300 to-cyan-400">Satisfaction.</span>
+      <div className="w-full max-w-6xl relative z-10 flex flex-col items-center">
+        {/* VIP Clean Header - Badge Completely Removed */}
+        <div className="flex flex-col items-center text-center mb-10 w-full">
+          <h2 className="text-3xl sm:text-5xl lg:text-[3.5rem] font-extrabold text-white tracking-tight leading-[1.1] drop-shadow-sm m-0">
+            Proof of{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-white/40 to-white/90">
+              Satisfaction.
+            </span>
           </h2>
-          <p className="text-sm sm:text-base text-slate-400/90 font-medium leading-relaxed m-0 max-w-xl">
-            See what industry founders and enterprise partners say about building digital products with CodeLume.
-          </p>
         </div>
 
-      </div>
+        {/* 3D Magnetic Container */}
+        <div
+          className="relative w-full max-w-5xl"
+          style={{ perspective: "1200px" }}
+        >
+          {/* The VIP Spotlight Card */}
+          <div
+            ref={cardRef}
+            className="relative w-full rounded-[2rem] sm:rounded-[3rem] bg-[#0a0f1c]/70 backdrop-blur-3xl p-6 sm:p-10 lg:p-12 shadow-[0_30px_80px_rgba(0,0,0,0.8),inset_0_0_25px_rgba(255,255,255,0.03)] flex flex-col justify-between transform-gpu transition-transform duration-200 ease-out overflow-hidden will-change-transform"
+            onMouseMove={handleMouseMove}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={handleMouseLeave}
+          >
+            <div className="absolute top-0 right-0 w-full h-full bg-gradient-to-bl from-white/[0.02] to-transparent pointer-events-none" />
+            <Quote className="absolute top-6 left-6 sm:top-10 sm:left-10 w-16 h-16 sm:w-24 sm:h-24 text-white/[0.02] transform -scale-x-100 pointer-events-none" />
 
-      {/* Animated Marquee Container with Subtle Side Fades */}
-      <div className="relative w-full overflow-hidden py-4">
-        
-        {/* Left & Right Glass Gradients to soften edges */}
-        <div className="absolute top-0 bottom-0 left-0 w-12 sm:w-32 bg-gradient-to-r from-[#030712] to-transparent z-20 pointer-events-none" />
-        <div className="absolute top-0 bottom-0 right-0 w-12 sm:w-32 bg-gradient-to-l from-[#030712] to-transparent z-20 pointer-events-none" />
-
-        <div className="animate-marquee-smooth flex gap-5 sm:gap-6 px-4">
-          {duplicatedReviews.map((review, index) => (
-            <div 
-              key={`${review.id}-${index}`}
-              className="group relative w-[300px] sm:w-[420px] shrink-0 p-6 sm:p-8 rounded-2xl sm:rounded-3xl bg-[#0a0f1c]/90 backdrop-blur-2xl border border-white/[0.05] hover:border-white/20 transition-all duration-500 ease-out flex flex-col justify-between overflow-hidden cursor-grab active:cursor-grabbing"
-            >
-              {/* Card Ambient Glow on Hover */}
-              <div className={`absolute inset-0 bg-gradient-to-br ${review.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none`} />
-              
-              <div className="relative z-10">
-                {/* Header Row: Quote & Rating */}
-                <div className="flex items-center justify-between mb-5">
-                  <div className="flex gap-1">
-                    {[...Array(review.rating)].map((_, i) => (
-                      <Star key={i} className="w-4 h-4 fill-blue-400 text-blue-400 drop-shadow-[0_0_8px_rgba(96,165,250,0.6)]" />
+            {/* Cinematic Blur-Fade Crossfade */}
+            <div className="grid w-full relative z-10 min-h-[220px] sm:min-h-[180px] lg:min-h-[160px] items-center">
+              {reviews.map((review, i) => (
+                <div
+                  key={review.id}
+                  className={`col-start-1 row-start-1 transition-all duration-700 ease-out transform-gpu flex flex-col justify-center
+                    ${
+                      i === activeIndex
+                        ? "opacity-100 translate-y-0 scale-100 blur-0 z-10 pointer-events-auto"
+                        : "opacity-0 -translate-y-6 scale-95 blur-md z-0 pointer-events-none"
+                    }
+                  `}
+                >
+                  <div className="flex gap-1 mb-4 sm:mb-6">
+                    {[...Array(review.rating)].map((_, index) => (
+                      <Star
+                        key={index}
+                        className="w-4 h-4 sm:w-5 sm:h-5 fill-white text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.4)]"
+                      />
                     ))}
                   </div>
-                  <Quote className="w-6 h-6 text-slate-700/60 group-hover:text-blue-400/40 transition-colors duration-300" />
+                  <h2 className="text-xl sm:text-3xl lg:text-[2.2rem] font-extrabold text-white leading-snug sm:leading-tight tracking-tight m-0 drop-shadow-xl">
+                    "{review.content}"
+                  </h2>
                 </div>
-
-                {/* Review Text */}
-                <p className="text-slate-300 text-sm sm:text-base font-medium leading-relaxed mb-6">
-                  "{review.content}"
-                </p>
-              </div>
-
-              {/* Client Profile Info */}
-              <div className="relative z-10 flex items-center gap-3.5 pt-5 border-t border-white/[0.06]">
-                <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-slate-800/80 border border-white/10 flex items-center justify-center shrink-0 shadow-inner">
-                  <span className={`text-xs sm:text-sm font-bold ${review.accent} tracking-wider`}>
-                    {review.name.split(' ').map(n => n[0]).join('')}
-                  </span>
-                </div>
-                <div>
-                  <h4 className="text-white text-sm font-bold m-0 tracking-wide group-hover:text-blue-300 transition-colors">
-                    {review.name}
-                  </h4>
-                  <p className="text-slate-400 text-[11px] sm:text-[12px] font-medium tracking-wide mt-0.5 m-0">
-                    {review.role} · <span className="text-slate-300 font-semibold">{review.company}</span>
-                  </p>
-                </div>
-              </div>
-
+              ))}
             </div>
-          ))}
-        </div>
 
+            {/* Separation with Progress Timeline */}
+            <div className="relative w-full h-[2px] bg-white/[0.03] shadow-[inset_0_1px_2px_rgba(0,0,0,0.8)] my-8 sm:my-10 z-10 rounded-full overflow-hidden">
+              <div
+                key={activeIndex}
+                className={`absolute top-0 left-0 h-full rounded-full ${reviews[activeIndex].progressGlow} ${isHovered ? "w-full" : "animate-progress"}`}
+                style={{ animationPlayState: isHovered ? "paused" : "running" }}
+              />
+            </div>
+
+            {/* Bottom Control Bar */}
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 relative z-10">
+              {/* Author Crossfade */}
+              <div className="grid w-full sm:w-2/3">
+                {reviews.map((review, i) => (
+                  <div
+                    key={review.id}
+                    className={`col-start-1 row-start-1 flex items-center gap-4 transition-all duration-700 ease-out transform-gpu
+                      ${
+                        i === activeIndex
+                          ? "opacity-100 translate-x-0 blur-0 z-10 pointer-events-auto"
+                          : "opacity-0 -translate-x-8 blur-sm z-0 pointer-events-none"
+                      }
+                    `}
+                  >
+                    <div
+                      className={`w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-[#050811] flex items-center justify-center shrink-0 shadow-[0_10px_20px_rgba(0,0,0,0.5)] ${review.avatarGlow}`}
+                    >
+                      <h2
+                        className={`text-xs sm:text-sm font-bold tracking-wider m-0 ${review.accent}`}
+                      >
+                        {review.name
+                          .split(" ")
+                          .map((n) => n[0])
+                          .join("")}
+                      </h2>
+                    </div>
+                    <div className="flex flex-col">
+                      <h2 className="text-base sm:text-xl font-bold text-white m-0 tracking-tight">
+                        {review.name}
+                      </h2>
+                      <h2 className="text-[11px] sm:text-[13px] text-slate-400 font-medium m-0 mt-0.5">
+                        {review.role}{" "}
+                        <span className="text-slate-600 mx-1 hidden sm:inline">
+                          /
+                        </span>{" "}
+                        <br className="sm:hidden" />{" "}
+                        <span className="text-slate-300">{review.company}</span>
+                      </h2>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Navigation Arrows */}
+              <div className="flex items-center gap-3 w-full sm:w-auto justify-end">
+                <button
+                  onClick={handlePrev}
+                  className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-[#050811]/50 backdrop-blur-md shadow-[inset_0_0_15px_rgba(255,255,255,0.03),0_10px_20px_rgba(0,0,0,0.4)] hover:shadow-[inset_0_0_20px_rgba(255,255,255,0.08),0_15px_30px_rgba(0,0,0,0.6)] hover:-translate-x-1 flex items-center justify-center transition-all duration-300 active:scale-[0.95] outline-none group transform-gpu"
+                >
+                  <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5 text-slate-400 group-hover:text-white transition-colors duration-300" />
+                </button>
+                <button
+                  onClick={handleNext}
+                  className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-[#050811]/50 backdrop-blur-md shadow-[inset_0_0_15px_rgba(255,255,255,0.03),0_10px_20px_rgba(0,0,0,0.4)] hover:shadow-[inset_0_0_20px_rgba(255,255,255,0.08),0_15px_30px_rgba(0,0,0,0.6)] hover:translate-x-1 flex items-center justify-center transition-all duration-300 active:scale-[0.95] outline-none group transform-gpu"
+                >
+                  <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 text-slate-400 group-hover:text-white transition-colors duration-300" />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );
