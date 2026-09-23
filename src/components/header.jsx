@@ -91,7 +91,7 @@ const servicesData = [
   },
 ];
 
-const standardLinks = ["Case Studies", "About", "Insights"];
+const standardLinks = ["Case Studies", "About CodeLume", "Blogs"];
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -138,7 +138,6 @@ export default function Header() {
           className={`fixed top-0 inset-x-0 z-60 flex justify-center pointer-events-none px-4 sm:px-6 transition-all duration-300 ${mobileMenuOpen ? "pt-4" : ""}`}
         >
           <header
-            // 🚀 FIXED: Reduced backdrop-blur-2xl to xl for lag-free scrolling
             className={`pointer-events-auto flex items-center justify-between w-full transition-all duration-500 ease-out transform-gpu will-change-[max-width,transform,background-color] ${
               isScrolled || mobileMenuOpen
                 ? "max-w-5xl translate-y-4 rounded-full bg-[#030712]/90 backdrop-blur-xl shadow-[0_15px_30px_-10px_rgba(0,0,0,0.6)] py-3 px-5 sm:px-8 ring-1 ring-white/5"
@@ -188,11 +187,9 @@ export default function Header() {
                 <div
                   className={`absolute top-[calc(100%+1rem)] left-1/2 -translate-x-1/2 w-170 pt-0 transition-all duration-300 ease-out origin-top transform-gpu will-change-transform ${servicesOpen ? "opacity-100 translate-y-0 visible scale-100" : "opacity-0 -translate-y-3 invisible scale-95"}`}
                 >
-                  {/* 🚀 FIXED: Reduced backdrop blur to xl */}
                   <div className="bg-[#050b14]/95 backdrop-blur-xl rounded-3xl shadow-[0_30px_60px_-15px_rgba(0,0,0,0.8),inset_0_0_20px_rgba(255,255,255,0.02)] p-4 relative overflow-hidden">
                     <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-linear-to-b from-blue-900/10 to-transparent pointer-events-none rounded-3xl" />
 
-                    {/* 🚀 FIXED: Replaced blur-[80px] with zero-lag radial gradient */}
                     <div className="absolute -top-32 right-0 w-64 h-64 bg-[radial-gradient(circle,rgba(79,70,229,0.15)_0%,transparent_70%)] pointer-events-none transform-gpu translate-z-0" />
 
                     <div className="grid grid-cols-2 gap-3 relative z-10">
@@ -293,14 +290,14 @@ export default function Header() {
         <div
           className={`lg:hidden fixed inset-0 z-50 transition-all duration-500 ease-out flex flex-col justify-center transform-gpu will-change-[opacity] ${mobileMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}
         >
-          {/* 🚀 FIXED: Reduced backdrop-blur-3xl to xl */}
           <div className="absolute inset-0 bg-[#030712]/95 backdrop-blur-xl" />
 
+          {/* Top Gradient for subtle fade */}
           <div className="absolute top-0 left-0 w-full h-32 bg-linear-to-b from-[#030712] via-[#030712]/80 to-transparent z-10 pointer-events-none" />
 
-          {/* Scrollable Content Container */}
-          <div className="relative z-0 px-6 py-8 h-full flex flex-col pt-32 pb-32 overflow-y-auto no-scrollbar">
-            <div className="mb-10">
+          {/* Scrollable Content Container - Button moved inside this container */}
+          <div className="relative z-0 px-6 py-8 h-full flex flex-col pt-32 pb-10 overflow-y-auto no-scrollbar">
+            <div className="mb-10 flex-none">
               <h2 className="text-[11px] font-extrabold text-blue-500 uppercase tracking-[0.2em] mb-6 m-0 px-2 opacity-80">
                 Web Capabilities
               </h2>
@@ -342,7 +339,7 @@ export default function Header() {
               </div>
             </div>
 
-            <div className="space-y-2 mb-10 px-2">
+            <div className="space-y-2 mb-10 px-2 flex-none">
               {standardLinks.map((item, idx) => (
                 <a
                   key={item}
@@ -366,28 +363,33 @@ export default function Header() {
                 </a>
               ))}
             </div>
-          </div>
 
-          <div
-            className="absolute bottom-0 left-0 w-full p-6 bg-linear-to-t from-[#030712] via-[#030712]/90 to-transparent z-10 transform-gpu will-change-transform"
-            style={{
-              transitionDelay: mobileMenuOpen ? "500ms" : "0ms",
-              opacity: mobileMenuOpen ? 1 : 0,
-              transform: mobileMenuOpen ? "translateY(0)" : "translateY(15px)",
-              transition: "all 0.4s ease-out",
-            }}
-          >
-            <Link
-              to="/start-project"
-              onClick={() => setMobileMenuOpen(false)}
-              className="relative flex items-center justify-center gap-2 w-full px-6 py-5 rounded-2xl bg-linear-to-r from-blue-600 to-indigo-600 text-white shadow-[0_15px_30px_rgba(37,99,235,0.3)] transition-all active:scale-[0.98] overflow-hidden outline-none transform-gpu"
+            {/* BUTTON MOVED HERE: Now flows naturally at the end of the scrollable list */}
+            <div
+              className="mt-auto pt-4 flex-none transform-gpu will-change-transform"
+              style={{
+                transitionDelay: mobileMenuOpen ? "500ms" : "0ms",
+                opacity: mobileMenuOpen ? 1 : 0,
+                transform: mobileMenuOpen
+                  ? "translateY(0)"
+                  : "translateY(15px)",
+                transition: "all 0.4s ease-out",
+              }}
             >
-              <div className="absolute top-0 left-0 w-full h-full bg-linear-to-r from-transparent via-white/20 to-transparent animate-shimmer pointer-events-none" />
-              <Sparkles className="w-5 h-5 text-blue-200 relative z-10" />
-              <h2 className="m-0 text-inherit text-[18px] font-extrabold relative z-10 tracking-wide">
-                Start a Project
-              </h2>
-            </Link>
+              <Link
+                to="/start-project"
+                onClick={() => setMobileMenuOpen(false)}
+                className="relative flex items-center justify-center gap-2 w-full px-6 py-5 rounded-2xl bg-linear-to-r from-blue-600 to-indigo-600 text-white shadow-[0_15px_30px_rgba(37,99,235,0.3)] transition-all active:scale-[0.98] overflow-hidden outline-none transform-gpu"
+              >
+                <div className="absolute top-0 left-0 w-full h-full bg-linear-to-r from-transparent via-white/20 to-transparent animate-shimmer pointer-events-none" />
+                <Sparkles className="w-5 h-5 text-blue-200 relative z-10" />
+                <h2 className="m-0 text-inherit text-[18px] font-extrabold relative z-10 tracking-wide">
+                  Start a Project
+                </h2>
+              </Link>
+            </div>
+            {/* Added bottom padding to ensure button isn't cut off by safe areas */}
+            <div className="h-8 flex-none" />
           </div>
         </div>
       </div>
