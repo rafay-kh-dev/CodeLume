@@ -15,8 +15,8 @@ import Testimonials from "./components/testimonial";
 import Blog from "./components/blogs";
 import Article from "./components/article";
 import StartProject from "./components/startproject";
-import AdminCreatePost from "./components/AdminCreatePost";
-import AdminLogin from "./components/AdminLogin"; // 🚀 Imported Admin Login
+import AdminCreatePost from "./components/admincreatepost";
+import AdminLogin from "./components/adminlogin"; // 🚀 Imported Admin Login
 import Footer from "./components/footer";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
