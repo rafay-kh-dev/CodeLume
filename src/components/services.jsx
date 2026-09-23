@@ -3,7 +3,7 @@ import {
   Layers,
   Server,
   Store,
-  MonitorSmartphone,
+  Workflow,
   Clock,
   CreditCard,
   ArrowRight,
@@ -13,63 +13,63 @@ import {
 export default function Capabilities() {
   const services = [
     {
-      title: "MERN Stack Architecture",
+      title: "MERN Stack Solutions",
       description:
-        "Highly optimised, scalable full-stack applications built for enterprise-level performance.",
+        "Full-stack JavaScript applications using MongoDB, Express, React, & Node.js for enterprise-scale performance.",
       icon: Layers,
       accent: "text-blue-500",
       bg: "bg-blue-500/10",
-      price: "From $1,200",
-      timeline: "3-5 Weeks",
+      price: "From $2,500",
+      timeline: "6-8 Weeks",
       features: [
-        "React & Node.js Backend",
-        "Zero-latency Database",
-        "API Integration",
+        "Single Page Applications (SPA)",
+        "Zero-Latency Realtime Data",
+        "Custom Admin Dashboards",
       ],
     },
     {
       title: "PHP & Laravel Systems",
       description:
-        "Robust and secure backend systems customised for complex business logic and data security.",
+        "Robust, secure, and highly scalable backend architectures customised precisely for complex business logic.",
       icon: Server,
-      accent: "text-indigo-500",
-      bg: "bg-indigo-500/10",
-      price: "From $1,500",
+      accent: "text-rose-500", // Image mein red/rose tone hai
+      bg: "bg-rose-500/10",
+      price: "From $1,800",
       timeline: "4-6 Weeks",
       features: [
-        "Custom CMS Development",
-        "High-Security Protocols",
-        "Legacy Migration",
+        "Bespoke MVC Architecture",
+        "High-Security Data Protocols",
+        "Legacy Database Migration",
       ],
     },
     {
-      title: "Headless E-Commerce",
+      title: "Advanced E-Commerce",
       description:
-        "Specialised Shopify and WooCommerce storefronts engineered for maximum global conversion.",
+        "High-converting storefronts and highly customised Shopify & WooCommerce architectures for global sales.",
       icon: Store,
-      accent: "text-cyan-500",
-      bg: "bg-cyan-500/10",
+      accent: "text-emerald-500", // Image mein green tone hai Shopify ke liye
+      bg: "bg-emerald-500/10",
       price: "From $2,000",
       timeline: "4-8 Weeks",
       features: [
-        "Next.js Storefront",
-        "Sub-second Load Times",
-        "Custom Cart Flows",
+        "Headless Next.js Storefronts",
+        "Custom Plugin Development",
+        "Frictionless Checkout Flows",
       ],
     },
     {
-      title: "Bespoke Web Platforms",
+      title: "API & Integrations",
       description:
-        "Custom digital platforms and highly specialised Webflow sites tailored with pixel perfection.",
-      icon: MonitorSmartphone,
-      accent: "text-sky-500",
-      bg: "bg-sky-500/10",
-      price: "From $800",
+        "Connecting your web applications with third-party services seamlessly to automate complex operational workflows.",
+      icon: Workflow, // Replaced with a more fitting icon for APIs
+      accent: "text-amber-500", // Image mein yellow/amber tone hai
+      bg: "bg-amber-500/10",
+      price: "From $1,200",
       timeline: "2-4 Weeks",
       features: [
-        "Figma to Code",
-        "Responsive Architecture",
-        "Advanced Animations",
+        "REST & GraphQL Architectures",
+        "Secure Payment Gateways",
+        "CRM & ERP Synchronisation",
       ],
     },
   ];
@@ -88,15 +88,15 @@ export default function Capabilities() {
         {/* Sharp Header */}
         <div className="flex flex-col items-start text-left max-w-2xl mb-12 sm:mb-20">
           <h2 className="text-[12px] sm:text-[13px] font-black text-blue-500 uppercase tracking-[0.25em] mb-4 m-0">
-            Professional Services
+            Exclusive Services
           </h2>
           <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white tracking-tighter leading-[1.05] m-0 mb-6">
             Engineered for <br className="hidden sm:block" />
             Digital Excellence.
           </h2>
           <h2 className="text-[15px] sm:text-lg text-slate-400 font-medium leading-relaxed m-0 pr-4 sm:pr-0">
-            Transparent pricing, strict timelines, and highly customised digital
-            solutions. We engineer platforms that dominate the modern web.
+            Transparent pricing, strict timelines, and highly customised
+            architectures. We engineer platforms that dominate the modern web.
           </h2>
         </div>
 
@@ -133,7 +133,9 @@ export default function Capabilities() {
                 <div className="flex flex-col gap-3 mb-8 sm:mb-10 pl-2 sm:pl-20">
                   {item.features.map((feature, i) => (
                     <div key={i} className="flex items-center gap-3">
-                      <CheckCircle2 className="w-4 h-4 text-blue-500 shrink-0" />
+                      <CheckCircle2
+                        className={`w-4 h-4 ${item.accent} shrink-0`}
+                      />
                       <h2 className="text-[14px] font-bold text-slate-300 m-0 tracking-wide">
                         {feature}
                       </h2>
@@ -141,17 +143,17 @@ export default function Capabilities() {
                   ))}
                 </div>
 
-                {/* Price & Timeline Metadata Tags (Replaces Lines) */}
+                {/* Price & Timeline Metadata Tags */}
                 <div className="mt-auto flex flex-wrap items-center gap-3 sm:gap-4 pl-0 sm:pl-20">
-                  <div className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-blue-500/10 border border-blue-500/20">
-                    <CreditCard className="w-4 h-4 text-blue-400" />
-                    <h2 className="text-[13px] font-black text-blue-100 uppercase tracking-widest m-0">
+                  <div className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-white/5 border border-white/5">
+                    <CreditCard className="w-4 h-4 text-slate-400" />
+                    <h2 className="text-[13px] font-black text-slate-200 uppercase tracking-widest m-0">
                       {item.price}
                     </h2>
                   </div>
                   <div className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-white/5 border border-white/5">
                     <Clock className="w-4 h-4 text-slate-400" />
-                    <h2 className="text-[13px] font-black text-slate-300 uppercase tracking-widest m-0">
+                    <h2 className="text-[13px] font-black text-slate-200 uppercase tracking-widest m-0">
                       {item.timeline}
                     </h2>
                   </div>
