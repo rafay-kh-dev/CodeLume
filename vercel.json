@@ -1,24 +1,8 @@
-[{
-	"resource": "/e:/CodeLume/vercel.json",
-	"owner": "_generated_diagnostic_collection_name_#1",
-	"code": "65538",
-	"severity": 4,
-	"message": "Unable to load schema from 'https://openapi.vercel.sh/vercel.json': Location https://openapi.vercel.sh/vercel.json is untrusted.",
-	"source": "json",
-	"startLineNumber": 2,
-	"startColumn": 14,
-	"endLineNumber": 2,
-	"endColumn": 53,
-	"relatedInformation": [
-		{
-			"startLineNumber": 1,
-			"startColumn": 1,
-			"endLineNumber": 1,
-			"endColumn": 1,
-			"message": "Unable to load schema from 'https://openapi.vercel.sh/vercel.json': Location https://openapi.vercel.sh/vercel.json is untrusted.",
-			"resource": "/vercel.json"
-		}
-	],
-	"modelVersionId": 3,
-	"origin": "extHost1"
-}]
+{
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
