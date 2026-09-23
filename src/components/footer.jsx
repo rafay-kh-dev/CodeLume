@@ -101,7 +101,7 @@ export default function Footer() {
           </div>
           <Link
             to="/start-project"
-            className="relative z-10 flex items-center justify-center gap-3 px-8 py-5 rounded-2xl bg-white text-[#030712] hover:bg-slate-200 transition-all duration-300 active:scale-[0.98] outline-none group/btn shadow-[0_15px_30px_rgba(255,255,255,0.1)] transform-gpu"
+            className="flex items-center justify-center gap-3 w-full sm:w-auto px-6 py-4 rounded-xl bg-blue-600 text-white hover:bg-blue-700 active:bg-blue-800 transition-colors duration-200 outline-none group/btn active:scale-[0.98] transform-gpu"
           >
             <h2 className="text-[16px] font-extrabold m-0 text-inherit tracking-wide">
               Start a Conversation
