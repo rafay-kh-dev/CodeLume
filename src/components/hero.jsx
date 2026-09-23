@@ -1,7 +1,18 @@
 import React, { useState, useEffect, useRef } from "react";
 import {
-  Code2, Cpu, ChevronRight, Sparkles, Server, Layers,
-  LayoutTemplate, MonitorSmartphone, Store, Palette, Webhook, Globe, CheckCircle2,
+  Code2,
+  Cpu,
+  ChevronRight,
+  Sparkles,
+  Server,
+  Layers,
+  LayoutTemplate,
+  MonitorSmartphone,
+  Store,
+  Palette,
+  Webhook,
+  Globe,
+  CheckCircle2,
 } from "lucide-react";
 
 export default function HeroSection() {
@@ -41,14 +52,34 @@ export default function HeroSection() {
     );
     return parts.map((part, index) => {
       if (/^(import|from|export|const)$/.test(part))
-        return <h2 key={index} className="inline text-[#ff7b72] m-0 font-inherit">{part}</h2>;
+        return (
+          <h2 key={index} className="inline text-[#ff7b72] m-0 font-inherit">
+            {part}
+          </h2>
+        );
       if (/^(@core|"optimised"|"12ms"|"enterprise")$/.test(part))
-        return <h2 key={index} className="inline text-[#a5d6ff] m-0 font-inherit">{part}</h2>;
+        return (
+          <h2 key={index} className="inline text-[#a5d6ff] m-0 font-inherit">
+            {part}
+          </h2>
+        );
       if (/^(Engine|App)$/.test(part))
-        return <h2 key={index} className="inline text-[#d2a8ff] m-0 font-inherit">{part}</h2>;
+        return (
+          <h2 key={index} className="inline text-[#d2a8ff] m-0 font-inherit">
+            {part}
+          </h2>
+        );
       if (/^(=|>|<|\(\vert{}\)|\/)$/.test(part))
-        return <h2 key={index} className="inline text-[#c9d1d9] m-0 font-inherit">{part}</h2>;
-      return <h2 key={index} className="inline text-inherit m-0 font-inherit">{part}</h2>;
+        return (
+          <h2 key={index} className="inline text-[#c9d1d9] m-0 font-inherit">
+            {part}
+          </h2>
+        );
+      return (
+        <h2 key={index} className="inline text-inherit m-0 font-inherit">
+          {part}
+        </h2>
+      );
     });
   };
 
@@ -74,17 +105,24 @@ export default function HeroSection() {
         `}
       </style>
 
-      <div ref={spotlightRef} className="pointer-events-none absolute inset-0 z-0 transform-gpu translate-z-0" style={{ background: "transparent" }} />
+      <div
+        ref={spotlightRef}
+        className="pointer-events-none absolute inset-0 z-0 transform-gpu translate-z-0"
+        style={{ background: "transparent" }}
+      />
 
-      <div className="absolute inset-0 z-0 opacity-[0.12] transform-gpu translate-z-0"
+      <div
+        className="absolute inset-0 z-0 opacity-[0.12] transform-gpu translate-z-0"
         style={{
           backgroundImage: `linear-gradient(to right, #4f4f4f20 1px, transparent 1px), linear-gradient(to bottom, #4f4f4f20 1px, transparent 1px)`,
           backgroundSize: "48px 48px",
-          maskImage: "radial-gradient(ellipse 80% 80% at 50% 50%, #000 40%, transparent 100%)",
-          WebkitMaskImage: "radial-gradient(ellipse 80% 80% at 50% 50%, #000 40%, transparent 100%)",
+          maskImage:
+            "radial-gradient(ellipse 80% 80% at 50% 50%, #000 40%, transparent 100%)",
+          WebkitMaskImage:
+            "radial-gradient(ellipse 80% 80% at 50% 50%, #000 40%, transparent 100%)",
         }}
       />
-      
+
       {/* 🚀 FIXED: Replaced expensive 'blur-[120px]' animations with pure CSS radial gradients */}
       <div className="absolute top-1/4 left-1/4 w-125 h-125 bg-[radial-gradient(circle,rgba(37,99,235,0.1)_0%,transparent_60%)] rounded-full pointer-events-none animate-[pulse_6s_ease-in-out_infinite] transform-gpu translate-z-0" />
       <div className="absolute bottom-1/3 right-1/4 w-112.5 h-112.5 bg-[radial-gradient(circle,rgba(79,70,229,0.1)_0%,transparent_60%)] rounded-full pointer-events-none animate-[pulse_8s_ease-in-out_infinite] transform-gpu translate-z-0" />
@@ -92,7 +130,6 @@ export default function HeroSection() {
       <div className="flex-1 flex flex-col justify-center w-full relative z-10 pt-28 pb-16 lg:pt-20 lg:pb-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div className="grid lg:grid-cols-2 gap-10 lg:gap-20 items-center">
-            
             <div className="flex flex-col items-start text-left w-full">
               <h2 className="text-4xl sm:text-5xl lg:text-6xl xl:text-[4.2rem] font-extrabold tracking-tight text-white leading-[1.05] mb-6 drop-shadow-sm m-0">
                 Architecting <br className="hidden sm:block" />
@@ -102,17 +139,28 @@ export default function HeroSection() {
                 <br /> Web Solutions.
               </h2>
               <h2 className="text-base sm:text-lg lg:text-[1.1rem] text-slate-400/90 mb-8 leading-relaxed max-w-lg font-medium m-0">
-                We engineer robust, scalable, and secure applications utilising the MERN stack, PHP/Laravel, and modern frontend frameworks.
+                We engineer robust, scalable, and secure applications utilising
+                the MERN stack, PHP/Laravel, and modern frontend frameworks.
               </h2>
-              
+
               <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
-                <a href="#start" className="group relative flex items-center justify-center gap-2 w-full sm:w-auto px-8 py-4 rounded-xl bg-blue-600 text-white shadow-[0_0_30px_-5px_rgba(37,99,235,0.5)] hover:shadow-[0_0_50px_-5px_rgba(37,99,235,0.7)] transition-all duration-300 active:scale-[0.98] outline-none overflow-hidden transform-gpu">
+                <a
+                  href="start-project"
+                  className="group relative flex items-center justify-center gap-2 w-full sm:w-auto px-8 py-4 rounded-xl bg-blue-600 text-white shadow-[0_0_30px_-5px_rgba(37,99,235,0.5)] hover:shadow-[0_0_50px_-5px_rgba(37,99,235,0.7)] transition-all duration-300 active:scale-[0.98] outline-none overflow-hidden transform-gpu"
+                >
                   <div className="absolute inset-0 bg-linear-to-r from-transparent via-white/20 to-transparent -translate-x-full animate-shimmer pointer-events-none" />
                   <Sparkles className="w-4 h-4 text-blue-200 relative z-10" />
-                  <h2 className="m-0 text-[15px] font-bold relative z-10 tracking-wide">Initialise Project</h2>
+                  <h2 className="m-0 text-[15px] font-bold relative z-10 tracking-wide">
+                    Initialise Project
+                  </h2>
                 </a>
-                <a href="#services" className="group flex items-center justify-center gap-2 w-full sm:w-auto px-8 py-4 rounded-xl bg-white/3 hover:bg-white/8 text-slate-300 hover:text-white shadow-[0_15px_30px_rgba(0,0,0,0.2)] transition-all duration-300 active:scale-[0.98] backdrop-blur-md outline-none transform-gpu">
-                  <h2 className="m-0 text-[15px] font-bold tracking-wide">View Capabilities</h2>
+                <a
+                  href="services"
+                  className="group flex items-center justify-center gap-2 w-full sm:w-auto px-8 py-4 rounded-xl bg-white/3 hover:bg-white/8 text-slate-300 hover:text-white shadow-[0_15px_30px_rgba(0,0,0,0.2)] transition-all duration-300 active:scale-[0.98] backdrop-blur-md outline-none transform-gpu"
+                >
+                  <h2 className="m-0 text-[15px] font-bold tracking-wide">
+                    View Services
+                  </h2>
                   <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-1 text-slate-500 group-hover:text-white transform-gpu" />
                 </a>
               </div>
@@ -132,16 +180,22 @@ export default function HeroSection() {
                     <div className="flex items-end self-end pt-2">
                       <div className="px-4 sm:px-5 py-2.5 bg-[#0d1117] rounded-t-xl flex items-center gap-2 shadow-[0_-5px_15px_rgba(0,0,0,0.3)]">
                         <Code2 className="w-3.5 h-3.5 text-blue-400" />
-                        <h2 className="text-[10px] sm:text-[11px] font-mono font-medium text-slate-300 m-0 tracking-wider">CodeLume_Engine.jsx</h2>
+                        <h2 className="text-[10px] sm:text-[11px] font-mono font-medium text-slate-300 m-0 tracking-wider">
+                          CodeLume_Engine.jsx
+                        </h2>
                       </div>
                     </div>
                     <div className="w-16" />
                   </div>
-                  
+
                   <div className="p-4 sm:p-6 lg:p-8 font-mono text-[11px] sm:text-[13px] lg:text-[14px] leading-[1.8] text-[#c9d1d9] overflow-x-auto bg-[#0d1117] h-55 sm:h-65 lg:h-75 relative">
                     <div className="flex">
                       <div className="flex flex-col text-slate-600/70 text-right pr-4 sm:pr-5 mr-4 sm:mr-5 select-none shrink-0 shadow-[1px_0_0_rgba(255,255,255,0.02)]">
-                        {[...Array(8)].map((_, i) => (<h2 key={i} className="m-0 font-inherit text-inherit">{i + 1}</h2>))}
+                        {[...Array(8)].map((_, i) => (
+                          <h2 key={i} className="m-0 font-inherit text-inherit">
+                            {i + 1}
+                          </h2>
+                        ))}
                       </div>
                       <div className="whitespace-pre flex-1 relative">
                         {renderHighlightedCode(typedText)}
@@ -153,14 +207,20 @@ export default function HeroSection() {
                     <div className="flex items-center gap-4 sm:gap-6">
                       <div className="flex items-center gap-1.5">
                         <CheckCircle2 className="w-3 h-3 text-blue-400" />
-                        <h2 className="text-[9px] sm:text-[10px] font-mono text-slate-500 uppercase tracking-widest m-0">System Active</h2>
+                        <h2 className="text-[9px] sm:text-[10px] font-mono text-slate-500 uppercase tracking-widest m-0">
+                          System Active
+                        </h2>
                       </div>
                       <div className="flex items-center gap-1.5">
                         <Cpu className="w-3 h-3 text-indigo-400" />
-                        <h2 className="text-[9px] sm:text-[10px] font-mono text-slate-500 uppercase tracking-widest m-0 hidden sm:block">12ms Latency</h2>
+                        <h2 className="text-[9px] sm:text-[10px] font-mono text-slate-500 uppercase tracking-widest m-0 hidden sm:block">
+                          12ms Latency
+                        </h2>
                       </div>
                     </div>
-                    <h2 className="text-[9px] sm:text-[10px] font-mono text-slate-500 uppercase tracking-widest m-0">UTF-8</h2>
+                    <h2 className="text-[9px] sm:text-[10px] font-mono text-slate-500 uppercase tracking-widest m-0">
+                      UTF-8
+                    </h2>
                   </div>
                 </div>
               </div>
@@ -169,20 +229,41 @@ export default function HeroSection() {
         </div>
       </div>
 
-      <div className="absolute bottom-0 w-full h-12.5 sm:h-15 bg-[#0a0f1c]/90 backdrop-blur-xl overflow-hidden flex items-center z-30 shadow-[0_-10px_30px_rgba(0,0,0,0.3)] transform-gpu translate-z-0" style={{ maskImage: "linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%)", WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%)" }}>
+      <div
+        className="absolute bottom-0 w-full h-12.5 sm:h-15 bg-[#0a0f1c]/90 backdrop-blur-xl overflow-hidden flex items-center z-30 shadow-[0_-10px_30px_rgba(0,0,0,0.3)] transform-gpu translate-z-0"
+        style={{
+          maskImage:
+            "linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%)",
+          WebkitMaskImage:
+            "linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%)",
+        }}
+      >
         <div className="flex whitespace-nowrap animate-marquee items-center h-full">
           {[...Array(2)].map((_, i) => (
-            <div key={i} className="flex items-center gap-10 sm:gap-16 px-6 sm:px-8">
+            <div
+              key={i}
+              className="flex items-center gap-10 sm:gap-16 px-6 sm:px-8"
+            >
               {[
-                { name: "MERN Stack", icon: Layers }, { name: "PHP / Laravel", icon: Server }, { name: "Angular", icon: LayoutTemplate },
-                { name: "Custom Platforms", icon: MonitorSmartphone }, { name: "WordPress", icon: Store }, { name: "Shopify", icon: Palette },
-                { name: "Webflow", icon: Globe }, { name: "API Integrations", icon: Webhook },
+                { name: "MERN Stack", icon: Layers },
+                { name: "PHP / Laravel", icon: Server },
+                { name: "Angular", icon: LayoutTemplate },
+                { name: "Custom Platforms", icon: MonitorSmartphone },
+                { name: "WordPress", icon: Store },
+                { name: "Shopify", icon: Palette },
+                { name: "Webflow", icon: Globe },
+                { name: "API Integrations", icon: Webhook },
               ].map((tech, index) => {
                 const Icon = tech.icon;
                 return (
-                  <div key={index} className="flex items-center gap-2.5 text-slate-400/50 hover:text-blue-400 transition-colors duration-300">
+                  <div
+                    key={index}
+                    className="flex items-center gap-2.5 text-slate-400/50 hover:text-blue-400 transition-colors duration-300"
+                  >
                     <Icon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                    <h2 className="text-[11px] sm:text-[13px] font-bold tracking-[0.15em] uppercase m-0">{tech.name}</h2>
+                    <h2 className="text-[11px] sm:text-[13px] font-bold tracking-[0.15em] uppercase m-0">
+                      {tech.name}
+                    </h2>
                   </div>
                 );
               })}

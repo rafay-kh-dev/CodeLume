@@ -175,7 +175,7 @@ export default function Capabilities() {
             </h2>
           </div>
           <a
-            href="#contact"
+            href="start-project"
             className="flex items-center justify-center gap-3 w-full md:w-auto px-8 py-4 rounded-xl bg-white text-blue-900 hover:bg-slate-100 active:bg-slate-200 transition-colors duration-200 outline-none group/btn"
           >
             <h2 className="text-[15px] font-black m-0 text-inherit tracking-wide">

@@ -230,7 +230,7 @@ export default function Header() {
                         Need a specialised tech stack?
                       </h2>
                       <a
-                        href="#contact"
+                        href="start-project"
                         className="text-[14px] font-bold text-blue-400 hover:text-blue-300 flex items-center gap-1.5 group/link transition-colors relative z-10 outline-none"
                       >
                         <h2 className="m-0 text-inherit text-[14px] font-bold flex items-center gap-1.5">

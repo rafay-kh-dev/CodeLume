@@ -72,7 +72,7 @@ export default function About() {
 
             {/* Mobile-First Sharp CTA Button */}
             <a
-              href="#contact"
+              href="start-project"
               className="flex items-center justify-center gap-3 w-full sm:w-auto px-6 py-4 rounded-xl bg-blue-600 text-white hover:bg-blue-700 active:bg-blue-800 transition-colors duration-200 outline-none group/btn active:scale-[0.98] transform-gpu"
             >
               <h2 className="text-[15px] font-black m-0 text-inherit tracking-wide">

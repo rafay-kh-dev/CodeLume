@@ -16,21 +16,21 @@ export default function Footer() {
     "Headless Shopify",
     "WordPress & WooCommerce",
   ];
-  
+
   const tools = [
     { name: "Lighthouse Auditor", status: "Coming Soon" },
     { name: "CSS Glass Generator", status: "Coming Soon" },
     { name: "Meta Tag Extractor", status: "Coming Soon" },
     { name: "Regex Visualiser", status: "Coming Soon" },
   ];
-  
+
   const resources = [
     { name: "Insights & Tech Blog", highlight: true },
     { name: "Client Case Studies" },
     { name: "Agency Architecture" },
     { name: "Consultation & Contact" },
   ];
-  
+
   const contacts = [
     {
       name: "Facebook",
@@ -99,7 +99,7 @@ export default function Footer() {
             </h2>
           </div>
           <a
-            href="#contact"
+            href="start-project"
             className="relative z-10 flex items-center justify-center gap-3 px-8 py-5 rounded-2xl bg-white text-[#030712] hover:bg-slate-200 transition-all duration-300 active:scale-[0.98] outline-none group/btn shadow-[0_15px_30px_rgba(255,255,255,0.1)] transform-gpu"
           >
             <h2 className="text-[16px] font-extrabold m-0 text-inherit tracking-wide">
