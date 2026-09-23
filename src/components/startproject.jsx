@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import emailjs from "@emailjs/browser";
 import {
   Rocket,
   Code2,
@@ -9,6 +11,9 @@ import {
   Mail,
   User,
   Building,
+  MessageCircle,
+  Send,
+  Loader2,
 } from "lucide-react";
 
 export default function StartProject() {
@@ -23,12 +28,13 @@ export default function StartProject() {
   });
 
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const serviceOptions = [
-    { id: "mern", title: "MERN Stack App", icon: Server },
-    { id: "laravel", title: "PHP & Laravel", icon: Code2 },
-    { id: "ecommerce", title: "E-Commerce", icon: MonitorSmartphone },
-    { id: "uiux", title: "UI/UX Design", icon: Rocket },
+    { id: "MERN Stack", title: "MERN Stack App", icon: Server },
+    { id: "PHP Laravel", title: "PHP & Laravel", icon: Code2 },
+    { id: "E-Commerce", title: "E-Commerce", icon: MonitorSmartphone },
+    { id: "UI/UX Design", title: "UI/UX Design", icon: Rocket },
   ];
 
   const budgetOptions = ["$1k - $2.5k", "$2.5k - $5k", "$5k - $10k", "$10k+"];
@@ -53,34 +59,116 @@ export default function StartProject() {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Yahan aap API call ya Email service (e.g. EmailJS) integrate kar sakte hain
-    console.log("Lead Data:", formData);
-    setIsSubmitted(true);
+    setIsSubmitting(true);
+
+    try {
+      await emailjs.send(
+        "service_fhmjx2e",
+        "template_2k4dl3g",
+        {
+          from_name: formData.name,
+          client_email: formData.email,
+          company: formData.company,
+          services: formData.services.join(", "),
+          budget: formData.budget,
+          timeline: formData.timeline,
+          message: formData.details,
+          reply_to: formData.email,
+        },
+        "2uB67zF7wZrjpEEyD",
+      );
+
+      setIsSubmitted(true);
+    } catch (error) {
+      console.error("Email send error:", error);
+      alert("Something went wrong. Please try contacting directly.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (isSubmitted) {
     return (
-      <section className="w-full min-h-dvh py-24 sm:py-32 bg-[#030712] font-jakarta flex items-center justify-center">
-        <div className="max-w-md w-full px-4 flex flex-col items-center text-center">
-          <div className="w-20 h-20 rounded-full bg-blue-500/10 border border-blue-500 flex items-center justify-center mb-8">
-            <CheckCircle2 className="w-10 h-10 text-blue-500" />
+      <section className="w-full min-h-dvh py-24 sm:py-32 bg-[#030712] font-jakarta flex items-center justify-center relative overflow-hidden">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-blue-500/5 rounded-full blur-[120px] pointer-events-none" />
+
+        <div className="max-w-2xl w-full px-4 flex flex-col items-center text-center relative z-10">
+          <div className="w-24 h-24 rounded-2xl bg-blue-900/20 border border-blue-500/30 flex items-center justify-center mb-8 shrink-0">
+            <CheckCircle2
+              className="w-12 h-12 text-blue-500"
+              strokeWidth={2.5}
+            />
           </div>
-          <h2 className="text-4xl font-black text-white mb-4 m-0 tracking-tight">
-            Request Received.
+
+          <h2 className="text-4xl md:text-5xl font-black text-white mb-6 m-0 tracking-tighter leading-tight">
+            Project Request Analysed.
           </h2>
-          <h2 className="text-[15px] text-slate-400 font-medium leading-relaxed mb-10 m-0">
-            Thank you for reaching out. Our technical team will review your
-            project requirements and get back to you within 24 hours to schedule
-            a strategy call.
+
+          <h2 className="text-[15px] sm:text-lg text-slate-400 font-medium leading-relaxed mb-4 m-0 px-4">
+            An automated confirmation has been sent to{" "}
+            <span className="text-white font-bold">{formData.email}</span>. Our
+            technical team is reviewing your requirements.
           </h2>
-          <button
-            onClick={() => (window.location.href = "/")}
-            className="px-8 py-4 rounded-xl bg-white text-blue-900 font-black hover:bg-slate-200 transition-colors w-full outline-none"
+
+          <h2 className="text-[15px] sm:text-[16px] text-blue-400 font-bold leading-relaxed mb-12 m-0 bg-blue-900/20 px-6 py-4 rounded-xl border border-blue-500/20 shadow-lg">
+            Hi, I'm Rafay. I have received your request and will personally
+            contact you from mrafaykh@outlook.com within the next 24 hours to
+            discuss the architecture.
+          </h2>
+
+          <div className="w-full p-8 rounded-2xl bg-[#070b14] border border-white/5 flex flex-col items-center mb-8">
+            <h2 className="text-lg font-black text-white mb-6 m-0 tracking-tight">
+              Prefer direct communication? Connect instantly:
+            </h2>
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full">
+              <a
+                href="https://wa.me/YOUR_WHATSAPP_NUMBER"
+                target="_blank"
+                rel="noreferrer"
+                className="flex items-center justify-center gap-3 p-4 rounded-xl bg-[#0a120e] border border-green-500/20 hover:border-green-500/50 hover:bg-[#0c1a14] transition-colors group outline-none active:scale-[0.98]"
+              >
+                <MessageCircle className="w-5 h-5 text-green-500" />
+                <h2 className="text-[14px] font-black text-white m-0 tracking-wide">
+                  WhatsApp
+                </h2>
+              </a>
+
+              <a
+                href="https://t.me/YOUR_TELEGRAM_ID"
+                target="_blank"
+                rel="noreferrer"
+                className="flex items-center justify-center gap-3 p-4 rounded-xl bg-blue-900/10 border border-blue-500/20 hover:border-blue-500/50 hover:bg-blue-900/20 transition-colors group outline-none active:scale-[0.98]"
+              >
+                <Send className="w-5 h-5 text-blue-400" />
+                <h2 className="text-[14px] font-black text-white m-0 tracking-wide">
+                  Telegram
+                </h2>
+              </a>
+
+              <a
+                href="mailto:mrafaykh@outlook.com"
+                className="flex items-center justify-center gap-3 p-4 rounded-xl bg-slate-800/30 border border-white/10 hover:border-white/30 hover:bg-slate-800/50 transition-colors group outline-none active:scale-[0.98]"
+              >
+                <Mail className="w-5 h-5 text-slate-300" />
+                <h2 className="text-[14px] font-black text-white m-0 tracking-wide">
+                  Email Direct
+                </h2>
+              </a>
+            </div>
+          </div>
+
+          <Link
+            to="/"
+            className="flex items-center justify-center gap-3 px-8 py-4 rounded-xl bg-white text-[#030712] hover:bg-slate-200 transition-colors outline-none active:scale-[0.98] group"
           >
-            Return to Homepage
-          </button>
+            <ArrowRight className="w-5 h-5 transform group-hover:-translate-x-1 transition-transform rotate-180" />
+            <h2 className="text-[15px] font-black m-0 tracking-wide">
+              Return to Homepage
+            </h2>
+          </Link>
         </div>
       </section>
     );
@@ -97,7 +185,6 @@ export default function StartProject() {
       </style>
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Sharp Header */}
         <div className="flex flex-col items-start text-left mb-12 sm:mb-16">
           <h2 className="text-[12px] sm:text-[13px] font-black text-blue-500 uppercase tracking-[0.25em] mb-4 m-0">
             Initiate Strategy
@@ -113,12 +200,10 @@ export default function StartProject() {
           </h2>
         </div>
 
-        {/* Lead Capture Form */}
         <form
           onSubmit={handleSubmit}
           className="flex flex-col gap-12 sm:gap-16"
         >
-          {/* Section 1: Services */}
           <div className="flex flex-col gap-6">
             <h2 className="text-xl sm:text-2xl font-black text-white m-0 tracking-tight">
               1. What do you need help with?
@@ -148,7 +233,9 @@ export default function StartProject() {
                       <Icon className="w-5 h-5" strokeWidth={2.5} />
                     </div>
                     <h2
-                      className={`text-[15px] font-black m-0 tracking-wide ${isSelected ? "text-white" : "text-slate-300"}`}
+                      className={`text-[15px] font-black m-0 tracking-wide ${
+                        isSelected ? "text-white" : "text-slate-300"
+                      }`}
                     >
                       {service.title}
                     </h2>
@@ -158,9 +245,7 @@ export default function StartProject() {
             </div>
           </div>
 
-          {/* Section 2: Budget & Timeline (Grid Layout) */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-8">
-            {/* Budget */}
             <div className="flex flex-col gap-6">
               <h2 className="text-xl sm:text-2xl font-black text-white m-0 tracking-tight">
                 2. Allocated Budget
@@ -183,7 +268,6 @@ export default function StartProject() {
               </div>
             </div>
 
-            {/* Timeline */}
             <div className="flex flex-col gap-6">
               <h2 className="text-xl sm:text-2xl font-black text-white m-0 tracking-tight">
                 3. Estimated Timeline
@@ -207,7 +291,6 @@ export default function StartProject() {
             </div>
           </div>
 
-          {/* Section 3: Details & Contact */}
           <div className="flex flex-col gap-6">
             <h2 className="text-xl sm:text-2xl font-black text-white m-0 tracking-tight">
               4. Project & Contact Details
@@ -262,15 +345,26 @@ export default function StartProject() {
             </div>
           </div>
 
-          {/* Submit Button */}
           <button
             type="submit"
-            className="flex items-center justify-center gap-3 w-full px-8 py-5 rounded-2xl bg-blue-600 text-white hover:bg-blue-700 active:bg-blue-800 transition-colors duration-200 outline-none group/btn active:scale-[0.98] transform-gpu mt-4"
+            disabled={isSubmitting}
+            className="flex items-center justify-center gap-3 w-full px-8 py-5 rounded-2xl bg-blue-600 text-white hover:bg-blue-700 active:bg-blue-800 transition-colors duration-200 outline-none group/btn active:scale-[0.98] disabled:opacity-70 disabled:active:scale-100 transform-gpu mt-4"
           >
-            <h2 className="text-[16px] font-black m-0 text-inherit tracking-wide">
-              Submit Request
-            </h2>
-            <ArrowRight className="w-5 h-5 transform group-hover/btn:translate-x-1 transition-transform" />
+            {isSubmitting ? (
+              <>
+                <Loader2 className="w-5 h-5 animate-spin" />
+                <h2 className="text-[16px] font-black m-0 text-inherit tracking-wide">
+                  Processing...
+                </h2>
+              </>
+            ) : (
+              <>
+                <h2 className="text-[16px] font-black m-0 text-inherit tracking-wide">
+                  Submit Request
+                </h2>
+                <ArrowRight className="w-5 h-5 transform group-hover/btn:translate-x-1 transition-transform" />
+              </>
+            )}
           </button>
         </form>
       </div>
