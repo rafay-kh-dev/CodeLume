@@ -7,12 +7,9 @@ import {
   MonitorSmartphone,
   Server,
   ArrowRight,
-  CheckCircle2,
   Mail,
   User,
   Building,
-  MessageCircle,
-  Send,
   Loader2,
 } from "lucide-react";
 
@@ -81,9 +78,10 @@ export default function StartProject() {
       );
 
       setIsSubmitted(true);
+      // Auto-scroll to top when form is submitted successfully
+      window.scrollTo({ top: 0, behavior: "smooth" });
     } catch (error) {
       console.error("Email send error details:", error);
-      // Yeh smart alert ab aapko asli wajah batayega ke email kyun nahi gayi!
       const errorMessage =
         error?.text ||
         error?.message ||
@@ -101,21 +99,14 @@ export default function StartProject() {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-blue-500/10 rounded-full blur-[120px] pointer-events-none" />
 
         <div className="max-w-2xl w-full px-4 flex flex-col items-center text-center relative z-10">
-          <div className="w-24 h-24 rounded-full border border-blue-500/30 bg-blue-900/20 flex items-center justify-center mb-8 shrink-0 shadow-[0_0_30px_rgba(59,130,246,0.15)]">
-            <CheckCircle2
-              className="w-12 h-12 text-blue-500"
-              strokeWidth={2.5}
-            />
-          </div>
-
-          <h2 className="text-4xl md:text-5xl font-black text-white mb-6 m-0 tracking-tighter leading-tight">
+          <h2 className="text-5xl md:text-6xl font-black text-[#3b82f6] mb-8 m-0 tracking-tighter leading-tight">
             Thank You!
           </h2>
 
           <h2 className="text-[16px] sm:text-lg text-slate-300 font-medium leading-relaxed mb-10 m-0 px-4 max-w-lg mx-auto">
             Thank you for contacting me. I am Rafay. I will contact you as soon
             as possible from this email{" "}
-            <span className="text-blue-400 font-bold tracking-wide">
+            <span className="text-[#3b82f6] font-bold tracking-wide">
               mrafaykh@outlook.com
             </span>
             .
@@ -123,10 +114,10 @@ export default function StartProject() {
 
           <Link
             to="/"
-            className="flex items-center justify-center gap-3 px-10 py-5 rounded-xl bg-white text-[#030712] hover:bg-slate-200 transition-colors outline-none active:scale-[0.98] group shadow-lg"
+            className="flex items-center justify-center gap-3 px-10 py-5 rounded-xl bg-[#3b82f6] text-white hover:bg-blue-600 transition-colors outline-none active:scale-[0.98] group shadow-[0_0_20px_rgba(59,130,246,0.3)]"
           >
             <ArrowRight className="w-5 h-5 transform group-hover:-translate-x-1 transition-transform rotate-180" />
-            <h2 className="text-[15px] font-black m-0 tracking-wide">
+            <h2 className="text-[15px] font-black m-0 tracking-wide text-white">
               Return to Homepage
             </h2>
           </Link>
