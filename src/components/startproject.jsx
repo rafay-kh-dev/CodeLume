@@ -66,7 +66,7 @@ export default function StartProject() {
     try {
       await emailjs.send(
         "service_fhmjx2e",
-        "template_xi7uxae",
+        "template_xi7uxae", // Ensure this Template ID is 100% correct in your EmailJS dashboard
         {
           from_name: formData.name,
           client_email: formData.email,
@@ -77,13 +77,18 @@ export default function StartProject() {
           message: formData.details,
           reply_to: formData.email,
         },
-        "2uB67zF7wZrjpEEyD",
+        "2uB67zF7wZrjpEEyD", // Ensure this Public Key is 100% correct
       );
 
       setIsSubmitted(true);
     } catch (error) {
-      console.error("Email send error:", error);
-      alert("Something went wrong. Please try contacting directly.");
+      console.error("Email send error details:", error);
+      // Yeh smart alert ab aapko asli wajah batayega ke email kyun nahi gayi!
+      const errorMessage =
+        error?.text ||
+        error?.message ||
+        "Please check your EmailJS dashboard credentials.";
+      alert("EmailJS Failed: " + errorMessage);
     } finally {
       setIsSubmitting(false);
     }
@@ -92,10 +97,11 @@ export default function StartProject() {
   if (isSubmitted) {
     return (
       <section className="w-full min-h-dvh py-24 sm:py-32 bg-[#030712] font-jakarta flex items-center justify-center relative overflow-hidden">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-blue-500/5 rounded-full blur-[120px] pointer-events-none" />
+        {/* Blue Glow Background Effect */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-blue-500/10 rounded-full blur-[120px] pointer-events-none" />
 
         <div className="max-w-2xl w-full px-4 flex flex-col items-center text-center relative z-10">
-          <div className="w-24 h-24 rounded-full border border-blue-500/30 flex items-center justify-center mb-8 shrink-0">
+          <div className="w-24 h-24 rounded-full border border-blue-500/30 bg-blue-900/20 flex items-center justify-center mb-8 shrink-0 shadow-[0_0_30px_rgba(59,130,246,0.15)]">
             <CheckCircle2
               className="w-12 h-12 text-blue-500"
               strokeWidth={2.5}
@@ -106,10 +112,10 @@ export default function StartProject() {
             Thank You!
           </h2>
 
-          <h2 className="text-[16px] sm:text-lg text-slate-400 font-medium leading-relaxed mb-8 m-0 px-4">
+          <h2 className="text-[16px] sm:text-lg text-slate-300 font-medium leading-relaxed mb-10 m-0 px-4 max-w-lg mx-auto">
             Thank you for contacting me. I am Rafay. I will contact you as soon
             as possible from this email{" "}
-            <span className="text-blue-400 font-bold">
+            <span className="text-blue-400 font-bold tracking-wide">
               mrafaykh@outlook.com
             </span>
             .
@@ -117,7 +123,7 @@ export default function StartProject() {
 
           <Link
             to="/"
-            className="flex items-center justify-center gap-3 px-10 py-4 rounded-xl bg-white text-[#030712] hover:bg-slate-200 transition-colors outline-none active:scale-[0.98] group"
+            className="flex items-center justify-center gap-3 px-10 py-5 rounded-xl bg-white text-[#030712] hover:bg-slate-200 transition-colors outline-none active:scale-[0.98] group shadow-lg"
           >
             <ArrowRight className="w-5 h-5 transform group-hover:-translate-x-1 transition-transform rotate-180" />
             <h2 className="text-[15px] font-black m-0 tracking-wide">
@@ -174,7 +180,7 @@ export default function StartProject() {
                     onClick={() => toggleService(service.id)}
                     className={`flex items-center gap-4 p-5 rounded-2xl border transition-all duration-200 outline-none text-left active:scale-[0.98] ${
                       isSelected
-                        ? "bg-blue-600/10 border-blue-500"
+                        ? "bg-blue-600/10 border-blue-500 shadow-[0_0_15px_rgba(59,130,246,0.1)]"
                         : "bg-[#070b14] border-white/5 hover:border-white/15"
                     }`}
                   >
@@ -260,7 +266,7 @@ export default function StartProject() {
                   required
                   value={formData.name}
                   onChange={(e) => handleSelect("name", e.target.value)}
-                  className="w-full bg-[#070b14] border border-white/5 rounded-xl py-4 pl-12 pr-4 text-[15px] font-medium text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:bg-blue-500/5 transition-all"
+                  className="w-full bg-[#070b14] border border-white/5 rounded-xl py-4 pl-12 pr-4 text-[15px] font-medium text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:bg-blue-500/10 transition-all"
                 />
               </div>
 
@@ -272,7 +278,7 @@ export default function StartProject() {
                   required
                   value={formData.email}
                   onChange={(e) => handleSelect("email", e.target.value)}
-                  className="w-full bg-[#070b14] border border-white/5 rounded-xl py-4 pl-12 pr-4 text-[15px] font-medium text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:bg-blue-500/5 transition-all"
+                  className="w-full bg-[#070b14] border border-white/5 rounded-xl py-4 pl-12 pr-4 text-[15px] font-medium text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:bg-blue-500/10 transition-all"
                 />
               </div>
 
@@ -283,7 +289,7 @@ export default function StartProject() {
                   placeholder="Company Name (Optional)"
                   value={formData.company}
                   onChange={(e) => handleSelect("company", e.target.value)}
-                  className="w-full bg-[#070b14] border border-white/5 rounded-xl py-4 pl-12 pr-4 text-[15px] font-medium text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:bg-blue-500/5 transition-all"
+                  className="w-full bg-[#070b14] border border-white/5 rounded-xl py-4 pl-12 pr-4 text-[15px] font-medium text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:bg-blue-500/10 transition-all"
                 />
               </div>
 
@@ -294,7 +300,7 @@ export default function StartProject() {
                   rows="5"
                   value={formData.details}
                   onChange={(e) => handleSelect("details", e.target.value)}
-                  className="w-full bg-[#070b14] border border-white/5 rounded-xl p-4 text-[15px] font-medium text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:bg-blue-500/5 transition-all resize-none"
+                  className="w-full bg-[#070b14] border border-white/5 rounded-xl p-4 text-[15px] font-medium text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:bg-blue-500/10 transition-all resize-none"
                 />
               </div>
             </div>
