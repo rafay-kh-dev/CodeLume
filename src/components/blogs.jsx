@@ -256,7 +256,7 @@ export default function Blog() {
                     className="w-full bg-[#030712]/80 border border-white/10 rounded-xl py-3.5 px-4 text-[14px] text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 transition-all"
                   />
                   <button className="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3.5 rounded-xl transition-all shadow-lg active:scale-95 outline-none cursor-pointer">
-                    Subscribe No
+                    Subscribe Now
                   </button>
                 </div>
               </div>
