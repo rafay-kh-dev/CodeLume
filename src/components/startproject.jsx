@@ -95,7 +95,7 @@ export default function StartProject() {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-blue-500/5 rounded-full blur-[120px] pointer-events-none" />
 
         <div className="max-w-2xl w-full px-4 flex flex-col items-center text-center relative z-10">
-          <div className="w-24 h-24 rounded-2xl bg-blue-900/20 border border-blue-500/30 flex items-center justify-center mb-8 shrink-0">
+          <div className="w-24 h-24 rounded-full border border-blue-500/30 flex items-center justify-center mb-8 shrink-0">
             <CheckCircle2
               className="w-12 h-12 text-blue-500"
               strokeWidth={2.5}
@@ -103,66 +103,21 @@ export default function StartProject() {
           </div>
 
           <h2 className="text-4xl md:text-5xl font-black text-white mb-6 m-0 tracking-tighter leading-tight">
-            Project Request Analysed.
+            Thank You!
           </h2>
 
-          <h2 className="text-[15px] sm:text-lg text-slate-400 font-medium leading-relaxed mb-4 m-0 px-4">
-            An automated confirmation has been sent to{" "}
-            <span className="text-white font-bold">{formData.email}</span>. Our
-            technical team is reviewing your requirements.
+          <h2 className="text-[16px] sm:text-lg text-slate-400 font-medium leading-relaxed mb-8 m-0 px-4">
+            Thank you for contacting me. I am Rafay. I will contact you as soon
+            as possible from this email{" "}
+            <span className="text-blue-400 font-bold">
+              mrafaykh@outlook.com
+            </span>
+            .
           </h2>
-
-          <h2 className="text-[15px] sm:text-[16px] text-blue-400 font-bold leading-relaxed mb-12 m-0 bg-blue-900/20 px-6 py-4 rounded-xl border border-blue-500/20 shadow-lg">
-            Hi, I'm Rafay. I have received your request and will personally
-            contact you from mrafaykh@outlook.com within the next 24 hours to
-            discuss the architecture.
-          </h2>
-
-          <div className="w-full p-8 rounded-2xl bg-[#070b14] border border-white/5 flex flex-col items-center mb-8">
-            <h2 className="text-lg font-black text-white mb-6 m-0 tracking-tight">
-              Prefer direct communication? Connect instantly:
-            </h2>
-
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full">
-              <a
-                href="https://wa.me/YOUR_WHATSAPP_NUMBER"
-                target="_blank"
-                rel="noreferrer"
-                className="flex items-center justify-center gap-3 p-4 rounded-xl bg-[#0a120e] border border-green-500/20 hover:border-green-500/50 hover:bg-[#0c1a14] transition-colors group outline-none active:scale-[0.98]"
-              >
-                <MessageCircle className="w-5 h-5 text-green-500" />
-                <h2 className="text-[14px] font-black text-white m-0 tracking-wide">
-                  WhatsApp
-                </h2>
-              </a>
-
-              <a
-                href="https://t.me/YOUR_TELEGRAM_ID"
-                target="_blank"
-                rel="noreferrer"
-                className="flex items-center justify-center gap-3 p-4 rounded-xl bg-blue-900/10 border border-blue-500/20 hover:border-blue-500/50 hover:bg-blue-900/20 transition-colors group outline-none active:scale-[0.98]"
-              >
-                <Send className="w-5 h-5 text-blue-400" />
-                <h2 className="text-[14px] font-black text-white m-0 tracking-wide">
-                  Telegram
-                </h2>
-              </a>
-
-              <a
-                href="mailto:mrafaykh@outlook.com"
-                className="flex items-center justify-center gap-3 p-4 rounded-xl bg-slate-800/30 border border-white/10 hover:border-white/30 hover:bg-slate-800/50 transition-colors group outline-none active:scale-[0.98]"
-              >
-                <Mail className="w-5 h-5 text-slate-300" />
-                <h2 className="text-[14px] font-black text-white m-0 tracking-wide">
-                  Email Direct
-                </h2>
-              </a>
-            </div>
-          </div>
 
           <Link
             to="/"
-            className="flex items-center justify-center gap-3 px-8 py-4 rounded-xl bg-white text-[#030712] hover:bg-slate-200 transition-colors outline-none active:scale-[0.98] group"
+            className="flex items-center justify-center gap-3 px-10 py-4 rounded-xl bg-white text-[#030712] hover:bg-slate-200 transition-colors outline-none active:scale-[0.98] group"
           >
             <ArrowRight className="w-5 h-5 transform group-hover:-translate-x-1 transition-transform rotate-180" />
             <h2 className="text-[15px] font-black m-0 tracking-wide">
