@@ -11,7 +11,7 @@ import About from "./components/about";
 import Services from "./components/services";
 import OurProcess from "./components/ourprocess";
 import Testimonials from "./components/testimonial";
-import Blog from "./components/blog";
+import Blog from "./components/blogs";
 import Article from "./components/article";
 import StartProject from "./components/startproject"; // 🚀 Naya Lead Capture Page
 import Footer from "./components/footer";
