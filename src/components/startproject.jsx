@@ -66,7 +66,7 @@ export default function StartProject() {
     try {
       await emailjs.send(
         "service_fhmjx2e",
-        "template_2k4dl3g",
+        "template_xi7uxae",
         {
           from_name: formData.name,
           client_email: formData.email,
