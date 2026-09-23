@@ -11,11 +11,11 @@ import {
 
 export default function Footer() {
   const services = [
-    "MERN Stack Architecture",
-    "PHP & Laravel Systems",
-    "Custom Web Platforms",
-    "Headless Shopify",
-    "WordPress & WooCommerce",
+    { name: "MERN Stack Architecture", path: "/mern-stack" },
+    { name: "PHP & Laravel Systems", path: "/php-laravel" },
+    { name: "Custom Web Platforms", path: "/custom-platforms" },
+    { name: "Headless Shopify", path: "/shopify-development" },
+    { name: "WordPress & WooCommerce", path: "/wordpress-woocommerce" },
   ];
 
   const tools = [
@@ -26,10 +26,10 @@ export default function Footer() {
   ];
 
   const resources = [
-    { name: "Insights & Tech Blog", highlight: true },
-    { name: "Client Case Studies" },
-    { name: "Agency Architecture" },
-    { name: "Consultation & Contact" },
+    { name: "Insights & Tech Blog", path: "/blogs", highlight: true },
+    { name: "Client Case Studies", path: "/case-studies" },
+    { name: "Agency Architecture", path: "/about-codelume" },
+    { name: "Consultation & Contact", path: "/start-project" },
   ];
 
   const contacts = [
@@ -37,7 +37,6 @@ export default function Footer() {
       name: "Facebook",
       icon: Facebook,
       link: "https://www.facebook.com/codelume",
-      // Official Facebook brand color (#1877F2) integration
       glowColor:
         "group-hover:text-[#1877F2] shadow-[inset_0_0_15px_rgba(255,255,255,0.03)] hover:shadow-[inset_0_0_20px_rgba(24,119,242,0.15),0_10px_20px_rgba(24,119,242,0.3)]",
     },
@@ -72,17 +71,48 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="relative w-full bg-[#030712] py-16 lg:py-24 font-jakarta overflow-hidden">
+    <footer className="relative w-full bg-[#030712] pt-16 lg:pt-20 pb-0 font-jakarta overflow-hidden flex flex-col justify-between">
       <style>
-        {`@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap');
-          .font-jakarta { font-family: 'Plus Jakarta Sans', sans-serif; }`}
+        {`
+          @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap');
+          .font-jakarta { font-family: 'Plus Jakarta Sans', sans-serif; }
+          
+          @keyframes fluid-blue {
+            0% { 
+              background-position: 0% 50%; 
+              text-shadow: 0 0 15px rgba(37,99,235,0.1);
+            }
+            50% { 
+              background-position: 100% 50%; 
+              text-shadow: 0 0 35px rgba(59,130,246,0.25);
+            }
+            100% { 
+              background-position: 0% 50%; 
+              text-shadow: 0 0 15px rgba(37,99,235,0.1);
+            }
+          }
+          .animate-fluid-blue {
+            background: linear-gradient(
+              90deg, 
+              rgba(30, 41, 59, 0.4) 0%, 
+              rgba(29, 78, 216, 0.6) 25%, 
+              rgba(59, 130, 246, 0.8) 50%, 
+              rgba(29, 78, 216, 0.6) 75%, 
+              rgba(30, 41, 59, 0.4) 100%
+            );
+            background-size: 200% auto;
+            color: transparent;
+            -webkit-background-clip: text;
+            background-clip: text;
+            animation: fluid-blue 6s ease-in-out infinite;
+          }
+        `}
       </style>
 
-      {/* 🚀 FIXED: Hardware-accelerated radial gradients to eliminate lag */}
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-200 h-125 bg-[radial-gradient(ellipse_at_bottom,rgba(37,99,235,0.1)_0%,transparent_60%)] pointer-events-none transform-gpu translate-z-0" />
       <div className="absolute top-0 right-0 w-125 h-125 bg-[radial-gradient(circle_at_top_right,rgba(79,70,229,0.05)_0%,transparent_60%)] pointer-events-none transform-gpu translate-z-0" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full flex-grow">
         <div className="w-full rounded-[2.5rem] sm:rounded-[3.5rem] bg-[#0a0f1c]/80 backdrop-blur-xl p-10 sm:p-16 lg:p-20 shadow-[0_20px_60px_rgba(0,0,0,0.6),inset_0_0_20px_rgba(255,255,255,0.02)] mb-16 lg:mb-20 flex flex-col lg:flex-row items-center justify-between gap-10 transform-gpu overflow-hidden relative group">
           <div className="absolute inset-0 bg-linear-to-br from-blue-600/5 via-transparent to-indigo-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none transform-gpu" />
           <div className="flex flex-col items-center lg:items-start text-center lg:text-left relative z-10">
@@ -110,10 +140,10 @@ export default function Footer() {
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8 mb-20">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8 mb-16">
           <div className="lg:col-span-4 flex flex-col items-start">
-            <a
-              href="/"
+            <Link
+              to="/"
               className="flex items-center gap-3 group outline-none mb-6"
             >
               <div className="relative flex items-center justify-center w-12 h-12 rounded-xl bg-[#0a0f1c] shadow-[inset_0_0_20px_rgba(255,255,255,0.05)]">
@@ -125,7 +155,7 @@ export default function Footer() {
               <h2 className="text-3xl font-extrabold tracking-tight text-white m-0">
                 CodeLume<span className="text-blue-500">.</span>
               </h2>
-            </a>
+            </Link>
             <h2 className="text-[15px] text-slate-400 font-medium leading-relaxed max-w-sm m-0 mb-8">
               We engineer highly specialised, lightning-fast digital experiences
               and robust server architectures tailored for modern enterprises.
@@ -148,24 +178,26 @@ export default function Footer() {
               })}
             </div>
           </div>
+
           <div className="lg:col-span-3 flex flex-col">
             <h2 className="text-[13px] font-extrabold text-white uppercase tracking-[0.15em] mb-6 m-0">
               Capabilities
             </h2>
             <div className="flex flex-col gap-4">
               {services.map((service, idx) => (
-                <a
+                <Link
                   key={idx}
-                  href="#service"
+                  to={service.path}
                   className="group outline-none w-fit"
                 >
                   <h2 className="text-[15px] font-medium text-slate-400 group-hover:text-white transition-all duration-300 transform-gpu group-hover:translate-x-1 m-0">
-                    {service}
+                    {service.name}
                   </h2>
-                </a>
+                </Link>
               ))}
             </div>
           </div>
+
           <div className="lg:col-span-3 flex flex-col">
             <div className="flex items-center gap-2 mb-6">
               <Terminal className="w-4 h-4 text-blue-500" />
@@ -191,15 +223,16 @@ export default function Footer() {
               ))}
             </div>
           </div>
+
           <div className="lg:col-span-2 flex flex-col">
             <h2 className="text-[13px] font-extrabold text-white uppercase tracking-[0.15em] mb-6 m-0">
               Company
             </h2>
             <div className="flex flex-col gap-4">
               {resources.map((item, idx) => (
-                <a
+                <Link
                   key={idx}
-                  href="#resource"
+                  to={item.path}
                   className="group outline-none w-fit flex items-center gap-2"
                 >
                   <h2
@@ -211,28 +244,35 @@ export default function Footer() {
                   >
                     {item.name}
                   </h2>
-                </a>
+                </Link>
               ))}
             </div>
           </div>
         </div>
 
-        <div className="w-full pt-8 flex flex-col md:flex-row items-center justify-between gap-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.03)] relative z-10">
+        <div className="w-full py-6 flex flex-col md:flex-row items-center justify-between gap-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.03)] relative z-10">
           <h2 className="text-[13px] font-medium text-slate-500 m-0">
             © 2026 CodeLume. All rights reserved.
           </h2>
           <div className="flex items-center gap-6">
-            <a href="#privacy" className="outline-none group">
+            <Link to="/privacy-policy" className="outline-none group">
               <h2 className="text-[13px] font-medium text-slate-500 group-hover:text-slate-300 transition-colors m-0">
                 Privacy Policy
               </h2>
-            </a>
-            <a href="#terms" className="outline-none group">
+            </Link>
+            <Link to="/terms-of-service" className="outline-none group">
               <h2 className="text-[13px] font-medium text-slate-500 group-hover:text-slate-300 transition-colors m-0">
                 Terms of Service
               </h2>
-            </a>
+            </Link>
           </div>
+        </div>
+        
+        {/* Massive Background Text Watermark with Fluid Continuous Colour */}
+        <div className="w-full flex justify-center items-end mt-10 pb-8 overflow-hidden pointer-events-none select-none relative z-0">
+          <h2 className="text-[15vw] lg:text-[13vw] font-black uppercase tracking-tighter leading-[0.9] m-0 animate-fluid-blue transition-all duration-1000">
+            CODE LUME
+          </h2>
         </div>
       </div>
     </footer>

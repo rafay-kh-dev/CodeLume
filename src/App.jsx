@@ -4,6 +4,7 @@ import {
   Routes,
   Route,
   useLocation,
+  Navigate, // 🚀 Imported Navigate for redirects
 } from "react-router-dom";
 import Navbar from "./components/header";
 import Hero from "./components/hero";
@@ -13,11 +14,19 @@ import OurProcess from "./components/ourprocess";
 import Testimonials from "./components/testimonial";
 import Blog from "./components/blogs";
 import Article from "./components/article";
-import StartProject from "./components/startproject"; // 🚀 Naya Lead Capture Page
+import StartProject from "./components/startproject";
+import AdminCreatePost from "./components/AdminCreatePost";
+import AdminLogin from "./components/AdminLogin"; // 🚀 Imported Admin Login
 import Footer from "./components/footer";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
-import { postsData } from "./data/postsData";
+
+// 🚀 Security Wrapper: Checks for a valid token before rendering the admin page
+const ProtectedRoute = ({ children }) => {
+  const token = localStorage.getItem("adminToken");
+  if (!token) return <Navigate to="/admin/login" replace />;
+  return children;
+};
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -54,12 +63,22 @@ export default function App() {
             <Route path="/start-project" element={<StartProject />} />
 
             {/* 3. DEDICATED BLOG HUB PAGE */}
-            <Route path="/insights" element={<Blog posts={postsData} />} />
+            <Route path="/blogs" element={<Blog />} />
 
             {/* 4. INDIVIDUAL ARTICLE PAGE */}
-            <Route
-              path="/insights/:slug"
-              element={<Article posts={postsData} />}
+            <Route path="/blogs/:slug" element={<Article />} />
+
+            {/* 5. ADMIN LOGIN PAGE (NEW) */}
+            <Route path="/admin/login" element={<AdminLogin />} />
+
+            {/* 6. ADMIN PORTAL (SECURED) */}
+            <Route 
+              path="/admin/create-post" 
+              element={
+                <ProtectedRoute>
+                  <AdminCreatePost />
+                </ProtectedRoute>
+              } 
             />
           </Routes>
         </main>

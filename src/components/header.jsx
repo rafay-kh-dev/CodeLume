@@ -196,9 +196,9 @@ export default function Header() {
                       {servicesData.map((service) => {
                         const Icon = service.icon;
                         return (
-                          <a
+                          <Link
                             key={service.title}
-                            href={`#${service.title.toLowerCase().replace(/ /g, "-").replace(/&/g, "").replace(/\//g, "-")}`}
+                            to={`/${service.title.toLowerCase().replace(/ /g, "-").replace(/&/g, "").replace(/\//g, "-")}`}
                             className="relative flex items-start gap-4 p-4 rounded-2xl group outline-none overflow-hidden transition-all duration-300 hover:bg-white/3 hover:shadow-[0_10px_30px_-10px_rgba(0,0,0,0.5)]"
                           >
                             <div
@@ -217,7 +217,7 @@ export default function Header() {
                                 {service.description}
                               </h2>
                             </div>
-                          </a>
+                          </Link>
                         );
                       })}
                     </div>
@@ -242,15 +242,15 @@ export default function Header() {
               </div>
 
               {standardLinks.map((item) => (
-                <a
+                <Link
                   key={item}
-                  href={`#${item.toLowerCase().replace(/ /g, "-")}`}
+                  to={`/${item.toLowerCase().replace(/ /g, "-")}`}
                   className="px-4 py-2 rounded-full outline-none hover:bg-white/5 transition-colors duration-300"
                 >
                   <h2 className="m-0 text-slate-300 hover:text-white text-[14px] font-bold transition-colors">
                     {item}
                   </h2>
-                </a>
+                </Link>
               ))}
             </nav>
 
@@ -305,9 +305,9 @@ export default function Header() {
                 {servicesData.map((service, idx) => {
                   const Icon = service.icon;
                   return (
-                    <a
+                    <Link
                       key={service.title}
-                      href={`#${service.title.toLowerCase().replace(/ /g, "-").replace(/&/g, "").replace(/\//g, "-")}`}
+                      to={`/${service.title.toLowerCase().replace(/ /g, "-").replace(/&/g, "").replace(/\//g, "-")}`}
                       onClick={() => setMobileMenuOpen(false)}
                       className="flex items-center gap-5 p-4 rounded-2xl bg-white/2 hover:bg-white/5 transition-all duration-300 active:scale-[0.98] outline-none transform-gpu will-change-transform"
                       style={{
@@ -333,7 +333,7 @@ export default function Header() {
                           {service.description}
                         </h2>
                       </div>
-                    </a>
+                    </Link>
                   );
                 })}
               </div>
@@ -341,9 +341,9 @@ export default function Header() {
 
             <div className="space-y-2 mb-10 px-2 flex-none">
               {standardLinks.map((item, idx) => (
-                <a
+                <Link
                   key={item}
-                  href={`#${item.toLowerCase().replace(/ /g, "-")}`}
+                  to={`/${item.toLowerCase().replace(/ /g, "-")}`}
                   onClick={() => setMobileMenuOpen(false)}
                   className="block py-2 outline-none group transform-gpu will-change-transform"
                   style={{
@@ -360,7 +360,7 @@ export default function Header() {
                   <h2 className="m-0 text-[28px] font-extrabold text-slate-300 group-hover:text-white transition-colors tracking-tight">
                     {item}
                   </h2>
-                </a>
+                </Link>
               ))}
             </div>
 
@@ -395,4 +395,4 @@ export default function Header() {
       </div>
     </>
   );
-}
+} 
