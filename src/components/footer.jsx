@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { Code2, ArrowRight, Sparkles, Terminal } from "lucide-react";
 import {
   Telegram,
@@ -98,15 +99,15 @@ export default function Footer() {
               </span>
             </h2>
           </div>
-          <a
-            href="start-project"
+          <Link
+            to="/start-project"
             className="relative z-10 flex items-center justify-center gap-3 px-8 py-5 rounded-2xl bg-white text-[#030712] hover:bg-slate-200 transition-all duration-300 active:scale-[0.98] outline-none group/btn shadow-[0_15px_30px_rgba(255,255,255,0.1)] transform-gpu"
           >
             <h2 className="text-[16px] font-extrabold m-0 text-inherit tracking-wide">
               Start a Conversation
             </h2>
             <ArrowRight className="w-5 h-5 transition-transform group-hover/btn:translate-x-1" />
-          </a>
+          </Link>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8 mb-20">

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 import {
   Code2,
   Cpu,
@@ -144,8 +145,8 @@ export default function HeroSection() {
               </h2>
 
               <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
-                <a
-                  href="start-project"
+                <Link
+                  to="/start-project"
                   className="group relative flex items-center justify-center gap-2 w-full sm:w-auto px-8 py-4 rounded-xl bg-blue-600 text-white shadow-[0_0_30px_-5px_rgba(37,99,235,0.5)] hover:shadow-[0_0_50px_-5px_rgba(37,99,235,0.7)] transition-all duration-300 active:scale-[0.98] outline-none overflow-hidden transform-gpu"
                 >
                   <div className="absolute inset-0 bg-linear-to-r from-transparent via-white/20 to-transparent -translate-x-full animate-shimmer pointer-events-none" />
@@ -153,9 +154,9 @@ export default function HeroSection() {
                   <h2 className="m-0 text-[15px] font-bold relative z-10 tracking-wide">
                     Initialise Project
                   </h2>
-                </a>
+                </Link>
                 <a
-                  href="services"
+                  href="/#services"
                   className="group flex items-center justify-center gap-2 w-full sm:w-auto px-8 py-4 rounded-xl bg-white/3 hover:bg-white/8 text-slate-300 hover:text-white shadow-[0_15px_30px_rgba(0,0,0,0.2)] transition-all duration-300 active:scale-[0.98] backdrop-blur-md outline-none transform-gpu"
                 >
                   <h2 className="m-0 text-[15px] font-bold tracking-wide">

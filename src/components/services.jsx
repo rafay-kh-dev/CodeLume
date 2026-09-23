@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import {
   Layers,
   Server,
@@ -174,15 +175,15 @@ export default function Capabilities() {
               communication, and post-launch technical support.
             </h2>
           </div>
-          <a
-            href="start-project"
+          <Link
+            to="/start-project"
             className="flex items-center justify-center gap-3 w-full md:w-auto px-8 py-4 rounded-xl bg-white text-blue-900 hover:bg-slate-100 active:bg-slate-200 transition-colors duration-200 outline-none group/btn"
           >
             <h2 className="text-[15px] font-black m-0 text-inherit tracking-wide">
               Request a Custom Quote
             </h2>
             <ArrowRight className="w-4 h-4 transform group-hover/btn:translate-x-1 transition-transform" />
-          </a>
+          </Link>
         </div>
       </div>
     </section>

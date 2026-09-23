@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import {
   UserCircle,
   ArrowRight,
@@ -71,15 +72,15 @@ export default function About() {
             </h2>
 
             {/* Mobile-First Sharp CTA Button */}
-            <a
-              href="start-project"
+            <Link
+              to="/start-project"
               className="flex items-center justify-center gap-3 w-full sm:w-auto px-6 py-4 rounded-xl bg-blue-600 text-white hover:bg-blue-700 active:bg-blue-800 transition-colors duration-200 outline-none group/btn active:scale-[0.98] transform-gpu"
             >
               <h2 className="text-[15px] font-black m-0 text-inherit tracking-wide">
                 Let's engineer your vision
               </h2>
               <ArrowRight className="w-4 h-4 transform group-hover/btn:translate-x-1 transition-transform" />
-            </a>
+            </Link>
           </div>
 
           {/* Right Side: Sharp Mobile-First Skills Grid */}

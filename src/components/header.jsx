@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import {
   Code2,
   Sparkles,
@@ -144,8 +145,8 @@ export default function Header() {
                 : "max-w-7xl translate-y-0 rounded-none bg-transparent shadow-none py-5 px-0"
             }`}
           >
-            <a
-              href="/"
+            <Link
+              to="/"
               className="flex items-center gap-3 group outline-none z-50 relative shrink-0"
               onClick={() => setMobileMenuOpen(false)}
             >
@@ -167,7 +168,7 @@ export default function Header() {
                   </span>
                 </h2>
               </div>
-            </a>
+            </Link>
 
             <nav className="hidden lg:flex items-center gap-2">
               <div
@@ -229,15 +230,15 @@ export default function Header() {
                       <h2 className="text-[14px] font-bold text-slate-300 m-0 relative z-10">
                         Need a specialised tech stack?
                       </h2>
-                      <a
-                        href="start-project"
+                      <Link
+                        to="/start-project"
                         className="text-[14px] font-bold text-blue-400 hover:text-blue-300 flex items-center gap-1.5 group/link transition-colors relative z-10 outline-none"
                       >
                         <h2 className="m-0 text-inherit text-[14px] font-bold flex items-center gap-1.5">
                           Consult with us{" "}
                           <ArrowRight className="w-4 h-4 transition-transform group-hover/link:translate-x-1 transform-gpu" />
                         </h2>
-                      </a>
+                      </Link>
                     </div>
                   </div>
                 </div>
@@ -257,8 +258,8 @@ export default function Header() {
             </nav>
 
             <div className="flex items-center gap-4 relative z-50 shrink-0">
-              <a
-                href="start-project"
+              <Link
+                to="/start-project"
                 className="hidden md:flex relative group items-center justify-center gap-2 px-7 py-3 rounded-full bg-[#0F172A] text-white overflow-hidden outline-none shadow-[0_0_20px_rgba(37,99,235,0.2)] hover:shadow-[0_0_30px_rgba(37,99,235,0.4)] transition-all duration-300 hover:-translate-y-0.5 transform-gpu"
               >
                 <div className="absolute inset-0 bg-linear-to-r from-blue-600 to-indigo-600 opacity-90 group-hover:opacity-100 transition-opacity duration-300" />
@@ -269,7 +270,7 @@ export default function Header() {
                     Start a Project
                   </h2>
                 </span>
-              </a>
+              </Link>
 
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -376,8 +377,8 @@ export default function Header() {
               transition: "all 0.4s ease-out",
             }}
           >
-            <a
-              href="start-project"
+            <Link
+              to="/start-project"
               onClick={() => setMobileMenuOpen(false)}
               className="relative flex items-center justify-center gap-2 w-full px-6 py-5 rounded-2xl bg-linear-to-r from-blue-600 to-indigo-600 text-white shadow-[0_15px_30px_rgba(37,99,235,0.3)] transition-all active:scale-[0.98] overflow-hidden outline-none transform-gpu"
             >
@@ -386,7 +387,7 @@ export default function Header() {
               <h2 className="m-0 text-inherit text-[18px] font-extrabold relative z-10 tracking-wide">
                 Start a Project
               </h2>
-            </a>
+            </Link>
           </div>
         </div>
       </div>
