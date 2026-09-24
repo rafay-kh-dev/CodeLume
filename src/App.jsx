@@ -17,6 +17,7 @@ import OurProcess from "./components/ourprocess";
 import Testimonials from "./components/testimonial";
 import Blog from "./components/blogs";
 import Article from "./components/article";
+import Services from "./components/services";
 import StartProject from "./components/startproject";
 import AdminCreatePost from "./components/admincreatepost";
 import AdminLogin from "./components/adminlogin";
