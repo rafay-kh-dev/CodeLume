@@ -102,6 +102,25 @@ app.delete('/api/blogs/:id', async (req, res) => {
   }
 });
 
+// 5. ADMIN LOGIN ROUTE
+app.post('/api/login', (req, res) => {
+  const { username, password } = req.body;
+
+  // Use environment variables for security
+  const adminUsername = process.env.ADMIN_USERNAME || 'admin';
+  const adminPassword = process.env.ADMIN_PASSWORD || 'rafay123';
+
+  if (username === adminUsername && password === adminPassword) {
+    // Return a token to the frontend to allow access
+    res.status(200).json({ 
+      message: 'Login successful', 
+      token: 'codelume-admin-auth-token-777' 
+    });
+  } else {
+    res.status(401).json({ message: 'Invalid username or password' });
+  }
+});
+
 // Start Server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`CodeLume Backend API running on port ${PORT}`));
