@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, Layout, Code, TrendingUp, CheckCircle2, Sparkles } from "lucide-react";
+import { ArrowRight, Layout, Code, TrendingUp, BadgeCheck, Sparkles } from "lucide-react";
 
 export default function CaseStudies() {
   const caseStudies = [
@@ -79,18 +79,18 @@ export default function CaseStudies() {
         </div>
 
         {/* Case Studies List */}
-        <div className="flex flex-col gap-24 lg:gap-32 mb-32">
+        <div className="flex flex-col gap-24 lg:gap-32 mb-10">
           {caseStudies.map((study, index) => (
             <div 
               key={study.id} 
-              className={`flex flex-col lg:flex-row gap-10 lg:gap-16 items-center ${
+              className={`flex flex-col lg:flex-row gap-12 lg:gap-20 items-center ${
                 index % 2 !== 0 ? 'lg:flex-row-reverse' : ''
               }`}
             >
               
               {/* Image Section */}
               <div className="w-full lg:w-1/2 group relative">
-                <div className="absolute inset-0 bg-linear-to-tr from-[#3b82f6]/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 rounded-4xl blur-xl" />
+                <div className="absolute inset-0 bg-linear-to-tr from-[#3b82f6]/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 rounded-4xl blur-2xl" />
                 <div className="relative aspect-[4/3] w-full rounded-4xl overflow-hidden border border-white/10 bg-[#0a0f1c] shadow-2xl">
                   <div className="absolute inset-0 bg-[#3b82f6]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10" />
                   <img 
@@ -110,46 +110,58 @@ export default function CaseStudies() {
               </div>
 
               {/* Content Section */}
-              <div className="w-full lg:w-1/2 flex flex-col">
-                <h2 className="text-sm font-bold text-[#3b82f6] uppercase tracking-widest mb-3 m-0">
-                  Client: {study.client}
-                </h2>
-                <h2 className="text-3xl md:text-4xl font-black text-white leading-tight mb-6 m-0">
+              <div className="w-full lg:w-1/2 flex flex-col justify-center">
+                
+                <div className="inline-flex items-center gap-3 mb-4">
+                  <span className="w-8 h-[2px] bg-[#3b82f6] rounded-full"></span>
+                  <h2 className="text-sm font-black text-[#3b82f6] uppercase tracking-[0.2em] m-0">
+                    {study.client}
+                  </h2>
+                </div>
+                
+                <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-white leading-tight mb-8 m-0">
                   {study.title}
                 </h2>
                 
-                <div className="space-y-6 mb-8">
-                  <div>
-                    <h2 className="text-sm font-bold text-slate-300 uppercase tracking-wider mb-2 m-0">The Challenge</h2>
-                    <p className="text-slate-400 leading-relaxed text-[15px]">
+                <div className="space-y-6 mb-10 relative">
+                  {/* Subtle Decorative Line */}
+                  <div className="absolute left-0 top-2 bottom-2 w-[2px] bg-linear-to-b from-[#3b82f6]/50 to-transparent opacity-50 rounded-full"></div>
+                  
+                  <div className="pl-6">
+                    <h2 className="text-xs font-black text-slate-500 uppercase tracking-widest mb-2 m-0">The Challenge</h2>
+                    <p className="text-slate-300 leading-relaxed text-[15px] sm:text-base">
                       {study.challenge}
                     </p>
                   </div>
-                  <div>
-                    <h2 className="text-sm font-bold text-slate-300 uppercase tracking-wider mb-2 m-0">Our Solution</h2>
-                    <p className="text-slate-400 leading-relaxed text-[15px]">
+                  <div className="pl-6">
+                    <h2 className="text-xs font-black text-slate-500 uppercase tracking-widest mb-2 m-0">Our Solution</h2>
+                    <p className="text-slate-300 leading-relaxed text-[15px] sm:text-base">
                       {study.solution}
                     </p>
                   </div>
                 </div>
 
-                <div className="bg-[#0a0f1c] border border-white/5 rounded-2xl p-6 mb-8 shadow-inner">
-                  <h2 className="text-sm font-bold text-white uppercase tracking-wider mb-4 m-0">
+                {/* Key Results Box */}
+                <div className="bg-linear-to-br from-[#0a0f1c] to-[#030712] border border-white/5 rounded-2xl p-6 md:p-8 mb-10 shadow-[inset_0_0_20px_rgba(255,255,255,0.02)] relative overflow-hidden">
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-[#3b82f6]/10 rounded-full blur-3xl pointer-events-none" />
+                  
+                  <h2 className="text-xs font-black text-white uppercase tracking-widest mb-5 m-0 relative z-10">
                     Key Results
                   </h2>
-                  <ul className="space-y-3">
+                  <ul className="space-y-4 relative z-10">
                     {study.results.map((result, i) => (
-                      <li key={i} className="flex items-start gap-3">
-                        <CheckCircle2 className="w-5 h-5 text-green-500 shrink-0 mt-0.5" />
-                        <span className="text-slate-300 font-medium text-sm">{result}</span>
+                      <li key={i} className="flex items-start gap-3 group">
+                        <BadgeCheck className="w-5 h-5 text-blue-500 shrink-0 mt-0.5 drop-shadow-[0_0_8px_rgba(59,130,246,0.5)] group-hover:scale-110 transition-transform" />
+                        <span className="text-slate-200 font-medium text-sm sm:text-[15px] leading-snug">{result}</span>
                       </li>
                     ))}
                   </ul>
                 </div>
 
+                {/* Styled Blue CTA Button */}
                 <Link
                   to="/start-project"
-                  className="inline-flex items-center gap-2 w-max text-white font-bold text-[15px] group hover:text-[#3b82f6] transition-colors"
+                  className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-linear-to-r from-[#3b82f6] to-[#2563eb] text-white font-bold transition-all shadow-[0_0_20px_rgba(59,130,246,0.3)] hover:shadow-[0_0_30px_rgba(59,130,246,0.5)] hover:-translate-y-1 w-full sm:w-max group"
                 >
                   Start a similar project 
                   <ArrowRight className="w-5 h-5 transform group-hover:translate-x-1 transition-transform" />
@@ -158,23 +170,6 @@ export default function CaseStudies() {
 
             </div>
           ))}
-        </div>
-
-        {/* Bottom CTA */}
-        <div className="bg-linear-to-br from-[#0a0f1c] to-[#030712] border border-[#3b82f6]/20 rounded-4xl p-10 md:p-16 text-center max-w-4xl mx-auto shadow-[0_0_50px_rgba(59,130,246,0.1)] relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-[#3b82f6]/10 rounded-full blur-[80px]" />
-          <h2 className="text-3xl md:text-4xl font-black text-white m-0 tracking-tight mb-4 relative z-10">
-            Want results like these?
-          </h2>
-          <p className="text-slate-400 text-lg mb-10 max-w-2xl mx-auto relative z-10">
-            Let us discuss how we can engineer a bespoke digital solution to overcome your unique business challenges.
-          </p>
-          <Link
-            to="/start-project"
-            className="inline-flex items-center justify-center gap-2 px-10 h-16 rounded-2xl bg-[#3b82f6] hover:bg-[#2563eb] text-white text-lg font-black transition-all shadow-lg hover:-translate-y-1 relative z-10 w-full sm:w-auto"
-          >
-            Start Your Project
-          </Link>
         </div>
 
       </div>
