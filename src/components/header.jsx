@@ -91,7 +91,7 @@ const servicesData = [
   },
 ];
 
-const standardLinks = ["Case Studies", "About CodeLume", "Blogs"];
+const standardLinks = ["Case Studies", "About", "Blogs"];
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);

@@ -4,7 +4,7 @@ import {
   Routes,
   Route,
   useLocation,
-  Navigate, // Imported Navigate for redirects
+  Navigate, 
 } from "react-router-dom";
 import Navbar from "./components/header";
 import Hero from "./components/hero";
@@ -16,9 +16,10 @@ import Blog from "./components/blogs";
 import Article from "./components/article";
 import StartProject from "./components/startproject";
 import AdminCreatePost from "./components/admincreatepost";
-import AdminLogin from "./components/adminlogin"; // Imported Admin Login
-import AdminDashboard from "./components/admindashboard"; // Imported Admin Dashboard
+import AdminLogin from "./components/adminlogin";
+import AdminDashboard from "./components/admindashboard";
 import Footer from "./components/footer";
+import AboutCodeLume from "./components/aboutcodelume";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 
@@ -65,6 +66,9 @@ export default function App() {
 
             {/* 3. DEDICATED BLOG HUB PAGE */}
             <Route path="/blogs" element={<Blog />} />
+
+            {/* NEW: ABOUT CODELUME PAGE */}
+            <Route path="/about" element={<AboutCodeLume />} />
 
             {/* 4. INDIVIDUAL ARTICLE PAGE */}
             <Route path="/blogs/:slug" element={<Article />} />
