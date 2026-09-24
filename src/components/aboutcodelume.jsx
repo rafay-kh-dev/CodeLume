@@ -113,14 +113,14 @@ export default function AboutCodeLume() {
             
             <a
               href="mailto:your.email@example.com"
-              className="order-2 md:order-1 flex-1 flex items-center justify-center gap-2 px-6 h-14 rounded-xl bg-[#1e293b] hover:bg-white/10 text-white font-bold transition-all w-full"
+              className="order-2 md:order-1 flex-1 flex items-center justify-center gap-3 px-6 py-4 md:py-5 rounded-xl bg-[#1e293b] hover:bg-white/10 text-white font-bold transition-all w-full"
             >
               <Gmail2026 className="h-6 w-6" /> Email Directly
             </a>
 
             <Link
               to="/start-project"
-              className="order-1 md:order-2 flex-1 flex items-center justify-center gap-2 px-6 h-14 rounded-xl bg-linear-to-r from-[#3b82f6] to-[#2563eb] text-white font-bold transition-all shadow-[0_0_20px_rgba(59,130,246,0.3)] hover:shadow-[0_0_30px_rgba(59,130,246,0.5)] hover:-translate-y-1 w-full"
+              className="order-1 md:order-2 flex-1 flex items-center justify-center gap-3 px-6 py-4 md:py-5 rounded-xl bg-linear-to-r from-[#3b82f6] to-[#2563eb] text-white text-lg font-black transition-all shadow-[0_0_20px_rgba(59,130,246,0.3)] hover:shadow-[0_0_30px_rgba(59,130,246,0.5)] hover:-translate-y-1 w-full"
             >
               <Rocket size={20} /> Hire Me Now
             </Link>
@@ -129,7 +129,7 @@ export default function AboutCodeLume() {
               href="https://wa.me/1234567890" 
               target="_blank"
               rel="noreferrer"
-              className="order-3 flex-1 flex items-center justify-center px-6 h-14 rounded-xl bg-green-600/10 hover:bg-green-600/20 text-green-500 border border-green-600/20 transition-all w-full"
+              className="order-3 flex-1 flex items-center justify-center gap-3 px-6 py-4 md:py-5 rounded-xl bg-green-600/10 hover:bg-green-600/20 text-green-500 border border-green-600/20 transition-all w-full"
             >
               <Whatsapp variant="wordmark" className="h-[22px] w-auto" />
             </a>
