@@ -33,7 +33,7 @@ export default function Capabilities() {
       description:
         "Robust, secure, and highly scalable backend architectures customised precisely for complex business logic.",
       icon: Server,
-      accent: "text-rose-500", // Image mein red/rose tone hai
+      accent: "text-rose-500",
       bg: "bg-rose-500/10",
       price: "From $1,800",
       timeline: "4-6 Weeks",
@@ -48,7 +48,7 @@ export default function Capabilities() {
       description:
         "High-converting storefronts and highly customised Shopify & WooCommerce architectures for global sales.",
       icon: Store,
-      accent: "text-emerald-500", // Image mein green tone hai Shopify ke liye
+      accent: "text-emerald-500",
       bg: "bg-emerald-500/10",
       price: "From $2,000",
       timeline: "4-8 Weeks",
@@ -62,8 +62,8 @@ export default function Capabilities() {
       title: "API & Integrations",
       description:
         "Connecting your web applications with third-party services seamlessly to automate complex operational workflows.",
-      icon: Workflow, // Replaced with a more fitting icon for APIs
-      accent: "text-amber-500", // Image mein yellow/amber tone hai
+      icon: Workflow,
+      accent: "text-amber-500",
       bg: "bg-amber-500/10",
       price: "From $1,200",
       timeline: "2-4 Weeks",
@@ -86,19 +86,31 @@ export default function Capabilities() {
       </style>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Sharp Header */}
-        <div className="flex flex-col items-start text-left max-w-2xl mb-12 sm:mb-20">
-          <h2 className="text-[12px] sm:text-[13px] font-black text-blue-500 uppercase tracking-[0.25em] mb-4 m-0">
-            Exclusive Services
-          </h2>
-          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white tracking-tighter leading-[1.05] m-0 mb-6">
-            Engineered for <br className="hidden sm:block" />
-            Digital Excellence.
-          </h2>
-          <h2 className="text-[15px] sm:text-lg text-slate-400 font-medium leading-relaxed m-0 pr-4 sm:pr-0">
-            Transparent pricing, strict timelines, and highly customised
-            architectures. We engineer platforms that dominate the modern web.
-          </h2>
+        {/* Sharp Header with Button Layout */}
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-12 sm:mb-20">
+          <div className="flex flex-col items-start text-left max-w-2xl">
+            <h2 className="text-[12px] sm:text-[13px] font-black text-blue-500 uppercase tracking-[0.25em] mb-4 m-0">
+              Exclusive Services
+            </h2>
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white tracking-tighter leading-[1.05] m-0 mb-6">
+              Engineered for <br className="hidden sm:block" />
+              Digital Excellence.
+            </h2>
+            <h2 className="text-[15px] sm:text-lg text-slate-400 font-medium leading-relaxed m-0 pr-4 sm:pr-0">
+              Transparent pricing, strict timelines, and highly customised
+              architectures. We engineer platforms that dominate the modern web.
+            </h2>
+          </div>
+
+          <Link
+            to="/services"
+            className="group flex items-center justify-center gap-3 px-6 py-4 rounded-xl bg-blue-600 text-white hover:bg-blue-700 transition-all duration-300 outline-none w-full sm:w-fit shrink-0"
+          >
+            <h2 className="text-[14px] font-black m-0 text-inherit tracking-wide">
+              View All Services
+            </h2>
+            <ArrowRight className="w-4 h-4 text-white transform group-hover:translate-x-1 transition-all duration-300" />
+          </Link>
         </div>
 
         {/* Sharp Service Grid */}
