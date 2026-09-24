@@ -112,7 +112,7 @@ export default function AboutCodeLume() {
           <div className="flex flex-col md:flex-row justify-center items-stretch gap-4 w-full">
             
             <a
-              href="mailto:your.email@example.com"
+              href="mailto:your.mrafaykh@outlook.com"
               className="order-2 md:order-1 flex-1 flex items-center justify-center gap-3 px-6 py-4 md:py-5 rounded-xl bg-[#1e293b] hover:bg-white/10 text-white font-bold transition-all w-full"
             >
               <Gmail2026 className="h-6 w-6" /> Email Directly
@@ -126,7 +126,7 @@ export default function AboutCodeLume() {
             </Link>
 
             <a
-              href="https://wa.me/1234567890" 
+              href="https://wa.me/3347835980" 
               target="_blank"
               rel="noreferrer"
               className="order-3 flex-1 flex items-center justify-center gap-3 px-6 py-4 md:py-5 rounded-xl bg-green-600/10 hover:bg-green-600/20 text-green-500 border border-green-600/20 transition-all w-full"
