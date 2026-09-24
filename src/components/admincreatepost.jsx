@@ -11,14 +11,13 @@ import {
   Tag,
   ArrowLeft,
 } from "lucide-react";
-import { API_URL } from "../lib/api";
 
 export default function AdminCreatePost() {
-  const [categories, setCategories] = useState([]); // Dynamic categories state
+  const [categories, setCategories] = useState([]);
   const [formData, setFormData] = useState({
     title: "",
     slug: "",
-    category: "", // Will be set dynamically
+    category: "",
     excerpt: "",
     imageAltText: "",
     metaTitle: "",
@@ -32,25 +31,48 @@ export default function AdminCreatePost() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [statusMessage, setStatusMessage] = useState(null);
 
+  // Secure dynamic URL for fetching and posting
+  const API_BASE_URL =
+    import.meta.env.VITE_API_URL || "https://codelume-backend.onrender.com";
+
   // Fetch categories from your backend when the page loads
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch(`${API_URL}/api/categories`);
-        if (response.ok) {
-          const data = await response.json();
-          setCategories(data);
-          // Auto-select the first category if available
-          if (data.length > 0) {
-            setFormData((prev) => ({ ...prev, category: data[0].name }));
-          }
+        const response = await fetch(`${API_BASE_URL}/api/categories`);
+
+        if (!response.ok) {
+          console.error("Server returned an error:", response.status);
+          return;
+        }
+
+        const data = await response.json();
+        console.log("Categories fetched from server:", data); // Check your browser console!
+
+        // Smart format: Handle arrays or objects sent by backend
+        const categoryArray = Array.isArray(data)
+          ? data
+          : data.categories || [];
+        const formattedCategories = categoryArray.map((cat) =>
+          typeof cat === "string" ? { name: cat, _id: cat } : cat,
+        );
+
+        setCategories(formattedCategories);
+
+        // Auto-select the first category if available
+        if (formattedCategories.length > 0) {
+          setFormData((prev) => ({
+            ...prev,
+            category: formattedCategories[0].name,
+          }));
         }
       } catch (error) {
-        console.error("Failed to fetch categories", error);
+        console.error("Failed to fetch categories (Network Error):", error);
       }
     };
+
     fetchCategories();
-  }, []);
+  }, [API_BASE_URL]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -100,7 +122,7 @@ export default function AdminCreatePost() {
     }
 
     try {
-      const response = await fetch(`${API_URL}/api/blogs`, {
+      const response = await fetch(`${API_BASE_URL}/api/blogs`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("adminToken")}`,
