@@ -9,7 +9,7 @@ import {
   Search,
   Tag,
   Mail,
-  Loader2
+  Loader2,
 } from "lucide-react";
 
 export default function Blog() {
@@ -17,7 +17,7 @@ export default function Blog() {
   const [isLoading, setIsLoading] = useState(true);
   const [activeCategory, setActiveCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
-  
+
   // Pagination State
   const [currentPage, setCurrentPage] = useState(1);
   const postsPerPage = 6;
@@ -30,11 +30,12 @@ export default function Blog() {
     "E-Commerce",
   ];
 
-  // Fetch real data from your Custom Backend (MongoDB)
+  // Fetch real data from your Custom Backend (MongoDB) using dynamic API URL
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/blogs");
+        const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+        const response = await fetch(`${API_URL}/api/blogs`);
         if (!response.ok) throw new Error("Failed to fetch");
         const data = await response.json();
         setPosts(data);
@@ -49,9 +50,11 @@ export default function Blog() {
 
   // Filter posts by Search and Category
   const filteredPosts = posts.filter((post) => {
-    const matchesCategory = activeCategory === "All" || post.category === activeCategory;
-    const matchesSearch = post.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                          post.excerpt.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesCategory =
+      activeCategory === "All" || post.category === activeCategory;
+    const matchesSearch =
+      post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      post.excerpt.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
   });
 
@@ -88,7 +91,6 @@ export default function Blog() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
-        
         {/* Header Section */}
         <div className="flex flex-col items-center text-center mb-16 max-w-3xl mx-auto">
           <div className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 shadow-[inset_0_0_10px_rgba(255,255,255,0.02)] mb-6 backdrop-blur-md">
@@ -111,10 +113,8 @@ export default function Blog() {
           </div>
         ) : (
           <div className="flex flex-col lg:flex-row gap-10 items-start">
-            
             {/* LEFT COLUMN: Main Blog Feed */}
             <div className="w-full lg:w-2/3 flex flex-col gap-8">
-              
               {currentPosts.length > 0 ? (
                 <>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -131,14 +131,17 @@ export default function Blog() {
                             className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 ease-out"
                           />
                           <div className="absolute top-3 left-3 px-3 py-1 rounded-full bg-[#0a0f1c]/80 border border-white/10 backdrop-blur-md z-10">
-                            <h2 className="text-[10px] font-extrabold text-slate-300 uppercase tracking-widest m-0">{post.category}</h2>
+                            <h2 className="text-[10px] font-extrabold text-slate-300 uppercase tracking-widest m-0">
+                              {post.category}
+                            </h2>
                           </div>
                         </div>
 
                         <div className="p-5 flex flex-col flex-1 relative z-10">
                           <div className="flex items-center gap-3 text-[11px] font-medium text-slate-400 mb-3">
                             <span className="flex items-center gap-1.5">
-                              <Calendar className="w-3 h-3" /> {new Date(post.createdAt).toLocaleDateString()}
+                              <Calendar className="w-3 h-3" />{" "}
+                              {new Date(post.createdAt).toLocaleDateString()}
                             </span>
                             <span className="w-1 h-1 rounded-full bg-slate-600" />
                             <span className="flex items-center gap-1.5">
@@ -152,7 +155,9 @@ export default function Blog() {
                             {post.excerpt}
                           </h2>
                           <div className="mt-auto pt-4 border-t border-white/5 flex items-center justify-between w-full">
-                            <h2 className="text-[12px] font-bold text-slate-300 group-hover:text-white m-0">Read More</h2>
+                            <h2 className="text-[12px] font-bold text-slate-300 group-hover:text-white m-0">
+                              Read More
+                            </h2>
                             <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-blue-600 transition-colors">
                               <ArrowRight className="w-3.5 h-3.5 text-slate-400 group-hover:text-white transform group-hover:translate-x-0.5 transition-transform" />
                             </div>
@@ -165,19 +170,19 @@ export default function Blog() {
                   {/* Pagination Controls */}
                   {totalPages > 1 && (
                     <div className="flex justify-center items-center gap-4 mt-8 pt-8 border-t border-white/10">
-                      <button 
+                      <button
                         onClick={() => paginate(currentPage - 1)}
                         disabled={currentPage === 1}
                         className="p-2 rounded-full bg-white/5 border border-white/10 text-white hover:bg-blue-600 transition-colors disabled:opacity-50 disabled:hover:bg-white/5 cursor-pointer outline-none"
                       >
                         <ArrowLeft className="w-5 h-5" />
                       </button>
-                      
+
                       <span className="text-[14px] font-bold text-slate-300">
                         Page {currentPage} of {totalPages}
                       </span>
 
-                      <button 
+                      <button
                         onClick={() => paginate(currentPage + 1)}
                         disabled={currentPage === totalPages}
                         className="p-2 rounded-full bg-white/5 border border-white/10 text-white hover:bg-blue-600 transition-colors disabled:opacity-50 disabled:hover:bg-white/5 cursor-pointer outline-none"
@@ -189,15 +194,15 @@ export default function Blog() {
                 </>
               ) : (
                 <div className="text-center py-10 bg-white/5 rounded-3xl border border-white/10 w-full">
-                  <h2 className="text-slate-400 font-bold m-0 text-lg">No posts found.</h2>
+                  <h2 className="text-slate-400 font-bold m-0 text-lg">
+                    No posts found.
+                  </h2>
                 </div>
               )}
-
             </div>
 
             {/* RIGHT COLUMN: Sidebar (Sticky) */}
             <aside className="w-full lg:w-1/3 flex flex-col gap-8 self-start lg:sticky lg:top-32">
-              
               {/* 1. Search Widget */}
               <div className="bg-[#0a0f1c]/80 backdrop-blur-xl border border-white/5 rounded-[2rem] p-6 shadow-xl">
                 <h2 className="text-[14px] font-black text-white uppercase tracking-wider mb-4 flex items-center gap-2 m-0">
@@ -247,7 +252,8 @@ export default function Blog() {
                   Stay updated.
                 </h2>
                 <h2 className="text-[13px] text-slate-400 mb-6 font-medium m-0 relative z-10">
-                  Get exclusive technical tips and design strategies delivered directly to your inbox.
+                  Get exclusive technical tips and design strategies delivered
+                  directly to your inbox.
                 </h2>
                 <div className="flex flex-col gap-3 relative z-10">
                   <input
@@ -260,7 +266,6 @@ export default function Blog() {
                   </button>
                 </div>
               </div>
-
             </aside>
           </div>
         )}

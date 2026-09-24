@@ -23,7 +23,6 @@ export default function AdminDashboard() {
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
 
-  // States now start empty and wait for the live backend data
   const [posts, setPosts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [media, setMedia] = useState([]);
@@ -32,19 +31,20 @@ export default function AdminDashboard() {
   const [newCatName, setNewCatName] = useState("");
   const [newCatSlug, setNewCatSlug] = useState("");
 
-  // Fetch Live Data from MongoDB Backend
+  // Fetch Live Data from MongoDB Backend using dynamic API URL
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
         setIsLoading(true);
+        const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
         // 1. Fetch live posts
-        const postResponse = await fetch("http://localhost:5000/api/blogs");
+        const postResponse = await fetch(`${API_URL}/api/blogs`);
         if (postResponse.ok) {
           const postData = await postResponse.json();
 
-          // Format posts for the table
           const formattedPosts = postData.map((post) => ({
-            id: post._id, // MongoDB ID
+            id: post._id,
             title: post.title,
             category: post.category || "Uncategorized",
             status: post.status === "published" ? "Published" : "Draft",
@@ -56,9 +56,8 @@ export default function AdminDashboard() {
           }));
           setPosts(formattedPosts);
 
-          // Extract Cloudinary images from posts for the Media Library
           const extractedMedia = postData
-            .filter((post) => post.coverImage) // Only get posts that have an image
+            .filter((post) => post.coverImage)
             .map((post) => ({
               id: post._id,
               url: post.coverImage,
@@ -68,10 +67,9 @@ export default function AdminDashboard() {
         }
 
         // 2. Fetch live categories
-        const catResponse = await fetch("http://localhost:5000/api/categories");
+        const catResponse = await fetch(`${API_URL}/api/categories`);
         if (catResponse.ok) {
           const catData = await catResponse.json();
-          // Map backend categories to dashboard format
           setCategories(
             catData.map((cat, index) => ({
               id: index,
@@ -112,17 +110,17 @@ export default function AdminDashboard() {
     setNewCatSlug("");
   };
 
-  // Live Delete from MongoDB Database
+  // Live Delete from MongoDB Database using dynamic API URL
   const handleDeletePost = async (id) => {
     if (
       window.confirm("Are you sure you want to delete this post permanently?")
     ) {
       try {
-        const response = await fetch(`http://localhost:5000/api/blogs/${id}`, {
+        const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+        const response = await fetch(`${API_URL}/api/blogs/${id}`, {
           method: "DELETE",
         });
         if (response.ok) {
-          // Remove it from the screen immediately
           setPosts(posts.filter((post) => post.id !== id));
         } else {
           alert("Failed to delete the post from the database.");
@@ -146,8 +144,8 @@ export default function AdminDashboard() {
       formData.append("file", file);
 
       try {
-        // Upload directly to Cloudinary via your backend
-        const response = await fetch("http://localhost:5000/api/media", {
+        const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+        const response = await fetch(`${API_URL}/api/media`, {
           method: "POST",
           body: formData,
         });
@@ -201,7 +199,6 @@ export default function AdminDashboard() {
 
   return (
     <div className="min-h-screen bg-[#030712] text-white flex font-jakarta pt-20">
-      {/* SIDEBAR NAVIGATION */}
       <aside className="w-64 border-r border-white/5 flex flex-col p-6 hidden md:flex fixed h-full">
         <div className="mb-10">
           <h2 className="text-2xl font-black text-white tracking-tighter m-0">
@@ -260,9 +257,7 @@ export default function AdminDashboard() {
         </div>
       </aside>
 
-      {/* MAIN CONTENT AREA */}
       <main className="flex-1 ml-0 md:ml-64 p-6 lg:p-10">
-        {/* OVERVIEW TAB */}
         {activeTab === "overview" && (
           <div className="animate-in fade-in duration-500">
             <div className="mb-8">
@@ -318,7 +313,6 @@ export default function AdminDashboard() {
           </div>
         )}
 
-        {/* POSTS TAB */}
         {activeTab === "posts" && (
           <div className="animate-in fade-in duration-500">
             <div className="flex justify-between items-end mb-8">
@@ -424,7 +418,6 @@ export default function AdminDashboard() {
           </div>
         )}
 
-        {/* CATEGORIES TAB */}
         {activeTab === "categories" && (
           <div className="animate-in fade-in duration-500 grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-1">
@@ -508,7 +501,6 @@ export default function AdminDashboard() {
           </div>
         )}
 
-        {/* MEDIA LIBRARY TAB */}
         {activeTab === "media" && (
           <div className="animate-in fade-in duration-500">
             <div className="flex justify-between items-end mb-8">
@@ -591,7 +583,6 @@ export default function AdminDashboard() {
   );
 }
 
-// Helper Components
 function NavItem({ icon, label, active, onClick }) {
   return (
     <button

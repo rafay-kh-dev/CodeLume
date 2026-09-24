@@ -1,33 +1,35 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import { 
-  ArrowLeft, 
-  Calendar, 
-  Clock, 
-  Loader2, 
-  Mail, 
-  Share2, 
+import {
+  ArrowLeft,
+  Calendar,
+  Clock,
+  Loader2,
+  Mail,
+  Share2,
   Link2,
-  Newspaper
+  Newspaper,
 } from "lucide-react";
 
 export default function Article() {
   const { slug } = useParams();
   const [post, setPost] = useState(null);
-  const [latestPosts, setLatestPosts] = useState([]); // 🚀 NEW: State for sidebar posts
+  const [latestPosts, setLatestPosts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // 1. Fetch current article
+    const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
+    // 1. Fetch current article using dynamic API URL
     const fetchSinglePost = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/blogs/${slug}`);
+        const response = await fetch(`${API_URL}/api/blogs/${slug}`);
         if (!response.ok) {
           if (response.status === 404) throw new Error("Article not found.");
           throw new Error("Failed to load article.");
         }
-        
+
         const data = await response.json();
         setPost(data);
       } catch (err) {
@@ -38,14 +40,15 @@ export default function Article() {
       }
     };
 
-    // 2. Fetch latest posts for sidebar
+    // 2. Fetch latest posts for sidebar using dynamic API URL
     const fetchLatestPosts = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/blogs`);
+        const response = await fetch(`${API_URL}/api/blogs`);
         if (response.ok) {
           const allPosts = await response.json();
-          // Filter out the current post being read, and take the top 3
-          const filteredLatest = allPosts.filter(p => p.slug !== slug).slice(0, 3);
+          const filteredLatest = allPosts
+            .filter((p) => p.slug !== slug)
+            .slice(0, 3);
           setLatestPosts(filteredLatest);
         }
       } catch (err) {
@@ -55,7 +58,7 @@ export default function Article() {
 
     fetchSinglePost();
     fetchLatestPosts();
-  }, [slug]); // When slug changes (user clicks a sidebar link), it refetches
+  }, [slug]);
 
   if (isLoading) {
     return (
@@ -68,8 +71,13 @@ export default function Article() {
   if (error || !post) {
     return (
       <div className="w-full min-h-dvh pt-40 bg-[#030712] flex flex-col items-center text-center px-4 font-jakarta">
-        <h2 className="text-4xl font-black text-white mb-6 m-0 tracking-tighter">{error || "Article not found"}</h2>
-        <Link to="/blogs" className="flex items-center gap-2 text-[#3b82f6] font-bold hover:text-white transition-colors outline-none cursor-pointer">
+        <h2 className="text-4xl font-black text-white mb-6 m-0 tracking-tighter">
+          {error || "Article not found"}
+        </h2>
+        <Link
+          to="/blogs"
+          className="flex items-center gap-2 text-[#3b82f6] font-bold hover:text-white transition-colors outline-none cursor-pointer"
+        >
           <ArrowLeft className="w-5 h-5" />
           <h2 className="m-0 inline text-inherit">Back to Blogs</h2>
         </Link>
@@ -84,7 +92,6 @@ export default function Article() {
 
   return (
     <article className="w-full min-h-dvh pt-28 sm:pt-36 pb-24 bg-[#030712] font-jakarta relative">
-      
       <style>
         {`@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap');
           .font-jakarta { font-family: 'Plus Jakarta Sans', sans-serif; }
@@ -114,14 +121,11 @@ export default function Article() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
-          
           {/* Main Article Content */}
           <div className="lg:col-span-8 flex flex-col">
-            
-            <Link 
-              to="/blogs" 
+            <Link
+              to="/blogs"
               className="inline-flex items-center gap-2 text-slate-400 hover:text-white transition-colors mb-10 group outline-none font-bold text-[14px] cursor-pointer w-fit"
             >
               <ArrowLeft className="w-4 h-4 transform group-hover:-translate-x-1 transition-transform" />
@@ -135,14 +139,18 @@ export default function Article() {
                 </span>
                 <span className="flex items-center gap-1.5 text-slate-400 text-[13px] font-semibold">
                   <Calendar className="w-4 h-4 text-[#3b82f6]" />
-                  {new Date(post.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                  {new Date(post.createdAt).toLocaleDateString("en-US", {
+                    month: "short",
+                    day: "numeric",
+                    year: "numeric",
+                  })}
                 </span>
                 <span className="flex items-center gap-1.5 text-slate-400 text-[13px] font-semibold">
                   <Clock className="w-4 h-4 text-[#3b82f6]" />
                   {post.readTime}
                 </span>
               </div>
-              
+
               <h1 className="text-4xl sm:text-5xl md:text-6xl font-black text-white m-0 tracking-tighter leading-[1.1]">
                 {post.title}
               </h1>
@@ -150,14 +158,14 @@ export default function Article() {
 
             <div className="w-full aspect-video rounded-3xl overflow-hidden mb-12 bg-[#0a0f1c] border border-white/5 relative shadow-2xl">
               <div className="absolute inset-0 bg-[#3b82f6]/10 mix-blend-overlay pointer-events-none" />
-              <img 
-                src={post.coverImage} 
-                alt={post.title} 
+              <img
+                src={post.coverImage}
+                alt={post.title}
                 className="w-full h-full object-cover"
               />
             </div>
 
-            <div 
+            <div
               className="blog-content w-full max-w-none mb-10"
               dangerouslySetInnerHTML={{ __html: post.content }}
             />
@@ -165,32 +173,39 @@ export default function Article() {
 
           {/* Sticky Sidebar */}
           <aside className="lg:col-span-4 flex flex-col gap-8 lg:sticky lg:top-32">
-            
             {/* 1. Share Widget */}
-            <div className="bg-[#0a0f1c]/80 backdrop-blur-xl border border-white/5 rounded-[2rem] p-6 shadow-xl">
+            <div className="bg-[#0a0f1c]/85 backdrop-blur-xl border border-white/5 rounded-[2rem] p-6 shadow-xl">
               <h2 className="text-[14px] font-black text-white uppercase tracking-wider mb-5 flex items-center gap-2 m-0">
                 <Share2 className="w-4 h-4 text-blue-500" /> Share Article
               </h2>
               <div className="flex items-center gap-3">
-                <button 
+                <button
                   className="w-11 h-11 rounded-full bg-[#030712] border border-white/5 flex items-center justify-center text-slate-400 hover:text-[#1DA1F2] hover:border-[#1DA1F2]/50 transition-colors cursor-pointer outline-none"
-                  onClick={() => window.open(`https://twitter.com/intent/tweet?text=${post.title}&url=${window.location.href}`)}
+                  onClick={() =>
+                    window.open(
+                      `https://twitter.com/intent/tweet?text=${post.title}&url=${window.location.href}`,
+                    )
+                  }
                   title="Share on Twitter"
                 >
                   <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
-                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
                   </svg>
                 </button>
-                <button 
+                <button
                   className="w-11 h-11 rounded-full bg-[#030712] border border-white/5 flex items-center justify-center text-slate-400 hover:text-[#0A66C2] hover:border-[#0A66C2]/50 transition-colors cursor-pointer outline-none"
-                  onClick={() => window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${window.location.href}`)}
+                  onClick={() =>
+                    window.open(
+                      `https://www.linkedin.com/sharing/share-offsite/?url=${window.location.href}`,
+                    )
+                  }
                   title="Share on LinkedIn"
                 >
                   <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
-                    <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                    <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
                   </svg>
                 </button>
-                <button 
+                <button
                   className="w-11 h-11 rounded-full bg-[#030712] border border-white/5 flex items-center justify-center text-slate-400 hover:text-blue-500 hover:border-blue-500/50 transition-colors cursor-pointer outline-none"
                   onClick={copyToClipboard}
                   title="Copy Link"
@@ -200,11 +215,12 @@ export default function Article() {
               </div>
             </div>
 
-            {/* 🚀 NEW 2. Latest Articles Widget */}
+            {/* 2. Latest Articles Widget */}
             {latestPosts.length > 0 && (
-              <div className="bg-[#0a0f1c]/80 backdrop-blur-xl border border-white/5 rounded-[2rem] p-6 shadow-xl">
+              <div className="bg-[#0a0f1c]/85 backdrop-blur-xl border border-white/5 rounded-[2rem] p-6 shadow-xl">
                 <h2 className="text-[14px] font-black text-white uppercase tracking-wider mb-6 flex items-center gap-2 m-0">
-                  <Newspaper className="w-4 h-4 text-blue-500" /> Latest Articles
+                  <Newspaper className="w-4 h-4 text-blue-500" /> Latest
+                  Articles
                 </h2>
                 <div className="flex flex-col gap-5">
                   {latestPosts.map((latestPost) => (
@@ -215,9 +231,9 @@ export default function Article() {
                     >
                       <div className="w-20 h-20 rounded-2xl bg-[#030712] overflow-hidden shrink-0 border border-white/5 relative shadow-inner">
                         <div className="absolute inset-0 bg-[#3b82f6]/10 mix-blend-overlay group-hover:bg-transparent transition-colors z-10 pointer-events-none" />
-                        <img 
-                          src={latestPost.coverImage} 
-                          alt={latestPost.title} 
+                        <img
+                          src={latestPost.coverImage}
+                          alt={latestPost.title}
                           className="w-full h-full object-cover opacity-70 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500 ease-out"
                         />
                       </div>
@@ -227,7 +243,10 @@ export default function Article() {
                         </h3>
                         <span className="text-[11px] font-medium text-slate-400 flex items-center gap-1.5">
                           <Calendar className="w-3 h-3" />
-                          {new Date(latestPost.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                          {new Date(latestPost.createdAt).toLocaleDateString(
+                            "en-US",
+                            { month: "short", day: "numeric", year: "numeric" },
+                          )}
                         </span>
                       </div>
                     </Link>
@@ -237,7 +256,7 @@ export default function Article() {
             )}
 
             {/* 3. Newsletter CTA Widget */}
-            <div className="bg-linear-to-br from-[#0a0f1c] to-[#030712] border border-blue-500/20 rounded-[2rem] p-6 shadow-[0_0_30px_rgba(37,99,235,0.1)] relative overflow-hidden">
+            <div className="bg-gradient-to-br from-[#0a0f1c] to-[#030712] border border-blue-500/20 rounded-[2rem] p-6 shadow-[0_0_30px_rgba(37,99,235,0.1)] relative overflow-hidden">
               <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full blur-3xl" />
               <h2 className="text-[14px] font-black text-blue-400 uppercase tracking-wider mb-3 flex items-center gap-2 m-0 relative z-10">
                 <Mail className="w-4 h-4" /> Enjoying the read?
@@ -246,7 +265,8 @@ export default function Article() {
                 Subscribe for more.
               </h2>
               <h2 className="text-[13px] text-slate-400 mb-6 font-medium m-0 relative z-10">
-                Get our latest articles and technical insights delivered directly to your inbox.
+                Get our latest articles and technical insights delivered
+                directly to your inbox.
               </h2>
               <div className="flex flex-col gap-3 relative z-10">
                 <input
@@ -259,9 +279,7 @@ export default function Article() {
                 </button>
               </div>
             </div>
-
           </aside>
-
         </div>
       </div>
     </article>
