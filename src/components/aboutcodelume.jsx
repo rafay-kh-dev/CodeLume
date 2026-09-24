@@ -1,15 +1,17 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Code, Users, Globe, Zap, CheckCircle2, Mail, Briefcase } from "lucide-react";
-import { Whatsapp } from '@thesvg/react';
+import { Code, Users, Globe, Zap, CheckCircle2, Rocket } from "lucide-react";
+import { Whatsapp, Gmail2026 } from '@thesvg/react'; // Gmail aur Whatsapp dono yahan hain
 
 export default function AboutCodeLume() {
   return (
     <div className="min-h-dvh bg-[#030712] text-white font-jakarta pt-24 pb-20 overflow-hidden relative">
+      {/* Background Glowing Effects */}
       <div className="absolute top-40 left-1/2 -translate-x-1/2 w-full max-w-3xl h-[400px] bg-[#3b82f6]/10 rounded-full blur-[120px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
         
+        {/* Hero Section */}
         <div className="text-center max-w-3xl mx-auto mb-20 mt-10">
           <h2 className="text-[#3b82f6] text-sm font-black uppercase tracking-[0.2em] mb-4 m-0">
             About CodeLume & The Creator
@@ -25,7 +27,8 @@ export default function AboutCodeLume() {
           </p>
         </div>
 
-        <div className="bg-[#0a0f1c] border border-white/5 rounded-3xl p-8 md:p-12 lg:p-16 mb-24 shadow-2xl flex flex-col md:flex-row gap-12 items-center relative overflow-hidden">
+        {/* Story / About Rafay Section with New Visual */}
+        <div className="bg-[#0a0f1c] border border-white/5 rounded-3xl p-8 md:p-12 lg:p-16 mb-24 shadow-2xl flex flex-col lg:flex-row gap-12 items-center relative overflow-hidden">
           <div className="absolute top-0 right-0 w-64 h-64 bg-[#3b82f6]/5 rounded-full blur-[80px]" />
           
           <div className="flex-1 space-y-6 relative z-10">
@@ -53,29 +56,37 @@ export default function AboutCodeLume() {
             </ul>
           </div>
           
-          <div className="flex-1 w-full flex justify-center md:justify-end relative z-10">
-            <div className="relative w-64 h-64 md:w-72 md:h-72 lg:w-80 lg:h-80 rounded-3xl p-1 bg-linear-to-br from-[#3b82f6] to-transparent shadow-[0_0_40px_rgba(59,130,246,0.15)] group">
-              <div className="w-full h-full rounded-3xl bg-[#030712] overflow-hidden relative border border-white/5">
-                <div className="absolute inset-0 bg-[#3b82f6]/0 group-hover:bg-[#3b82f6]/10 transition-colors duration-500 z-10" />
-                {/* Yahan aapni real image ka URL daal sakte hain */}
-                <img 
-                  src="https://ui-avatars.com/api/?name=Rafay&size=512&background=0a0f1c&color=3b82f6&font-size=0.33&bold=true" 
-                  alt="Rafay" 
-                  className="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-700" 
-                />
-              </div>
+          {/* New Code Editor Visual Mocup */}
+          <div className="flex-1 w-full flex justify-center lg:justify-end relative z-10">
+            <div className="relative w-full max-w-md aspect-square sm:aspect-[4/3] rounded-3xl bg-linear-to-br from-[#1e293b]/50 to-[#0f172a]/50 border border-white/10 flex items-center justify-center overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] p-4 group">
               
-              <div className="absolute -bottom-4 -left-4 bg-[#0a0f1c] border border-white/10 p-3 px-4 rounded-2xl shadow-xl flex items-center gap-3">
-                <span className="relative flex h-3 w-3">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
-                </span>
-                <span className="text-sm font-bold text-white">Available for Work</span>
+              <div className="absolute inset-4 bg-[#030712] rounded-2xl border border-white/5 flex flex-col shadow-2xl overflow-hidden z-20 group-hover:scale-[1.02] transition-transform duration-500">
+                {/* Mac OS Style Window Controls */}
+                <div className="h-10 border-b border-white/5 flex items-center px-4 gap-2 bg-white/[0.02]">
+                  <div className="w-3 h-3 rounded-full bg-red-500/80"></div>
+                  <div className="w-3 h-3 rounded-full bg-yellow-500/80"></div>
+                  <div className="w-3 h-3 rounded-full bg-green-500/80"></div>
+                  <div className="ml-2 text-[10px] text-slate-500 font-mono tracking-widest uppercase">developer.js</div>
+                </div>
+                {/* Code Content */}
+                <div className="p-6 font-mono text-sm md:text-base text-slate-400 flex flex-col gap-2 overflow-hidden">
+                  <p><span className="text-[#c678dd]">const</span> <span className="text-[#e5c07b]">developer</span> <span className="text-[#56b6c2]">=</span> <span className="text-[#e06c75]">{"{"}</span></p>
+                  <p className="pl-4">name: <span className="text-[#98c379]">'Rafay'</span>,</p>
+                  <p className="pl-4">role: <span className="text-[#98c379]">'Full-Stack & UI/UX'</span>,</p>
+                  <p className="pl-4">skills: <span className="text-[#e5c07b]">[</span><span className="text-[#98c379]">'MERN'</span>, <span className="text-[#98c379]">'WordPress'</span><span className="text-[#e5c07b]">]</span>,</p>
+                  <p className="pl-4">status: <span className="text-[#98c379]">'Available for Work'</span></p>
+                  <p><span className="text-[#e06c75]">{"}"}</span>;</p>
+                  <p className="mt-2 animate-pulse text-[#61afef]">_</p>
+                </div>
               </div>
+              {/* Blue Glow Behind Code Box */}
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-[#3b82f6]/20 rounded-full blur-[60px] z-10" />
+            
             </div>
           </div>
         </div>
 
+        {/* Features / Services Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-24">
           <FeatureCard 
             icon={<Code size={24} />} 
@@ -99,7 +110,8 @@ export default function AboutCodeLume() {
           />
         </div>
 
-        <div className="bg-linear-to-br from-[#0a0f1c] to-[#030712] border border-[#3b82f6]/20 rounded-3xl p-10 md:p-16 text-center max-w-4xl mx-auto shadow-[0_0_50px_rgba(59,130,246,0.1)]">
+        {/* Heavy CTA / Contact Section */}
+        <div className="bg-linear-to-br from-[#0a0f1c] to-[#030712] border border-[#3b82f6]/20 rounded-3xl p-10 md:p-16 text-center max-w-4xl mx-auto shadow-[0_0_50px_rgba(59,130,246,0.15)]">
           <h2 className="text-3xl md:text-4xl font-black text-white m-0 tracking-tight mb-4">
             Ready to start your next project?
           </h2>
@@ -107,29 +119,36 @@ export default function AboutCodeLume() {
             I am currently accepting new clients. Get in touch directly to discuss your requirements, get a custom quote, and let us build something amazing together.
           </p>
           
-          <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
+          {/* Centered Action Buttons */}
+          <div className="flex flex-col items-center gap-6">
+            
+            {/* Primary Hire Me Button */}
             <Link
               to="/start-project"
-              className="flex items-center gap-2 px-8 h-14 rounded-xl bg-[#3b82f6] hover:bg-[#2563eb] text-white font-bold transition-all shadow-lg hover:shadow-[#3b82f6]/25 hover:-translate-y-1 w-full sm:w-auto justify-center"
+              className="flex items-center justify-center gap-3 px-10 h-16 rounded-2xl bg-linear-to-r from-[#3b82f6] to-[#2563eb] text-white text-lg font-black transition-all shadow-[0_0_30px_rgba(59,130,246,0.3)] hover:shadow-[0_0_40px_rgba(59,130,246,0.5)] hover:-translate-y-1 w-full sm:w-auto"
             >
-              <Briefcase size={18} /> Hire Me Now
+              <Rocket size={24} /> HIRE ME NOW
             </Link>
             
-            <a
-              href="mailto:your.email@example.com"
-              className="flex items-center gap-2 px-8 h-14 rounded-xl bg-[#1e293b] hover:bg-white/10 text-white font-bold transition-all w-full sm:w-auto justify-center"
-            >
-              <Mail size={18} /> Email Directly
-            </a>
+            {/* Secondary Contact Buttons */}
+            <div className="flex flex-col sm:flex-row justify-center items-center gap-4 w-full">
+              <a
+                href="mailto:your.email@example.com"
+                className="flex items-center gap-3 px-8 h-14 rounded-xl bg-[#1e293b] hover:bg-white/10 text-white font-bold transition-all w-full sm:w-auto justify-center"
+              >
+                <Gmail2026 className="h-6 w-6" /> Email Directly
+              </a>
 
-            <a
-              href="https://wa.me/1234567890" 
-              target="_blank"
-              rel="noreferrer"
-              className="flex items-center justify-center px-6 h-14 rounded-xl bg-green-600/10 hover:bg-green-600/20 text-green-500 border border-green-600/20 transition-all w-full sm:w-auto"
-            >
-              <Whatsapp variant="wordmark" className="h-[22px] w-auto" />
-            </a>
+              <a
+                href="https://wa.me/1234567890" 
+                target="_blank"
+                rel="noreferrer"
+                className="flex items-center justify-center px-6 h-14 rounded-xl bg-green-600/10 hover:bg-green-600/20 text-green-500 border border-green-600/20 transition-all w-full sm:w-auto"
+              >
+                <Whatsapp variant="wordmark" className="h-[22px] w-auto" />
+              </a>
+            </div>
+
           </div>
         </div>
 
