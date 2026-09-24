@@ -180,7 +180,8 @@ export default function PremiumReviewsSlider() {
   };
 
   const ReviewCard = ({ review }) => (
-    <div className="w-64 sm:w-72 shrink-0 flex flex-col p-4 sm:p-5 bg-[#060913] border border-white/10 rounded-xl hover:border-blue-500/60 transition-all duration-300 cursor-default relative hover:-translate-y-1.5 shadow-[0_4px_20px_rgba(0,0,0,0.5)]">
+    /* FIXED: rounded-2xl (increased radius), border-white/20 (crisper border), and stronger shadow for a sharp look */
+    <div className="w-64 sm:w-72 shrink-0 flex flex-col p-4 sm:p-5 bg-[#060913] border border-white/20 rounded-2xl hover:border-blue-400/80 transition-all duration-300 cursor-default relative hover:-translate-y-1.5 shadow-[0_8px_30px_rgba(0,0,0,0.6)]">
       <div className="flex items-center justify-between gap-2.5 mb-3.5">
         {getPlatformLogo(review.platform)}
         <Quote className="w-5 h-5 text-slate-600 transform -scale-x-100 group-hover:text-blue-400/50 transition-colors" />
@@ -228,7 +229,6 @@ export default function PremiumReviewsSlider() {
         {`@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap');
           .font-jakarta { font-family: 'Plus Jakarta Sans', sans-serif; }
           
-          /* FIXED: Move exactly -50% to prevent blank space */
           @keyframes marquee {
             0% { transform: translate3d(0, 0, 0); }
             100% { transform: translate3d(-50%, 0, 0); }
@@ -239,7 +239,6 @@ export default function PremiumReviewsSlider() {
             100% { transform: translate3d(0, 0, 0); }
           }
           
-          /* FIXED: Very slow and identical speed (100 seconds) */
           .animate-marquee {
             animation: marquee 100s linear infinite;
             will-change: transform;
@@ -321,7 +320,7 @@ export default function PremiumReviewsSlider() {
         {/* Row 1 - Forward */}
         <div className="marquee-row overflow-hidden w-full py-3 -my-3 flex">
           <div className="animate-marquee flex w-max">
-            {/* Set 1 with explicit padding to match the gap */}
+            {/* Set 1 */}
             <div className="flex gap-4 sm:gap-5 pr-4 sm:pr-5">
               {reviews.map((review) => (
                 <ReviewCard key={`row1-1-${review.id}`} review={review} />
@@ -342,7 +341,7 @@ export default function PremiumReviewsSlider() {
         {/* Row 2 - Reverse */}
         <div className="marquee-row overflow-hidden w-full py-3 -my-3 flex">
           <div className="animate-marquee-reverse flex w-max">
-            {/* Set 1 with explicit padding to match the gap */}
+            {/* Set 1 */}
             <div className="flex gap-4 sm:gap-5 pr-4 sm:pr-5">
               {row2Reviews.map((review) => (
                 <ReviewCard key={`row2-1-${review.id}`} review={review} />
