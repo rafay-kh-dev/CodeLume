@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Code, Users, Globe, Zap, CheckCircle2, Rocket } from "lucide-react";
-import { Whatsapp, Gmail2026 } from '@thesvg/react'; // Gmail aur Whatsapp dono yahan hain
+import { Whatsapp, Gmail2026 } from '@thesvg/react';
 
 export default function AboutCodeLume() {
   return (
@@ -27,7 +27,7 @@ export default function AboutCodeLume() {
           </p>
         </div>
 
-        {/* Story / About Rafay Section with New Visual */}
+        {/* Story / About Rafay Section with Code Visual */}
         <div className="bg-[#0a0f1c] border border-white/5 rounded-3xl p-8 md:p-12 lg:p-16 mb-24 shadow-2xl flex flex-col lg:flex-row gap-12 items-center relative overflow-hidden">
           <div className="absolute top-0 right-0 w-64 h-64 bg-[#3b82f6]/5 rounded-full blur-[80px]" />
           
@@ -56,7 +56,7 @@ export default function AboutCodeLume() {
             </ul>
           </div>
           
-          {/* New Code Editor Visual Mocup */}
+          {/* Code Editor Visual Mockup */}
           <div className="flex-1 w-full flex justify-center lg:justify-end relative z-10">
             <div className="relative w-full max-w-md aspect-square sm:aspect-[4/3] rounded-3xl bg-linear-to-br from-[#1e293b]/50 to-[#0f172a]/50 border border-white/10 flex items-center justify-center overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] p-4 group">
               
@@ -111,7 +111,7 @@ export default function AboutCodeLume() {
         </div>
 
         {/* Heavy CTA / Contact Section */}
-        <div className="bg-linear-to-br from-[#0a0f1c] to-[#030712] border border-[#3b82f6]/20 rounded-3xl p-10 md:p-16 text-center max-w-4xl mx-auto shadow-[0_0_50px_rgba(59,130,246,0.15)]">
+        <div className="bg-linear-to-br from-[#0a0f1c] to-[#030712] border border-[#3b82f6]/20 rounded-3xl p-10 md:p-12 lg:p-16 text-center max-w-5xl mx-auto shadow-[0_0_50px_rgba(59,130,246,0.15)]">
           <h2 className="text-3xl md:text-4xl font-black text-white m-0 tracking-tight mb-4">
             Ready to start your next project?
           </h2>
@@ -119,36 +119,32 @@ export default function AboutCodeLume() {
             I am currently accepting new clients. Get in touch directly to discuss your requirements, get a custom quote, and let us build something amazing together.
           </p>
           
-          {/* Centered Action Buttons */}
-          <div className="flex flex-col items-center gap-6">
+          {/* 3 Buttons in a Single Equal Row */}
+          <div className="flex flex-col md:flex-row justify-center items-stretch gap-4 w-full">
             
-            {/* Primary Hire Me Button */}
             <Link
               to="/start-project"
-              className="flex items-center justify-center gap-3 px-10 h-16 rounded-2xl bg-linear-to-r from-[#3b82f6] to-[#2563eb] text-white text-lg font-black transition-all shadow-[0_0_30px_rgba(59,130,246,0.3)] hover:shadow-[0_0_40px_rgba(59,130,246,0.5)] hover:-translate-y-1 w-full sm:w-auto"
+              className="flex-1 flex items-center justify-center gap-2 px-6 h-14 rounded-xl bg-linear-to-r from-[#3b82f6] to-[#2563eb] text-white font-bold transition-all shadow-[0_0_20px_rgba(59,130,246,0.3)] hover:shadow-[0_0_30px_rgba(59,130,246,0.5)] hover:-translate-y-1 w-full"
             >
-              <Rocket size={24} /> HIRE ME NOW
+              <Rocket size={20} /> Hire Me Now
             </Link>
             
-            {/* Secondary Contact Buttons */}
-            <div className="flex flex-col sm:flex-row justify-center items-center gap-4 w-full">
-              <a
-                href="mailto:your.email@example.com"
-                className="flex items-center gap-3 px-8 h-14 rounded-xl bg-[#1e293b] hover:bg-white/10 text-white font-bold transition-all w-full sm:w-auto justify-center"
-              >
-                <Gmail2026 className="h-6 w-6" /> Email Directly
-              </a>
+            <a
+              href="mailto:your.email@example.com"
+              className="flex-1 flex items-center justify-center gap-2 px-6 h-14 rounded-xl bg-[#1e293b] hover:bg-white/10 text-white font-bold transition-all w-full"
+            >
+              <Gmail2026 className="h-6 w-6" /> Email Directly
+            </a>
 
-              <a
-                href="https://wa.me/1234567890" 
-                target="_blank"
-                rel="noreferrer"
-                className="flex items-center justify-center px-6 h-14 rounded-xl bg-green-600/10 hover:bg-green-600/20 text-green-500 border border-green-600/20 transition-all w-full sm:w-auto"
-              >
-                <Whatsapp variant="wordmark" className="h-[22px] w-auto" />
-              </a>
-            </div>
-
+            <a
+              href="https://wa.me/1234567890" 
+              target="_blank"
+              rel="noreferrer"
+              className="flex-1 flex items-center justify-center px-6 h-14 rounded-xl bg-green-600/10 hover:bg-green-600/20 text-green-500 border border-green-600/20 transition-all w-full"
+            >
+              <Whatsapp variant="wordmark" className="h-[22px] w-auto" />
+            </a>
+            
           </div>
         </div>
 
