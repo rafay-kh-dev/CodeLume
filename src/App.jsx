@@ -23,8 +23,8 @@ import AdminCreatePost from "./components/admincreatepost";
 import AdminLogin from "./components/adminlogin";
 import AdminDashboard from "./components/admindashboard";
 import Footer from "./components/footer";
-import AboutCodeLume from "./components/aboutcodelume"; // Aap is component ka naam future mein AboutStoryTutorials kar sakte hain
-import TermsOfService from "./components/TermsOfService"; // <-- New Component Import
+import AboutCodeLume from "./components/aboutcodelume";
+import TermsOfService from "./components/termsofservice";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 
@@ -45,36 +45,36 @@ function RouteTracker() {
   }, [pathname]);
 
   // Default SEO Data
-  let pageTitle = "Story Tutorials | Bespoke Web Engineering & Digital Agency"; 
-  let pageDesc = "Story Tutorials is a premium digital hub specialising in full-stack web development, UI/UX design, and advanced SEO.";
-  let pageUrl = `https://storytutorials.com${pathname}`; // Update with your actual domain when live
+  let pageTitle = "CodeLume® | Bespoke Web Engineering & Digital Agency"; 
+  let pageDesc = "CodeLume is a premium digital hub built by Rafay, specialising in full-stack web development, UI/UX design, and advanced SEO.";
+  let pageUrl = `https://codelume.com${pathname}`; // Update with your actual domain when live
 
   // Apply your custom titles and descriptions dynamically
   if (pathname === "/") {
-    pageTitle = "Story Tutorials | Bespoke Web Engineering & Digital Agency";
+    pageTitle = "CodeLume® | Bespoke Web Engineering & Digital Agency";
   } else if (pathname === "/start-project") {
-    pageTitle = "Start a Project | Story Tutorials";
-    pageDesc = "Ready to build something amazing? Hire us for custom web development and digital marketing services.";
+    pageTitle = "Start a Project | CodeLume";
+    pageDesc = "Ready to build something amazing? Hire Rafay for custom web development and digital marketing services.";
   } else if (pathname === "/services") {
-    pageTitle = "Services | Story Tutorials";
+    pageTitle = "Services | CodeLume";
     pageDesc = "Explore bespoke digital solutions including MERN Stack, WordPress, UI/UX Design, and custom web applications.";
   } else if (pathname === "/blogs") {
-    pageTitle = "Blogs | Story Tutorials";
+    pageTitle = "Blogs | CodeLume";
     pageDesc = "Explore the latest articles on MERN stack, WordPress, UI/UX, and local SEO strategies.";
   } else if (pathname === "/case-studies") {
-    pageTitle = "Case Studies | Story Tutorials";
-    pageDesc = "Discover how Story Tutorials solves complex business challenges through strategic design and development.";
+    pageTitle = "Case Studies | CodeLume";
+    pageDesc = "Discover how CodeLume solves complex business challenges through strategic design and development.";
   } else if (pathname === "/about") {
-    pageTitle = "About | Story Tutorials";
-    pageDesc = "Learn more about us, an independent freelance web development and UI/UX design hub.";
+    pageTitle = "About | CodeLume";
+    pageDesc = "Learn more about Rafay, an independent freelance web developer and UI/UX designer.";
   } else if (pathname === "/terms-of-service") {
-    pageTitle = "Terms of Service | Story Tutorials";
-    pageDesc = "Read the official Terms of Service and usage guidelines for Story Tutorials.";
+    pageTitle = "Terms of Service | CodeLume";
+    pageDesc = "Read the Terms of Service for using CodeLume's web development and digital services.";  
   } else if (pathname.includes("/admin")) {
-    pageTitle = "Dashboard | Story Tutorials";
-    pageDesc = "Admin dashboard for Story Tutorials website management.";
+    pageTitle = "Dashboard | CodeLume";
+    pageDesc = "Admin dashboard for CodeLume website management.";
   } else if (pathname.includes("/blogs/")) {
-    pageTitle = "Reading Article | Story Tutorials";
+    pageTitle = "Reading Article | CodeLume";
   }
 
   return (
@@ -133,19 +133,19 @@ export default function App() {
               {/* 5. CASE STUDIES PAGE */}
               <Route path="/case-studies" element={<CaseStudies />} />
 
-              {/* 6. ABOUT PAGE */}
+              {/* 6. ABOUT CODELUME PAGE */}
               <Route path="/about" element={<AboutCodeLume />} />
-              
+
+              {/* 7. INDIVIDUAL ARTICLE PAGE */}
+              <Route path="/blogs/:slug" element={<Article />} />
+
+              {/* 8. ADMIN LOGIN PAGE */}
+              <Route path="/admin/login" element={<AdminLogin />} />
+
               {/* 7. TERMS OF SERVICE PAGE */}
               <Route path="/terms-of-service" element={<TermsOfService />} />
 
-              {/* 8. INDIVIDUAL ARTICLE PAGE */}
-              <Route path="/blogs/:slug" element={<Article />} />
-
-              {/* 9. ADMIN LOGIN PAGE */}
-              <Route path="/admin/login" element={<AdminLogin />} />
-
-              {/* 10. ADMIN DASHBOARD (SECURED) */}
+              {/* 9. ADMIN DASHBOARD (SECURED) */}
               <Route
                 path="/admin/dashboard"
                 element={
@@ -155,7 +155,7 @@ export default function App() {
                 }
               />
 
-              {/* 11. ADMIN CREATE POST (SECURED) */}
+              {/* 10. ADMIN CREATE POST (SECURED) */}
               <Route
                 path="/admin/create-post"
                 element={
