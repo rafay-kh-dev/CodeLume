@@ -6,23 +6,32 @@ import {
   Menu,
   X,
   ChevronDown,
-  MonitorSmartphone,
-  Layers,
-  Server,
-  LayoutTemplate,
-  Store,
-  ShoppingBag,
-  Palette,
-  Webhook,
   ArrowRight,
 } from "lucide-react";
+// @thesvg/react se official icons import kiye gaye hain
+import {
+  React as ReactIcon,
+  Laravel,
+  Angular,
+  Wordpress,
+  Shopify,
+  Webflow,
+  K8sApiServer,
+} from "@thesvg/react";
+
+// Custom Platforms ke liye custom code icon component
+const CustomPlatformIcon = ({ className }) => (
+  <svg className={`fill-none stroke-current ${className}`} strokeWidth="2" viewBox="0 0 24 24">
+    <path d="M16 18l6-6-6-6M8 6l-6 6 6 6" strokeLinecap="round" strokeLinejoin="round"/>
+  </svg>
+);
 
 const servicesData = [
   {
     title: "MERN Stack",
     description:
       "Full-stack JavaScript solutions using MongoDB, Express, React, & Node.",
-    icon: Layers,
+    icon: ReactIcon,
     color: "text-blue-400",
     bgColor: "bg-blue-500/10",
     hoverBg: "group-hover:bg-blue-500/20",
@@ -30,7 +39,7 @@ const servicesData = [
   {
     title: "PHP & Laravel",
     description: "Robust, secure, and highly scalable backend architectures.",
-    icon: Server,
+    icon: Laravel,
     color: "text-red-400",
     bgColor: "bg-red-500/10",
     hoverBg: "group-hover:bg-red-500/20",
@@ -39,7 +48,7 @@ const servicesData = [
     title: "Angular Web Apps",
     description:
       "Enterprise-grade frontend frameworks for complex applications.",
-    icon: LayoutTemplate,
+    icon: Angular,
     color: "text-rose-400",
     bgColor: "bg-rose-500/10",
     hoverBg: "group-hover:bg-rose-500/20",
@@ -48,7 +57,7 @@ const servicesData = [
     title: "Custom Platforms",
     description:
       "Bespoke digital solutions tailored exactly to your business logic.",
-    icon: MonitorSmartphone,
+    icon: CustomPlatformIcon,
     color: "text-indigo-400",
     bgColor: "bg-indigo-500/10",
     hoverBg: "group-hover:bg-indigo-500/20",
@@ -57,7 +66,7 @@ const servicesData = [
     title: "WordPress & WooCommerce",
     description:
       "Custom themes, plugins, and powerful e-commerce integrations.",
-    icon: Store,
+    icon: Wordpress,
     color: "text-sky-400",
     bgColor: "bg-sky-500/10",
     hoverBg: "group-hover:bg-sky-500/20",
@@ -66,7 +75,7 @@ const servicesData = [
     title: "Shopify Development",
     description:
       "High-converting storefronts and highly customised Shopify apps.",
-    icon: ShoppingBag,
+    icon: Shopify,
     color: "text-emerald-400",
     bgColor: "bg-emerald-500/10",
     hoverBg: "group-hover:bg-emerald-500/20",
@@ -75,7 +84,7 @@ const servicesData = [
     title: "Webflow Sites",
     description:
       "Pixel-perfect, lightning-fast, and visually stunning responsive websites.",
-    icon: Palette,
+    icon: Webflow,
     color: "text-purple-400",
     bgColor: "bg-purple-500/10",
     hoverBg: "group-hover:bg-purple-500/20",
@@ -84,7 +93,7 @@ const servicesData = [
     title: "API & Integrations",
     description:
       "Connecting your web apps with third-party services seamlessly.",
-    icon: Webhook,
+    icon: K8sApiServer,
     color: "text-orange-400",
     bgColor: "bg-orange-500/10",
     hoverBg: "group-hover:bg-orange-500/20",
@@ -295,7 +304,7 @@ export default function Header() {
           {/* Top Gradient for subtle fade */}
           <div className="absolute top-0 left-0 w-full h-32 bg-linear-to-b from-[#030712] via-[#030712]/80 to-transparent z-10 pointer-events-none" />
 
-          {/* Scrollable Content Container - Button moved inside this container */}
+          {/* Scrollable Content Container */}
           <div className="relative z-0 px-6 py-8 h-full flex flex-col pt-32 pb-10 overflow-y-auto no-scrollbar">
             <div className="mb-10 flex-none">
               <h2 className="text-[11px] font-extrabold text-blue-500 uppercase tracking-[0.2em] mb-6 m-0 px-2 opacity-80">
@@ -364,7 +373,7 @@ export default function Header() {
               ))}
             </div>
 
-            {/* BUTTON MOVED HERE: Now flows naturally at the end of the scrollable list */}
+            {/* Start a Project Button */}
             <div
               className="mt-auto pt-4 flex-none transform-gpu will-change-transform"
               style={{
@@ -388,11 +397,10 @@ export default function Header() {
                 </h2>
               </Link>
             </div>
-            {/* Added bottom padding to ensure button isn't cut off by safe areas */}
             <div className="h-8 flex-none" />
           </div>
         </div>
       </div>
     </>
   );
-} 
+}
