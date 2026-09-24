@@ -46,10 +46,10 @@ function RouteTracker() {
 
   // Default SEO Data
   let pageTitle = "CodeLume® | Bespoke Web Engineering & Digital Agency"; 
-  let pageDesc = "CodeLume is a premium digital hub built by Rafay, specialising in full-stack web development, UI/UX design, and advanced SEO.";
-  let pageUrl = `https://codelume.com${pathname}`; // Update with your actual domain when live
+  let pageDesc = "CodeLume is a premium digital hub specialising in full-stack web development, UI/UX design, and advanced SEO.";
+  let pageUrl = `https://codelume.com${pathname}`;
 
-  // Apply your custom titles and descriptions dynamically
+  // Apply custom titles and descriptions dynamically
   if (pathname === "/") {
     pageTitle = "CodeLume® | Bespoke Web Engineering & Digital Agency";
   } else if (pathname === "/start-project") {
@@ -70,6 +70,9 @@ function RouteTracker() {
   } else if (pathname === "/terms-of-service") {
     pageTitle = "Terms of Service | CodeLume";
     pageDesc = "Read the Terms of Service for using CodeLume's web development and digital services.";  
+  } else if (pathname === "/admin/login") {
+    pageTitle = "Admin Login | CodeLume";
+    pageDesc = "Sign in to access the CodeLume management dashboard.";
   } else if (pathname.includes("/admin")) {
     pageTitle = "Dashboard | CodeLume";
     pageDesc = "Admin dashboard for CodeLume website management.";
@@ -83,7 +86,7 @@ function RouteTracker() {
       <meta name="description" content={pageDesc} />
       <link rel="canonical" href={pageUrl} />
 
-      {/* Open Graph Tags for Social Media (Facebook, LinkedIn, WhatsApp) */}
+      {/* Open Graph Tags for Social Media */}
       <meta property="og:type" content="website" />
       <meta property="og:url" content={pageUrl} />
       <meta property="og:title" content={pageTitle} />
@@ -139,13 +142,13 @@ export default function App() {
               {/* 7. INDIVIDUAL ARTICLE PAGE */}
               <Route path="/blogs/:slug" element={<Article />} />
 
-              {/* 8. ADMIN LOGIN PAGE */}
-              <Route path="/admin/login" element={<AdminLogin />} />
-
-              {/* 7. TERMS OF SERVICE PAGE */}
+              {/* 8. TERMS OF SERVICE PAGE */}
               <Route path="/terms-of-service" element={<TermsOfService />} />
 
-              {/* 9. ADMIN DASHBOARD (SECURED) */}
+              {/* 9. ADMIN LOGIN PAGE */}
+              <Route path="/admin/login" element={<AdminLogin />} />
+
+              {/* 10. ADMIN DASHBOARD (SECURED) */}
               <Route
                 path="/admin/dashboard"
                 element={
@@ -155,7 +158,7 @@ export default function App() {
                 }
               />
 
-              {/* 10. ADMIN CREATE POST (SECURED) */}
+              {/* 11. ADMIN CREATE POST (SECURED) */}
               <Route
                 path="/admin/create-post"
                 element={
