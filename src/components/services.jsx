@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 
 export default function Services() {
-  // Updated Services with Starting Prices for attraction
+  // Updated Services with Starting Prices between $100 and $150
   const services = [
     {
       id: 1,
@@ -23,7 +23,7 @@ export default function Services() {
       icon: <Layers className="w-6 h-6 text-blue-400" />,
       bg: "bg-blue-400/10",
       hoverBorder: "group-hover:border-blue-500/50",
-      price: "$499",
+      price: "$149",
       link: "/services/mern-stack"
     },
     {
@@ -33,7 +33,7 @@ export default function Services() {
       icon: <Server className="w-6 h-6 text-rose-400" />,
       bg: "bg-rose-400/10",
       hoverBorder: "group-hover:border-rose-500/50",
-      price: "$399",
+      price: "$139",
       link: "/services/php-laravel"
     },
     {
@@ -43,7 +43,7 @@ export default function Services() {
       icon: <AppWindow className="w-6 h-6 text-red-400" />,
       bg: "bg-red-400/10",
       hoverBorder: "group-hover:border-red-500/50",
-      price: "$449",
+      price: "$129",
       link: "/services/angular-apps"
     },
     {
@@ -53,7 +53,7 @@ export default function Services() {
       icon: <MonitorSmartphone className="w-6 h-6 text-indigo-400" />,
       bg: "bg-indigo-400/10",
       hoverBorder: "group-hover:border-indigo-500/50",
-      price: "$599",
+      price: "$149",
       link: "/services/custom-platforms"
     },
     {
@@ -63,7 +63,7 @@ export default function Services() {
       icon: <Store className="w-6 h-6 text-cyan-400" />,
       bg: "bg-cyan-400/10",
       hoverBorder: "group-hover:border-cyan-500/50",
-      price: "$199",
+      price: "$100",
       link: "/services/wordpress"
     },
     {
@@ -73,7 +73,7 @@ export default function Services() {
       icon: <ShoppingBag className="w-6 h-6 text-emerald-400" />,
       bg: "bg-emerald-400/10",
       hoverBorder: "group-hover:border-emerald-500/50",
-      price: "$299",
+      price: "$119",
       link: "/services/shopify"
     },
     {
@@ -83,7 +83,7 @@ export default function Services() {
       icon: <Palette className="w-6 h-6 text-purple-400" />,
       bg: "bg-purple-400/10",
       hoverBorder: "group-hover:border-purple-500/50",
-      price: "$249",
+      price: "$109",
       link: "/services/webflow"
     },
     {
@@ -93,13 +93,13 @@ export default function Services() {
       icon: <Webhook className="w-6 h-6 text-orange-400" />,
       bg: "bg-orange-400/10",
       hoverBorder: "group-hover:border-orange-500/50",
-      price: "$149",
+      price: "$100",
       link: "/services/api-integrations"
     }
   ];
 
   return (
-    <div className="min-h-dvh bg-[#030712] text-white font-jakarta pt-28 sm:pt-36 pb-20 overflow-hidden relative">
+    <div className="min-h-dvh bg-[#030712] text-white font-jakarta pt-28 sm:pt-36 pb-24 overflow-hidden relative">
       
       {/* Background Glowing Effects */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-[500px] bg-[radial-gradient(ellipse_at_top,rgba(37,99,235,0.08)_0%,transparent_70%)] pointer-events-none" />
@@ -130,7 +130,7 @@ export default function Services() {
           {services.map((service) => (
             <Link 
               key={service.id} 
-              to={service.link} // Yeh future package pages par le jayega
+              to={service.link}
               className={`flex flex-col bg-[#0a0f1c] border border-white/5 rounded-3xl p-6 group transition-all duration-500 hover:-translate-y-2 hover:bg-[#0f1629] hover:shadow-2xl ${service.hoverBorder}`}
             >
               {/* Icon */}
