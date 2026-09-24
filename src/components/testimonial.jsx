@@ -181,7 +181,7 @@ export default function PremiumReviewsSlider() {
 
   const ReviewCard = ({ review }) => (
     /* FIXED: rounded-2xl (increased radius), border-white/20 (crisper border), and stronger shadow for a sharp look */
-    <div className="w-64 sm:w-72 shrink-0 flex flex-col p-4 sm:p-5 bg-[#060913] border border-white/20 rounded-2xl hover:border-blue-400/80 transition-all duration-300 cursor-default relative hover:-translate-y-1.5 shadow-[0_8px_30px_rgba(0,0,0,0.6)]">
+    <div className="w-64 sm:w-72 shrink-0 flex flex-col p-4 sm:p-5 bg-[#060913] border border-white/20 rounded-4xl hover:border-blue-400/80 transition-all duration-300 cursor-default relative hover:-translate-y-1.5 shadow-[0_8px_30px_rgba(0,0,0,0.6)]">
       <div className="flex items-center justify-between gap-2.5 mb-3.5">
         {getPlatformLogo(review.platform)}
         <Quote className="w-5 h-5 text-slate-600 transform -scale-x-100 group-hover:text-blue-400/50 transition-colors" />
