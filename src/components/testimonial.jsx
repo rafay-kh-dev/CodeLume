@@ -180,8 +180,7 @@ export default function PremiumReviewsSlider() {
   };
 
   const ReviewCard = ({ review }) => (
-    /* FIXED: Increased width, added elegant dark gradients, subtle glowing borders, and glassmorphism touches */
-    <div className="group w-[300px] sm:w-[380px] shrink-0 flex flex-col p-6 sm:p-7 bg-gradient-to-b from-[#0a0f1c] to-[#030712] border border-white/5 rounded-[24px] hover:border-blue-500/40 transition-all duration-500 cursor-default relative hover:-translate-y-2 shadow-[0_8px_30px_rgba(0,0,0,0.4)] hover:shadow-[0_15px_40px_-10px_rgba(37,99,235,0.25)] overflow-hidden">
+    <div className="group w-75 sm:w-95 shrink-0 flex flex-col p-6 sm:p-7 bg-gradient-to-b from-[#0a0f1c] to-[#030712] border border-white/5 rounded-3xl hover:border-blue-500/40 transition-all duration-500 cursor-default relative hover:-translate-y-2 shadow-[0_8px_30px_rgba(0,0,0,0.4)] hover:shadow-[0_15px_40px_-10px_rgba(37,99,235,0.25)] overflow-hidden">
       {/* Subtle top inner glow on hover */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-[2px] bg-gradient-to-r from-transparent via-blue-400/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-[1px]" />
 
@@ -288,10 +287,10 @@ export default function PremiumReviewsSlider() {
             </h2>
           </div>
 
-          <div className="flex items-center gap-4 sm:gap-5 p-4 sm:p-6 rounded-2xl bg-linear-to-br from-blue-900/30 to-blue-600/10 border border-blue-500/20 backdrop-blur-md shadow-[0_0_40px_rgba(37,99,235,0.15)] relative overflow-hidden group shrink-0 lg:min-w-85">
+          <div className="flex items-center gap-4 sm:gap-5 p-4 sm:p-6 rounded-2xl bg-gradient-to-br from-blue-900/30 to-blue-600/10 border border-blue-500/20 backdrop-blur-md shadow-[0_0_40px_rgba(37,99,235,0.15)] relative overflow-hidden group shrink-0 lg:min-w-85">
             <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/20 rounded-full blur-3xl -mr-10 -mt-10 transition-transform duration-700 group-hover:scale-150 pointer-events-none" />
 
-            <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-linear-to-br from-blue-500 to-indigo-600 flex items-center justify-center shrink-0 shadow-lg shadow-blue-500/30 relative z-10">
+            <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shrink-0 shadow-lg shadow-blue-500/30 relative z-10">
               <BadgeCheck
                 className="w-6 h-6 sm:w-7 sm:h-7 text-white"
                 strokeWidth={2}
@@ -325,8 +324,8 @@ export default function PremiumReviewsSlider() {
 
       {/* Double Infinite Scroll Marquee Container */}
       <div className="relative w-full flex flex-col gap-6 sm:gap-8">
-        <div className="absolute top-0 left-0 h-full w-16 sm:w-32 bg-linear-to-r from-[#030712] via-[#030712]/80 to-transparent z-10 pointer-events-none" />
-        <div className="absolute top-0 right-0 h-full w-16 sm:w-32 bg-linear-to-l from-[#030712] via-[#030712]/80 to-transparent z-10 pointer-events-none" />
+        <div className="absolute top-0 left-0 h-full w-16 sm:w-32 bg-gradient-to-r from-[#030712] via-[#030712]/80 to-transparent z-10 pointer-events-none" />
+        <div className="absolute top-0 right-0 h-full w-16 sm:w-32 bg-gradient-to-l from-[#030712] via-[#030712]/80 to-transparent z-10 pointer-events-none" />
 
         {/* Row 1 - Forward */}
         <div className="marquee-row overflow-hidden w-full py-4 -my-4 flex">
