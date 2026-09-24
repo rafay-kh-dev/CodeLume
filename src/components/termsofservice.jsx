@@ -31,9 +31,6 @@ export default function TermsOfService() {
 
         {/* Page Header */}
         <div className="mb-12">
-          <div className="w-16 h-16 rounded-2xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center mb-6">
-            <ShieldCheck className="w-8 h-8 text-blue-400" />
-          </div>
           <h2 className="text-4xl sm:text-5xl font-black text-white tracking-tighter m-0 mb-4">
             Terms of Service
           </h2>
