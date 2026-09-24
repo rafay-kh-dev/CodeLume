@@ -16,7 +16,6 @@ import {
   Type,
   UploadCloud,
 } from "lucide-react";
-import { API_URL } from "../lib/api";
 
 export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState("overview");
@@ -31,13 +30,17 @@ export default function AdminDashboard() {
   const [newCatName, setNewCatName] = useState("");
   const [newCatSlug, setNewCatSlug] = useState("");
 
-  // Fetch Live Data from MongoDB Backend using dynamic API URL
+  // Use Dynamic URL directly to avoid localhost issues
+  const API_BASE_URL =
+    import.meta.env.VITE_API_URL || "https://codelume-backend.onrender.com";
+
+  // Fetch Live Data from MongoDB Backend
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
         setIsLoading(true);
         // 1. Fetch live posts
-        const postResponse = await fetch(`${API_URL}/api/blogs`);
+        const postResponse = await fetch(`${API_BASE_URL}/api/blogs`);
         if (postResponse.ok) {
           const postData = await postResponse.json();
 
@@ -65,15 +68,15 @@ export default function AdminDashboard() {
         }
 
         // 2. Fetch live categories
-        const catResponse = await fetch(`${API_URL}/api/categories`);
+        const catResponse = await fetch(`${API_BASE_URL}/api/categories`);
         if (catResponse.ok) {
           const catData = await catResponse.json();
           setCategories(
-            catData.map((cat, index) => ({
-              id: index,
+            catData.map((cat) => ({
+              id: cat._id,
               name: cat.name,
-              slug: cat.name.toLowerCase().replace(/ /g, "-"),
-              count: 0,
+              slug: cat.slug,
+              count: cat.count || 0,
             })),
           );
         }
@@ -85,36 +88,74 @@ export default function AdminDashboard() {
     };
 
     fetchDashboardData();
-  }, []);
+  }, [API_BASE_URL]);
 
   const handleLogout = () => {
     localStorage.removeItem("adminToken");
     navigate("/admin/login");
   };
 
-  const handleAddCategory = () => {
+  // Add Category to Database
+  const handleAddCategory = async () => {
     if (!newCatName || !newCatSlug) {
       alert("Please fill in both the Name and Slug fields, mate!");
       return;
     }
-    const newCategory = {
-      id: Date.now(),
-      name: newCatName,
-      slug: newCatSlug,
-      count: 0,
-    };
-    setCategories([newCategory, ...categories]);
-    setNewCatName("");
-    setNewCatSlug("");
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/categories`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("adminToken")}`,
+        },
+        body: JSON.stringify({ name: newCatName, slug: newCatSlug }),
+      });
+
+      if (response.ok) {
+        const savedCategory = await response.json();
+        const newCategory = {
+          id: savedCategory._id,
+          name: savedCategory.name,
+          slug: savedCategory.slug,
+          count: 0,
+        };
+        setCategories([newCategory, ...categories]);
+        setNewCatName("");
+        setNewCatSlug("");
+      } else {
+        alert("Failed to save category to the database.");
+      }
+    } catch (error) {
+      console.error("Error saving category:", error);
+    }
   };
 
-  // Live Delete from MongoDB Database using dynamic API URL
+  // Delete Category from Database
+  const handleDeleteCategory = async (id) => {
+    if (window.confirm("Are you sure you want to delete this category?")) {
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/categories/${id}`, {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("adminToken")}`,
+          },
+        });
+        if (response.ok) {
+          setCategories(categories.filter((cat) => cat.id !== id));
+        }
+      } catch (error) {
+        console.error("Error deleting category:", error);
+      }
+    }
+  };
+
   const handleDeletePost = async (id) => {
     if (
       window.confirm("Are you sure you want to delete this post permanently?")
     ) {
       try {
-        const response = await fetch(`${API_URL}/api/blogs/${id}`, {
+        const response = await fetch(`${API_BASE_URL}/api/blogs/${id}`, {
           method: "DELETE",
         });
         if (response.ok) {
@@ -128,12 +169,6 @@ export default function AdminDashboard() {
     }
   };
 
-  const handleDeleteCategory = (id) => {
-    if (window.confirm("Are you sure you want to delete this category?")) {
-      setCategories(categories.filter((cat) => cat.id !== id));
-    }
-  };
-
   const handleFileUpload = async (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -141,7 +176,7 @@ export default function AdminDashboard() {
       formData.append("file", file);
 
       try {
-        const response = await fetch(`${API_URL}/api/media`, {
+        const response = await fetch(`${API_BASE_URL}/api/media`, {
           method: "POST",
           body: formData,
         });
@@ -149,7 +184,7 @@ export default function AdminDashboard() {
         if (response.ok) {
           const data = await response.json();
           const newMediaItem = {
-            id: Date.now(),
+            id: Date.now().toString(),
             url: data.url,
             alt: "New Upload",
           };
