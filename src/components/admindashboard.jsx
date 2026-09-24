@@ -1,12 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
-  LayoutDashboard,
   FileText,
   FolderOpen,
   Image as ImageIcon,
-  CalendarClock,
-  Settings,
   Plus,
   Edit,
   Trash2,
@@ -18,7 +15,7 @@ import {
 } from "lucide-react";
 
 export default function AdminDashboard() {
-  const [activeTab, setActiveTab] = useState("overview");
+  const [activeTab, setActiveTab] = useState("posts"); // Default tab is now posts
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
 
@@ -29,6 +26,10 @@ export default function AdminDashboard() {
 
   const [newCatName, setNewCatName] = useState("");
   const [newCatSlug, setNewCatSlug] = useState("");
+
+  // Filters State
+  const [searchQuery, setSearchQuery] = useState("");
+  const [statusFilter, setStatusFilter] = useState("All");
 
   // Use Dynamic URL directly to avoid localhost issues
   const API_BASE_URL =
@@ -48,7 +49,15 @@ export default function AdminDashboard() {
             id: post._id,
             title: post.title,
             category: post.category || "Uncategorized",
-            status: post.status === "published" ? "Published" : "Draft",
+            // Normalize status to match filter tabs exactly
+            status:
+              post.status === "published"
+                ? "Published"
+                : post.status === "scheduled"
+                  ? "Scheduled"
+                  : post.status === "trash"
+                    ? "Trash"
+                    : "Draft",
             date: new Date(post.createdAt).toLocaleDateString("en-AU", {
               day: "numeric",
               month: "short",
@@ -218,6 +227,16 @@ export default function AdminDashboard() {
     }
   };
 
+  // Filter Logic combining Search and Status
+  const filteredPosts = posts.filter((post) => {
+    const matchesSearch = post.title
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase());
+    const matchesStatus =
+      statusFilter === "All" || post.status === statusFilter;
+    return matchesSearch && matchesStatus;
+  });
+
   if (isLoading) {
     return (
       <div className="min-h-screen bg-[#030712] flex items-center justify-center text-white">
@@ -242,12 +261,6 @@ export default function AdminDashboard() {
 
         <nav className="flex flex-col gap-2 grow">
           <NavItem
-            active={activeTab === "overview"}
-            onClick={() => setActiveTab("overview")}
-            icon={<LayoutDashboard size={18} />}
-            label="Overview"
-          />
-          <NavItem
             active={activeTab === "posts"}
             onClick={() => setActiveTab("posts")}
             icon={<FileText size={18} />}
@@ -265,20 +278,9 @@ export default function AdminDashboard() {
             icon={<ImageIcon size={18} />}
             label="Media Library"
           />
-          <NavItem
-            active={activeTab === "scheduled"}
-            onClick={() => setActiveTab("scheduled")}
-            icon={<CalendarClock size={18} />}
-            label="Scheduled"
-          />
         </nav>
 
         <div className="pt-6 border-t border-white/5 mt-auto flex flex-col gap-2">
-          <NavItem
-            active={false}
-            icon={<Settings size={18} />}
-            label="Settings"
-          />
           <button
             onClick={handleLogout}
             className="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all font-semibold text-sm text-red-400 hover:bg-red-500/10 hover:text-red-500"
@@ -289,61 +291,6 @@ export default function AdminDashboard() {
       </aside>
 
       <main className="flex-1 ml-0 md:ml-64 p-6 lg:p-10">
-        {activeTab === "overview" && (
-          <div className="animate-in fade-in duration-500">
-            <div className="mb-8">
-              <h2 className="text-3xl font-black text-white m-0">
-                Dashboard Overview
-              </h2>
-              <p className="text-slate-400 text-sm mt-1">
-                Welcome back! Here is a summary of your site.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-              <div className="bg-[#0a0f1c] border border-white/5 p-6 rounded-2xl shadow-lg flex items-center gap-4">
-                <div className="p-4 bg-[#3b82f6]/10 text-[#3b82f6] rounded-xl">
-                  <FileText size={24} />
-                </div>
-                <div>
-                  <p className="text-slate-400 text-sm font-bold uppercase tracking-wider">
-                    Total Posts
-                  </p>
-                  <h2 className="text-3xl font-black text-white m-0">
-                    {posts.length}
-                  </h2>
-                </div>
-              </div>
-              <div className="bg-[#0a0f1c] border border-white/5 p-6 rounded-2xl shadow-lg flex items-center gap-4">
-                <div className="p-4 bg-purple-500/10 text-purple-500 rounded-xl">
-                  <ImageIcon size={24} />
-                </div>
-                <div>
-                  <p className="text-slate-400 text-sm font-bold uppercase tracking-wider">
-                    Media Assets
-                  </p>
-                  <h2 className="text-3xl font-black text-white m-0">
-                    {media.length}
-                  </h2>
-                </div>
-              </div>
-              <div className="bg-[#0a0f1c] border border-white/5 p-6 rounded-2xl shadow-lg flex items-center gap-4">
-                <div className="p-4 bg-green-500/10 text-green-500 rounded-xl">
-                  <FolderOpen size={24} />
-                </div>
-                <div>
-                  <p className="text-slate-400 text-sm font-bold uppercase tracking-wider">
-                    Categories
-                  </p>
-                  <h2 className="text-3xl font-black text-white m-0">
-                    {categories.length}
-                  </h2>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
         {activeTab === "posts" && (
           <div className="animate-in fade-in duration-500">
             <div className="flex justify-between items-end mb-8">
@@ -363,15 +310,38 @@ export default function AdminDashboard() {
               </Link>
             </div>
 
-            <div className="bg-[#0a0f1c] border border-white/5 rounded-2xl overflow-hidden">
-              <div className="p-4 border-b border-white/5 flex items-center justify-between">
-                <div className="relative w-72">
+            <div className="bg-[#0a0f1c] border border-white/5 rounded-2xl overflow-hidden flex flex-col">
+              {/* TOP TOOLBAR: Search & Filters */}
+              <div className="p-4 border-b border-white/5 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                {/* Status Filters */}
+                <div className="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0 hide-scrollbar">
+                  {["All", "Published", "Draft", "Scheduled", "Trash"].map(
+                    (status) => (
+                      <button
+                        key={status}
+                        onClick={() => setStatusFilter(status)}
+                        className={`px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all ${
+                          statusFilter === status
+                            ? "bg-[#3b82f6] text-white"
+                            : "bg-white/5 text-slate-400 hover:bg-white/10 hover:text-white"
+                        }`}
+                      >
+                        {status}
+                      </button>
+                    ),
+                  )}
+                </div>
+
+                {/* Search Bar */}
+                <div className="relative w-full md:w-72 shrink-0">
                   <Search
                     className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500"
                     size={16}
                   />
                   <input
                     type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="Search posts..."
                     className="w-full bg-[#030712] border border-white/5 rounded-lg py-2 pl-10 pr-4 text-sm text-white focus:outline-none focus:border-[#3b82f6]"
                   />
@@ -389,7 +359,7 @@ export default function AdminDashboard() {
                   </tr>
                 </thead>
                 <tbody>
-                  {posts.map((post) => (
+                  {filteredPosts.map((post) => (
                     <tr
                       key={post.id}
                       className="border-b border-white/5 hover:bg-white/2 transition-colors group"
@@ -433,13 +403,15 @@ export default function AdminDashboard() {
                       </td>
                     </tr>
                   ))}
-                  {posts.length === 0 && (
+                  {filteredPosts.length === 0 && (
                     <tr>
                       <td
                         colSpan="5"
                         className="p-8 text-center text-slate-500"
                       >
-                        No posts found in MongoDB. Create your first post!
+                        {posts.length === 0
+                          ? "No posts found in MongoDB. Create your first post!"
+                          : "No posts match your selected filter or search."}
                       </td>
                     </tr>
                   )}
@@ -634,6 +606,7 @@ function StatusBadge({ status }) {
     Published: "bg-green-500/10 text-green-500 border-green-500/20",
     Draft: "bg-slate-500/10 text-slate-400 border-slate-500/20",
     Scheduled: "bg-orange-500/10 text-orange-400 border-orange-500/20",
+    Trash: "bg-red-500/10 text-red-500 border-red-500/20",
   };
   return (
     <span
