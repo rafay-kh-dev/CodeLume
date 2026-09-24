@@ -12,7 +12,7 @@ import Navbar from "./components/header";
 import Hero from "./components/hero";
 import About from "./components/about";
 import CaseStudies from "./components/casestudies";
-import Services from "./components/service";
+import Service from "./components/service";
 import OurProcess from "./components/ourprocess";
 import Testimonials from "./components/testimonial";
 import Blog from "./components/blogs";
