@@ -6,12 +6,10 @@ import { Whatsapp, Gmail2026 } from '@thesvg/react';
 export default function AboutCodeLume() {
   return (
     <div className="min-h-dvh bg-[#030712] text-white font-jakarta pt-24 pb-20 overflow-hidden relative">
-      {/* Background Glowing Effects */}
       <div className="absolute top-40 left-1/2 -translate-x-1/2 w-full max-w-3xl h-[400px] bg-[#3b82f6]/10 rounded-full blur-[120px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
         
-        {/* Hero Section */}
         <div className="text-center max-w-3xl mx-auto mb-20 mt-10">
           <h2 className="text-[#3b82f6] text-sm font-black uppercase tracking-[0.2em] mb-4 m-0">
             About CodeLume & The Creator
@@ -27,7 +25,6 @@ export default function AboutCodeLume() {
           </p>
         </div>
 
-        {/* Story / About Rafay Section with Code Visual */}
         <div className="bg-[#0a0f1c] border border-white/5 rounded-3xl p-8 md:p-12 lg:p-16 mb-24 shadow-2xl flex flex-col lg:flex-row gap-12 items-center relative overflow-hidden">
           <div className="absolute top-0 right-0 w-64 h-64 bg-[#3b82f6]/5 rounded-full blur-[80px]" />
           
@@ -56,19 +53,16 @@ export default function AboutCodeLume() {
             </ul>
           </div>
           
-          {/* Code Editor Visual Mockup */}
           <div className="flex-1 w-full flex justify-center lg:justify-end relative z-10">
             <div className="relative w-full max-w-md aspect-square sm:aspect-[4/3] rounded-3xl bg-linear-to-br from-[#1e293b]/50 to-[#0f172a]/50 border border-white/10 flex items-center justify-center overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] p-4 group">
               
               <div className="absolute inset-4 bg-[#030712] rounded-2xl border border-white/5 flex flex-col shadow-2xl overflow-hidden z-20 group-hover:scale-[1.02] transition-transform duration-500">
-                {/* Mac OS Style Window Controls */}
                 <div className="h-10 border-b border-white/5 flex items-center px-4 gap-2 bg-white/[0.02]">
                   <div className="w-3 h-3 rounded-full bg-red-500/80"></div>
                   <div className="w-3 h-3 rounded-full bg-yellow-500/80"></div>
                   <div className="w-3 h-3 rounded-full bg-green-500/80"></div>
                   <div className="ml-2 text-[10px] text-slate-500 font-mono tracking-widest uppercase">developer.js</div>
                 </div>
-                {/* Code Content */}
                 <div className="p-6 font-mono text-sm md:text-base text-slate-400 flex flex-col gap-2 overflow-hidden">
                   <p><span className="text-[#c678dd]">const</span> <span className="text-[#e5c07b]">developer</span> <span className="text-[#56b6c2]">=</span> <span className="text-[#e06c75]">{"{"}</span></p>
                   <p className="pl-4">name: <span className="text-[#98c379]">'Rafay'</span>,</p>
@@ -79,14 +73,11 @@ export default function AboutCodeLume() {
                   <p className="mt-2 animate-pulse text-[#61afef]">_</p>
                 </div>
               </div>
-              {/* Blue Glow Behind Code Box */}
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-[#3b82f6]/20 rounded-full blur-[60px] z-10" />
-            
             </div>
           </div>
         </div>
 
-        {/* Features / Services Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-24">
           <FeatureCard 
             icon={<Code size={24} />} 
@@ -110,7 +101,6 @@ export default function AboutCodeLume() {
           />
         </div>
 
-        {/* Heavy CTA / Contact Section */}
         <div className="bg-linear-to-br from-[#0a0f1c] to-[#030712] border border-[#3b82f6]/20 rounded-3xl p-10 md:p-12 lg:p-16 text-center max-w-5xl mx-auto shadow-[0_0_50px_rgba(59,130,246,0.15)]">
           <h2 className="text-3xl md:text-4xl font-black text-white m-0 tracking-tight mb-4">
             Ready to start your next project?
@@ -119,15 +109,7 @@ export default function AboutCodeLume() {
             I am currently accepting new clients. Get in touch directly to discuss your requirements, get a custom quote, and let us build something amazing together.
           </p>
           
-          {/* 3 Buttons in a Single Equal Row */}
           <div className="flex flex-col md:flex-row justify-center items-stretch gap-4 w-full">
-            
-            <Link
-              to="/start-project"
-              className="flex-1 flex items-center justify-center gap-2 px-6 h-14 rounded-xl bg-linear-to-r from-[#3b82f6] to-[#2563eb] text-white font-bold transition-all shadow-[0_0_20px_rgba(59,130,246,0.3)] hover:shadow-[0_0_30px_rgba(59,130,246,0.5)] hover:-translate-y-1 w-full"
-            >
-              <Rocket size={20} /> Hire Me Now
-            </Link>
             
             <a
               href="mailto:your.email@example.com"
@@ -135,6 +117,13 @@ export default function AboutCodeLume() {
             >
               <Gmail2026 className="h-6 w-6" /> Email Directly
             </a>
+
+            <Link
+              to="/start-project"
+              className="flex-1 flex items-center justify-center gap-2 px-6 h-14 rounded-xl bg-linear-to-r from-[#3b82f6] to-[#2563eb] text-white font-bold transition-all shadow-[0_0_20px_rgba(59,130,246,0.3)] hover:shadow-[0_0_30px_rgba(59,130,246,0.5)] hover:-translate-y-1 w-full"
+            >
+              <Rocket size={20} /> Hire Me Now
+            </Link>
 
             <a
               href="https://wa.me/1234567890" 
