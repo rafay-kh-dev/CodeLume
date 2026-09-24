@@ -34,7 +34,7 @@ app.post('/api/blogs', upload.single('coverImage'), async (req, res) => {
     if (tags) {
       try {
         parsedTags = JSON.parse(tags);
-      } catch(e) {
+      } catch {
         parsedTags = tags.split(',');
       }
     }

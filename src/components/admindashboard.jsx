@@ -15,8 +15,8 @@ import {
   Link as LinkIcon,
   Type,
   UploadCloud,
-  Activity,
 } from "lucide-react";
+import { API_URL } from "../lib/api";
 
 export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState("overview");
@@ -36,8 +36,6 @@ export default function AdminDashboard() {
     const fetchDashboardData = async () => {
       try {
         setIsLoading(true);
-        const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
-
         // 1. Fetch live posts
         const postResponse = await fetch(`${API_URL}/api/blogs`);
         if (postResponse.ok) {
@@ -116,7 +114,6 @@ export default function AdminDashboard() {
       window.confirm("Are you sure you want to delete this post permanently?")
     ) {
       try {
-        const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
         const response = await fetch(`${API_URL}/api/blogs/${id}`, {
           method: "DELETE",
         });
@@ -144,7 +141,6 @@ export default function AdminDashboard() {
       formData.append("file", file);
 
       try {
-        const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
         const response = await fetch(`${API_URL}/api/media`, {
           method: "POST",
           body: formData,

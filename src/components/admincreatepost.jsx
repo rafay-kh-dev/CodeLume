@@ -11,6 +11,7 @@ import {
   Tag,
   ArrowLeft,
 } from "lucide-react";
+import { API_URL } from "../lib/api";
 
 export default function AdminCreatePost() {
   const [categories, setCategories] = useState([]); // Dynamic categories state
@@ -35,7 +36,6 @@ export default function AdminCreatePost() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
         const response = await fetch(`${API_URL}/api/categories`);
         if (response.ok) {
           const data = await response.json();
@@ -100,7 +100,6 @@ export default function AdminCreatePost() {
     }
 
     try {
-      const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
       const response = await fetch(`${API_URL}/api/blogs`, {
         method: "POST",
         headers: {

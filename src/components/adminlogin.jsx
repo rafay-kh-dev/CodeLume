@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Lock, Loader2, ArrowRight } from "lucide-react";
+import { API_URL } from "../lib/api";
 
 export default function AdminLogin() {
   const [username, setUsername] = useState("");
@@ -15,7 +16,6 @@ export default function AdminLogin() {
     setError("");
 
     try {
-      const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
       const response = await fetch(`${API_URL}/api/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -30,7 +30,7 @@ export default function AdminLogin() {
       } else {
         setError(data.message);
       }
-    } catch (err) {
+    } catch {
       setError("Server error. Please make sure backend is running.");
     } finally {
       setIsLoading(false);

@@ -11,6 +11,7 @@ import {
   Mail,
   Loader2,
 } from "lucide-react";
+import { API_URL } from "../lib/api";
 
 export default function Blog() {
   const [posts, setPosts] = useState([]);
@@ -34,7 +35,6 @@ export default function Blog() {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
         const response = await fetch(`${API_URL}/api/blogs`);
         if (!response.ok) throw new Error("Failed to fetch");
         const data = await response.json();
@@ -57,11 +57,6 @@ export default function Blog() {
       post.excerpt.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
   });
-
-  // Reset to page 1 when filters change
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [activeCategory, searchQuery]);
 
   // Pagination Logic
   const indexOfLastPost = currentPage * postsPerPage;
@@ -212,7 +207,10 @@ export default function Blog() {
                   <input
                     type="text"
                     value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
+                    onChange={(e) => {
+                      setSearchQuery(e.target.value);
+                      setCurrentPage(1);
+                    }}
                     placeholder="Search articles..."
                     className="w-full bg-[#030712] border border-white/10 rounded-xl py-3.5 pl-4 pr-10 text-[14px] text-white placeholder-slate-500 focus:outline-none focus:border-blue-500/50 transition-all shadow-inner"
                   />
@@ -229,7 +227,10 @@ export default function Blog() {
                   {categories.map((cat) => (
                     <button
                       key={cat}
-                      onClick={() => setActiveCategory(cat)}
+                      onClick={() => {
+                        setActiveCategory(cat);
+                        setCurrentPage(1);
+                      }}
                       className={`px-4 py-2 rounded-lg text-[13px] font-bold tracking-wide transition-all duration-300 outline-none cursor-pointer ${
                         activeCategory === cat
                           ? "bg-blue-600 text-white shadow-[0_0_15px_rgba(37,99,235,0.4)]"

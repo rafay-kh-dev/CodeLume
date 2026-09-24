@@ -1,4 +1,18 @@
-# React + Vite
+# CodeLume
+
+## Deploying the frontend and backend
+
+The Vercel project deploys the React frontend only. Deploy `codelume-backend`
+to a Node-compatible host (such as Render, Railway, or a VPS), then add the
+backend's public URL as the Vercel environment variable `VITE_API_URL` for
+the **Production** environment. Redeploy the frontend after saving the
+variable.
+
+For local development, copy `.env.example` to `.env` and use:
+
+```text
+VITE_API_URL=http://localhost:5000
+```
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 

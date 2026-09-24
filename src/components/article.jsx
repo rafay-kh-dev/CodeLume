@@ -10,6 +10,7 @@ import {
   Link2,
   Newspaper,
 } from "lucide-react";
+import { API_URL } from "../lib/api";
 
 export default function Article() {
   const { slug } = useParams();
@@ -19,8 +20,6 @@ export default function Article() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
-
     // 1. Fetch current article using dynamic API URL
     const fetchSinglePost = async () => {
       try {
