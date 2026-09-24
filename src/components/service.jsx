@@ -1,25 +1,26 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import {
-  Layers,
-  Server,
-  Store,
-  Workflow,
   Clock,
   CreditCard,
   ArrowRight,
   CheckCircle2,
+  Webhook
 } from "lucide-react";
+// Import Real Technology Icons
+import { React as ReactIcon, Laravel, Shopify } from "@thesvg/react";
 
 export default function Capabilities() {
+  // Only 4 core services kept as requested
   const services = [
     {
       title: "MERN Stack Solutions",
       description:
         "Full-stack JavaScript applications using MongoDB, Express, React, & Node.js for enterprise-scale performance.",
-      icon: Layers,
-      accent: "text-blue-500",
+      icon: <ReactIcon className="w-8 h-8" />,
+      accent: "text-blue-400",
       bg: "bg-blue-500/10",
+      borderHover: "hover:border-blue-500/40",
       price: "From $2,500",
       timeline: "6-8 Weeks",
       features: [
@@ -32,9 +33,10 @@ export default function Capabilities() {
       title: "PHP & Laravel Systems",
       description:
         "Robust, secure, and highly scalable backend architectures customised precisely for complex business logic.",
-      icon: Server,
-      accent: "text-rose-500",
+      icon: <Laravel className="w-8 h-8" />,
+      accent: "text-rose-400",
       bg: "bg-rose-500/10",
+      borderHover: "hover:border-rose-500/40",
       price: "From $1,800",
       timeline: "4-6 Weeks",
       features: [
@@ -47,9 +49,10 @@ export default function Capabilities() {
       title: "Advanced E-Commerce",
       description:
         "High-converting storefronts and highly customised Shopify & WooCommerce architectures for global sales.",
-      icon: Store,
-      accent: "text-emerald-500",
+      icon: <Shopify className="w-8 h-8" />,
+      accent: "text-emerald-400",
       bg: "bg-emerald-500/10",
+      borderHover: "hover:border-emerald-500/40",
       price: "From $2,000",
       timeline: "4-8 Weeks",
       features: [
@@ -62,9 +65,10 @@ export default function Capabilities() {
       title: "API & Integrations",
       description:
         "Connecting your web applications with third-party services seamlessly to automate complex operational workflows.",
-      icon: Workflow,
-      accent: "text-amber-500",
+      icon: <Webhook className="w-8 h-8 text-amber-400 stroke-[1.5]" />,
+      accent: "text-amber-400",
       bg: "bg-amber-500/10",
+      borderHover: "hover:border-amber-500/40",
       price: "From $1,200",
       timeline: "2-4 Weeks",
       features: [
@@ -77,7 +81,7 @@ export default function Capabilities() {
 
   return (
     <section
-      className="w-full py-16 sm:py-24 lg:py-32 bg-[#030712] font-jakarta"
+      className="w-full py-16 sm:py-24 lg:py-32 bg-[#030712] font-jakarta relative overflow-hidden"
       id="services"
     >
       <style>
@@ -85,7 +89,10 @@ export default function Capabilities() {
           .font-jakarta { font-family: 'Plus Jakarta Sans', sans-serif; }`}
       </style>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Background Subtle Gradient Glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl h-[600px] bg-blue-900/10 blur-[120px] rounded-full pointer-events-none" />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Sharp Header with Button Layout */}
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-12 sm:mb-20">
           <div className="flex flex-col items-start text-left max-w-2xl">
@@ -104,7 +111,7 @@ export default function Capabilities() {
 
           <Link
             to="/services"
-            className="group flex items-center justify-center gap-3 px-6 py-4 rounded-xl bg-blue-600 text-white hover:bg-blue-700 transition-all duration-300 outline-none w-full sm:w-fit shrink-0"
+            className="group flex items-center justify-center gap-3 px-6 py-4 rounded-xl bg-blue-600 text-white hover:bg-blue-700 hover:shadow-[0_0_20px_rgba(37,99,235,0.4)] transition-all duration-300 outline-none w-full sm:w-fit shrink-0"
           >
             <h2 className="text-[14px] font-black m-0 text-inherit tracking-wide">
               View All Services
@@ -113,83 +120,80 @@ export default function Capabilities() {
           </Link>
         </div>
 
-        {/* Sharp Service Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
-          {services.map((item, index) => {
-            const Icon = item.icon;
-            return (
-              <div
-                key={index}
-                className="group flex flex-col p-6 sm:p-8 lg:p-10 bg-[#070b14] border border-white/5 rounded-2xl hover:border-white/15 hover:bg-[#0a0f1c] transition-colors duration-200 cursor-default"
-              >
-                {/* Icon & Title Row */}
-                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 sm:gap-6 mb-6 sm:mb-8">
-                  <div
-                    className={`w-14 h-14 rounded-xl ${item.bg} border border-white/5 flex items-center justify-center shrink-0`}
-                  >
-                    <Icon
-                      className={`w-6 h-6 ${item.accent}`}
-                      strokeWidth={2.5}
-                    />
-                  </div>
-                  <div className="flex flex-col">
-                    <h2 className="text-2xl font-black text-white m-0 tracking-tight mb-2 group-hover:text-blue-100 transition-colors">
-                      {item.title}
-                    </h2>
-                    <h2 className="text-[14px] sm:text-[15px] text-slate-400 leading-relaxed font-medium m-0 max-w-md">
-                      {item.description}
-                    </h2>
-                  </div>
-                </div>
+        {/* Updated Service Grid with Modern Box Styling */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-6 lg:gap-8">
+          {services.map((item, index) => (
+            <div
+              key={index}
+              className={`group flex flex-col p-6 sm:p-8 lg:p-10 bg-linear-to-b from-[#0a0f1c] to-[#050811] border border-white/5 rounded-3xl ${item.borderHover} hover:shadow-[0_10px_40px_-10px_rgba(0,0,0,0.5)] hover:-translate-y-1 transition-all duration-300 cursor-default relative overflow-hidden`}
+            >
+              {/* Top Highlight line on hover */}
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-[1px] bg-linear-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
-                {/* Features List (No Lines, Pure Spacing) */}
-                <div className="flex flex-col gap-3 mb-8 sm:mb-10 pl-2 sm:pl-20">
-                  {item.features.map((feature, i) => (
-                    <div key={i} className="flex items-center gap-3">
-                      <CheckCircle2
-                        className={`w-4 h-4 ${item.accent} shrink-0`}
-                      />
-                      <h2 className="text-[14px] font-bold text-slate-300 m-0 tracking-wide">
-                        {feature}
-                      </h2>
-                    </div>
-                  ))}
+              {/* Icon & Title Row */}
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 sm:gap-6 mb-6 sm:mb-8">
+                <div
+                  className={`w-16 h-16 rounded-2xl ${item.bg} border border-white/10 flex items-center justify-center shrink-0 shadow-inner`}
+                >
+                  {item.icon}
                 </div>
-
-                {/* Price & Timeline Metadata Tags */}
-                <div className="mt-auto flex flex-wrap items-center gap-3 sm:gap-4 pl-0 sm:pl-20">
-                  <div className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-white/5 border border-white/5">
-                    <CreditCard className="w-4 h-4 text-slate-400" />
-                    <h2 className="text-[13px] font-black text-slate-200 uppercase tracking-widest m-0">
-                      {item.price}
-                    </h2>
-                  </div>
-                  <div className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-white/5 border border-white/5">
-                    <Clock className="w-4 h-4 text-slate-400" />
-                    <h2 className="text-[13px] font-black text-slate-200 uppercase tracking-widest m-0">
-                      {item.timeline}
-                    </h2>
-                  </div>
+                <div className="flex flex-col">
+                  <h2 className="text-2xl font-black text-white m-0 tracking-tight mb-2 group-hover:text-blue-300 transition-colors">
+                    {item.title}
+                  </h2>
+                  <h2 className="text-[14px] sm:text-[15px] text-slate-400 leading-relaxed font-medium m-0 max-w-md">
+                    {item.description}
+                  </h2>
                 </div>
               </div>
-            );
-          })}
+
+              {/* Features List (No Lines, Pure Spacing) */}
+              <div className="flex flex-col gap-3 mb-8 sm:mb-10 pl-2 sm:pl-22">
+                {item.features.map((feature, i) => (
+                  <div key={i} className="flex items-center gap-3">
+                    <CheckCircle2
+                      className={`w-4 h-4 ${item.accent} shrink-0`}
+                    />
+                    <h2 className="text-[14px] font-bold text-slate-300 m-0 tracking-wide group-hover:text-white transition-colors">
+                      {feature}
+                    </h2>
+                  </div>
+                ))}
+              </div>
+
+              {/* Price & Timeline Metadata Tags */}
+              <div className="mt-auto flex flex-wrap items-center gap-3 sm:gap-4 pl-0 sm:pl-22">
+                <div className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-[#ffffff05] border border-white/10 group-hover:bg-[#ffffff08] transition-colors">
+                  <CreditCard className="w-4 h-4 text-slate-400" />
+                  <h2 className="text-[13px] font-black text-slate-200 uppercase tracking-widest m-0">
+                    {item.price}
+                  </h2>
+                </div>
+                <div className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-[#ffffff05] border border-white/10 group-hover:bg-[#ffffff08] transition-colors">
+                  <Clock className="w-4 h-4 text-slate-400" />
+                  <h2 className="text-[13px] font-black text-slate-200 uppercase tracking-widest m-0">
+                    {item.timeline}
+                  </h2>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
 
         {/* Global Delivery CTA Banner */}
-        <div className="mt-4 sm:mt-6 w-full rounded-2xl bg-blue-600 p-6 sm:p-8 lg:p-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-8 active:scale-[0.98] md:active:scale-100 transition-transform duration-200">
+        <div className="mt-10 sm:mt-14 w-full rounded-2xl bg-linear-to-r from-blue-600 to-indigo-600 p-8 sm:p-10 lg:p-12 flex flex-col md:flex-row items-start md:items-center justify-between gap-8 active:scale-[0.99] transition-transform duration-200 shadow-xl shadow-blue-900/20">
           <div className="flex flex-col">
-            <h2 className="text-xl sm:text-2xl font-black text-white m-0 mb-2 tracking-tight">
+            <h2 className="text-2xl sm:text-3xl font-black text-white m-0 mb-3 tracking-tight">
               Ready to engineer your next big project?
             </h2>
-            <h2 className="text-[14px] sm:text-[15px] text-blue-100 font-medium m-0 max-w-xl">
+            <h2 className="text-[15px] sm:text-base text-blue-100 font-medium m-0 max-w-2xl leading-relaxed">
               All projects include a dedicated project manager, continuous
               communication, and post-launch technical support.
             </h2>
           </div>
           <Link
             to="/start-project"
-            className="flex items-center justify-center gap-3 w-full md:w-auto px-8 py-4 rounded-xl bg-white text-blue-900 hover:bg-slate-100 active:bg-slate-200 transition-colors duration-200 outline-none group/btn"
+            className="flex items-center justify-center gap-3 w-full md:w-auto px-8 py-4 rounded-xl bg-white text-blue-900 hover:bg-slate-50 active:bg-slate-200 transition-colors duration-200 outline-none group/btn shrink-0 shadow-lg"
           >
             <h2 className="text-[15px] font-black m-0 text-inherit tracking-wide">
               Request a Custom Quote
