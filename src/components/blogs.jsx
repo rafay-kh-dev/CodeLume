@@ -11,10 +11,10 @@ import {
   Mail,
   Loader2,
 } from "lucide-react";
-import { API_URL } from "../lib/api";
 
 export default function Blog() {
   const [posts, setPosts] = useState([]);
+  const [categories, setCategories] = useState(["All"]); // Dynamic Categories state
   const [isLoading, setIsLoading] = useState(true);
   const [activeCategory, setActiveCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
@@ -23,30 +23,44 @@ export default function Blog() {
   const [currentPage, setCurrentPage] = useState(1);
   const postsPerPage = 6;
 
-  const categories = [
-    "All",
-    "Development",
-    "Design",
-    "Engineering",
-    "E-Commerce",
-  ];
+  // Use Dynamic URL directly
+  const API_BASE_URL = import.meta.env.VITE_API_URL || "https://codelume-backend.onrender.com";
 
-  // Fetch real data from your Custom Backend (MongoDB) using dynamic API URL
+  // Fetch real data (Posts + Categories) from MongoDB using Promise.all for speed
   useEffect(() => {
-    const fetchPosts = async () => {
+    const fetchDashboardData = async () => {
       try {
-        const response = await fetch(`${API_URL}/api/blogs`);
-        if (!response.ok) throw new Error("Failed to fetch");
-        const data = await response.json();
-        setPosts(data);
+        setIsLoading(true);
+        
+        // Dono APIs ko ek hi waqt mein call karein taake time half ho jaye
+        const [postsResponse, catResponse] = await Promise.all([
+          fetch(`${API_BASE_URL}/api/blogs`),
+          fetch(`${API_BASE_URL}/api/categories`)
+        ]);
+
+        if (postsResponse.ok) {
+          const postData = await postsResponse.json();
+          // Filter out drafts, only show published posts to normal users
+          const publishedPosts = postData.filter(post => post.status === "published");
+          setPosts(publishedPosts);
+        }
+
+        if (catResponse.ok) {
+          const catData = await catResponse.json();
+          // Extract just the names and prepend "All" to the list
+          const dynamicCategories = ["All", ...catData.map((c) => c.name)];
+          setCategories(dynamicCategories);
+        }
+
       } catch (err) {
-        console.error("Error fetching blogs:", err);
+        console.error("Error fetching data:", err);
       } finally {
         setIsLoading(false);
       }
     };
-    fetchPosts();
-  }, []);
+
+    fetchDashboardData();
+  }, [API_BASE_URL]);
 
   // Filter posts by Search and Category
   const filteredPosts = posts.filter((post) => {
@@ -103,8 +117,9 @@ export default function Blog() {
         </div>
 
         {isLoading ? (
-          <div className="flex justify-center items-center py-20">
+          <div className="flex flex-col justify-center items-center py-20 gap-4">
             <Loader2 className="w-12 h-12 text-blue-500 animate-spin" />
+            <p className="text-slate-400 text-sm">Waking up the server, please wait...</p>
           </div>
         ) : (
           <div className="flex flex-col lg:flex-row gap-10 items-start">
@@ -218,7 +233,7 @@ export default function Blog() {
                 </div>
               </div>
 
-              {/* 2. Categories Widget */}
+              {/* 2. Dynamic Categories Widget */}
               <div className="bg-[#0a0f1c]/80 backdrop-blur-xl border border-white/5 rounded-4xl p-6 shadow-xl">
                 <h2 className="text-[14px] font-black text-white uppercase tracking-wider mb-5 flex items-center gap-2 m-0">
                   <Tag className="w-4 h-4 text-blue-500" /> Topics
