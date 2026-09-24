@@ -53,6 +53,9 @@ function RouteTracker() {
   } else if (pathname === "/start-project") {
     pageTitle = "Start a Project | CodeLume";
     pageDesc = "Ready to build something amazing? Hire Rafay for custom web development and digital marketing services.";
+  } else if (pathname === "/services") {
+    pageTitle = "Services | CodeLume";
+    pageDesc = "Explore bespoke digital solutions including MERN Stack, WordPress, UI/UX Design, and custom web applications.";
   } else if (pathname === "/blogs") {
     pageTitle = "Blogs | CodeLume";
     pageDesc = "Explore the latest articles on MERN stack, WordPress, UI/UX, and local SEO strategies.";
@@ -116,22 +119,25 @@ export default function App() {
               {/* 2. START A PROJECT / LEAD PAGE */}
               <Route path="/start-project" element={<StartProject />} />
 
-              {/* 3. DEDICATED BLOG HUB PAGE */}
+              {/* 3. DEDICATED SERVICES PAGE */}
+              <Route path="/services" element={<Services />} />
+
+              {/* 4. DEDICATED BLOG HUB PAGE */}
               <Route path="/blogs" element={<Blog />} />
 
-              {/* CASE STUDIES PAGE */}
+              {/* 5. CASE STUDIES PAGE */}
               <Route path="/case-studies" element={<CaseStudies />} />
 
-              {/* NEW: ABOUT CODELUME PAGE */}
+              {/* 6. ABOUT CODELUME PAGE */}
               <Route path="/about" element={<AboutCodeLume />} />
 
-              {/* 4. INDIVIDUAL ARTICLE PAGE */}
+              {/* 7. INDIVIDUAL ARTICLE PAGE */}
               <Route path="/blogs/:slug" element={<Article />} />
 
-              {/* 5. ADMIN LOGIN PAGE */}
+              {/* 8. ADMIN LOGIN PAGE */}
               <Route path="/admin/login" element={<AdminLogin />} />
 
-              {/* 6. ADMIN DASHBOARD (SECURED) */}
+              {/* 9. ADMIN DASHBOARD (SECURED) */}
               <Route
                 path="/admin/dashboard"
                 element={
@@ -141,7 +147,7 @@ export default function App() {
                 }
               />
 
-              {/* 7. ADMIN CREATE POST (SECURED) */}
+              {/* 10. ADMIN CREATE POST (SECURED) */}
               <Route
                 path="/admin/create-post"
                 element={
