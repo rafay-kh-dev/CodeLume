@@ -181,7 +181,7 @@ export default function Footer() {
 
           <div className="lg:col-span-3 flex flex-col">
             <h2 className="text-[13px] font-extrabold text-white uppercase tracking-[0.15em] mb-6 m-0">
-              Capabilities
+              Popular Services
             </h2>
             <div className="flex flex-col gap-4">
               {services.map((service, idx) => (

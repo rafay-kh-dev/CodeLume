@@ -9,6 +9,7 @@ import {
 import Navbar from "./components/header";
 import Hero from "./components/hero";
 import About from "./components/about";
+import CaseStudies from "./components/casestudies";
 import Services from "./components/services";
 import OurProcess from "./components/ourprocess";
 import Testimonials from "./components/testimonial";
@@ -30,18 +31,44 @@ const ProtectedRoute = ({ children }) => {
   return children;
 };
 
-function ScrollToTop() {
+// Upgraded Function: Handles both scrolling to top AND updating Tab Titles
+function RouteTracker() {
   const { pathname } = useLocation();
+  
   useEffect(() => {
+    // 1. Scroll to the top of the page on route change
     window.scrollTo(0, 0);
+
+    // 2. Dynamically update the browser tab title
+    // Home page ka original title yahan set hai
+    let pageTitle = "CodeLume"; 
+
+    if (pathname === "/") {
+      pageTitle = "CodeLume® | Bespoke Web Engineering & Digital Agency";
+    } else if (pathname === "/start-project") {
+      pageTitle = "Start a Project | CodeLume";
+    } else if (pathname === "/blogs") {
+      pageTitle = "Blogs | CodeLume";
+    } else if (pathname === "/case-studies") {
+      pageTitle = "Case Studies | CodeLume";
+    } else if (pathname === "/about") {
+      pageTitle = "About | CodeLume";
+    } else if (pathname.includes("/admin")) {
+      pageTitle = "Dashboard | CodeLume";
+    } else if (pathname.includes("/blogs/")) {
+      pageTitle = "Reading Article | CodeLume";
+    }
+
+    document.title = pageTitle;
   }, [pathname]);
+  
   return null;
 }
 
 export default function App() {
   return (
     <Router>
-      <ScrollToTop />
+      <RouteTracker />
       <div className="min-h-screen bg-[#030712] text-white selection:bg-blue-500 selection:text-white">
         <Navbar />
 
@@ -66,6 +93,9 @@ export default function App() {
 
             {/* 3. DEDICATED BLOG HUB PAGE */}
             <Route path="/blogs" element={<Blog />} />
+
+            {/* CASE STUDIES PAGE */}
+            <Route path="/case-studies" element={<CaseStudies />} />
 
             {/* NEW: ABOUT CODELUME PAGE */}
             <Route path="/about" element={<AboutCodeLume />} />
