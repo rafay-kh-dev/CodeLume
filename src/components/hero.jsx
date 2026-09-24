@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link } from "react-router-dom"; // Don't forget to import Link
 import { ChevronRight, Sparkles, Webhook } from "lucide-react";
 import {
   SiReact,
@@ -86,15 +86,16 @@ export default function HeroSection() {
               </span>
             </Link>
             
-            <a
-              href="/#services"
+            {/* Changed from <a> to <Link> to prevent page reloads */}
+            <Link
+              to="/services"
               className="group flex items-center justify-center gap-2 w-full sm:w-auto px-10 py-4 rounded-xl bg-[#ffffff08] hover:bg-[#ffffff12] text-slate-300 hover:text-white shadow-lg border border-white/10 transition-all duration-300 active:scale-[0.98] backdrop-blur-xl outline-none transform-gpu"
             >
               <span className="text-[16px] font-semibold tracking-wide">
-                View Services
+                View All Services
               </span>
               <ChevronRight className="w-5 h-5 transition-transform group-hover:translate-x-1 text-slate-400 group-hover:text-white transform-gpu" />
-            </a>
+            </Link>
           </div>
 
         </div>
