@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Code, Users, Globe, Zap, ArrowRight, CheckCircle2, Mail, Briefcase, MessageCircle } from "lucide-react";
+import { Code, Users, Globe, Zap, ArrowRight, CheckCircle2, Mail, Briefcase } from "lucide-react";
+import { Whatsapp } from '@thesvg/react'; // Aapka naya import
 
 export default function AboutCodeLume() {
   return (
@@ -16,7 +17,7 @@ export default function AboutCodeLume() {
             About CodeLume & The Creator
           </h2>
           <h1 className="text-5xl sm:text-6xl md:text-7xl font-black text-white m-0 tracking-tighter leading-tight mb-6">
-            Crafting Digital Excellence <br />
+            Crafting Websites <br />
             <span className="text-transparent bg-clip-text bg-linear-to-r from-[#3b82f6] to-[#60a5fa]">
               For Your Business
             </span>
@@ -26,9 +27,9 @@ export default function AboutCodeLume() {
           </p>
         </div>
 
-        {/* Story / About Rafay Section */}
-        <div className="bg-[#0a0f1c] border border-white/5 rounded-3xl p-8 md:p-12 lg:p-16 flex flex-col md:flex-row gap-12 items-center mb-24 shadow-2xl">
-          <div className="flex-1 space-y-6">
+        {/* Story / About Rafay Section - Box Removed */}
+        <div className="bg-[#0a0f1c] border border-white/5 rounded-3xl p-8 md:p-12 lg:p-16 mb-24 shadow-2xl">
+          <div className="max-w-3xl space-y-6">
             <h2 className="text-3xl sm:text-4xl font-black text-white m-0 tracking-tight">
               Hi, I am Rafay
             </h2>
@@ -51,14 +52,6 @@ export default function AboutCodeLume() {
                 </li>
               ))}
             </ul>
-          </div>
-          <div className="flex-1 w-full">
-            <div className="aspect-square md:aspect-[4/3] rounded-2xl bg-linear-to-br from-[#1e293b] to-[#0f172a] border border-white/10 relative overflow-hidden flex flex-col items-center justify-center shadow-inner text-center p-6">
-               <Briefcase className="w-20 h-20 text-[#3b82f6]/50 mb-4" />
-               <h2 className="text-2xl font-bold text-white m-0 mb-2">Available for Work</h2>
-               <p className="text-slate-400 text-sm">Accepting new clients globally.</p>
-               <div className="absolute inset-0 bg-linear-to-t from-[#030712] via-transparent to-transparent" />
-            </div>
           </div>
         </div>
 
@@ -111,14 +104,15 @@ export default function AboutCodeLume() {
               <Mail size={18} /> Email Directly
             </a>
 
-            {/* Update this href with your WhatsApp wa.me link if you want clients to message you directly */}
+            {/* Naya WhatsApp Icon Button (No Text) */}
             <a
               href="https://wa.me/1234567890" 
               target="_blank"
               rel="noreferrer"
-              className="flex items-center gap-2 px-8 py-4 rounded-xl bg-green-600/10 hover:bg-green-600/20 text-green-500 border border-green-600/20 font-bold transition-all w-full sm:w-auto justify-center"
+              className="flex items-center justify-center px-6 py-4 rounded-xl bg-green-600/10 hover:bg-green-600/20 text-green-500 border border-green-600/20 transition-all w-full sm:w-auto"
+              aria-label="WhatsApp"
             >
-              <MessageCircle size={18} /> WhatsApp
+              <Whatsapp className="h-6 w-6" />
             </a>
           </div>
         </div>
