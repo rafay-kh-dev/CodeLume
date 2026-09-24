@@ -110,7 +110,7 @@ export default function App() {
                   <>
                     <Hero />
                     <About />
-                    <Services />
+                    <Service />
                     <OurProcess />
                     <Testimonials />
                   </>
