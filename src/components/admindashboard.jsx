@@ -195,7 +195,7 @@ export default function AdminDashboard() {
 
   return (
     <div className="min-h-screen bg-[#030712] text-white flex font-jakarta pt-20">
-      <aside className="w-64 border-r border-white/5 flex flex-col p-6 hidden md:flex fixed h-full">
+      <aside className="w-64 border-r border-white/5 hidden md:flex flex-col p-6 fixed h-full">
         <div className="mb-10">
           <h2 className="text-2xl font-black text-white tracking-tighter m-0">
             CodeLume<span className="text-[#3b82f6]">.</span>
@@ -205,7 +205,7 @@ export default function AdminDashboard() {
           </p>
         </div>
 
-        <nav className="flex flex-col gap-2 flex-grow">
+        <nav className="flex flex-col gap-2 grow">
           <NavItem
             active={activeTab === "overview"}
             onClick={() => setActiveTab("overview")}
@@ -357,7 +357,7 @@ export default function AdminDashboard() {
                   {posts.map((post) => (
                     <tr
                       key={post.id}
-                      className="border-b border-white/5 hover:bg-white/[0.02] transition-colors group"
+                      className="border-b border-white/5 hover:bg-white/2 transition-colors group"
                     >
                       <td className="p-4">
                         <p className="font-bold text-white mb-1">
@@ -471,7 +471,7 @@ export default function AdminDashboard() {
                     {categories.map((cat) => (
                       <tr
                         key={cat.id}
-                        className="border-b border-white/5 hover:bg-white/[0.02]"
+                        className="border-b border-white/5 hover:bg-white/2"
                       >
                         <td className="p-4 font-bold text-white">{cat.name}</td>
                         <td className="p-4 text-sm text-slate-400">
@@ -518,7 +518,7 @@ export default function AdminDashboard() {
               />
               <button
                 onClick={() => fileInputRef.current.click()}
-                className="flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-[#3b82f6] to-[#2563eb] text-white font-bold transition-all shadow-lg"
+                className="flex items-center gap-2 px-6 py-3 rounded-xl bg-linear-to-r from-[#3b82f6] to-[#2563eb] text-white font-bold transition-all shadow-lg"
               >
                 <UploadCloud size={18} /> Upload Direct
               </button>
@@ -586,7 +586,7 @@ function NavItem({ icon, label, active, onClick }) {
       className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all font-semibold text-sm ${
         active
           ? "bg-[#3b82f6]/10 text-[#3b82f6]"
-          : "text-slate-400 hover:bg-white/[0.03] hover:text-white"
+          : "text-slate-400 hover:bg-white/3 hover:text-white"
       }`}
     >
       {icon} {label}

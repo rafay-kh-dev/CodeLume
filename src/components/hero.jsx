@@ -38,7 +38,7 @@ export default function HeroSection() {
       </style>
 
       {/* Ambient Glow Effects */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[300px] bg-gradient-to-b from-blue-600/20 via-indigo-500/10 to-transparent blur-[110px] pointer-events-none rounded-full transform-gpu" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[300px] bg-linear-to-b from-blue-600/20 via-indigo-500/10 to-transparent blur-[110px] pointer-events-none rounded-full transform-gpu" />
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] bg-cyan-500/10 blur-[140px] pointer-events-none rounded-full transform-gpu" />
 
       {/* Dot Matrix Grid Pattern */}
@@ -61,7 +61,7 @@ export default function HeroSection() {
             <span className="text-white block">
               Lead Your Industry With
             </span>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-300 to-cyan-400 drop-shadow-[0_0_35px_rgba(37,99,235,0.35)] block py-2">
+            <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-400 via-indigo-300 to-cyan-400 drop-shadow-[0_0_35px_rgba(37,99,235,0.35)] block py-2">
               Next-Generation
             </span>
             <span className="text-white block">
@@ -78,7 +78,7 @@ export default function HeroSection() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-5 w-full sm:w-auto">
             <Link
               to="/start-project"
-              className="group relative flex items-center justify-center gap-2 w-full sm:w-auto px-10 py-4 rounded-xl bg-gradient-to-b from-blue-500 to-blue-700 text-white shadow-[0_0_35px_-8px_rgba(37,99,235,0.6)] hover:shadow-[0_0_50px_-10px_rgba(37,99,235,0.8)] border border-blue-400/30 transition-all duration-300 active:scale-[0.98] outline-none overflow-hidden transform-gpu"
+              className="group relative flex items-center justify-center gap-2 w-full sm:w-auto px-10 py-4 rounded-xl bg-linear-to-b from-blue-500 to-blue-700 text-white shadow-[0_0_35px_-8px_rgba(37,99,235,0.6)] hover:shadow-[0_0_50px_-10px_rgba(37,99,235,0.8)] border border-blue-400/30 transition-all duration-300 active:scale-[0.98] outline-none overflow-hidden transform-gpu"
             >
               <Sparkles className="w-5 h-5 text-blue-100 relative z-10" />
               <span className="text-[16px] font-bold relative z-10 tracking-wide text-white">

@@ -193,7 +193,7 @@ export default function AdminCreatePost() {
             <button
               onClick={(e) => handleSubmit(e, "published")}
               disabled={isSubmitting || !formData.title}
-              className="flex items-center gap-2 px-8 py-3 rounded-xl bg-gradient-to-r from-[#3b82f6] to-[#2563eb] text-white hover:from-[#2563eb] hover:to-[#1d4ed8] transition-all font-bold tracking-wide shadow-lg disabled:opacity-50"
+              className="flex items-center gap-2 px-8 py-3 rounded-xl bg-linear-to-r from-[#3b82f6] to-[#2563eb] text-white hover:from-[#2563eb] hover:to-[#1d4ed8] transition-all font-bold tracking-wide shadow-lg disabled:opacity-50"
             >
               <UploadCloud className="w-5 h-5" />
               {isSubmitting ? "Saving..." : "Publish Live"}

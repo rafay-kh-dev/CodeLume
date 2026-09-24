@@ -82,7 +82,7 @@ export default function Blog() {
 
       {/* Background Glow */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-[40rem] bg-[radial-gradient(ellipse_at_top,rgba(37,99,235,0.08)_0%,transparent_70%)] transform-gpu translate-z-0" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-160 bg-[radial-gradient(ellipse_at_top,rgba(37,99,235,0.08)_0%,transparent_70%)] transform-gpu translate-z-0" />
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
@@ -117,9 +117,9 @@ export default function Blog() {
                       <Link
                         key={post._id}
                         to={`/blogs/${post.slug}`}
-                        className="group relative rounded-[2rem] bg-[#0a0f1c]/70 backdrop-blur-xl border border-white/5 p-2 shadow-xl hover:shadow-[0_20px_40px_rgba(37,99,235,0.1)] transition-all duration-500 ease-out hover:-translate-y-2 transform-gpu flex flex-col outline-none text-left cursor-pointer hover:border-blue-500/20"
+                        className="group relative rounded-4xl bg-[#0a0f1c]/70 backdrop-blur-xl border border-white/5 p-2 shadow-xl hover:shadow-[0_20px_40px_rgba(37,99,235,0.1)] transition-all duration-500 ease-out hover:-translate-y-2 transform-gpu flex flex-col outline-none text-left cursor-pointer hover:border-blue-500/20"
                       >
-                        <div className="w-full h-48 sm:h-56 rounded-[1.5rem] bg-[#030712] relative overflow-hidden shrink-0">
+                        <div className="w-full h-48 sm:h-56 rounded-3xl bg-[#030712] relative overflow-hidden shrink-0">
                           <img
                             src={post.coverImage}
                             alt={post.title}
@@ -199,7 +199,7 @@ export default function Blog() {
             {/* RIGHT COLUMN: Sidebar (Sticky) */}
             <aside className="w-full lg:w-1/3 flex flex-col gap-8 self-start lg:sticky lg:top-32">
               {/* 1. Search Widget */}
-              <div className="bg-[#0a0f1c]/80 backdrop-blur-xl border border-white/5 rounded-[2rem] p-6 shadow-xl">
+              <div className="bg-[#0a0f1c]/80 backdrop-blur-xl border border-white/5 rounded-4xl p-6 shadow-xl">
                 <h2 className="text-[14px] font-black text-white uppercase tracking-wider mb-4 flex items-center gap-2 m-0">
                   <Search className="w-4 h-4 text-blue-500" /> Search
                 </h2>
@@ -219,7 +219,7 @@ export default function Blog() {
               </div>
 
               {/* 2. Categories Widget */}
-              <div className="bg-[#0a0f1c]/80 backdrop-blur-xl border border-white/5 rounded-[2rem] p-6 shadow-xl">
+              <div className="bg-[#0a0f1c]/80 backdrop-blur-xl border border-white/5 rounded-4xl p-6 shadow-xl">
                 <h2 className="text-[14px] font-black text-white uppercase tracking-wider mb-5 flex items-center gap-2 m-0">
                   <Tag className="w-4 h-4 text-blue-500" /> Topics
                 </h2>
@@ -244,7 +244,7 @@ export default function Blog() {
               </div>
 
               {/* 3. Newsletter CTA Widget */}
-              <div className="bg-linear-to-br from-[#0a0f1c] to-[#030712] border border-blue-500/20 rounded-[2rem] p-6 shadow-[0_0_30px_rgba(37,99,235,0.1)] relative overflow-hidden">
+              <div className="bg-linear-to-br from-[#0a0f1c] to-[#030712] border border-blue-500/20 rounded-4xl p-6 shadow-[0_0_30px_rgba(37,99,235,0.1)] relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full blur-3xl" />
                 <h2 className="text-[14px] font-black text-blue-400 uppercase tracking-wider mb-3 flex items-center gap-2 m-0 relative z-10">
                   <Mail className="w-4 h-4" /> Newsletter

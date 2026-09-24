@@ -116,7 +116,7 @@ export default function Article() {
       </style>
 
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-[#3b82f6]/5 rounded-full blur-[150px] -translate-y-1/2" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-200 h-200 bg-[#3b82f6]/5 rounded-full blur-[150px] -translate-y-1/2" />
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -173,7 +173,7 @@ export default function Article() {
           {/* Sticky Sidebar */}
           <aside className="lg:col-span-4 flex flex-col gap-8 lg:sticky lg:top-32">
             {/* 1. Share Widget */}
-            <div className="bg-[#0a0f1c]/85 backdrop-blur-xl border border-white/5 rounded-[2rem] p-6 shadow-xl">
+            <div className="bg-[#0a0f1c]/85 backdrop-blur-xl border border-white/5 rounded-4xl p-6 shadow-xl">
               <h2 className="text-[14px] font-black text-white uppercase tracking-wider mb-5 flex items-center gap-2 m-0">
                 <Share2 className="w-4 h-4 text-blue-500" /> Share Article
               </h2>
@@ -216,7 +216,7 @@ export default function Article() {
 
             {/* 2. Latest Articles Widget */}
             {latestPosts.length > 0 && (
-              <div className="bg-[#0a0f1c]/85 backdrop-blur-xl border border-white/5 rounded-[2rem] p-6 shadow-xl">
+              <div className="bg-[#0a0f1c]/85 backdrop-blur-xl border border-white/5 rounded-4xl p-6 shadow-xl">
                 <h2 className="text-[14px] font-black text-white uppercase tracking-wider mb-6 flex items-center gap-2 m-0">
                   <Newspaper className="w-4 h-4 text-blue-500" /> Latest
                   Articles
@@ -255,7 +255,7 @@ export default function Article() {
             )}
 
             {/* 3. Newsletter CTA Widget */}
-            <div className="bg-gradient-to-br from-[#0a0f1c] to-[#030712] border border-blue-500/20 rounded-[2rem] p-6 shadow-[0_0_30px_rgba(37,99,235,0.1)] relative overflow-hidden">
+            <div className="bg-linear-to-br from-[#0a0f1c] to-[#030712] border border-blue-500/20 rounded-4xl p-6 shadow-[0_0_30px_rgba(37,99,235,0.1)] relative overflow-hidden">
               <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full blur-3xl" />
               <h2 className="text-[14px] font-black text-blue-400 uppercase tracking-wider mb-3 flex items-center gap-2 m-0 relative z-10">
                 <Mail className="w-4 h-4" /> Enjoying the read?

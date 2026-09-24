@@ -112,7 +112,7 @@ export default function Footer() {
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-200 h-125 bg-[radial-gradient(ellipse_at_bottom,rgba(37,99,235,0.1)_0%,transparent_60%)] pointer-events-none transform-gpu translate-z-0" />
       <div className="absolute top-0 right-0 w-125 h-125 bg-[radial-gradient(circle_at_top_right,rgba(79,70,229,0.05)_0%,transparent_60%)] pointer-events-none transform-gpu translate-z-0" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full flex-grow">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full grow">
         <div className="w-full rounded-[2.5rem] sm:rounded-[3.5rem] bg-[#0a0f1c]/80 backdrop-blur-xl p-10 sm:p-16 lg:p-20 shadow-[0_20px_60px_rgba(0,0,0,0.6),inset_0_0_20px_rgba(255,255,255,0.02)] mb-16 lg:mb-20 flex flex-col lg:flex-row items-center justify-between gap-10 transform-gpu overflow-hidden relative group">
           <div className="absolute inset-0 bg-linear-to-br from-blue-600/5 via-transparent to-indigo-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none transform-gpu" />
           <div className="flex flex-col items-center lg:items-start text-center lg:text-left relative z-10">

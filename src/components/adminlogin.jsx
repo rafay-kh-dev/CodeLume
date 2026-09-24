@@ -39,9 +39,9 @@ export default function AdminLogin() {
 
   return (
     <div className="min-h-dvh bg-[#030712] flex items-center justify-center font-jakarta px-4 relative overflow-hidden">
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-500/10 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-150 h-150 bg-blue-500/10 rounded-full blur-[120px] pointer-events-none" />
 
-      <div className="w-full max-w-md bg-[#0a0f1c]/80 backdrop-blur-xl border border-white/10 rounded-[2rem] p-8 sm:p-10 relative z-10 shadow-2xl">
+      <div className="w-full max-w-md bg-[#0a0f1c]/80 backdrop-blur-xl border border-white/10 rounded-4xl p-8 sm:p-10 relative z-10 shadow-2xl">
         <div className="w-14 h-14 bg-blue-500/10 border border-blue-500/20 rounded-2xl flex items-center justify-center mb-8 mx-auto">
           <Lock className="w-7 h-7 text-blue-500" />
         </div>
