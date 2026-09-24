@@ -26,10 +26,10 @@ export default function Footer() {
   ];
 
   const resources = [
-    { name: "Insights & Tech Blog", path: "/blogs", highlight: true },
-    { name: "Client Case Studies", path: "/case-studies" },
-    { name: "Agency Architecture", path: "/about-codelume" },
-    { name: "Consultation & Contact", path: "/start-project" },
+    { name: "Read My Blogs", path: "/blogs", highlight: true },
+    { name: "Case Studies", path: "/case-studies" },
+    { name: "About CodeLume", path: "/about-codelume" },
+    { name: "Start a Project", path: "/start-project" },
   ];
 
   const contacts = [
@@ -267,7 +267,7 @@ export default function Footer() {
             </Link>
           </div>
         </div>
-        
+
         {/* Massive Background Text Watermark with Fluid Continuous Colour */}
         <div className="w-full flex justify-center items-end mt-10 pb-8 overflow-hidden pointer-events-none select-none relative z-0">
           <h2 className="text-[15vw] lg:text-[13vw] font-black uppercase tracking-tighter leading-[0.9] m-0 animate-fluid-blue transition-all duration-1000">
