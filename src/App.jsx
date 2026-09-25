@@ -18,6 +18,7 @@ import Testimonials from "./components/testimonial";
 import Blog from "./components/blogs";
 import Article from "./components/article";
 import Services from "./components/services"; // Dedicated services page
+import MernStackService from "./components/mernstack"; // NEW: Individual Service Page
 import StartProject from "./components/startproject";
 import AdminCreatePost from "./components/admincreatepost";
 import AdminLogin from "./components/adminlogin";
@@ -63,7 +64,7 @@ function RouteTracker() {
       "name": "CodeLume",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://codelume.com/logo.png" // Update with your actual logo URL
+        "url": "https://codelume.com/logo.png"
       }
     }
   };
@@ -77,7 +78,6 @@ function RouteTracker() {
   } else if (pathname === "/services") {
     pageTitle = "Services | CodeLume";
     pageDesc = "Explore bespoke digital solutions including MERN Stack, WordPress, UI/UX Design, and custom web applications.";
-    // Service Schema for Services Page
     schemaData = {
       "@context": "https://schema.org",
       "@type": "Service",
@@ -90,6 +90,26 @@ function RouteTracker() {
       "description": pageDesc,
       "areaServed": "Worldwide"
     };
+  } else if (pathname === "/services/mern-stack") {
+    pageTitle = "MERN Stack Development Services | CodeLume";
+    pageDesc = "Custom MERN stack web applications tailored to your business needs. Choose from basic, standard, or premium packages starting at $149.";
+    // Commercial Product Schema for better rankings
+    schemaData = {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      "name": "MERN Stack Web Development",
+      "description": pageDesc,
+      "brand": {
+        "@type": "Brand",
+        "name": "CodeLume"
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": "149.00",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock"
+      }
+    };
   } else if (pathname === "/blogs") {
     pageTitle = "Blogs | CodeLume";
     pageDesc = "Explore the latest articles on MERN stack, WordPress, UI/UX, and local SEO strategies.";
@@ -99,7 +119,6 @@ function RouteTracker() {
   } else if (pathname === "/about") {
     pageTitle = "About | CodeLume";
     pageDesc = "Learn more about Rafay, an independent freelance web developer and UI/UX designer.";
-    // Profile Schema for About Page
     schemaData = {
       "@context": "https://schema.org",
       "@type": "Person",
@@ -133,18 +152,15 @@ function RouteTracker() {
       <meta name="description" content={pageDesc} />
       <link rel="canonical" href={pageUrl} />
 
-      {/* Open Graph Tags for Social Media */}
       <meta property="og:type" content={pathname.includes("/blogs/") ? "article" : "website"} />
       <meta property="og:url" content={pageUrl} />
       <meta property="og:title" content={pageTitle} />
       <meta property="og:description" content={pageDesc} />
       
-      {/* Twitter Tags */}
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={pageTitle} />
       <meta name="twitter:description" content={pageDesc} />
 
-      {/* Dynamic JSON-LD Schema Markup */}
       <script type="application/ld+json">
         {JSON.stringify(schemaData)}
       </script>
@@ -162,7 +178,7 @@ export default function App() {
 
           <main>
             <Routes>
-              {/* 1. HOMEPAGE */}
+              {/* HOMEPAGE */}
               <Route
                 path="/"
                 element={
@@ -176,34 +192,23 @@ export default function App() {
                 }
               />
 
-              {/* 2. START A PROJECT / LEAD PAGE */}
               <Route path="/start-project" element={<StartProject />} />
-
-              {/* 3. DEDICATED SERVICES PAGE */}
+              
+              {/* SERVICES HUB */}
               <Route path="/services" element={<Services />} />
 
-              {/* 4. DEDICATED BLOG HUB PAGE */}
+              {/* INDIVIDUAL SERVICE PAGES (MERN added) */}
+              <Route path="/services/mern-stack" element={<MernStackService />} />
+
               <Route path="/blogs" element={<Blog />} />
-
-              {/* 5. CASE STUDIES PAGE */}
               <Route path="/case-studies" element={<CaseStudies />} />
-
-              {/* 6. ABOUT CODELUME PAGE */}
               <Route path="/about" element={<AboutCodeLume />} />
-
-              {/* 7. INDIVIDUAL ARTICLE PAGE */}
               <Route path="/blogs/:slug" element={<Article />} />
-
-              {/* 8. TERMS OF SERVICE PAGE */}
+              
               <Route path="/terms-of-service" element={<TermsOfService />} />
-
-              {/* 9. PRIVACY POLICY PAGE */}
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
               
-              {/* 9. ADMIN LOGIN PAGE */}
               <Route path="/admin/login" element={<AdminLogin />} />
-
-              {/* 10. ADMIN DASHBOARD (SECURED) */}
               <Route
                 path="/admin/dashboard"
                 element={
@@ -212,8 +217,6 @@ export default function App() {
                   </ProtectedRoute>
                 }
               />
-
-              {/* 11. ADMIN CREATE POST (SECURED) */}
               <Route
                 path="/admin/create-post"
                 element={
