@@ -25,6 +25,7 @@ import AdminDashboard from "./components/admindashboard";
 import Footer from "./components/footer";
 import AboutCodeLume from "./components/aboutcodelume";
 import TermsOfService from "./components/termsofservice";
+import PrivacyPolicy from "./components/privacypolicy";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 
@@ -113,6 +114,9 @@ function RouteTracker() {
   } else if (pathname === "/terms-of-service") {
     pageTitle = "Terms of Service | CodeLume";
     pageDesc = "Read the Terms of Service for using CodeLume's web development and digital services.";  
+  } else if (pathname === "/privacy-policy") {
+    pageTitle = "Privacy Policy | CodeLume";
+    pageDesc = "Understand how we collect, use, and protect your personal information.";
   } else if (pathname === "/admin/login") {
     pageTitle = "Admin Login | CodeLume";
     pageDesc = "Sign in to access the CodeLume management dashboard.";
@@ -193,6 +197,9 @@ export default function App() {
               {/* 8. TERMS OF SERVICE PAGE */}
               <Route path="/terms-of-service" element={<TermsOfService />} />
 
+              {/* 9. PRIVACY POLICY PAGE */}
+              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+              
               {/* 9. ADMIN LOGIN PAGE */}
               <Route path="/admin/login" element={<AdminLogin />} />
 
