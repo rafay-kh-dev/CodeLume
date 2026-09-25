@@ -1,1 +1,27 @@
 @import "tailwindcss";
+
+/* Custom Global Scrollbar for CodeLume */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #030712; /* Dark background matching your app theme */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1e293b; /* Slate color for the scrollbar thumb */
+  border-radius: 8px;
+  border: 2px solid #030712; /* Creates a nice padded illusion */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #3b82f6; /* CodeLume Blue on hover */
+}
+
+/* Firefox Support */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #1e293b #030712;
+}

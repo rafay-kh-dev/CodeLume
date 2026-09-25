@@ -194,7 +194,7 @@ export default function Header() {
               >
                 <Link to="/services" className="flex items-center gap-1.5 px-4 py-2 rounded-full outline-none hover:bg-white/5 transition-colors duration-300">
                   <h2 className="m-0 text-[14px] font-bold text-slate-300 group-hover/nav:text-white transition-colors flex items-center gap-1.5">
-                    Expertise
+                    Services
                     <ChevronDown
                       className={`w-3.5 h-3.5 transition-transform duration-300 ease-out text-slate-500 group-hover/nav:text-blue-400 transform-gpu ${servicesOpen ? "rotate-180" : ""}`}
                     />
