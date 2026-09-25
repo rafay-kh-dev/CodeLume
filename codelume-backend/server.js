@@ -75,6 +75,25 @@ app.get('/api/blogs', async (req, res) => {
   }
 });
 
+// --- NEW ROUTE: GET SINGLE BLOG POST BY SLUG ---
+app.get('/api/blogs/:slug', async (req, res) => {
+  try {
+    // Database mein us article ko uske 'slug' se dhoondein
+    const blog = await Blog.findOne({ slug: req.params.slug });
+    
+    // Agar article nahi mila toh 404 error bhejein
+    if (!blog) {
+      return res.status(404).json({ message: 'Article not found' });
+    }
+    
+    // Agar mil gaya toh article ka data wapas bhej dein
+    res.status(200).json(blog);
+  } catch (error) {
+    console.error('Error fetching single blog:', error);
+    res.status(500).json({ message: 'Error fetching the article', error: error.message });
+  }
+});
+
 // 3. DELETE A BLOG POST
 app.delete('/api/blogs/:id', async (req, res) => {
   try {
