@@ -214,7 +214,7 @@ export default function Article() {
                   to="/start-project"
                   className="flex items-center justify-center w-full py-3.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold transition-colors shadow-lg text-[15px]"
                 >
-                  Start a Project
+                  Start a Pro
                 </Link>
               </div>
 
