@@ -14,6 +14,7 @@ import About from "./components/about";
 import CaseStudies from "./components/casestudies";
 import Service from "./components/service"; 
 import OurProcess from "./components/ourprocess";
+import Contact from "./components/calculator";
 import Testimonials from "./components/testimonial";
 import Blog from "./components/blogs";
 import Article from "./components/article";
@@ -221,6 +222,7 @@ export default function App() {
                     <Hero />
                     <About />
                     <Service />
+                    <ProjectCalculator />
                     <OurProcess />
                     <Testimonials />
                   </>
