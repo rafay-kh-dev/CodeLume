@@ -29,6 +29,7 @@ const CustomPlatformIcon = ({ className }) => (
 const servicesData = [
   {
     title: "MERN Stack",
+    link: "/services/mern-stack", // Exact route added
     description:
       "Full-stack JavaScript solutions using MongoDB, Express, React, & Node.",
     icon: ReactIcon,
@@ -38,6 +39,7 @@ const servicesData = [
   },
   {
     title: "PHP & Laravel",
+    link: "/services/php-laravel",
     description: "Robust, secure, and highly scalable backend architectures.",
     icon: Laravel,
     color: "text-red-400",
@@ -46,6 +48,7 @@ const servicesData = [
   },
   {
     title: "Angular Web Apps",
+    link: "/services/angular-apps",
     description:
       "Enterprise-grade frontend frameworks for complex applications.",
     icon: Angular,
@@ -55,6 +58,7 @@ const servicesData = [
   },
   {
     title: "Custom Platforms",
+    link: "/services/custom-platforms",
     description:
       "Bespoke digital solutions tailored exactly to your business logic.",
     icon: CustomPlatformIcon,
@@ -64,6 +68,7 @@ const servicesData = [
   },
   {
     title: "WordPress & WooCommerce",
+    link: "/services/wordpress",
     description:
       "Custom themes, plugins, and powerful e-commerce integrations.",
     icon: Wordpress,
@@ -73,6 +78,7 @@ const servicesData = [
   },
   {
     title: "Shopify Development",
+    link: "/services/shopify",
     description:
       "High-converting storefronts and highly customised Shopify apps.",
     icon: Shopify,
@@ -82,6 +88,7 @@ const servicesData = [
   },
   {
     title: "Webflow Sites",
+    link: "/services/webflow",
     description:
       "Pixel-perfect, lightning-fast, and visually stunning responsive websites.",
     icon: Webflow,
@@ -91,6 +98,7 @@ const servicesData = [
   },
   {
     title: "API & Integrations",
+    link: "/services/api-integrations",
     description:
       "Connecting your web apps with third-party services seamlessly.",
     icon: K8sApiServer,
@@ -100,7 +108,7 @@ const servicesData = [
   },
 ];
 
-const standardLinks = ["Case Studies", "About", "Blogs"];
+const standardLinks = ["Services", "Case Studies", "About", "Blogs"]; // Main Services Link Added
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -184,14 +192,14 @@ export default function Header() {
                 onMouseEnter={() => setServicesOpen(true)}
                 onMouseLeave={() => setServicesOpen(false)}
               >
-                <button className="flex items-center gap-1.5 px-4 py-2 rounded-full outline-none hover:bg-white/5 transition-colors duration-300">
+                <Link to="/services" className="flex items-center gap-1.5 px-4 py-2 rounded-full outline-none hover:bg-white/5 transition-colors duration-300">
                   <h2 className="m-0 text-[14px] font-bold text-slate-300 group-hover/nav:text-white transition-colors flex items-center gap-1.5">
-                    Services
+                    Expertise
                     <ChevronDown
                       className={`w-3.5 h-3.5 transition-transform duration-300 ease-out text-slate-500 group-hover/nav:text-blue-400 transform-gpu ${servicesOpen ? "rotate-180" : ""}`}
                     />
                   </h2>
-                </button>
+                </Link>
 
                 <div
                   className={`absolute top-[calc(100%+1rem)] left-1/2 -translate-x-1/2 w-170 pt-0 transition-all duration-300 ease-out origin-top transform-gpu will-change-transform ${servicesOpen ? "opacity-100 translate-y-0 visible scale-100" : "opacity-0 -translate-y-3 invisible scale-95"}`}
@@ -207,7 +215,7 @@ export default function Header() {
                         return (
                           <Link
                             key={service.title}
-                            to={`/${service.title.toLowerCase().replace(/ /g, "-").replace(/&/g, "").replace(/\//g, "-")}`}
+                            to={service.link}
                             className="relative flex items-start gap-4 p-4 rounded-2xl group outline-none overflow-hidden transition-all duration-300 hover:bg-white/3 hover:shadow-[0_10px_30px_-10px_rgba(0,0,0,0.5)]"
                           >
                             <div
@@ -316,7 +324,7 @@ export default function Header() {
                   return (
                     <Link
                       key={service.title}
-                      to={`/${service.title.toLowerCase().replace(/ /g, "-").replace(/&/g, "").replace(/\//g, "-")}`}
+                      to={service.link}
                       onClick={() => setMobileMenuOpen(false)}
                       className="flex items-center gap-5 p-4 rounded-2xl bg-white/2 hover:bg-white/5 transition-all duration-300 active:scale-[0.98] outline-none transform-gpu will-change-transform"
                       style={{
