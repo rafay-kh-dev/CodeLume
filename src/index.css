@@ -2,26 +2,26 @@
 
 /* Custom Global Scrollbar for CodeLume */
 ::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
+  width: 14px; /* Scrollbar ko thora mota (thick) kar diya hai */
+  height: 14px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #030712; /* Dark background matching your app theme */
+  background: #030712; /* Dark background jo aapki theme se match kare */
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #1e293b; /* Slate color for the scrollbar thumb */
-  border-radius: 8px;
-  border: 2px solid #030712; /* Creates a nice padded illusion */
+  background: #3b82f6; /* Aapka Primary Blue Color */
+  border-radius: 10px;
+  border: 3px solid #030712; /* Scrollbar ke ird-gird ek khoobsurat gap effect ke liye */
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #3b82f6; /* CodeLume Blue on hover */
+  background: #2563eb; /* Hover karne par thora dark blue (blue-600) ho jayega */
 }
 
-/* Firefox Support */
+/* Firefox Browser Support */
 * {
-  scrollbar-width: thin;
-  scrollbar-color: #1e293b #030712;
+  scrollbar-width: auto; /* Firefox mein mota dikhane ke liye 'auto' */
+  scrollbar-color: #3b82f6 #030712;
 }
