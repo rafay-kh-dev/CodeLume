@@ -2,16 +2,20 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import emailjs from "@emailjs/browser";
 import {
-  Rocket,
-  Code2,
-  MonitorSmartphone,
-  Server,
   ArrowRight,
   Mail,
   User,
   Building,
   Loader2,
 } from "lucide-react";
+
+// @thesvg/react se real icons import kiye gaye hain
+import {
+  React as ReactIcon,
+  Laravel,
+  Shopify,
+  Figma,
+} from "@thesvg/react";
 
 export default function StartProject() {
   const [formData, setFormData] = useState({
@@ -27,11 +31,12 @@ export default function StartProject() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // Real icons replace kar diye gaye hain
   const serviceOptions = [
-    { id: "MERN Stack", title: "MERN Stack App", icon: Server },
-    { id: "PHP Laravel", title: "PHP & Laravel", icon: Code2 },
-    { id: "E-Commerce", title: "E-Commerce", icon: MonitorSmartphone },
-    { id: "UI/UX Design", title: "UI/UX Design", icon: Rocket },
+    { id: "MERN Stack", title: "MERN Stack App", icon: ReactIcon },
+    { id: "PHP Laravel", title: "PHP & Laravel", icon: Laravel },
+    { id: "E-Commerce", title: "E-Commerce", icon: Shopify },
+    { id: "UI/UX Design", title: "UI/UX Design", icon: Figma },
   ];
 
   const budgetOptions = ["$1k - $2.5k", "$2.5k - $5k", "$5k - $10k", "$10k+"];
@@ -253,8 +258,8 @@ export default function StartProject() {
             </div>
 
             <div className="flex flex-col gap-6 p-6 sm:p-10 rounded-3xl bg-[#070b14] border border-white/5 shadow-2xl relative overflow-hidden group">
-              <div className="absolute inset-0 bg-linear-to-br from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-              <h2 className="text-xl sm:text-2xl font-black text-white m-0 tracking-tight flex items-center gap-4 relative z-10">
+              <div className="absolute inset-0 bg-linear-to-t from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+              <h2 className="text-xl sm:text-2xl font-black text-white m-0 tracking-tight flex items-center gap-4 relative z-10 mb-2">
                 <span className="flex items-center justify-center w-8 h-8 rounded-full bg-blue-500/20 text-[#3b82f6] text-sm">
                   3
                 </span>
