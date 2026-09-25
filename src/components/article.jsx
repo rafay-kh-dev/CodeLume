@@ -11,7 +11,7 @@ import {
   Code2
 } from "lucide-react";
 
-// Custom SVG Icons (Since Lucide removed brand logos)
+// Custom SVG Icons
 const TwitterIcon = ({ className }) => (<svg className={className} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/></svg>);
 const LinkedinIcon = ({ className }) => (<svg className={className} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>);
 const FacebookIcon = ({ className }) => (<svg className={className} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>);
@@ -82,7 +82,6 @@ export default function Article() {
   const shareUrl = typeof window !== 'undefined' ? window.location.href : '';
 
   return (
-    // FIX 1: Removed 'overflow-hidden' from the main article tag so Sticky Sidebar works!
     <article className="min-h-dvh bg-[#030712] text-white font-jakarta pt-28 sm:pt-36 pb-24 relative">
       
       <Helmet>
@@ -93,7 +92,7 @@ export default function Article() {
         {post.coverImage && <meta property="og:image" content={post.coverImage} />}
       </Helmet>
 
-      {/* Subtle Background Glow (Modified to not break sticky positioning) */}
+      {/* Subtle Background Glow */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-[500px] bg-[radial-gradient(ellipse_at_top,rgba(37,99,235,0.05)_0%,transparent_70%)] pointer-events-none -z-10" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
@@ -106,7 +105,8 @@ export default function Article() {
           Back to all articles
         </Link>
 
-        <div className="flex flex-col lg:flex-row gap-12 lg:gap-16">
+        {/* Flex Container for Article & Sidebar */}
+        <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-start">
           
           {/* LEFT COLUMN: Main Article */}
           <div className="w-full lg:w-2/3">
@@ -146,7 +146,6 @@ export default function Article() {
               </div>
             )}
 
-            {/* FIX 2: Custom Tailwind Typography injection for the WYSIWYG HTML */}
             <div 
               className="text-lg text-slate-300 leading-[1.8] tracking-wide
                 [&>p]:mb-8 
@@ -164,10 +163,9 @@ export default function Article() {
             />
           </div>
 
-          {/* RIGHT COLUMN: Sticky Sidebar */}
-          {/* FIX 3: self-start ensures the aside doesn't stretch, allowing sticky child to track scrolling */}
-          <aside className="w-full lg:w-1/3 self-start">
-            <div className="sticky top-32 space-y-8">
+          {/* RIGHT COLUMN: Sticky Sidebar 
+              FIX: Applied 'sticky', 'top-32', and 'self-start' directly to the aside tag. */}
+          <aside className="w-full lg:w-1/3 lg:sticky lg:top-32 self-start space-y-8">
               
               <div className="bg-[#0a0f1c] border border-white/5 rounded-3xl p-8 relative overflow-hidden shadow-xl">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
@@ -228,7 +226,6 @@ export default function Article() {
                 </Link>
               </div>
 
-            </div>
           </aside>
 
         </div>
