@@ -9,12 +9,19 @@ import {
   Loader2,
 } from "lucide-react";
 
-// @thesvg/react se real icons import kiye gaye hain
+// @thesvg/react se pori 11 services ke real icons import kiye gaye hain
 import {
   React as ReactIcon,
   Laravel,
+  Angular,
+  Wordpress,
   Shopify,
+  Webflow,
+  GcpCloudMonitoring,
+  GcpApiMonetization,
+  Flutter,
   Figma,
+  Adobe
 } from "@thesvg/react";
 
 export default function StartProject() {
@@ -31,12 +38,19 @@ export default function StartProject() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Real icons replace kar diye gaye hain
+  // All 11 Premium Services added with Real Icons
   const serviceOptions = [
-    { id: "MERN Stack", title: "MERN Stack App", icon: ReactIcon },
+    { id: "MERN Stack", title: "MERN Stack", icon: ReactIcon },
     { id: "PHP Laravel", title: "PHP & Laravel", icon: Laravel },
-    { id: "E-Commerce", title: "E-Commerce", icon: Shopify },
+    { id: "Angular", title: "Angular Web Apps", icon: Angular },
+    { id: "Custom Platforms", title: "Custom Platforms", icon: GcpCloudMonitoring },
+    { id: "WordPress", title: "WordPress Sites", icon: Wordpress },
+    { id: "Shopify", title: "Shopify Dev", icon: Shopify },
+    { id: "Webflow", title: "Webflow Sites", icon: Webflow },
+    { id: "API", title: "API Integrations", icon: GcpApiMonetization },
+    { id: "Mobile Apps", title: "Mobile Apps", icon: Flutter },
     { id: "UI/UX Design", title: "UI/UX Design", icon: Figma },
+    { id: "Full Branding", title: "Full Branding", icon: Adobe },
   ];
 
   const budgetOptions = ["$1k - $2.5k", "$2.5k - $5k", "$5k - $10k", "$10k+"];
@@ -147,7 +161,6 @@ export default function StartProject() {
         {`@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap');
           .font-jakarta { font-family: 'Plus Jakarta Sans', sans-serif; }
           
-          /* Matched Home Page Scrollbar */
           ::-webkit-scrollbar { width: 8px; height: 8px; }
           ::-webkit-scrollbar-track { background: #030712; }
           ::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 10px; box-shadow: 0 0 10px rgba(59, 130, 246, 0.5); }
@@ -157,7 +170,7 @@ export default function StartProject() {
 
       <div className="absolute top-0 right-0 w-200 h-200 bg-[#3b82f6]/5 rounded-full blur-[150px] pointer-events-none -translate-y-1/2 translate-x-1/3" />
 
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="flex flex-col items-start text-left mb-16 sm:mb-20">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/10 border border-blue-500/20 mb-6">
             <div className="w-2 h-2 rounded-full bg-[#3b82f6] animate-pulse" />
@@ -193,7 +206,8 @@ export default function StartProject() {
               </span>
               What do you need help with?
             </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 relative z-10">
+            {/* Grid updated to 3 columns on medium screens to fit 11 services nicely */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 relative z-10">
               {serviceOptions.map((service) => {
                 const isSelected = formData.services.includes(service.id);
                 const Icon = service.icon;
@@ -202,14 +216,14 @@ export default function StartProject() {
                     key={service.id}
                     type="button"
                     onClick={() => toggleService(service.id)}
-                    className={`flex items-center gap-5 p-5 rounded-2xl border transition-all duration-300 outline-none text-left active:scale-[0.98] ${
+                    className={`flex items-center gap-4 p-4 rounded-2xl border transition-all duration-300 outline-none text-left active:scale-[0.98] ${
                       isSelected
                         ? "bg-[#3b82f6]/10 border-[#3b82f6] shadow-[0_0_20px_rgba(59,130,246,0.15)] transform -translate-y-1"
                         : "bg-[#0a0f1c] border-white/5 hover:border-white/20 hover:bg-[#0d1324]"
                     }`}
                   >
                     <div
-                      className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 transition-all duration-300 ${
+                      className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 transition-all duration-300 ${
                         isSelected
                           ? "bg-[#3b82f6] text-white shadow-lg"
                           : "bg-[#030712] border border-white/5 text-slate-400 group-hover:text-slate-300"
@@ -218,7 +232,7 @@ export default function StartProject() {
                       <Icon className="w-5 h-5" strokeWidth={2.5} />
                     </div>
                     <h2
-                      className={`text-[15px] font-black m-0 tracking-wide transition-colors ${
+                      className={`text-[14px] font-black m-0 tracking-wide transition-colors ${
                         isSelected ? "text-white" : "text-slate-300"
                       }`}
                     >
