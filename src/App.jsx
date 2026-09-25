@@ -12,12 +12,12 @@ import Navbar from "./components/header";
 import Hero from "./components/hero";
 import About from "./components/about";
 import CaseStudies from "./components/casestudies";
-import Service from "./components/service";
+import Service from "./components/service"; // Home page services
 import OurProcess from "./components/ourprocess";
 import Testimonials from "./components/testimonial";
 import Blog from "./components/blogs";
 import Article from "./components/article";
-import Services from "./components/services";
+import Services from "./components/services"; // Dedicated services page
 import StartProject from "./components/startproject";
 import AdminCreatePost from "./components/admincreatepost";
 import AdminLogin from "./components/adminlogin";
@@ -35,7 +35,7 @@ const ProtectedRoute = ({ children }) => {
   return children;
 };
 
-// Upgraded Function: Handles both scrolling to top AND updating Tab Titles & SEO Tags
+// Upgraded Function: Handles both scrolling to top AND updating Tab Titles, SEO & Schema Tags
 function RouteTracker() {
   const { pathname } = useLocation();
   
@@ -48,8 +48,26 @@ function RouteTracker() {
   let pageTitle = "CodeLume® | Bespoke Web Engineering & Digital Agency"; 
   let pageDesc = "CodeLume is a premium digital hub specialising in full-stack web development, UI/UX design, and advanced SEO.";
   let pageUrl = `https://codelume.com${pathname}`;
+  
+  // Default Schema Markup (WebSite)
+  let schemaType = "WebSite";
+  let schemaData = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "CodeLume",
+    "url": "https://codelume.com",
+    "description": "Bespoke Web Engineering & Digital Agency built by Rafay.",
+    "publisher": {
+      "@type": "Organization",
+      "name": "CodeLume",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://codelume.com/logo.png" // Update with your actual logo URL
+      }
+    }
+  };
 
-  // Apply custom titles and descriptions dynamically
+  // Apply custom titles, descriptions and Schema dynamically
   if (pathname === "/") {
     pageTitle = "CodeLume® | Bespoke Web Engineering & Digital Agency";
   } else if (pathname === "/start-project") {
@@ -58,6 +76,19 @@ function RouteTracker() {
   } else if (pathname === "/services") {
     pageTitle = "Services | CodeLume";
     pageDesc = "Explore bespoke digital solutions including MERN Stack, WordPress, UI/UX Design, and custom web applications.";
+    // Service Schema for Services Page
+    schemaData = {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "serviceType": "Web Development & Digital Marketing",
+      "provider": {
+        "@type": "Person",
+        "name": "Rafay",
+        "url": "https://codelume.com/about"
+      },
+      "description": pageDesc,
+      "areaServed": "Worldwide"
+    };
   } else if (pathname === "/blogs") {
     pageTitle = "Blogs | CodeLume";
     pageDesc = "Explore the latest articles on MERN stack, WordPress, UI/UX, and local SEO strategies.";
@@ -67,6 +98,18 @@ function RouteTracker() {
   } else if (pathname === "/about") {
     pageTitle = "About | CodeLume";
     pageDesc = "Learn more about Rafay, an independent freelance web developer and UI/UX designer.";
+    // Profile Schema for About Page
+    schemaData = {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Rafay",
+      "jobTitle": "Freelance Web Developer & UI/UX Designer",
+      "url": "https://codelume.com/about",
+      "worksFor": {
+        "@type": "Organization",
+        "name": "CodeLume"
+      }
+    };
   } else if (pathname === "/terms-of-service") {
     pageTitle = "Terms of Service | CodeLume";
     pageDesc = "Read the Terms of Service for using CodeLume's web development and digital services.";  
@@ -87,7 +130,7 @@ function RouteTracker() {
       <link rel="canonical" href={pageUrl} />
 
       {/* Open Graph Tags for Social Media */}
-      <meta property="og:type" content="website" />
+      <meta property="og:type" content={pathname.includes("/blogs/") ? "article" : "website"} />
       <meta property="og:url" content={pageUrl} />
       <meta property="og:title" content={pageTitle} />
       <meta property="og:description" content={pageDesc} />
@@ -96,6 +139,11 @@ function RouteTracker() {
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={pageTitle} />
       <meta name="twitter:description" content={pageDesc} />
+
+      {/* Dynamic JSON-LD Schema Markup */}
+      <script type="application/ld+json">
+        {JSON.stringify(schemaData)}
+      </script>
     </Helmet>
   );
 }
