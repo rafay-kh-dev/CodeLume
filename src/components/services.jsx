@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, Sparkles, Smartphone, PenTool, Rocket } from "lucide-react";
-// @thesvg/react se icons import kar liye (React ko alias de diya taakay conflict na ho)
+import { ArrowRight, Sparkles } from "lucide-react";
+// Naye premium SVG Icons
 import { 
   React as ReactIcon, 
   Laravel, 
@@ -9,10 +9,14 @@ import {
   Wordpress, 
   Shopify, 
   Webflow, 
-  K8sApiServer 
+  GcpCloudMonitoring,
+  GcpApiMonetization,
+  Flutter,
+  Figma,
+  Adobe
 } from "@thesvg/react";
 
-export default function Services() {
+export default function Service() {
   const services = [
     {
       id: 1,
@@ -56,11 +60,7 @@ export default function Services() {
       description: "Bespoke digital solutions tailored exactly to your business logic.",
       badge: "Top Rated",
       badgeColor: "text-indigo-400 bg-indigo-500/10 border-indigo-500/30",
-      icon: (
-        <svg className="w-7 h-7 text-indigo-400 fill-none stroke-current" strokeWidth="2" viewBox="0 0 24 24">
-          <path d="M16 18l6-6-6-6M8 6l-6 6 6 6" strokeLinecap="round" strokeLinejoin="round"/>
-        </svg>
-      ),
+      icon: <GcpCloudMonitoring className="w-7 h-7" />,
       bg: "bg-indigo-500/10",
       hoverBorder: "group-hover:border-indigo-500/50",
       price: "$299",
@@ -108,7 +108,7 @@ export default function Services() {
       description: "Connecting your web apps with third-party services seamlessly.",
       badge: "High Speed",
       badgeColor: "text-orange-400 bg-orange-500/10 border-orange-500/30",
-      icon: <K8sApiServer className="w-7 h-7" />,
+      icon: <GcpApiMonetization className="w-7 h-7" />,
       bg: "bg-orange-500/10",
       hoverBorder: "group-hover:border-orange-500/50",
       price: "$99",
@@ -120,7 +120,7 @@ export default function Services() {
       description: "High-performance iOS and Android applications engineered for scale.",
       badge: "Native Build",
       badgeColor: "text-teal-400 bg-teal-500/10 border-teal-500/30",
-      icon: <Smartphone className="w-7 h-7 text-teal-400" />,
+      icon: <Flutter className="w-7 h-7 text-teal-400" />,
       bg: "bg-teal-500/10",
       hoverBorder: "group-hover:border-teal-500/50",
       price: "$399",
@@ -132,7 +132,7 @@ export default function Services() {
       description: "User-centric interfaces crafted in Figma for maximum conversion.",
       badge: "Creative",
       badgeColor: "text-pink-400 bg-pink-500/10 border-pink-500/30",
-      icon: <PenTool className="w-7 h-7 text-pink-400" />,
+      icon: <Figma className="w-7 h-7 text-pink-400" />,
       bg: "bg-pink-500/10",
       hoverBorder: "group-hover:border-pink-500/50",
       price: "$199",
@@ -144,7 +144,7 @@ export default function Services() {
       description: "From 0 to 100. Complete brand identity, web engineering, and marketing.",
       badge: "Agency Premium",
       badgeColor: "text-amber-400 bg-amber-500/10 border-amber-500/30",
-      icon: <Rocket className="w-7 h-7 text-amber-400" />,
+      icon: <Adobe className="w-7 h-7 text-amber-400" />,
       bg: "bg-amber-500/10",
       hoverBorder: "group-hover:border-amber-500/50",
       price: "$1,499",
@@ -153,7 +153,7 @@ export default function Services() {
   ];
 
   return (
-    <div className="min-h-dvh bg-[#030712] text-white font-jakarta pt-28 sm:pt-36 pb-24 overflow-hidden relative">
+    <section className="bg-[#030712] text-white font-jakarta py-24 overflow-hidden relative">
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-[500px] bg-[radial-gradient(ellipse_at_top,rgba(37,99,235,0.08)_0%,transparent_70%)] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
@@ -182,7 +182,6 @@ export default function Services() {
               to={service.link}
               className={`flex flex-col bg-[#0a0f1c] border border-white/5 rounded-3xl p-6 group transition-all duration-500 hover:-translate-y-2 hover:bg-[#0f1629] hover:shadow-2xl relative ${service.hoverBorder}`}
             >
-              {/* Technology Icon & Badge Row */}
               <div className="flex items-center justify-between mb-6">
                 <div className={`w-14 h-14 shrink-0 rounded-2xl ${service.bg} flex items-center justify-center transition-transform duration-500 group-hover:scale-110`}>
                   {service.icon}
@@ -221,8 +220,7 @@ export default function Services() {
             </Link>
           ))}
         </div>
-
       </div>
-    </div>
+    </section>
   );
 }
