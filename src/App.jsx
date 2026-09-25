@@ -14,7 +14,8 @@ import About from "./components/about";
 import CaseStudies from "./components/casestudies";
 import Service from "./components/service"; 
 import OurProcess from "./components/ourprocess";
-import Contact from "./components/calculator";
+// Import fix kiya hai: File ka naam "calculator" hai aur humein component ka naam "Calculator" chahiye.
+import Calculator from "./components/calculator"; 
 import Testimonials from "./components/testimonial";
 import Blog from "./components/blogs";
 import Article from "./components/article";
