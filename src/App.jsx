@@ -222,7 +222,7 @@ export default function App() {
                     <Hero />
                     <About />
                     <Service />
-                    <ProjectCalculator />
+                    <Calculator />
                     <OurProcess />
                     <Testimonials />
                   </>
