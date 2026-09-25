@@ -129,7 +129,7 @@ export default function TermsOfService() {
                   href="mailto:support@storytutorials.com" 
                   className="text-blue-400 hover:text-blue-300 transition-colors underline underline-offset-4"
                 >
-                  support@storytutorials.com
+                  mrafaykh@outlook.com
                 </a>.
               </h2>
             </div>
