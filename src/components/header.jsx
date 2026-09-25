@@ -7,6 +7,9 @@ import {
   X,
   ChevronDown,
   ArrowRight,
+  Smartphone,
+  PenTool,
+  Rocket,
 } from "lucide-react";
 // @thesvg/react se official icons import kiye gaye hain
 import {
@@ -29,9 +32,8 @@ const CustomPlatformIcon = ({ className }) => (
 const servicesData = [
   {
     title: "MERN Stack",
-    link: "/services/mern-stack", // Exact route added
-    description:
-      "Full-stack JavaScript solutions using MongoDB, Express, React, & Node.",
+    link: "/services/mern-stack", 
+    description: "Full-stack JavaScript solutions using MongoDB, Express, React, & Node.",
     icon: ReactIcon,
     color: "text-blue-400",
     bgColor: "bg-blue-500/10",
@@ -49,8 +51,7 @@ const servicesData = [
   {
     title: "Angular Web Apps",
     link: "/services/angular-apps",
-    description:
-      "Enterprise-grade frontend frameworks for complex applications.",
+    description: "Enterprise-grade frontend frameworks for complex applications.",
     icon: Angular,
     color: "text-rose-400",
     bgColor: "bg-rose-500/10",
@@ -59,18 +60,16 @@ const servicesData = [
   {
     title: "Custom Platforms",
     link: "/services/custom-platforms",
-    description:
-      "Bespoke digital solutions tailored exactly to your business logic.",
+    description: "Bespoke digital solutions tailored exactly to your business logic.",
     icon: CustomPlatformIcon,
     color: "text-indigo-400",
     bgColor: "bg-indigo-500/10",
     hoverBg: "group-hover:bg-indigo-500/20",
   },
   {
-    title: "WordPress & WooCommerce",
+    title: "WordPress Sites",
     link: "/services/wordpress",
-    description:
-      "Custom themes, plugins, and powerful e-commerce integrations.",
+    description: "Custom themes, plugins, and powerful e-commerce integrations.",
     icon: Wordpress,
     color: "text-sky-400",
     bgColor: "bg-sky-500/10",
@@ -79,8 +78,7 @@ const servicesData = [
   {
     title: "Shopify Development",
     link: "/services/shopify",
-    description:
-      "High-converting storefronts and highly customised Shopify apps.",
+    description: "High-converting storefronts and highly customised Shopify apps.",
     icon: Shopify,
     color: "text-emerald-400",
     bgColor: "bg-emerald-500/10",
@@ -89,8 +87,7 @@ const servicesData = [
   {
     title: "Webflow Sites",
     link: "/services/webflow",
-    description:
-      "Pixel-perfect, lightning-fast, and visually stunning responsive websites.",
+    description: "Pixel-perfect, lightning-fast, and visually stunning responsive websites.",
     icon: Webflow,
     color: "text-purple-400",
     bgColor: "bg-purple-500/10",
@@ -99,16 +96,43 @@ const servicesData = [
   {
     title: "API & Integrations",
     link: "/services/api-integrations",
-    description:
-      "Connecting your web apps with third-party services seamlessly.",
+    description: "Connecting your web apps with third-party services seamlessly.",
     icon: K8sApiServer,
     color: "text-orange-400",
     bgColor: "bg-orange-500/10",
     hoverBg: "group-hover:bg-orange-500/20",
   },
+  {
+    title: "Mobile Apps",
+    link: "/services/mobile-apps",
+    description: "High-performance iOS and Android applications engineered for scale.",
+    icon: Smartphone,
+    color: "text-teal-400",
+    bgColor: "bg-teal-500/10",
+    hoverBg: "group-hover:bg-teal-500/20",
+  },
+  {
+    title: "UI/UX Design",
+    link: "/services/ui-ux-design",
+    description: "User-centric interfaces crafted in Figma for maximum conversion.",
+    icon: PenTool,
+    color: "text-pink-400",
+    bgColor: "bg-pink-500/10",
+    hoverBg: "group-hover:bg-pink-500/20",
+  },
+  {
+    title: "Full Branding",
+    link: "/services/full-branding",
+    description: "From 0 to 100. Complete brand identity, web engineering, and marketing.",
+    icon: Rocket,
+    color: "text-amber-400",
+    bgColor: "bg-amber-500/10",
+    hoverBg: "group-hover:bg-amber-500/20",
+  }
 ];
 
-const standardLinks = ["Services", "Case Studies", "About", "Blogs"]; // Main Services Link Added
+// Removed the duplicate 'Services' link
+const standardLinks = ["Case Studies", "About", "Blogs"]; 
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -155,7 +179,7 @@ export default function Header() {
           className={`fixed top-0 inset-x-0 z-60 flex justify-center pointer-events-none px-4 sm:px-6 transition-all duration-300 ${mobileMenuOpen ? "pt-4" : ""}`}
         >
           <header
-            className={`pointer-events-auto flex items-center justify-between w-full transition-all duration-500 ease-out transform-gpu will-change-[max-width,transform,background-color] ${
+            className={`pointer-events-auto flex items-center justify-between w-full transition-all duration-500 ease-out transform-gpu will-change-[max-width,transform,background-color] relative ${
               isScrolled || mobileMenuOpen
                 ? "max-w-5xl translate-y-4 rounded-full bg-[#030712]/90 backdrop-blur-xl shadow-[0_15px_30px_-10px_rgba(0,0,0,0.6)] py-3 px-5 sm:px-8 ring-1 ring-white/5"
                 : "max-w-7xl translate-y-0 rounded-none bg-transparent shadow-none py-5 px-0"
@@ -192,7 +216,12 @@ export default function Header() {
                 onMouseEnter={() => setServicesOpen(true)}
                 onMouseLeave={() => setServicesOpen(false)}
               >
-                <Link to="/services" className="flex items-center gap-1.5 px-4 py-2 rounded-full outline-none hover:bg-white/5 transition-colors duration-300">
+                {/* Made the main Services link clickable */}
+                <Link 
+                  to="/services" 
+                  onClick={() => setServicesOpen(false)}
+                  className="flex items-center gap-1.5 px-4 py-2 rounded-full outline-none hover:bg-white/5 transition-colors duration-300"
+                >
                   <h2 className="m-0 text-[14px] font-bold text-slate-300 group-hover/nav:text-white transition-colors flex items-center gap-1.5">
                     Services
                     <ChevronDown
@@ -201,21 +230,23 @@ export default function Header() {
                   </h2>
                 </Link>
 
+                {/* Mega Menu Dropdown - Centered & widened for 3 columns */}
                 <div
-                  className={`absolute top-[calc(100%+1rem)] left-1/2 -translate-x-1/2 w-170 pt-0 transition-all duration-300 ease-out origin-top transform-gpu will-change-transform ${servicesOpen ? "opacity-100 translate-y-0 visible scale-100" : "opacity-0 -translate-y-3 invisible scale-95"}`}
+                  className={`absolute top-[calc(100%+1rem)] left-1/2 -translate-x-1/2 w-[900px] pt-0 transition-all duration-300 ease-out origin-top transform-gpu will-change-transform ${servicesOpen ? "opacity-100 translate-y-0 visible scale-100" : "opacity-0 -translate-y-3 invisible scale-95"}`}
                 >
                   <div className="bg-[#050b14]/95 backdrop-blur-xl rounded-3xl shadow-[0_30px_60px_-15px_rgba(0,0,0,0.8),inset_0_0_20px_rgba(255,255,255,0.02)] p-4 relative overflow-hidden">
                     <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-linear-to-b from-blue-900/10 to-transparent pointer-events-none rounded-3xl" />
-
                     <div className="absolute -top-32 right-0 w-64 h-64 bg-[radial-gradient(circle,rgba(79,70,229,0.15)_0%,transparent_70%)] pointer-events-none transform-gpu translate-z-0" />
 
-                    <div className="grid grid-cols-2 gap-3 relative z-10">
+                    {/* Updated to grid-cols-3 */}
+                    <div className="grid grid-cols-3 gap-3 relative z-10">
                       {servicesData.map((service) => {
                         const Icon = service.icon;
                         return (
                           <Link
                             key={service.title}
                             to={service.link}
+                            onClick={() => setServicesOpen(false)}
                             className="relative flex items-start gap-4 p-4 rounded-2xl group outline-none overflow-hidden transition-all duration-300 hover:bg-white/3 hover:shadow-[0_10px_30px_-10px_rgba(0,0,0,0.5)]"
                           >
                             <div
@@ -226,11 +257,11 @@ export default function Header() {
                               />
                             </div>
                             <div className="relative z-10 flex flex-col pt-0.5">
-                              <h2 className="text-[15px] font-extrabold text-slate-200 group-hover:text-white transition-colors flex items-center gap-1.5 m-0 leading-tight">
+                              <h2 className="text-[14px] font-extrabold text-slate-200 group-hover:text-white transition-colors flex items-center gap-1.5 m-0 leading-tight">
                                 {service.title}
-                                <ArrowRight className="w-3.5 h-3.5 opacity-0 -translate-x-2 transition-all duration-300 ease-out group-hover:opacity-100 group-hover:translate-x-0 text-blue-400 transform-gpu" />
+                                <ArrowRight className="w-3 h-3 opacity-0 -translate-x-2 transition-all duration-300 ease-out group-hover:opacity-100 group-hover:translate-x-0 text-blue-400 transform-gpu" />
                               </h2>
-                              <h2 className="text-[13px] font-medium text-slate-400 mt-1.5 leading-relaxed line-clamp-2 transition-colors group-hover:text-slate-300 m-0">
+                              <h2 className="text-[12.5px] font-medium text-slate-400 mt-1.5 leading-relaxed line-clamp-2 transition-colors group-hover:text-slate-300 m-0">
                                 {service.description}
                               </h2>
                             </div>
@@ -246,6 +277,7 @@ export default function Header() {
                       </h2>
                       <Link
                         to="/start-project"
+                        onClick={() => setServicesOpen(false)}
                         className="text-[14px] font-bold text-blue-400 hover:text-blue-300 flex items-center gap-1.5 group/link transition-colors relative z-10 outline-none"
                       >
                         <h2 className="m-0 text-inherit text-[14px] font-bold flex items-center gap-1.5">
