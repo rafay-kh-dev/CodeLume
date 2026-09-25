@@ -90,21 +90,19 @@ export default function ApiIntegrationsService() {
   return (
     <div className="min-h-dvh bg-[#030712] text-white font-jakarta pt-24 md:pt-28 pb-20 md:pb-24 overflow-hidden relative">
       
-      {/* Deep Glow Background (Orange) */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-[700px] bg-[radial-gradient(ellipse_at_top,rgba(249,115,22,0.15)_0%,transparent_70%)] pointer-events-none" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-[700px] bg-[radial-gradient(ellipse_at_top,rgba(37,99,235,0.15)_0%,transparent_70%)] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
         
-        {/* Enhanced Hero Section */}
         <div className="flex flex-col items-center text-center mb-12 md:mb-24 max-w-4xl mx-auto">
           
-          <h2 className="text-[12px] md:text-[13px] font-black text-orange-500 uppercase tracking-[0.3em] mb-4 m-0 flex items-center justify-center gap-2">
+          <h2 className="text-[12px] md:text-[13px] font-black text-blue-500 uppercase tracking-[0.3em] mb-4 m-0 flex items-center justify-center gap-2">
             <Webhook className="w-4 h-4" /> Connectivity & Data
           </h2>
           
           <h1 className="text-4xl sm:text-5xl lg:text-7xl font-black text-white tracking-tighter leading-[1.05] m-0 mb-4 md:mb-6 drop-shadow-2xl">
             Seamless API <br className="hidden sm:block" />
-            <span className="text-transparent bg-clip-text bg-linear-to-r from-orange-400 via-orange-500 to-amber-500">
+            <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-400 via-blue-500 to-indigo-400">
               Integrations
             </span>
           </h1>
@@ -114,7 +112,6 @@ export default function ApiIntegrationsService() {
           </p>
         </div>
 
-        {/* Pricing Slider (Mobile) & Grid (Desktop) */}
         <div className="relative max-w-7xl mx-auto">
           
           <div 
@@ -127,12 +124,12 @@ export default function ApiIntegrationsService() {
                 key={index} 
                 className={`w-[85vw] sm:w-[70vw] shrink-0 snap-center md:w-auto relative flex flex-col bg-[#0a0f1c] rounded-3xl md:rounded-4xl p-6 md:p-8 lg:p-10 transition-all duration-500 hover:-translate-y-2 h-full ${
                   pkg.popular 
-                  ? "border border-orange-500/50 shadow-[0_0_50px_rgba(249,115,22,0.15)] bg-linear-to-b from-[#0a0f1c] to-[#1a1005] lg:scale-105 z-10" 
+                  ? "border border-blue-500/50 shadow-[0_0_50px_rgba(59,130,246,0.15)] bg-linear-to-b from-[#0a0f1c] to-[#0f172a] lg:scale-105 z-10" 
                   : "border border-white/5 hover:border-white/10 hover:shadow-2xl"
                 }`}
               >
                 {pkg.popular && (
-                  <div className="absolute -top-4 md:-top-5 left-1/2 -translate-x-1/2 bg-linear-to-r from-orange-600 to-amber-600 text-white text-[10px] md:text-[12px] font-black uppercase tracking-widest px-5 py-1.5 md:py-2 rounded-full shadow-[0_10px_20px_rgba(249,115,22,0.3)] border border-orange-400/30 whitespace-nowrap">
+                  <div className="absolute -top-4 md:-top-5 left-1/2 -translate-x-1/2 bg-linear-to-r from-blue-600 to-indigo-600 text-white text-[10px] md:text-[12px] font-black uppercase tracking-widest px-5 py-1.5 md:py-2 rounded-full shadow-[0_10px_20px_rgba(37,99,235,0.3)] border border-blue-400/30 whitespace-nowrap">
                     Most Popular
                   </div>
                 )}
@@ -152,8 +149,8 @@ export default function ApiIntegrationsService() {
                   {pkg.features.map((feature, i) => (
                     <div key={i} className="flex items-center gap-3 group">
                       {feature.included ? (
-                        <div className="w-4 h-4 md:w-5 md:h-5 rounded-full bg-orange-500/20 flex items-center justify-center shrink-0">
-                          <Check className="w-2.5 h-2.5 md:w-3 md:h-3 text-orange-400" />
+                        <div className="w-4 h-4 md:w-5 md:h-5 rounded-full bg-blue-500/20 flex items-center justify-center shrink-0">
+                          <Check className="w-2.5 h-2.5 md:w-3 md:h-3 text-blue-400" />
                         </div>
                       ) : (
                         <div className="w-4 h-4 md:w-5 md:h-5 rounded-full bg-white/5 flex items-center justify-center shrink-0 group-hover:bg-red-500/10 transition-colors">
@@ -173,7 +170,7 @@ export default function ApiIntegrationsService() {
                   rel="noreferrer"
                   className={`w-full mt-auto flex items-center justify-center gap-2 py-3.5 md:py-4 rounded-xl text-[14px] md:text-[15px] font-bold transition-all duration-300 ${
                     pkg.popular 
-                    ? "bg-linear-to-r from-orange-600 to-orange-500 hover:from-orange-500 hover:to-amber-500 text-white shadow-[0_0_20px_rgba(249,115,22,0.4)]" 
+                    ? "bg-linear-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white shadow-[0_0_20px_rgba(37,99,235,0.4)]" 
                     : "bg-white/5 hover:bg-white/10 text-white border border-white/5"
                   }`}
                 >
@@ -190,7 +187,7 @@ export default function ApiIntegrationsService() {
                 onClick={() => scrollToSlide(index)}
                 className={`h-2 rounded-full transition-all duration-300 outline-none ${
                   activeSlide === index 
-                  ? "w-6 bg-orange-500" 
+                  ? "w-6 bg-blue-500" 
                   : "w-2 bg-white/20 hover:bg-white/40"
                 }`}
                 aria-label={`Go to slide ${index + 1}`}
@@ -199,7 +196,6 @@ export default function ApiIntegrationsService() {
           </div>
 
         </div>
-
       </div>
     </div>
   );
