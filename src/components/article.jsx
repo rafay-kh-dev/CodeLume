@@ -11,7 +11,7 @@ import {
   Code2
 } from "lucide-react";
 
-// Custom SVG Icons (Since Lucide removed brand logos in their latest versions)
+// Custom SVG Icons (Since Lucide removed brand logos)
 const TwitterIcon = ({ className }) => (<svg className={className} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/></svg>);
 const LinkedinIcon = ({ className }) => (<svg className={className} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>);
 const FacebookIcon = ({ className }) => (<svg className={className} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>);
@@ -82,7 +82,8 @@ export default function Article() {
   const shareUrl = typeof window !== 'undefined' ? window.location.href : '';
 
   return (
-    <article className="min-h-dvh bg-[#030712] text-white font-jakarta pt-28 sm:pt-36 pb-24 overflow-hidden relative">
+    // FIX 1: Removed 'overflow-hidden' from the main article tag so Sticky Sidebar works!
+    <article className="min-h-dvh bg-[#030712] text-white font-jakarta pt-28 sm:pt-36 pb-24 relative">
       
       <Helmet>
         <title>{`${post.title} | CodeLume`}</title>
@@ -92,8 +93,8 @@ export default function Article() {
         {post.coverImage && <meta property="og:image" content={post.coverImage} />}
       </Helmet>
 
-      {/* Subtle Background Glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-[500px] bg-[radial-gradient(ellipse_at_top,rgba(37,99,235,0.05)_0%,transparent_70%)] pointer-events-none" />
+      {/* Subtle Background Glow (Modified to not break sticky positioning) */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-[500px] bg-[radial-gradient(ellipse_at_top,rgba(37,99,235,0.05)_0%,transparent_70%)] pointer-events-none -z-10" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
         
@@ -145,14 +146,27 @@ export default function Article() {
               </div>
             )}
 
+            {/* FIX 2: Custom Tailwind Typography injection for the WYSIWYG HTML */}
             <div 
-              className="prose prose-invert prose-lg max-w-none prose-headings:font-black prose-a:text-blue-400 hover:prose-a:text-blue-300 prose-img:rounded-2xl"
+              className="text-lg text-slate-300 leading-[1.8] tracking-wide
+                [&>p]:mb-8 
+                [&>h1]:text-4xl [&>h1]:font-black [&>h1]:text-white [&>h1]:mt-14 [&>h1]:mb-6
+                [&>h2]:text-3xl [&>h2]:font-black [&>h2]:text-white [&>h2]:mt-12 [&>h2]:mb-6
+                [&>h3]:text-2xl [&>h3]:font-bold [&>h3]:text-white [&>h3]:mt-10 [&>h3]:mb-4
+                [&>ul]:list-disc [&>ul]:pl-6 [&>ul]:mb-8 [&>ul>li]:mb-3
+                [&>ol]:list-decimal [&>ol]:pl-6 [&>ol]:mb-8 [&>ol>li]:mb-3
+                [&>a]:text-blue-400 [&>a:hover]:text-blue-300 [&>a]:underline
+                [&_strong]:text-white [&_strong]:font-black
+                [&_b]:text-white [&_b]:font-black
+                [&>blockquote]:border-l-4 [&>blockquote]:border-blue-500 [&>blockquote]:pl-6 [&>blockquote]:italic [&>blockquote]:my-8 [&>blockquote]:text-slate-400
+                [&>img]:rounded-3xl [&>img]:my-10 [&>img]:shadow-2xl [&>img]:w-full [&>img]:object-cover"
               dangerouslySetInnerHTML={{ __html: post.content }}
             />
           </div>
 
           {/* RIGHT COLUMN: Sticky Sidebar */}
-          <aside className="w-full lg:w-1/3">
+          {/* FIX 3: self-start ensures the aside doesn't stretch, allowing sticky child to track scrolling */}
+          <aside className="w-full lg:w-1/3 self-start">
             <div className="sticky top-32 space-y-8">
               
               <div className="bg-[#0a0f1c] border border-white/5 rounded-3xl p-8 relative overflow-hidden shadow-xl">
