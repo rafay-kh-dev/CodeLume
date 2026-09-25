@@ -97,7 +97,7 @@ export default function MernStackService() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
         
-        {/* Enhanced Hero Section (Badge Removed) */}
+        {/* Enhanced Hero Section */}
         <div className="flex flex-col items-center text-center mb-16 md:mb-24 max-w-4xl mx-auto">
           
           <h2 className="text-[13px] font-black text-blue-500 uppercase tracking-[0.3em] mb-4 m-0 flex items-center justify-center gap-2">
@@ -122,19 +122,20 @@ export default function MernStackService() {
           <div 
             ref={sliderRef}
             onScroll={handleScroll}
-            className="flex md:grid md:grid-cols-3 gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-8 md:pb-0 md:overflow-visible items-center [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']"
+            /* Added pt-8 so the Most Popular badge doesn't get cut on mobile */
+            className="flex md:grid md:grid-cols-3 gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth pt-8 pb-8 md:pb-0 md:overflow-visible items-stretch [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']"
           >
             {packages.map((pkg, index) => (
               <div 
                 key={index} 
-                className={`w-full shrink-0 snap-center md:w-auto relative flex flex-col bg-[#0a0f1c] rounded-4xl p-8 lg:p-10 transition-all duration-500 hover:-translate-y-2 ${
+                className={`w-full shrink-0 snap-center md:w-auto relative flex flex-col bg-[#0a0f1c] rounded-4xl p-8 lg:p-10 transition-all duration-500 hover:-translate-y-2 h-full ${
                   pkg.popular 
                   ? "border border-blue-500/50 shadow-[0_0_50px_rgba(59,130,246,0.15)] bg-linear-to-b from-[#0a0f1c] to-[#0f172a] lg:scale-105 z-10" 
                   : "border border-white/5 hover:border-white/10 hover:shadow-2xl"
                 }`}
               >
                 {pkg.popular && (
-                  <div className="absolute -top-5 left-1/2 -translate-x-1/2 bg-linear-to-r from-blue-600 to-indigo-600 text-white text-[12px] font-black uppercase tracking-widest px-6 py-2 rounded-full shadow-[0_10px_20px_rgba(37,99,235,0.3)] border border-blue-400/30">
+                  <div className="absolute -top-5 left-1/2 -translate-x-1/2 bg-linear-to-r from-blue-600 to-indigo-600 text-white text-[12px] font-black uppercase tracking-widest px-6 py-2 rounded-full shadow-[0_10px_20px_rgba(37,99,235,0.3)] border border-blue-400/30 whitespace-nowrap">
                     Most Popular
                   </div>
                 )}
@@ -147,20 +148,8 @@ export default function MernStackService() {
                   <span className="text-slate-500 font-bold text-sm mb-1">/project</span>
                 </div>
 
-                <a
-                  href={`https://wa.me/923347835980?text=Hi%20Rafay!%20I%20am%20interested%20in%20the%20${encodeURIComponent(pkg.name)}%20MERN%20Stack%20package%20for%20${pkg.price}.`}
-                  target="_blank"
-                  rel="noreferrer"
-                  className={`w-full flex items-center justify-center gap-2 py-4 rounded-xl font-bold transition-all duration-300 mb-10 ${
-                    pkg.popular 
-                    ? "bg-linear-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white shadow-[0_0_20px_rgba(37,99,235,0.4)]" 
-                    : "bg-white/5 hover:bg-white/10 text-white border border-white/5"
-                  }`}
-                >
-                  {pkg.buttonText} <ArrowRight className="w-4 h-4" />
-                </a>
-
-                <div className="flex flex-col gap-4 mt-auto">
+                {/* Features Section (Moved Above Button) */}
+                <div className="flex flex-col gap-4 mb-10 flex-grow">
                   <h2 className="text-[11px] font-black text-slate-500 uppercase tracking-widest m-0 mb-2">
                     Top Features Included
                   </h2>
@@ -181,6 +170,20 @@ export default function MernStackService() {
                     </div>
                   ))}
                 </div>
+
+                {/* Button Section (Moved to Bottom) */}
+                <a
+                  href={`https://wa.me/923347835980?text=Hi%20Rafay!%20I%20am%20interested%20in%20the%20${encodeURIComponent(pkg.name)}%20MERN%20Stack%20package%20for%20${pkg.price}.`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className={`w-full mt-auto flex items-center justify-center gap-2 py-4 rounded-xl font-bold transition-all duration-300 ${
+                    pkg.popular 
+                    ? "bg-linear-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white shadow-[0_0_20px_rgba(37,99,235,0.4)]" 
+                    : "bg-white/5 hover:bg-white/10 text-white border border-white/5"
+                  }`}
+                >
+                  {pkg.buttonText} <ArrowRight className="w-4 h-4" />
+                </a>
               </div>
             ))}
           </div>
