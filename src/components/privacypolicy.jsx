@@ -31,9 +31,6 @@ export default function PrivacyPolicy() {
 
         {/* Page Header */}
         <div className="mb-12">
-          <div className="w-16 h-16 rounded-2xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center mb-6">
-            <Lock className="w-8 h-8 text-blue-400" />
-          </div>
           <h2 className="text-4xl sm:text-5xl font-black text-white tracking-tighter m-0 mb-4">
             Privacy Policy
           </h2>
@@ -132,7 +129,7 @@ export default function PrivacyPolicy() {
                   href="mailto:privacy@storytutorials.com" 
                   className="text-blue-400 hover:text-blue-300 transition-colors underline underline-offset-4"
                 >
-                  privacy@storytutorials.com
+                  mrafaykh@outlook.com
                 </a>.
               </h2>
             </div>
