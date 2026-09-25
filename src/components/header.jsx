@@ -7,11 +7,8 @@ import {
   X,
   ChevronDown,
   ArrowRight,
-  Smartphone,
-  PenTool,
-  Rocket,
 } from "lucide-react";
-// @thesvg/react se official icons import kiye gaye hain
+// Official SVG Icons
 import {
   React as ReactIcon,
   Laravel,
@@ -19,20 +16,17 @@ import {
   Wordpress,
   Shopify,
   Webflow,
-  K8sApiServer,
+  GcpCloudMonitoring,
+  GcpApiMonetization,
+  Flutter,
+  Figma,
+  Adobe,
 } from "@thesvg/react";
-
-// Custom Platforms ke liye custom code icon component
-const CustomPlatformIcon = ({ className }) => (
-  <svg className={`fill-none stroke-current ${className}`} strokeWidth="2" viewBox="0 0 24 24">
-    <path d="M16 18l6-6-6-6M8 6l-6 6 6 6" strokeLinecap="round" strokeLinejoin="round"/>
-  </svg>
-);
 
 const servicesData = [
   {
     title: "MERN Stack",
-    link: "/services/mern-stack", 
+    link: "/services/mern-stack",
     description: "Full-stack JavaScript solutions using MongoDB, Express, React, & Node.",
     icon: ReactIcon,
     color: "text-blue-400",
@@ -61,7 +55,7 @@ const servicesData = [
     title: "Custom Platforms",
     link: "/services/custom-platforms",
     description: "Bespoke digital solutions tailored exactly to your business logic.",
-    icon: CustomPlatformIcon,
+    icon: GcpCloudMonitoring,
     color: "text-indigo-400",
     bgColor: "bg-indigo-500/10",
     hoverBg: "group-hover:bg-indigo-500/20",
@@ -97,7 +91,7 @@ const servicesData = [
     title: "API & Integrations",
     link: "/services/api-integrations",
     description: "Connecting your web apps with third-party services seamlessly.",
-    icon: K8sApiServer,
+    icon: GcpApiMonetization,
     color: "text-orange-400",
     bgColor: "bg-orange-500/10",
     hoverBg: "group-hover:bg-orange-500/20",
@@ -106,7 +100,7 @@ const servicesData = [
     title: "Mobile Apps",
     link: "/services/mobile-apps",
     description: "High-performance iOS and Android applications engineered for scale.",
-    icon: Smartphone,
+    icon: Flutter,
     color: "text-teal-400",
     bgColor: "bg-teal-500/10",
     hoverBg: "group-hover:bg-teal-500/20",
@@ -115,7 +109,7 @@ const servicesData = [
     title: "UI/UX Design",
     link: "/services/ui-ux-design",
     description: "User-centric interfaces crafted in Figma for maximum conversion.",
-    icon: PenTool,
+    icon: Figma,
     color: "text-pink-400",
     bgColor: "bg-pink-500/10",
     hoverBg: "group-hover:bg-pink-500/20",
@@ -124,15 +118,14 @@ const servicesData = [
     title: "Full Branding",
     link: "/services/full-branding",
     description: "From 0 to 100. Complete brand identity, web engineering, and marketing.",
-    icon: Rocket,
+    icon: Adobe,
     color: "text-amber-400",
     bgColor: "bg-amber-500/10",
     hoverBg: "group-hover:bg-amber-500/20",
   }
 ];
 
-// Removed the duplicate 'Services' link
-const standardLinks = ["Case Studies", "About", "Blogs"]; 
+const standardLinks = ["Case Studies", "About", "Blogs"];
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -168,8 +161,6 @@ export default function Header() {
         .font-jakarta { font-family: 'Plus Jakarta Sans', sans-serif; }
         @keyframes shimmer { 0% { transform: translate3d(-150%,0,0); } 100% { transform: translate3d(150%,0,0); } }
         .animate-shimmer { animation: shimmer 2.5s infinite linear; will-change: transform; }
-        
-        /* Mobile Scrollbar Hide */
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
       `}</style>
@@ -203,42 +194,38 @@ export default function Header() {
               <div className="flex flex-col justify-center">
                 <h2 className="text-2xl font-extrabold tracking-tight text-white leading-none m-0">
                   CodeLume
-                  <span className="text-blue-500 animate-[pulse_2s_ease-in-out_infinite]">
-                    .
-                  </span>
+                  <span className="text-blue-500 animate-[pulse_2s_ease-in-out_infinite]">.</span>
                 </h2>
               </div>
             </Link>
 
             <nav className="hidden lg:flex items-center gap-2">
               <div
-                className="relative group/nav h-full flex items-center"
+                className="h-full flex items-center static"
                 onMouseEnter={() => setServicesOpen(true)}
                 onMouseLeave={() => setServicesOpen(false)}
               >
-                {/* Made the main Services link clickable */}
                 <Link 
                   to="/services" 
                   onClick={() => setServicesOpen(false)}
                   className="flex items-center gap-1.5 px-4 py-2 rounded-full outline-none hover:bg-white/5 transition-colors duration-300"
                 >
-                  <h2 className="m-0 text-[14px] font-bold text-slate-300 group-hover/nav:text-white transition-colors flex items-center gap-1.5">
+                  <h2 className="m-0 text-[14px] font-bold text-slate-300 group-hover:text-white transition-colors flex items-center gap-1.5">
                     Services
                     <ChevronDown
-                      className={`w-3.5 h-3.5 transition-transform duration-300 ease-out text-slate-500 group-hover/nav:text-blue-400 transform-gpu ${servicesOpen ? "rotate-180" : ""}`}
+                      className={`w-3.5 h-3.5 transition-transform duration-300 ease-out text-slate-500 group-hover:text-blue-400 transform-gpu ${servicesOpen ? "rotate-180" : ""}`}
                     />
                   </h2>
                 </Link>
 
-                {/* Mega Menu Dropdown - Centered & widened for 3 columns */}
+                {/* Centered Mega Menu with 3 columns */}
                 <div
-                  className={`absolute top-[calc(100%+1rem)] left-1/2 -translate-x-1/2 w-[900px] pt-0 transition-all duration-300 ease-out origin-top transform-gpu will-change-transform ${servicesOpen ? "opacity-100 translate-y-0 visible scale-100" : "opacity-0 -translate-y-3 invisible scale-95"}`}
+                  className={`absolute top-full left-1/2 -translate-x-1/2 w-[980px] pt-5 transition-all duration-300 ease-out origin-top transform-gpu will-change-transform ${servicesOpen ? "opacity-100 translate-y-0 visible scale-100" : "opacity-0 -translate-y-3 invisible scale-95"}`}
                 >
                   <div className="bg-[#050b14]/95 backdrop-blur-xl rounded-3xl shadow-[0_30px_60px_-15px_rgba(0,0,0,0.8),inset_0_0_20px_rgba(255,255,255,0.02)] p-4 relative overflow-hidden">
                     <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-linear-to-b from-blue-900/10 to-transparent pointer-events-none rounded-3xl" />
                     <div className="absolute -top-32 right-0 w-64 h-64 bg-[radial-gradient(circle,rgba(79,70,229,0.15)_0%,transparent_70%)] pointer-events-none transform-gpu translate-z-0" />
 
-                    {/* Updated to grid-cols-3 */}
                     <div className="grid grid-cols-3 gap-3 relative z-10">
                       {servicesData.map((service) => {
                         const Icon = service.icon;
@@ -249,12 +236,8 @@ export default function Header() {
                             onClick={() => setServicesOpen(false)}
                             className="relative flex items-start gap-4 p-4 rounded-2xl group outline-none overflow-hidden transition-all duration-300 hover:bg-white/3 hover:shadow-[0_10px_30px_-10px_rgba(0,0,0,0.5)]"
                           >
-                            <div
-                              className={`relative z-10 shrink-0 w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-300 ${service.bgColor} ${service.hoverBg}`}
-                            >
-                              <Icon
-                                className={`w-5 h-5 ${service.color} transition-transform duration-300 ease-out group-hover:scale-110 transform-gpu`}
-                              />
+                            <div className={`relative z-10 shrink-0 w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-300 ${service.bgColor} ${service.hoverBg}`}>
+                              <Icon className={`w-5 h-5 ${service.color} transition-transform duration-300 ease-out group-hover:scale-110 transform-gpu`} />
                             </div>
                             <div className="relative z-10 flex flex-col pt-0.5">
                               <h2 className="text-[14px] font-extrabold text-slate-200 group-hover:text-white transition-colors flex items-center gap-1.5 m-0 leading-tight">
@@ -281,8 +264,7 @@ export default function Header() {
                         className="text-[14px] font-bold text-blue-400 hover:text-blue-300 flex items-center gap-1.5 group/link transition-colors relative z-10 outline-none"
                       >
                         <h2 className="m-0 text-inherit text-[14px] font-bold flex items-center gap-1.5">
-                          Consult with us{" "}
-                          <ArrowRight className="w-4 h-4 transition-transform group-hover/link:translate-x-1 transform-gpu" />
+                          Consult with us <ArrowRight className="w-4 h-4 transition-transform group-hover/link:translate-x-1 transform-gpu" />
                         </h2>
                       </Link>
                     </div>
@@ -312,9 +294,7 @@ export default function Header() {
                 <div className="absolute top-0 left-0 w-full h-full bg-linear-to-r from-transparent via-white/20 to-transparent animate-shimmer pointer-events-none" />
                 <span className="relative z-10 flex items-center gap-2">
                   <Sparkles className="w-4 h-4 text-blue-200" />
-                  <h2 className="m-0 text-inherit text-[14px] font-extrabold tracking-wide">
-                    Start a Project
-                  </h2>
+                  <h2 className="m-0 text-inherit text-[14px] font-extrabold tracking-wide">Start a Project</h2>
                 </span>
               </Link>
 
@@ -323,12 +303,8 @@ export default function Header() {
                 className="lg:hidden relative p-2.5 rounded-full bg-white/5 hover:bg-white/10 text-white transition-colors duration-300 outline-none"
               >
                 <div className="relative w-5 h-5 flex items-center justify-center">
-                  <Menu
-                    className={`absolute w-5 h-5 transition-all duration-300 ease-out transform-gpu ${mobileMenuOpen ? "opacity-0 rotate-90 scale-50" : "opacity-100 rotate-0 scale-100"}`}
-                  />
-                  <X
-                    className={`absolute w-5 h-5 transition-all duration-300 ease-out transform-gpu ${mobileMenuOpen ? "opacity-100 rotate-0 scale-100" : "opacity-0 -rotate-90 scale-50"}`}
-                  />
+                  <Menu className={`absolute w-5 h-5 transition-all duration-300 ease-out transform-gpu ${mobileMenuOpen ? "opacity-0 rotate-90 scale-50" : "opacity-100 rotate-0 scale-100"}`} />
+                  <X className={`absolute w-5 h-5 transition-all duration-300 ease-out transform-gpu ${mobileMenuOpen ? "opacity-100 rotate-0 scale-100" : "opacity-0 -rotate-90 scale-50"}`} />
                 </div>
               </button>
             </div>
@@ -340,11 +316,8 @@ export default function Header() {
           className={`lg:hidden fixed inset-0 z-50 transition-all duration-500 ease-out flex flex-col justify-center transform-gpu will-change-[opacity] ${mobileMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}
         >
           <div className="absolute inset-0 bg-[#030712]/95 backdrop-blur-xl" />
-
-          {/* Top Gradient for subtle fade */}
           <div className="absolute top-0 left-0 w-full h-32 bg-linear-to-b from-[#030712] via-[#030712]/80 to-transparent z-10 pointer-events-none" />
 
-          {/* Scrollable Content Container */}
           <div className="relative z-0 px-6 py-8 h-full flex flex-col pt-32 pb-10 overflow-y-auto no-scrollbar">
             <div className="mb-10 flex-none">
               <h2 className="text-[11px] font-extrabold text-blue-500 uppercase tracking-[0.2em] mb-6 m-0 px-2 opacity-80">
@@ -360,27 +333,17 @@ export default function Header() {
                       onClick={() => setMobileMenuOpen(false)}
                       className="flex items-center gap-5 p-4 rounded-2xl bg-white/2 hover:bg-white/5 transition-all duration-300 active:scale-[0.98] outline-none transform-gpu will-change-transform"
                       style={{
-                        transitionDelay: mobileMenuOpen
-                          ? `${idx * 40}ms`
-                          : "0ms",
-                        transform: mobileMenuOpen
-                          ? "translateY(0)"
-                          : "translateY(15px)",
+                        transitionDelay: mobileMenuOpen ? `${idx * 40}ms` : "0ms",
+                        transform: mobileMenuOpen ? "translateY(0)" : "translateY(15px)",
                         opacity: mobileMenuOpen ? 1 : 0,
                       }}
                     >
-                      <div
-                        className={`w-12 h-12 shrink-0 rounded-xl flex items-center justify-center ${service.bgColor}`}
-                      >
+                      <div className={`w-12 h-12 shrink-0 rounded-xl flex items-center justify-center ${service.bgColor}`}>
                         <Icon className={`w-6 h-6 ${service.color}`} />
                       </div>
                       <div>
-                        <h2 className="block text-[17px] font-extrabold text-white m-0 tracking-tight">
-                          {service.title}
-                        </h2>
-                        <h2 className="block text-[13px] font-medium text-slate-400 mt-1 line-clamp-1 m-0">
-                          {service.description}
-                        </h2>
+                        <h2 className="block text-[17px] font-extrabold text-white m-0 tracking-tight">{service.title}</h2>
+                        <h2 className="block text-[13px] font-medium text-slate-400 mt-1 line-clamp-1 m-0">{service.description}</h2>
                       </div>
                     </Link>
                   );
@@ -396,12 +359,8 @@ export default function Header() {
                   onClick={() => setMobileMenuOpen(false)}
                   className="block py-2 outline-none group transform-gpu will-change-transform"
                   style={{
-                    transitionDelay: mobileMenuOpen
-                      ? `${(idx + servicesData.length) * 40}ms`
-                      : "0ms",
-                    transform: mobileMenuOpen
-                      ? "translateY(0)"
-                      : "translateY(15px)",
+                    transitionDelay: mobileMenuOpen ? `${(idx + servicesData.length) * 40}ms` : "0ms",
+                    transform: mobileMenuOpen ? "translateY(0)" : "translateY(15px)",
                     opacity: mobileMenuOpen ? 1 : 0,
                     transition: "all 0.4s ease-out",
                   }}
@@ -413,15 +372,12 @@ export default function Header() {
               ))}
             </div>
 
-            {/* Start a Project Button */}
             <div
               className="mt-auto pt-4 flex-none transform-gpu will-change-transform"
               style={{
                 transitionDelay: mobileMenuOpen ? "500ms" : "0ms",
                 opacity: mobileMenuOpen ? 1 : 0,
-                transform: mobileMenuOpen
-                  ? "translateY(0)"
-                  : "translateY(15px)",
+                transform: mobileMenuOpen ? "translateY(0)" : "translateY(15px)",
                 transition: "all 0.4s ease-out",
               }}
             >
