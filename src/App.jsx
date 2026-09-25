@@ -87,7 +87,7 @@ function RouteTracker() {
   if (pathname === "/") {
     pageTitle = "CodeLume | Bespoke Web Development & Digital Design";
   } else if (pathname === "/start-project") {
-    pageTitle = "Start a Project | CodeLume Digital";
+    pageTitle = "Start a Project | CodeLume";
     pageDesc = "Ready to upgrade your digital presence? Book a consultation with Rafay and let's build something exceptional together.";
   } else if (pathname === "/services") {
     pageTitle = "Digital Services | Web Dev, UI/UX & Branding | CodeLume";
