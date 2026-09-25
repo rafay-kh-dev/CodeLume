@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, Sparkles } from "lucide-react";
+import { ArrowRight, Sparkles, Smartphone, PenTool, Rocket } from "lucide-react";
 // @thesvg/react se icons import kar liye (React ko alias de diya taakay conflict na ho)
 import { 
   React as ReactIcon, 
@@ -35,7 +35,7 @@ export default function Services() {
       icon: <Laravel className="w-7 h-7" />,
       bg: "bg-rose-500/10",
       hoverBorder: "group-hover:border-rose-500/50",
-      price: "$120",
+      price: "$139",
       link: "/services/php-laravel"
     },
     {
@@ -56,7 +56,6 @@ export default function Services() {
       description: "Bespoke digital solutions tailored exactly to your business logic.",
       badge: "Top Rated",
       badgeColor: "text-indigo-400 bg-indigo-500/10 border-indigo-500/30",
-      // Custom platforms ke liye previous icon rakha hai
       icon: (
         <svg className="w-7 h-7 text-indigo-400 fill-none stroke-current" strokeWidth="2" viewBox="0 0 24 24">
           <path d="M16 18l6-6-6-6M8 6l-6 6 6 6" strokeLinecap="round" strokeLinejoin="round"/>
@@ -64,7 +63,7 @@ export default function Services() {
       ),
       bg: "bg-indigo-500/10",
       hoverBorder: "group-hover:border-indigo-500/50",
-      price: "$150",
+      price: "$299",
       link: "/services/custom-platforms"
     },
     {
@@ -88,7 +87,7 @@ export default function Services() {
       icon: <Shopify className="w-7 h-7" />,
       bg: "bg-emerald-500/10",
       hoverBorder: "group-hover:border-emerald-500/50",
-      price: "$125",
+      price: "$115",
       link: "/services/shopify"
     },
     {
@@ -100,7 +99,7 @@ export default function Services() {
       icon: <Webflow className="w-7 h-7" />,
       bg: "bg-purple-500/10",
       hoverBorder: "group-hover:border-purple-500/50",
-      price: "$115",
+      price: "$149",
       link: "/services/webflow"
     },
     {
@@ -112,8 +111,44 @@ export default function Services() {
       icon: <K8sApiServer className="w-7 h-7" />,
       bg: "bg-orange-500/10",
       hoverBorder: "group-hover:border-orange-500/50",
-      price: "$110",
+      price: "$99",
       link: "/services/api-integrations"
+    },
+    {
+      id: 9,
+      title: "Mobile Apps",
+      description: "High-performance iOS and Android applications engineered for scale.",
+      badge: "Native Build",
+      badgeColor: "text-teal-400 bg-teal-500/10 border-teal-500/30",
+      icon: <Smartphone className="w-7 h-7 text-teal-400" />,
+      bg: "bg-teal-500/10",
+      hoverBorder: "group-hover:border-teal-500/50",
+      price: "$399",
+      link: "/services/mobile-apps"
+    },
+    {
+      id: 10,
+      title: "UI/UX Design",
+      description: "User-centric interfaces crafted in Figma for maximum conversion.",
+      badge: "Creative",
+      badgeColor: "text-pink-400 bg-pink-500/10 border-pink-500/30",
+      icon: <PenTool className="w-7 h-7 text-pink-400" />,
+      bg: "bg-pink-500/10",
+      hoverBorder: "group-hover:border-pink-500/50",
+      price: "$199",
+      link: "/services/ui-ux-design"
+    },
+    {
+      id: 11,
+      title: "Full Branding",
+      description: "From 0 to 100. Complete brand identity, web engineering, and marketing.",
+      badge: "Agency Premium",
+      badgeColor: "text-amber-400 bg-amber-500/10 border-amber-500/30",
+      icon: <Rocket className="w-7 h-7 text-amber-400" />,
+      bg: "bg-amber-500/10",
+      hoverBorder: "group-hover:border-amber-500/50",
+      price: "$1,499",
+      link: "/services/full-branding"
     }
   ];
 
