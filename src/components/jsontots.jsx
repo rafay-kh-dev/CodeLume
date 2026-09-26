@@ -80,14 +80,14 @@ export default function JsonToTs() {
         <meta name="description" content="Instantly generate TypeScript interfaces and types from JSON data. A free developer tool by CodeLume." />
       </Helmet>
 
-      {/* Subtle Background Glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-[500px] bg-[radial-gradient(ellipse_at_top,rgba(16,185,129,0.05)_0%,transparent_70%)] pointer-events-none -z-10" />
+      {/* Subtle Background Glow - CodeLume Blue */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-[500px] bg-[radial-gradient(ellipse_at_top,rgba(37,99,235,0.05)_0%,transparent_70%)] pointer-events-none -z-10" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="mb-8">
           <Link
             to="/"
-            className="inline-flex items-center gap-2 text-slate-400 hover:text-emerald-400 transition-colors font-bold text-sm tracking-wide"
+            className="inline-flex items-center gap-2 text-slate-400 hover:text-blue-400 transition-colors font-bold text-sm tracking-wide"
           >
             <ArrowLeft size={16} /> Back to Home
           </Link>
@@ -95,10 +95,10 @@ export default function JsonToTs() {
 
         <div className="mb-12">
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center">
-              <Braces className="w-5 h-5 text-emerald-400" />
+            <div className="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center">
+              <Braces className="w-5 h-5 text-blue-400" />
             </div>
-            <h2 className="text-[12px] font-black text-emerald-500 uppercase tracking-[0.2em] m-0">
+            <h2 className="text-[12px] font-black text-blue-500 uppercase tracking-[0.2em] m-0">
               Developer Tools
             </h2>
           </div>
@@ -129,7 +129,7 @@ export default function JsonToTs() {
               onChange={handleInputChange}
               placeholder='{\n  "id": 1,\n  "name": "CodeLume",\n  "isActive": true\n}'
               className={`w-full h-[500px] bg-[#0a0f1c] border rounded-2xl p-6 text-slate-300 font-mono text-sm leading-relaxed outline-none transition-colors resize-none shadow-xl ${
-                error ? "border-red-500/50 focus:border-red-500" : "border-white/5 focus:border-emerald-500"
+                error ? "border-red-500/50 focus:border-red-500" : "border-white/5 focus:border-blue-500"
               }`}
             />
           </div>
@@ -137,13 +137,13 @@ export default function JsonToTs() {
           {/* Output Section */}
           <div className="flex flex-col gap-3 relative">
             <div className="flex items-center justify-between px-2">
-              <label className="text-xs font-bold text-emerald-400 uppercase tracking-wider">TypeScript Interfaces</label>
+              <label className="text-xs font-bold text-blue-400 uppercase tracking-wider">TypeScript Interfaces</label>
               <button
                 onClick={copyToClipboard}
                 disabled={!tsOutput}
                 className="flex items-center gap-2 text-xs font-bold text-slate-300 bg-white/5 hover:bg-white/10 px-4 py-1.5 rounded-full transition-colors disabled:opacity-50 outline-none"
               >
-                {isCopied ? <CheckCircle2 className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
+                {isCopied ? <CheckCircle2 className="w-4 h-4 text-blue-400" /> : <Copy className="w-4 h-4" />}
                 {isCopied ? "Copied!" : "Copy Code"}
               </button>
             </div>
@@ -151,11 +151,11 @@ export default function JsonToTs() {
               value={tsOutput}
               readOnly
               placeholder="Your TypeScript definitions will appear here..."
-              className="w-full h-[500px] bg-[#070b14] border border-emerald-500/20 rounded-2xl p-6 text-emerald-300 font-mono text-sm leading-relaxed focus:outline-none resize-none shadow-[0_0_30px_rgba(16,185,129,0.05)]"
+              className="w-full h-[500px] bg-[#070b14] border border-blue-500/20 rounded-2xl p-6 text-blue-300 font-mono text-sm leading-relaxed focus:outline-none resize-none shadow-[0_0_30px_rgba(37,99,235,0.05)]"
             />
             
             {/* Connecting Arrow */}
-            <div className="hidden lg:flex absolute top-1/2 -left-3 -translate-x-1/2 -translate-y-1/2 w-10 h-10 bg-emerald-500 rounded-full items-center justify-center shadow-lg border-4 border-[#030712] z-10">
+            <div className="hidden lg:flex absolute top-1/2 -left-3 -translate-x-1/2 -translate-y-1/2 w-10 h-10 bg-blue-500 rounded-full items-center justify-center shadow-lg border-4 border-[#030712] z-10">
               <ArrowRight className="w-5 h-5 text-white" />
             </div>
           </div>
