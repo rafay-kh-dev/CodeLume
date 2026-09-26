@@ -21,6 +21,9 @@ import Blog from "./components/blogs";
 import Article from "./components/article";
 import CookieBanner from "./components/cookiebanner";
 import Services from "./components/services";
+import FloatingActions from "./components/floatingactions";
+import FAQ from "./components/faq";
+import NotFound from "./components/notfound";
 
 // --- SERVICE PAGES IMPORTS ---
 import MernStackService from "./components/mernstack";
@@ -378,6 +381,7 @@ export default function App() {
                     <Service />
                     <Calculator />
                     <OurProcess />
+                    <FAQ />
                     <Testimonials />
                   </>
                 }
@@ -434,6 +438,7 @@ export default function App() {
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
 
               <Route path="/admin/login" element={<AdminLogin />} />
+              <Route path="*" element={<NotFound />} />
               <Route
                 path="/admin/dashboard"
                 element={
