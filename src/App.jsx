@@ -49,6 +49,8 @@ import PrivacyPolicy from "./components/privacypolicy";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 
+import SvgToReact from "./components/svgtoreact";
+
 // Security Wrapper: Checks for a valid token before rendering the admin page
 const ProtectedRoute = ({ children }) => {
   const token = localStorage.getItem("adminToken");
@@ -452,6 +454,8 @@ export default function App() {
 
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
               <Route path="/privacy" element={<PrivacyPolicy />} />
+
+              <Route path="/svg-to-react" element={<SvgToReact />} />
 
               {/* ADMIN ROUTES */}
               <Route path="/admin/login" element={<AdminLogin />} />
