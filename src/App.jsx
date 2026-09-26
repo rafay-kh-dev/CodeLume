@@ -455,7 +455,7 @@ export default function App() {
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
               <Route path="/privacy" element={<PrivacyPolicy />} />
 
-              <Route path="/svg-to-react" element={<SvgToReact />} />
+              <Route path="/tools/svg-to-react" element={<SvgToReact />} />
 
               {/* ADMIN ROUTES */}
               <Route path="/admin/login" element={<AdminLogin />} />
