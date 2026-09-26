@@ -23,21 +23,40 @@ export default function MetaExtractor() {
     setMetaData(null);
 
     try {
-      // Using AllOrigins CORS proxy to fetch HTML content directly from the browser
-      const response = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(targetUrl)}`);
-      
-      if (!response.ok) {
-        throw new Error("Failed to fetch website data.");
+      // PRO LEVEL: Fallback Proxy System (Tries multiple public CORS proxies)
+      const proxies = [
+        `https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}`,
+        `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(targetUrl)}`
+      ];
+
+      let html = "";
+      let success = false;
+
+      for (let proxy of proxies) {
+        try {
+          const response = await fetch(proxy);
+          if (response.ok) {
+            html = await response.text();
+            // Check if we actually got an HTML page and not a block/empty response
+            if (html && html.toLowerCase().includes("<html")) {
+              success = true;
+              break; // Agar theek data mil gaya toh loop break kar do
+            }
+          }
+        } catch (err) {
+          console.warn("Proxy failed, trying the next one...", proxy);
+        }
       }
 
-      const data = await response.json();
-      const html = data.contents;
+      if (!success || !html) {
+        throw new Error("All proxies blocked.");
+      }
 
       // Parse HTML string into a real DOM object
       const parser = new DOMParser();
       const doc = parser.parseFromString(html, "text/html");
 
-      // Extract tags
+      // Extract tags safely
       const getMeta = (nameAttr, propertyAttr) => {
         let tag;
         if (nameAttr) tag = doc.querySelector(`meta[name="${nameAttr}"]`);
@@ -57,7 +76,7 @@ export default function MetaExtractor() {
 
       setMetaData(extractedData);
     } catch (err) {
-      setError("Could not extract data. The website might be blocking requests or the URL is invalid.");
+      setError("Data extracted blocked! Big sites like Facebook/Instagram block public proxies. Try a normal blog or portfolio site.");
     } finally {
       setIsLoading(false);
     }
@@ -66,7 +85,6 @@ export default function MetaExtractor() {
   return (
     <section className="w-full min-h-dvh pt-32 pb-24 bg-[#030712] font-jakarta text-white relative">
 
-      {/* Subtle Background Glow - CodeLume Blue */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-[500px] bg-[radial-gradient(ellipse_at_top,rgba(37,99,235,0.05)_0%,transparent_70%)] pointer-events-none -z-10" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
@@ -95,13 +113,12 @@ export default function MetaExtractor() {
             Enter any URL to instantly extract and preview its SEO meta titles, descriptions, and Open Graph social media cards.
           </p>
 
-          {/* Search Form */}
           <form onSubmit={extractMetaTags} className="relative flex items-center w-full max-w-2xl mx-auto">
             <input
               type="text"
               value={url}
               onChange={(e) => setUrl(e.target.value)}
-              placeholder="https://example.com"
+              placeholder="e.g. apple.com or medium.com"
               className="w-full bg-[#0a0f1c] border border-white/10 rounded-2xl py-5 pl-6 pr-32 text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 transition-colors shadow-2xl"
               required
             />
@@ -122,11 +139,9 @@ export default function MetaExtractor() {
           )}
         </div>
 
-        {/* Results Section */}
         {metaData && (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 animate-in fade-in duration-500">
             
-            {/* Raw Extracted Data */}
             <div className="bg-[#0a0f1c] border border-white/5 rounded-3xl p-8 shadow-xl flex flex-col gap-6">
               <h2 className="text-xl font-black text-white m-0 flex items-center gap-2">
                 <LayoutTemplate className="w-5 h-5 text-blue-400" /> SEO Meta Data
@@ -158,14 +173,12 @@ export default function MetaExtractor() {
               </div>
             </div>
 
-            {/* Social Media Preview Card */}
             <div className="bg-[#0a0f1c] border border-white/5 rounded-3xl p-8 shadow-xl flex flex-col gap-6">
               <h2 className="text-xl font-black text-white m-0 flex items-center gap-2">
                 <ImageIcon className="w-5 h-5 text-blue-400" /> Social Media Preview
               </h2>
               
               <div className="w-full rounded-2xl overflow-hidden border border-white/10 bg-[#030712] shadow-lg">
-                {/* Image Section */}
                 <div className="w-full h-56 bg-slate-800 flex items-center justify-center overflow-hidden border-b border-white/10">
                   {metaData.ogImage ? (
                     <img src={metaData.ogImage} alt="Open Graph" className="w-full h-full object-cover" />
@@ -177,7 +190,6 @@ export default function MetaExtractor() {
                   )}
                 </div>
                 
-                {/* Text Section (Like LinkedIn/Twitter/Facebook Card) */}
                 <div className="p-5 bg-[#0a0f1c]">
                   <p className="text-xs text-slate-400 uppercase tracking-wide font-semibold mb-1 truncate m-0">
                     {new URL(metaData.canonical || url).hostname}
@@ -190,7 +202,6 @@ export default function MetaExtractor() {
                   </p>
                 </div>
               </div>
-
             </div>
 
           </div>
