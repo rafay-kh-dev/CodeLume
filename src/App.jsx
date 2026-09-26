@@ -41,6 +41,7 @@ import StartProject from "./components/startproject";
 import AdminCreatePost from "./components/admincreatepost";
 import AdminLogin from "./components/adminlogin";
 import AdminDashboard from "./components/admindashboard";
+import AdminEditPost from "./components/admineditpost";
 import Footer from "./components/footer";
 import AboutCodeLume from "./components/aboutcodelume";
 import TermsOfService from "./components/termsofservice";
@@ -467,6 +468,15 @@ export default function App() {
                 element={
                   <ProtectedRoute>
                     <AdminCreatePost />
+                  </ProtectedRoute>
+                }
+              />
+
+              <Route
+                path="/admin/edit-post/:id"
+                element={
+                  <ProtectedRoute>
+                    <AdminEditPost />
                   </ProtectedRoute>
                 }
               />
