@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
+import ReactQuill from "react-quill-new";
+import "react-quill-new/dist/quill.snow.css";
 import {
+  UploadCloud,
+  CheckCircle2,
+  FileText,
+  Image as ImageIcon,
+  Settings,
+  Tag,
   ArrowLeft,
   Save,
   Loader2,
-  Image as ImageIcon,
-  FileText,
-  FolderOpen,
-  LogOut,
 } from "lucide-react";
 
 export default function AdminEditPost() {
@@ -18,30 +22,47 @@ export default function AdminEditPost() {
 
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
+  const [statusMessage, setStatusMessage] = useState(null);
   const [categories, setCategories] = useState([]);
 
-  // Form State
+  // Form State matching the Create Post structure
   const [formData, setFormData] = useState({
     title: "",
     slug: "",
-    content: "",
     category: "",
-    status: "draft",
-    coverImage: "",
+    excerpt: "",
+    imageAltText: "",
     metaTitle: "",
     metaDescription: "",
+    tags: "",
+    status: "draft",
   });
 
-  // Fetch Post Data
+  const [content, setContent] = useState("");
+
+  // For uploading a new image to replace the old one
+  const [imageFile, setImageFile] = useState(null);
+  // To show the currently active image
+  const [imagePreview, setImagePreview] = useState(null);
+
+  // 1. Fetch Categories and Specific Post Data
   useEffect(() => {
     const fetchData = async () => {
       try {
+        // Fetch Categories
         const catRes = await fetch(`${API_BASE_URL}/api/categories`);
         if (catRes.ok) {
           const catData = await catRes.json();
-          setCategories(catData);
+          const categoryArray = Array.isArray(catData)
+            ? catData
+            : catData.categories || [];
+          const formattedCategories = categoryArray.map((cat) =>
+            typeof cat === "string" ? { name: cat, _id: cat } : cat,
+          );
+          setCategories(formattedCategories);
         }
 
+        // Fetch Specific Post via all blogs list (bypassing backend 404 issue)
         const postRes = await fetch(`${API_BASE_URL}/api/blogs`);
         if (postRes.ok) {
           const allPosts = await postRes.json();
@@ -51,13 +72,18 @@ export default function AdminEditPost() {
             setFormData({
               title: postData.title || "",
               slug: postData.slug || "",
-              content: postData.content || "",
               category: postData.category || "",
-              status: postData.status || "draft",
-              coverImage: postData.coverImage || "",
+              excerpt: postData.excerpt || "",
+              imageAltText: postData.imageAltText || "",
               metaTitle: postData.metaTitle || "",
               metaDescription: postData.metaDescription || "",
+              tags: postData.tags ? postData.tags.join(", ") : "",
+              status: postData.status || "draft",
             });
+            setContent(postData.content || "");
+            if (postData.coverImage) {
+              setImagePreview(postData.coverImage);
+            }
           } else {
             alert("Post not found in database!");
             navigate("/admin/dashboard");
@@ -73,248 +99,349 @@ export default function AdminEditPost() {
     fetchData();
   }, [id, API_BASE_URL, navigate]);
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImageFile(file);
+      setImagePreview(URL.createObjectURL(file));
+    }
+  };
+
+  // Update Request (PUT method using FormData to support image uploads)
+  const handleSubmit = async (e, updateStatus) => {
     e.preventDefault();
     setIsSaving(true);
+    setStatusMessage(null);
+
+    const currentStatus = updateStatus || formData.status;
+
+    const tagsArray = formData.tags
+      .split(",")
+      .map((tag) => tag.trim())
+      .filter((tag) => tag !== "");
+
+    const submitData = new FormData();
+    submitData.append("title", formData.title);
+    submitData.append("slug", formData.slug);
+    submitData.append("content", content);
+    submitData.append("excerpt", formData.excerpt);
+    submitData.append("category", formData.category);
+    submitData.append("imageAltText", formData.imageAltText);
+    submitData.append("metaTitle", formData.metaTitle);
+    submitData.append("metaDescription", formData.metaDescription);
+    submitData.append("tags", JSON.stringify(tagsArray));
+    submitData.append("status", currentStatus);
+
+    if (imageFile) {
+      submitData.append("coverImage", imageFile);
+    } else if (imagePreview && !imagePreview.startsWith("blob:")) {
+      // Keep existing image if no new file is selected
+      submitData.append("existingCoverImage", imagePreview);
+    }
+
     try {
       const response = await fetch(`${API_BASE_URL}/api/blogs/${id}`, {
         method: "PUT",
         headers: {
-          "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("adminToken")}`,
         },
-        body: JSON.stringify(formData),
+        body: submitData,
       });
 
       if (response.ok) {
-        alert("Post updated successfully!");
-        navigate("/admin/dashboard");
+        setStatusMessage({
+          type: "success",
+          text: "Post updated successfully!",
+        });
+        setTimeout(() => {
+          navigate("/admin/dashboard");
+        }, 1500);
       } else {
-        alert("Failed to update post.");
+        const errorData = await response.json();
+        setStatusMessage({
+          type: "error",
+          text:
+            errorData.error || errorData.message || "Failed to update post.",
+        });
       }
     } catch (error) {
-      console.error("Error updating post:", error);
+      console.error("Updating error:", error);
+      setStatusMessage({
+        type: "error",
+        text: "Network error. Is the Node.js server running?",
+      });
     } finally {
       setIsSaving(false);
     }
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem("adminToken");
-    navigate("/admin/login");
+  const modules = {
+    toolbar: [
+      [{ header: [2, 3, false] }],
+      ["bold", "italic", "underline", "strike", "blockquote"],
+      [{ list: "ordered" }, { list: "bullet" }],
+      ["link", "code-block", "image"],
+      ["clean"],
+    ],
   };
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-[#030712] flex items-center justify-center text-white">
-        <h2 className="text-xl font-bold animate-pulse">
-          Loading post details...
-        </h2>
+      <div className="w-full min-h-dvh flex items-center justify-center bg-[#030712] text-white">
+        <h2 className="text-xl font-bold animate-pulse">Loading editor...</h2>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#030712] text-white flex font-jakarta pt-20">
-      {/* ADMIN SIDEBAR - Exactly like Create Post & Dashboard */}
-      <aside className="w-64 border-r border-white/5 hidden md:flex flex-col p-6 fixed h-full bg-[#030712] z-20">
-        <div className="mb-10">
-          <h2 className="text-2xl font-black text-white tracking-tighter m-0">
-            CodeLume<span className="text-[#3b82f6]">.</span>
-          </h2>
-          <p className="text-slate-500 text-xs font-bold uppercase tracking-widest mt-1">
-            Workspace
-          </p>
-        </div>
+    <section className="w-full min-h-dvh pt-32 pb-24 bg-[#030712] font-jakarta">
+      <style>
+        {`
+          .ql-toolbar.ql-snow { border-color: rgba(255,255,255,0.1) !important; background-color: #0a0f1c; border-top-left-radius: 1rem; border-top-right-radius: 1rem; }
+          .ql-container.ql-snow { border-color: rgba(255,255,255,0.1) !important; background-color: #070b14; border-bottom-left-radius: 1rem; border-bottom-right-radius: 1rem; min-height: 600px; color: white; font-size: 16px; font-family: inherit; }
+        `}
+      </style>
 
-        <nav className="flex flex-col gap-2 grow">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="mb-8">
           <Link
             to="/admin/dashboard"
-            className="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all font-semibold text-sm text-slate-400 hover:bg-white/5 hover:text-white"
+            className="inline-flex items-center gap-2 text-slate-400 hover:text-[#3b82f6] transition-colors font-bold text-sm tracking-wide"
           >
-            <FolderOpen size={18} /> Go to Dashboard
+            <ArrowLeft size={16} />
+            Back to Dashboard
           </Link>
-          <div className="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all font-semibold text-sm bg-[#3b82f6]/10 text-[#3b82f6]">
-            <FileText size={18} /> Edit Post
-          </div>
-        </nav>
-
-        <div className="pt-6 border-t border-white/5 mt-auto flex flex-col gap-2">
-          <button
-            onClick={handleLogout}
-            className="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all font-semibold text-sm text-red-400 hover:bg-red-500/10 hover:text-red-500"
-          >
-            <LogOut size={18} /> Logout
-          </button>
         </div>
-      </aside>
 
-      {/* MAIN EDITOR CONTENT */}
-      <main className="flex-1 ml-0 md:ml-64 p-6 lg:p-10 relative z-10">
-        <div className="max-w-4xl mx-auto">
-          {/* Header Section */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
-            <div className="flex items-center gap-4">
-              <button
-                onClick={() => navigate("/admin/dashboard")}
-                className="p-2 bg-white/5 hover:bg-white/10 rounded-full transition-colors outline-none"
-              >
-                <ArrowLeft className="w-5 h-5 text-slate-300" />
-              </button>
-              <div>
-                <h1 className="text-2xl sm:text-3xl font-black m-0 text-white tracking-tight">
-                  Edit Post
-                </h1>
-                <p className="text-slate-400 text-sm mt-1 m-0">
-                  Editing: {formData.title}
-                </p>
-              </div>
-            </div>
+        <div className="mb-10 flex flex-col md:flex-row md:justify-between md:items-end gap-6">
+          <div>
+            <h2 className="text-[12px] font-black text-[#3b82f6] uppercase tracking-[0.2em] mb-4 m-0">
+              CMS Dashboard
+            </h2>
+            <h2 className="text-4xl sm:text-5xl font-black text-white m-0 tracking-tighter">
+              Edit Post
+            </h2>
+            <p className="text-slate-400 text-sm mt-2 font-medium">
+              Currently editing: {formData.title}
+            </p>
+          </div>
+
+          <div className="flex flex-wrap gap-4">
             <button
-              onClick={handleSubmit}
-              disabled={isSaving}
-              className="flex items-center justify-center gap-2 bg-linear-to-r from-[#3b82f6] to-[#2563eb] hover:from-[#2563eb] hover:to-[#1d4ed8] px-6 py-3 rounded-xl font-bold transition-all shadow-lg disabled:opacity-70 outline-none"
+              onClick={(e) => handleSubmit(e, "draft")}
+              disabled={isSaving || !formData.title}
+              className="px-6 py-3 rounded-xl bg-[#1e293b] text-white hover:bg-[#334155] transition-all font-bold tracking-wide disabled:opacity-50"
+            >
+              Save as Draft
+            </button>
+            <button
+              onClick={(e) => handleSubmit(e, "published")}
+              disabled={isSaving || !formData.title}
+              className="flex items-center gap-2 px-8 py-3 rounded-xl bg-linear-to-r from-[#3b82f6] to-[#2563eb] text-white hover:from-[#2563eb] hover:to-[#1d4ed8] transition-all font-bold tracking-wide shadow-lg disabled:opacity-50"
             >
               {isSaving ? (
                 <Loader2 className="w-5 h-5 animate-spin" />
               ) : (
                 <Save className="w-5 h-5" />
               )}
-              {isSaving ? "Saving..." : "Update Post"}
+              {isSaving ? "Updating..." : "Update Post"}
             </button>
           </div>
+        </div>
 
-          {/* Editor Form */}
-          <div className="bg-[#0a0f1c] border border-white/5 rounded-3xl p-6 md:p-8 space-y-6 shadow-2xl">
-            <div>
-              <label className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 block">
+        {statusMessage && (
+          <div
+            className={`p-4 mb-8 rounded-xl flex items-center gap-3 ${statusMessage.type === "success" ? "bg-green-500/10 text-green-500 border border-green-500/20" : "bg-red-500/10 text-red-500 border border-red-500/20"}`}
+          >
+            {statusMessage.type === "success" ? (
+              <CheckCircle2 className="w-5 h-5" />
+            ) : (
+              <FileText className="w-5 h-5" />
+            )}
+            <h2 className="m-0 text-inherit text-[15px] font-bold">
+              {statusMessage.text}
+            </h2>
+          </div>
+        )}
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="lg:col-span-2 flex flex-col gap-8">
+            <div className="flex flex-col gap-2">
+              <label className="text-slate-400 text-[13px] font-bold tracking-wider uppercase">
                 Post Title
               </label>
               <input
                 type="text"
                 name="title"
-                value={formData.title}
-                onChange={handleChange}
-                className="w-full bg-[#030712] border border-white/5 rounded-xl py-3 px-4 text-white focus:border-[#3b82f6] outline-none"
                 required
+                value={formData.title}
+                onChange={handleInputChange}
+                className="w-full bg-[#0a0f1c] border border-white/5 rounded-xl py-4 px-5 text-white placeholder-slate-600 focus:outline-none focus:border-[#3b82f6] transition-all font-bold text-2xl"
               />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 block">
+            <div className="flex flex-col gap-2">
+              <label className="text-slate-400 text-[13px] font-bold tracking-wider uppercase">
+                Main Content
+              </label>
+              <div className="rounded-xl overflow-hidden shadow-2xl">
+                <ReactQuill
+                  theme="snow"
+                  value={content}
+                  onChange={setContent}
+                  modules={modules}
+                />
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <label className="text-slate-400 text-[13px] font-bold tracking-wider uppercase">
+                Short Excerpt
+              </label>
+              <textarea
+                name="excerpt"
+                rows="3"
+                value={formData.excerpt}
+                onChange={handleInputChange}
+                className="w-full bg-[#0a0f1c] border border-white/5 rounded-xl py-4 px-5 text-white placeholder-slate-600 focus:outline-none focus:border-[#3b82f6] transition-all resize-none"
+              />
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-8">
+            <div className="bg-[#0a0f1c] border border-white/5 rounded-2xl p-6 flex flex-col gap-5">
+              <div className="flex items-center gap-2 mb-2">
+                <Settings className="w-5 h-5 text-[#3b82f6]" />
+                <h2 className="m-0 text-white font-bold text-lg">
+                  SEO & Structure
+                </h2>
+              </div>
+              <div className="flex flex-col gap-2">
+                <label className="text-slate-400 text-[12px] font-bold tracking-wider uppercase">
+                  Custom Slug
+                </label>
+                <input
+                  type="text"
+                  name="slug"
+                  value={formData.slug}
+                  onChange={handleInputChange}
+                  className="w-full bg-[#030712] border border-white/5 rounded-lg py-3 px-4 text-white text-sm focus:outline-none focus:border-[#3b82f6]"
+                />
+              </div>
+              <div className="flex flex-col gap-2">
+                <label className="text-slate-400 text-[12px] font-bold tracking-wider uppercase">
+                  Meta Title
+                </label>
+                <input
+                  type="text"
+                  name="metaTitle"
+                  value={formData.metaTitle}
+                  onChange={handleInputChange}
+                  className="w-full bg-[#030712] border border-white/5 rounded-lg py-3 px-4 text-white text-sm focus:outline-none focus:border-[#3b82f6]"
+                />
+              </div>
+              <div className="flex flex-col gap-2">
+                <label className="text-slate-400 text-[12px] font-bold tracking-wider uppercase">
+                  Meta Description
+                </label>
+                <textarea
+                  name="metaDescription"
+                  rows="4"
+                  value={formData.metaDescription}
+                  onChange={handleInputChange}
+                  className="w-full bg-[#030712] border border-white/5 rounded-lg py-3 px-4 text-white text-sm focus:outline-none focus:border-[#3b82f6] resize-none"
+                />
+              </div>
+            </div>
+
+            <div className="bg-[#0a0f1c] border border-white/5 rounded-2xl p-6 flex flex-col gap-5">
+              <div className="flex items-center gap-2 mb-2">
+                <ImageIcon className="w-5 h-5 text-[#3b82f6]" />
+                <h2 className="m-0 text-white font-bold text-lg">
+                  Featured Media
+                </h2>
+              </div>
+              <div className="flex flex-col gap-2">
+                <label className="text-slate-400 text-[12px] font-bold tracking-wider uppercase">
+                  Update Cover Image
+                </label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  className="block w-full text-sm text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#3b82f6]/10 file:text-[#3b82f6] hover:file:bg-[#3b82f6]/20 transition-all cursor-pointer"
+                />
+                {imagePreview && (
+                  <img
+                    src={imagePreview}
+                    alt="Preview"
+                    className="mt-4 w-full h-40 object-cover rounded-lg border border-white/10"
+                  />
+                )}
+              </div>
+              <div className="flex flex-col gap-2">
+                <label className="text-slate-400 text-[12px] font-bold tracking-wider uppercase">
+                  Image Alt Text
+                </label>
+                <input
+                  type="text"
+                  name="imageAltText"
+                  value={formData.imageAltText}
+                  onChange={handleInputChange}
+                  className="w-full bg-[#030712] border border-white/5 rounded-lg py-3 px-4 text-white text-sm focus:outline-none focus:border-[#3b82f6]"
+                />
+              </div>
+            </div>
+
+            <div className="bg-[#0a0f1c] border border-white/5 rounded-2xl p-6 flex flex-col gap-5">
+              <div className="flex items-center gap-2 mb-2">
+                <Tag className="w-5 h-5 text-[#3b82f6]" />
+                <h2 className="m-0 text-white font-bold text-lg">
+                  Categorisation
+                </h2>
+              </div>
+              <div className="flex flex-col gap-2">
+                <label className="text-slate-400 text-[12px] font-bold tracking-wider uppercase">
                   Category
                 </label>
                 <select
                   name="category"
                   value={formData.category}
-                  onChange={handleChange}
-                  className="w-full bg-[#030712] border border-white/5 rounded-xl py-3 px-4 text-white focus:border-[#3b82f6] outline-none"
+                  onChange={handleInputChange}
+                  className="w-full bg-[#030712] border border-white/5 rounded-lg py-3 px-4 text-white text-sm focus:outline-none focus:border-[#3b82f6] appearance-none"
                 >
-                  <option value="">Select Category</option>
-                  {categories.map((c) => (
-                    <option key={c._id} value={c.name}>
-                      {c.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div>
-                <label className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 block">
-                  Status
-                </label>
-                <select
-                  name="status"
-                  value={formData.status}
-                  onChange={handleChange}
-                  className="w-full bg-[#030712] border border-white/5 rounded-xl py-3 px-4 text-white focus:border-[#3b82f6] outline-none"
-                >
-                  <option value="draft">Draft</option>
-                  <option value="published">Published</option>
-                  <option value="scheduled">Scheduled</option>
-                </select>
-              </div>
-            </div>
-
-            <div>
-              <label className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 block">
-                Cover Image URL
-              </label>
-              <div className="flex gap-3">
-                <div className="w-12 h-12 shrink-0 bg-[#030712] border border-white/5 rounded-xl flex items-center justify-center overflow-hidden">
-                  {formData.coverImage ? (
-                    <img
-                      src={formData.coverImage}
-                      alt="Cover"
-                      className="w-full h-full object-cover"
-                    />
+                  {categories.length > 0 ? (
+                    categories.map((cat) => (
+                      <option key={cat._id || cat.name} value={cat.name}>
+                        {cat.name}
+                      </option>
+                    ))
                   ) : (
-                    <ImageIcon className="w-5 h-5 text-slate-500" />
+                    <option value="Uncategorized">Uncategorized</option>
                   )}
-                </div>
+                </select>
+              </div>
+              <div className="flex flex-col gap-2">
+                <label className="text-slate-400 text-[12px] font-bold tracking-wider uppercase">
+                  Tags (Comma Separated)
+                </label>
                 <input
                   type="text"
-                  name="coverImage"
-                  value={formData.coverImage}
-                  onChange={handleChange}
-                  placeholder="https://..."
-                  className="w-full bg-[#030712] border border-white/5 rounded-xl py-3 px-4 text-white focus:border-[#3b82f6] outline-none"
+                  name="tags"
+                  value={formData.tags}
+                  onChange={handleInputChange}
+                  className="w-full bg-[#030712] border border-white/5 rounded-lg py-3 px-4 text-white text-sm focus:outline-none focus:border-[#3b82f6]"
                 />
-              </div>
-            </div>
-
-            {/* RAW HTML CONTENT AREA */}
-            <div>
-              <label className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 block">
-                Content
-              </label>
-              <textarea
-                name="content"
-                value={formData.content}
-                onChange={handleChange}
-                rows="12"
-                className="w-full bg-[#030712] border border-white/5 rounded-xl py-4 px-4 text-white text-[15px] leading-relaxed focus:border-[#3b82f6] outline-none resize-y"
-              ></textarea>
-            </div>
-
-            <div className="pt-6 border-t border-white/5">
-              <h3 className="text-lg font-bold text-white mb-4">
-                SEO Settings
-              </h3>
-              <div className="space-y-4">
-                <div>
-                  <label className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 block">
-                    Meta Title
-                  </label>
-                  <input
-                    type="text"
-                    name="metaTitle"
-                    value={formData.metaTitle}
-                    onChange={handleChange}
-                    className="w-full bg-[#030712] border border-white/5 rounded-xl py-3 px-4 text-white focus:border-[#3b82f6] outline-none"
-                  />
-                </div>
-                <div>
-                  <label className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 block">
-                    Meta Description
-                  </label>
-                  <textarea
-                    name="metaDescription"
-                    value={formData.metaDescription}
-                    onChange={handleChange}
-                    rows="3"
-                    className="w-full bg-[#030712] border border-white/5 rounded-xl py-3 px-4 text-white focus:border-[#3b82f6] outline-none resize-none"
-                  ></textarea>
-                </div>
               </div>
             </div>
           </div>
         </div>
-      </main>
-    </div>
+      </div>
+    </section>
   );
 }
