@@ -31,32 +31,32 @@ export default function FloatingActions() {
       {/* Scroll to Top Button */}
       <button
         onClick={scrollToTop}
-        className={`pointer-events-auto w-12 h-12 rounded-full bg-[#0a0f1c] border border-white/10 text-slate-400 hover:text-white hover:bg-white/5 hover:border-white/20 shadow-lg flex items-center justify-center transition-all duration-300 outline-none transform-gpu ${
+        className={`pointer-events-auto w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#0a0f1c] border border-white/10 text-slate-400 hover:text-white hover:bg-white/5 hover:border-white/20 shadow-lg flex items-center justify-center transition-all duration-300 outline-none transform-gpu ${
           showScroll
             ? "translate-y-0 opacity-100 visible"
             : "translate-y-4 opacity-0 invisible"
         }`}
         aria-label="Scroll to top"
       >
-        <ArrowUp className="w-5 h-5" />
+        <ArrowUp className="w-4 h-4 sm:w-5 sm:h-5" />
       </button>
 
-      {/* Floating WhatsApp Wordmark Button with "Focusing" Glow */}
+      {/* Floating WhatsApp Wordmark Button - Normal Balanced Size */}
       <div className="relative pointer-events-auto">
-        {/* Yeh background glow button ko focus aur highlight karega (Pulse Animation) */}
-        <div className="absolute inset-0 bg-[#25D366] rounded-full blur-xl opacity-20 animate-pulse" />
+        {/* Subtle Background Glow for Focusing */}
+        <div className="absolute inset-0 bg-[#25D366] rounded-full blur-md opacity-25 animate-pulse" />
 
         <a
           href={`https://wa.me/923347835980?text=${waMessage}`}
           target="_blank"
           rel="noreferrer"
-          className="relative flex items-center justify-center px-6 py-4 rounded-full bg-[#0a0f1c] border border-[#25D366]/40 shadow-[0_0_20px_rgba(37,211,102,0.2)] hover:shadow-[0_0_30px_rgba(37,211,102,0.5)] hover:-translate-y-1 transition-all duration-300 outline-none focus:ring-4 focus:ring-[#25D366]/50 group"
+          className="relative flex items-center justify-center px-5 py-3 rounded-full bg-[#0a0f1c] border border-[#25D366]/30 shadow-[0_5px_15px_rgba(37,211,102,0.15)] hover:shadow-[0_8px_25px_rgba(37,211,102,0.3)] hover:-translate-y-1 transition-all duration-300 outline-none group"
           aria-label="Chat on WhatsApp"
         >
-          {/* Size h-8 w-auto rakha hai taake logo bara aur clear nazar aaye */}
+          {/* Normal Size: h-6 w-auto (Perfect balance) */}
           <Whatsapp
             variant="wordmark"
-            className="h-8 w-auto transition-transform group-hover:scale-105"
+            className="h-5 sm:h-6 w-auto transition-transform duration-300 group-hover:scale-[1.02]"
           />
         </a>
       </div>
