@@ -1,6 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Code2, Braces, Key, Globe, ArrowRight, Terminal } from "lucide-react";
+import { ArrowRight, Terminal } from "lucide-react";
+// Official SVG Icons from @thesvg/react
+import {
+  React as ReactIcon,
+  Typescript,
+  Jwt,
+  GoogleSearchConsole,
+} from "@thesvg/react";
 
 export default function DevToolsSection() {
   const tools = [
@@ -8,7 +15,7 @@ export default function DevToolsSection() {
       title: "SVG to React JSX",
       description: "Convert raw SVG code into production-ready functional React components instantly with camelCase formatting.",
       link: "/tools/svg-to-react",
-      icon: Code2,
+      icon: ReactIcon,
       color: "text-blue-400",
       bgColor: "bg-blue-500/10",
       glow: "group-hover:shadow-[0_0_30px_rgba(59,130,246,0.15)]",
@@ -18,7 +25,7 @@ export default function DevToolsSection() {
       title: "JSON to TypeScript",
       description: "Automatically generate deeply nested TypeScript interfaces and types from your raw JSON API payloads.",
       link: "/tools/json-to-ts",
-      icon: Braces,
+      icon: Typescript,
       color: "text-emerald-400",
       bgColor: "bg-emerald-500/10",
       glow: "group-hover:shadow-[0_0_30px_rgba(16,185,129,0.15)]",
@@ -28,7 +35,7 @@ export default function DevToolsSection() {
       title: "JWT Decoder",
       description: "Securely decode, verify, and inspect JSON Web Tokens locally in your browser. No server interaction required.",
       link: "/tools/jwt-decoder",
-      icon: Key,
+      icon: Jwt,
       color: "text-amber-400",
       bgColor: "bg-amber-500/10",
       glow: "group-hover:shadow-[0_0_30px_rgba(245,158,11,0.15)]",
@@ -38,7 +45,7 @@ export default function DevToolsSection() {
       title: "Meta Tag Extractor",
       description: "Extract SEO meta tags and preview Open Graph social media cards from any live URL to optimise sharing.",
       link: "/tools/meta-extractor",
-      icon: Globe,
+      icon: GoogleSearchConsole,
       color: "text-purple-400",
       bgColor: "bg-purple-500/10",
       glow: "group-hover:shadow-[0_0_30px_rgba(168,85,247,0.15)]",
