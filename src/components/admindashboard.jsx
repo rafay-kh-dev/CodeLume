@@ -42,8 +42,9 @@ export default function AdminDashboard() {
         setIsLoading(true);
         // 1. Fetch live posts
         const postResponse = await fetch(`${API_BASE_URL}/api/blogs`);
+        let postData = [];
         if (postResponse.ok) {
-          const postData = await postResponse.json();
+          postData = await postResponse.json();
 
           const formattedPosts = postData.map((post) => ({
             id: post._id,
@@ -80,13 +81,21 @@ export default function AdminDashboard() {
         const catResponse = await fetch(`${API_BASE_URL}/api/categories`);
         if (catResponse.ok) {
           const catData = await catResponse.json();
+
+          // FIX: Calculate live count for each category using the postData
           setCategories(
-            catData.map((cat) => ({
-              id: cat._id,
-              name: cat.name,
-              slug: cat.slug,
-              count: cat.count || 0,
-            })),
+            catData.map((cat) => {
+              // Har post check karein jiski category ka naam is category ke name se milta ho
+              const postCount = postData.filter(
+                (p) => p.category === cat.name,
+              ).length;
+              return {
+                id: cat._id,
+                name: cat.name,
+                slug: cat.slug,
+                count: postCount, // Ab yahan live count aayega
+              };
+            }),
           );
         }
       } catch (error) {
@@ -168,7 +177,16 @@ export default function AdminDashboard() {
           method: "DELETE",
         });
         if (response.ok) {
-          setPosts(posts.filter((post) => post.id !== id));
+          // Post delete hone par categories ka count dubara calculate karein
+          const updatedPosts = posts.filter((post) => post.id !== id);
+          setPosts(updatedPosts);
+
+          setCategories(
+            categories.map((cat) => ({
+              ...cat,
+              count: updatedPosts.filter((p) => p.category === cat.name).length,
+            })),
+          );
         } else {
           alert("Failed to delete the post from the database.");
         }
