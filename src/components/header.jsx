@@ -27,7 +27,8 @@ const servicesData = [
   {
     title: "MERN Stack",
     link: "/services/mern-stack",
-    description: "Full-stack JavaScript solutions using MongoDB, Express, React, & Node.",
+    description:
+      "Full-stack JavaScript solutions using MongoDB, Express, React, & Node.",
     icon: ReactIcon,
     color: "text-blue-400",
     bgColor: "bg-blue-500/10",
@@ -45,7 +46,8 @@ const servicesData = [
   {
     title: "Angular Web Apps",
     link: "/services/angular-apps",
-    description: "Enterprise-grade frontend frameworks for complex applications.",
+    description:
+      "Enterprise-grade frontend frameworks for complex applications.",
     icon: Angular,
     color: "text-rose-400",
     bgColor: "bg-rose-500/10",
@@ -54,7 +56,8 @@ const servicesData = [
   {
     title: "Custom Platforms",
     link: "/services/custom-platforms",
-    description: "Bespoke digital solutions tailored exactly to your business logic.",
+    description:
+      "Bespoke digital solutions tailored exactly to your business logic.",
     icon: GcpCloudMonitoring,
     color: "text-indigo-400",
     bgColor: "bg-indigo-500/10",
@@ -63,7 +66,8 @@ const servicesData = [
   {
     title: "WordPress Sites",
     link: "/services/wordpress",
-    description: "Custom themes, plugins, and powerful e-commerce integrations.",
+    description:
+      "Custom themes, plugins, and powerful e-commerce integrations.",
     icon: Wordpress,
     color: "text-sky-400",
     bgColor: "bg-sky-500/10",
@@ -72,7 +76,8 @@ const servicesData = [
   {
     title: "Shopify Development",
     link: "/services/shopify",
-    description: "High-converting storefronts and highly customised Shopify apps.",
+    description:
+      "High-converting storefronts and highly customised Shopify apps.",
     icon: Shopify,
     color: "text-emerald-400",
     bgColor: "bg-emerald-500/10",
@@ -81,7 +86,8 @@ const servicesData = [
   {
     title: "Webflow Sites",
     link: "/services/webflow",
-    description: "Pixel-perfect, lightning-fast, and visually stunning responsive websites.",
+    description:
+      "Pixel-perfect, lightning-fast, and visually stunning responsive websites.",
     icon: Webflow,
     color: "text-purple-400",
     bgColor: "bg-purple-500/10",
@@ -90,7 +96,8 @@ const servicesData = [
   {
     title: "API & Integrations",
     link: "/services/api-integrations",
-    description: "Connecting your web apps with third-party services seamlessly.",
+    description:
+      "Connecting your web apps with third-party services seamlessly.",
     icon: GcpApiMonetization,
     color: "text-orange-400",
     bgColor: "bg-orange-500/10",
@@ -99,7 +106,8 @@ const servicesData = [
   {
     title: "Mobile Apps",
     link: "/services/mobile-apps",
-    description: "High-performance iOS and Android applications engineered for scale.",
+    description:
+      "High-performance iOS and Android applications engineered for scale.",
     icon: Flutter,
     color: "text-teal-400",
     bgColor: "bg-teal-500/10",
@@ -108,7 +116,8 @@ const servicesData = [
   {
     title: "UI/UX Design",
     link: "/services/ui-ux-design",
-    description: "User-centric interfaces crafted in Figma for maximum conversion.",
+    description:
+      "User-centric interfaces crafted in Figma for maximum conversion.",
     icon: Figma,
     color: "text-pink-400",
     bgColor: "bg-pink-500/10",
@@ -117,15 +126,16 @@ const servicesData = [
   {
     title: "Full Branding",
     link: "/services/full-branding",
-    description: "From 0 to 100. Complete brand identity, web engineering, and marketing.",
+    description:
+      "From 0 to 100. Complete brand identity, web engineering, and marketing.",
     icon: Adobe,
     color: "text-amber-400",
     bgColor: "bg-amber-500/10",
     hoverBg: "group-hover:bg-amber-500/20",
-  }
+  },
 ];
 
-const standardLinks = ["Case Studies", "About", "Blogs"];
+const standardLinks = ["Free Tools, Case Studies", "About", "Blogs"];
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -194,7 +204,9 @@ export default function Header() {
               <div className="flex flex-col justify-center">
                 <h2 className="text-2xl font-extrabold tracking-tight text-white leading-none m-0">
                   CodeLume
-                  <span className="text-blue-500 animate-[pulse_2s_ease-in-out_infinite]">.</span>
+                  <span className="text-blue-500 animate-[pulse_2s_ease-in-out_infinite]">
+                    .
+                  </span>
                 </h2>
               </div>
             </Link>
@@ -205,8 +217,8 @@ export default function Header() {
                 onMouseEnter={() => setServicesOpen(true)}
                 onMouseLeave={() => setServicesOpen(false)}
               >
-                <Link 
-                  to="/services" 
+                <Link
+                  to="/services"
                   onClick={() => setServicesOpen(false)}
                   className="flex items-center gap-1.5 px-4 py-2 rounded-full outline-none hover:bg-white/5 transition-colors duration-300"
                 >
@@ -236,8 +248,12 @@ export default function Header() {
                             onClick={() => setServicesOpen(false)}
                             className="relative flex items-start gap-4 p-4 rounded-2xl group outline-none overflow-hidden transition-all duration-300 hover:bg-white/3 hover:shadow-[0_10px_30px_-10px_rgba(0,0,0,0.5)]"
                           >
-                            <div className={`relative z-10 shrink-0 w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-300 ${service.bgColor} ${service.hoverBg}`}>
-                              <Icon className={`w-5 h-5 ${service.color} transition-transform duration-300 ease-out group-hover:scale-110 transform-gpu`} />
+                            <div
+                              className={`relative z-10 shrink-0 w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-300 ${service.bgColor} ${service.hoverBg}`}
+                            >
+                              <Icon
+                                className={`w-5 h-5 ${service.color} transition-transform duration-300 ease-out group-hover:scale-110 transform-gpu`}
+                              />
                             </div>
                             <div className="relative z-10 flex flex-col pt-0.5">
                               <h2 className="text-[14px] font-extrabold text-slate-200 group-hover:text-white transition-colors flex items-center gap-1.5 m-0 leading-tight">
@@ -264,7 +280,8 @@ export default function Header() {
                         className="text-[14px] font-bold text-blue-400 hover:text-blue-300 flex items-center gap-1.5 group/link transition-colors relative z-10 outline-none"
                       >
                         <h2 className="m-0 text-inherit text-[14px] font-bold flex items-center gap-1.5">
-                          Consult with us <ArrowRight className="w-4 h-4 transition-transform group-hover/link:translate-x-1 transform-gpu" />
+                          Consult with us{" "}
+                          <ArrowRight className="w-4 h-4 transition-transform group-hover/link:translate-x-1 transform-gpu" />
                         </h2>
                       </Link>
                     </div>
@@ -294,7 +311,9 @@ export default function Header() {
                 <div className="absolute top-0 left-0 w-full h-full bg-linear-to-r from-transparent via-white/20 to-transparent animate-shimmer pointer-events-none" />
                 <span className="relative z-10 flex items-center gap-2">
                   <Sparkles className="w-4 h-4 text-blue-200" />
-                  <h2 className="m-0 text-inherit text-[14px] font-extrabold tracking-wide">Start a Project</h2>
+                  <h2 className="m-0 text-inherit text-[14px] font-extrabold tracking-wide">
+                    Start a Project
+                  </h2>
                 </span>
               </Link>
 
@@ -303,8 +322,12 @@ export default function Header() {
                 className="lg:hidden relative p-2.5 rounded-full bg-white/5 hover:bg-white/10 text-white transition-colors duration-300 outline-none"
               >
                 <div className="relative w-5 h-5 flex items-center justify-center">
-                  <Menu className={`absolute w-5 h-5 transition-all duration-300 ease-out transform-gpu ${mobileMenuOpen ? "opacity-0 rotate-90 scale-50" : "opacity-100 rotate-0 scale-100"}`} />
-                  <X className={`absolute w-5 h-5 transition-all duration-300 ease-out transform-gpu ${mobileMenuOpen ? "opacity-100 rotate-0 scale-100" : "opacity-0 -rotate-90 scale-50"}`} />
+                  <Menu
+                    className={`absolute w-5 h-5 transition-all duration-300 ease-out transform-gpu ${mobileMenuOpen ? "opacity-0 rotate-90 scale-50" : "opacity-100 rotate-0 scale-100"}`}
+                  />
+                  <X
+                    className={`absolute w-5 h-5 transition-all duration-300 ease-out transform-gpu ${mobileMenuOpen ? "opacity-100 rotate-0 scale-100" : "opacity-0 -rotate-90 scale-50"}`}
+                  />
                 </div>
               </button>
             </div>
@@ -333,17 +356,27 @@ export default function Header() {
                       onClick={() => setMobileMenuOpen(false)}
                       className="flex items-center gap-5 p-4 rounded-2xl bg-white/2 hover:bg-white/5 transition-all duration-300 active:scale-[0.98] outline-none transform-gpu will-change-transform"
                       style={{
-                        transitionDelay: mobileMenuOpen ? `${idx * 40}ms` : "0ms",
-                        transform: mobileMenuOpen ? "translateY(0)" : "translateY(15px)",
+                        transitionDelay: mobileMenuOpen
+                          ? `${idx * 40}ms`
+                          : "0ms",
+                        transform: mobileMenuOpen
+                          ? "translateY(0)"
+                          : "translateY(15px)",
                         opacity: mobileMenuOpen ? 1 : 0,
                       }}
                     >
-                      <div className={`w-12 h-12 shrink-0 rounded-xl flex items-center justify-center ${service.bgColor}`}>
+                      <div
+                        className={`w-12 h-12 shrink-0 rounded-xl flex items-center justify-center ${service.bgColor}`}
+                      >
                         <Icon className={`w-6 h-6 ${service.color}`} />
                       </div>
                       <div>
-                        <h2 className="block text-[17px] font-extrabold text-white m-0 tracking-tight">{service.title}</h2>
-                        <h2 className="block text-[13px] font-medium text-slate-400 mt-1 line-clamp-1 m-0">{service.description}</h2>
+                        <h2 className="block text-[17px] font-extrabold text-white m-0 tracking-tight">
+                          {service.title}
+                        </h2>
+                        <h2 className="block text-[13px] font-medium text-slate-400 mt-1 line-clamp-1 m-0">
+                          {service.description}
+                        </h2>
                       </div>
                     </Link>
                   );
@@ -359,8 +392,12 @@ export default function Header() {
                   onClick={() => setMobileMenuOpen(false)}
                   className="block py-2 outline-none group transform-gpu will-change-transform"
                   style={{
-                    transitionDelay: mobileMenuOpen ? `${(idx + servicesData.length) * 40}ms` : "0ms",
-                    transform: mobileMenuOpen ? "translateY(0)" : "translateY(15px)",
+                    transitionDelay: mobileMenuOpen
+                      ? `${(idx + servicesData.length) * 40}ms`
+                      : "0ms",
+                    transform: mobileMenuOpen
+                      ? "translateY(0)"
+                      : "translateY(15px)",
                     opacity: mobileMenuOpen ? 1 : 0,
                     transition: "all 0.4s ease-out",
                   }}
@@ -377,7 +414,9 @@ export default function Header() {
               style={{
                 transitionDelay: mobileMenuOpen ? "500ms" : "0ms",
                 opacity: mobileMenuOpen ? 1 : 0,
-                transform: mobileMenuOpen ? "translateY(0)" : "translateY(15px)",
+                transform: mobileMenuOpen
+                  ? "translateY(0)"
+                  : "translateY(15px)",
                 transition: "all 0.4s ease-out",
               }}
             >
