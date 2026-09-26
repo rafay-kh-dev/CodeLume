@@ -135,7 +135,7 @@ export default function FloatingActions() {
         {/* Support Trigger Button Row with "Contact me" Badge */}
         <div className="flex items-center gap-3 group">
           {/* Left Text Badge */}
-          <div className="px-3.5 py-1.5 rounded-full bg-[#0a0f1c]/90 border border-blue-500/30 text-blue-400 text-xs sm:text-sm font-medium shadow-[0_0_15px_rgba(37,99,235,0.2)] backdrop-blur-md transition-all duration-300 group-hover:border-blue-400 group-hover:text-blue-300">
+          <div className="px-3.5 py-1.5 rounded-full bg-linear-to-r from-blue-600 to-indigo-600 text-blue-400 text-xs sm:text-sm font-medium shadow-[0_0_15px_rgba(37,99,235,0.2)] backdrop-blur-md transition-all duration-300 group-hover:border-blue-400 group-hover:text-blue-300">
             Contact me
           </div>
 
