@@ -50,6 +50,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 
 import SvgToReact from "./components/svgtoreact";
+import JsonToTs from "./components/jsontots";
 
 // Security Wrapper: Checks for a valid token before rendering the admin page
 const ProtectedRoute = ({ children }) => {
@@ -456,6 +457,7 @@ export default function App() {
               <Route path="/privacy" element={<PrivacyPolicy />} />
 
               <Route path="/tools/svg-to-react" element={<SvgToReact />} />
+              <Route path="/tools/json-to-ts" element={<JsonToTs />} />
 
               {/* ADMIN ROUTES */}
               <Route path="/admin/login" element={<AdminLogin />} />
