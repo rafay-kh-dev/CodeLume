@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from "react";
-import { ArrowUp } from "lucide-react";
-// Official Whatsapp wordmark from @thesvg/react
-import { Whatsapp } from "@thesvg/react";
+import React, { useState, useEffect, useRef } from "react";
+import { ArrowUp, MessageCircle, X } from "lucide-react";
+import { Whatsapp, Telegram, Gmail2026, MicrosoftTeams } from "@thesvg/react";
 
 export default function FloatingActions() {
   const [showScroll, setShowScroll] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const widgetRef = useRef(null);
 
+  // Handle scroll visibility for Back to Top button
   useEffect(() => {
     const checkScroll = () => {
       if (window.scrollY > 400) {
@@ -18,47 +20,129 @@ export default function FloatingActions() {
     return () => window.removeEventListener("scroll", checkScroll);
   }, []);
 
+  // Close the popup when user clicks outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (widgetRef.current && !widgetRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const waMessage = encodeURIComponent(
-    "Hi Rafay! I was browsing the CodeLume website and have a quick question.",
+    "Hi Rafay! I was browsing the CodeLume website and have a quick question."
   );
 
+  // Contact channel configuration
+  const contactChannels = [
+    {
+      id: "whatsapp",
+      label: "WhatsApp",
+      href: `https://wa.me/923347835980?text=${waMessage}`,
+      icon: <Whatsapp className="h-5 w-5" />,
+      hoverBorder: "hover:border-[#25D366]",
+      hoverGlow: "hover:shadow-[0_0_15px_rgba(37,211,102,0.35)]",
+    },
+    {
+      id: "telegram",
+      label: "Telegram",
+      href: "https://t.me/your_telegram", // Replace with your Telegram handle
+      icon: <Telegram className="h-5 w-5" />,
+      hoverBorder: "hover:border-[#229ED9]",
+      hoverGlow: "hover:shadow-[0_0_15px_rgba(34,158,217,0.35)]",
+    },
+    {
+      id: "gmail",
+      label: "Email",
+      href: "mailto:contact@codelume.com", // Replace with your email address
+      icon: <Gmail2026 className="h-5 w-5" />,
+      hoverBorder: "hover:border-[#EA4335]",
+      hoverGlow: "hover:shadow-[0_0_15px_rgba(234,67,53,0.35)]",
+    },
+    {
+      id: "teams",
+      label: "MS Teams",
+      href: "https://teams.microsoft.com/l/chat/0/0?users=contact@codelume.com", // Replace with your Teams email
+      icon: <MicrosoftTeams className="h-5 w-5" />,
+      hoverBorder: "hover:border-[#6264A7]",
+      hoverGlow: "hover:shadow-[0_0_15px_rgba(98,100,167,0.35)]",
+    },
+  ];
+
   return (
-    <div className="fixed bottom-6 right-6 z-[100] flex flex-col gap-4 items-end pointer-events-none">
+    <div
+      ref={widgetRef}
+      className="fixed bottom-6 right-6 z-[100] flex flex-col gap-3 items-end pointer-events-none"
+      onMouseEnter={() => setIsOpen(true)}
+      onMouseLeave={() => setIsOpen(false)}
+    >
       {/* Scroll to Top Button */}
       <button
         onClick={scrollToTop}
-        className={`pointer-events-auto w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#0a0f1c] border border-white/10 text-slate-400 hover:text-white hover:bg-white/5 hover:border-white/20 shadow-lg flex items-center justify-center transition-all duration-300 outline-none transform-gpu ${
+        className={`pointer-events-auto w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-[#0a0f1c] border border-white/10 text-slate-400 hover:text-white hover:bg-white/10 hover:border-white/20 shadow-lg flex items-center justify-center transition-all duration-300 outline-none transform-gpu ${
           showScroll
-            ? "translate-y-0 opacity-100 visible"
-            : "translate-y-4 opacity-0 invisible"
+            ? "translate-y-0 opacity-100 visible scale-100"
+            : "translate-y-4 opacity-0 invisible scale-90"
         }`}
         aria-label="Scroll to top"
       >
         <ArrowUp className="w-4 h-4 sm:w-5 sm:h-5" />
       </button>
 
-      {/* Floating WhatsApp Wordmark Button - Normal Balanced Size */}
-      <div className="relative pointer-events-auto">
-        {/* Subtle Background Glow for Focusing */}
-        <div className="absolute inset-0 bg-[#25D366] rounded-full blur-md opacity-25 animate-pulse" />
-
-        <a
-          href={`https://wa.me/923347835980?text=${waMessage}`}
-          target="_blank"
-          rel="noreferrer"
-          className="relative flex items-center justify-center px-5 py-3 rounded-full bg-[#0a0f1c] border border-[#25D366]/30 shadow-[0_5px_15px_rgba(37,211,102,0.15)] hover:shadow-[0_8px_25px_rgba(37,211,102,0.3)] hover:-translate-y-1 transition-all duration-300 outline-none group"
-          aria-label="Chat on WhatsApp"
+      {/* Floating Support Hub */}
+      <div className="relative pointer-events-auto flex flex-col items-end">
+        {/* Expanded Contact Channels Menu */}
+        <div
+          className={`flex flex-col gap-2.5 items-end mb-3 transition-all duration-300 transform-gpu ${
+            isOpen
+              ? "opacity-100 translate-y-0 visible pointer-events-auto"
+              : "opacity-0 translate-y-4 invisible pointer-events-none"
+          }`}
         >
-          {/* Normal Size: h-6 w-auto (Perfect balance) */}
-          <Whatsapp
-            variant="wordmark"
-            className="h-5 sm:h-6 w-auto transition-transform duration-300 group-hover:scale-[1.02]"
-          />
-        </a>
+          {contactChannels.map((channel, index) => (
+            <a
+              key={channel.id}
+              href={channel.href}
+              target="_blank"
+              rel="noreferrer"
+              style={{
+                transitionDelay: isOpen ? `${index * 40}ms` : "0ms",
+              }}
+              className={`flex items-center gap-3 px-4 py-2.5 rounded-full bg-[#0a0f1c]/95 border border-white/10 text-white shadow-xl backdrop-blur-md transition-all duration-300 hover:-translate-x-1 ${channel.hoverBorder} ${channel.hoverGlow}`}
+            >
+              <span className="text-xs sm:text-sm font-medium text-slate-200">
+                {channel.label}
+              </span>
+              <div className="flex items-center justify-center">
+                {channel.icon}
+              </div>
+            </a>
+          ))}
+        </div>
+
+        {/* Main Support Trigger Button */}
+        <button
+          onClick={() => setIsOpen((prev) => !prev)}
+          className={`relative flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-[#0a0f1c] border border-cyan-500/40 text-cyan-400 shadow-[0_0_20px_rgba(6,182,212,0.2)] hover:shadow-[0_0_25px_rgba(6,182,212,0.45)] hover:border-cyan-400 hover:text-white transition-all duration-300 outline-none transform-gpu active:scale-95 ${
+            isOpen ? "bg-cyan-950/60 border-cyan-400 text-white rotate-90" : ""
+          }`}
+          aria-label="Contact Support Options"
+        >
+          {/* Subtle Ambient Glow */}
+          <div className="absolute inset-0 rounded-full bg-cyan-500/20 blur-md opacity-50 group-hover:opacity-100 transition-opacity" />
+
+          {isOpen ? (
+            <X className="w-5 h-5 sm:w-6 sm:h-6 relative z-10 transition-transform duration-300" />
+          ) : (
+            <MessageCircle className="w-5 h-5 sm:w-6 sm:h-6 relative z-10 transition-transform duration-300" />
+          )}
+        </button>
       </div>
     </div>
   );
