@@ -23,60 +23,32 @@ export default function MetaExtractor() {
     setMetaData(null);
 
     try {
-      // PRO LEVEL: Fallback Proxy System (Tries multiple public CORS proxies)
-      const proxies = [
-        `https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}`,
-        `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(targetUrl)}`
-      ];
-
-      let html = "";
-      let success = false;
-
-      for (let proxy of proxies) {
-        try {
-          const response = await fetch(proxy);
-          if (response.ok) {
-            html = await response.text();
-            // Check if we actually got an HTML page and not a block/empty response
-            if (html && html.toLowerCase().includes("<html")) {
-              success = true;
-              break; // Agar theek data mil gaya toh loop break kar do
-            }
-          }
-        } catch (err) {
-          console.warn("Proxy failed, trying the next one...", proxy);
-        }
+      // PRO LEVEL: Using Microlink API to bypass Cloudflare & bot protections
+      const response = await fetch(`https://api.microlink.io?url=${encodeURIComponent(targetUrl)}`);
+      
+      if (!response.ok) {
+        throw new Error("API request failed.");
       }
 
-      if (!success || !html) {
-        throw new Error("All proxies blocked.");
+      const json = await response.json();
+
+      if (json.status !== "success") {
+        throw new Error("Could not extract data from this URL.");
       }
 
-      // Parse HTML string into a real DOM object
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(html, "text/html");
-
-      // Extract tags safely
-      const getMeta = (nameAttr, propertyAttr) => {
-        let tag;
-        if (nameAttr) tag = doc.querySelector(`meta[name="${nameAttr}"]`);
-        if (!tag && propertyAttr) tag = doc.querySelector(`meta[property="${propertyAttr}"]`);
-        return tag ? tag.getAttribute("content") : "";
-      };
-
+      // Map the clean JSON response to our state
       const extractedData = {
-        title: doc.querySelector("title")?.innerText || getMeta("title", "og:title"),
-        description: getMeta("description", "og:description"),
-        ogTitle: getMeta("", "og:title") || doc.querySelector("title")?.innerText,
-        ogDescription: getMeta("", "og:description") || getMeta("description", ""),
-        ogImage: getMeta("", "og:image"),
-        twitterCard: getMeta("twitter:card", ""),
-        canonical: doc.querySelector('link[rel="canonical"]')?.getAttribute("href") || targetUrl,
+        title: json.data.title || "",
+        description: json.data.description || "",
+        ogTitle: json.data.title || "",
+        ogDescription: json.data.description || "",
+        ogImage: json.data.image?.url || json.data.logo?.url || "",
+        canonical: json.data.url || targetUrl,
       };
 
       setMetaData(extractedData);
     } catch (err) {
-      setError("Data extracted blocked! Big sites like Facebook/Instagram block public proxies. Try a normal blog or portfolio site.");
+      setError("Data extraction failed! The website might have strict Cloudflare protection or the URL is invalid.");
     } finally {
       setIsLoading(false);
     }
@@ -84,7 +56,12 @@ export default function MetaExtractor() {
 
   return (
     <section className="w-full min-h-dvh pt-32 pb-24 bg-[#030712] font-jakarta text-white relative">
+      <Helmet>
+        <title>Meta Tag Extractor | SEO Tools | CodeLume</title>
+        <meta name="description" content="Extract and preview SEO meta tags, Open Graph data, and social media cards from any live URL. A free developer tool by CodeLume." />
+      </Helmet>
 
+      {/* Subtle Background Glow - CodeLume Blue */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-[500px] bg-[radial-gradient(ellipse_at_top,rgba(37,99,235,0.05)_0%,transparent_70%)] pointer-events-none -z-10" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
@@ -185,7 +162,7 @@ export default function MetaExtractor() {
                   ) : (
                     <div className="flex flex-col items-center gap-2 text-slate-500">
                       <ImageIcon className="w-8 h-8" />
-                      <span className="text-sm font-bold">No OG Image Found</span>
+                      <span className="text-sm font-bold">No Image Found</span>
                     </div>
                   )}
                 </div>
