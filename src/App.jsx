@@ -460,6 +460,7 @@ export default function App() {
 
           <Footer />
           <CookieBanner />
+          <FloatingActions />
           <Analytics />
           <SpeedInsights />
         </div>
