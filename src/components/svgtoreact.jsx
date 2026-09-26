@@ -46,10 +46,6 @@ export default function SvgToReact() {
 
   return (
     <section className="w-full min-h-dvh pt-32 pb-24 bg-[#030712] font-jakarta text-white relative">
-      <Helmet>
-        <title>SVG to React JSX Converter | CodeLume Tools</title>
-        <meta name="description" content="Instantly convert raw SVG code into React JSX components. A free developer tool by CodeLume." />
-      </Helmet>
 
       {/* Subtle Background Glow */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-[500px] bg-[radial-gradient(ellipse_at_top,rgba(37,99,235,0.05)_0%,transparent_70%)] pointer-events-none -z-10" />
