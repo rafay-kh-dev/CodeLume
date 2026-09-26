@@ -53,6 +53,7 @@ import SvgToReact from "./components/svgtoreact";
 import JsonToTs from "./components/jsontots";
 import JwtDecoder from "./components/jwtdecoder";
 import MetaExtractor from "./components/metaextractor";
+import DevToolsSection from "./components/DevToolsSection";
 
 // Security Wrapper: Checks for a valid token before rendering the admin page
 const ProtectedRoute = ({ children }) => {
@@ -403,6 +404,7 @@ export default function App() {
                     <Hero />
                     <About />
                     <Service />
+                    <DevToolsSection />
                     <Calculator />
                     <OurProcess />
                     <FAQ />
