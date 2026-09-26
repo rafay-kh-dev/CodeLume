@@ -13,7 +13,7 @@ import Hero from "./components/hero";
 import About from "./components/about";
 import CaseStudies from "./components/casestudies";
 import Service from "./components/service";
-import DevToolsSection from "./components/DevToolsSection";
+import DevToolsSection from "./components/devtoolssection";
 import OurProcess from "./components/ourprocess";
 import Calculator from "./components/calculator";
 import Testimonials from "./components/testimonial";
