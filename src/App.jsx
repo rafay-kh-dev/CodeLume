@@ -13,6 +13,7 @@ import Hero from "./components/hero";
 import About from "./components/about";
 import CaseStudies from "./components/casestudies";
 import Service from "./components/service";
+import DevToolsSection from "./components/DevToolsSection";
 import OurProcess from "./components/ourprocess";
 import Calculator from "./components/calculator";
 import Testimonials from "./components/testimonial";
@@ -53,7 +54,7 @@ import SvgToReact from "./components/svgtoreact";
 import JsonToTs from "./components/jsontots";
 import JwtDecoder from "./components/jwtdecoder";
 import MetaExtractor from "./components/metaextractor";
-import DevToolsSection from "./components/DevToolsSection";
+
 
 // Security Wrapper: Checks for a valid token before rendering the admin page
 const ProtectedRoute = ({ children }) => {
