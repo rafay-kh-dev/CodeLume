@@ -164,11 +164,10 @@ export default function ProjectCalculator() {
   const emailLink = `mailto:hello@codelume.online?subject=${encodeURIComponent("New Project Inquiry via CodeLume Calculator")}&body=${encodeURIComponent(generateMessage())}`;
 
   return (
+    // Yahan se saari parent div / section mein overflow-hidden khatam kar di hai taake sticky block na ho.
     <section className="bg-[#030712] text-white font-jakarta py-24 relative">
-      {/* Background glow isolated to prevent horizontal scrolling issues */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-5xl h-[800px] bg-[radial-gradient(ellipse_at_center,rgba(37,99,235,0.08)_0%,transparent_70%)]" />
-      </div>
+      {/* Background glow isolated */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-5xl h-[800px] bg-[radial-gradient(ellipse_at_center,rgba(37,99,235,0.08)_0%,transparent_70%)] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
         <div className="flex flex-col items-center text-center mb-16 max-w-3xl mx-auto">
@@ -190,8 +189,8 @@ export default function ProjectCalculator() {
           </p>
         </div>
 
-        {/* Using items-start is critical here. It stops the columns from stretching to the same height, which is required for position: sticky to work on the child. */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 items-start relative">
+        {/* CSS fix applied here: items-start ki jagah grid ka default stretch rakha hai, but child div ko self-start de diya hai */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 relative">
           <div className="lg:col-span-2 space-y-12">
             <div className="space-y-6">
               <div className="flex items-center gap-3">
@@ -332,10 +331,10 @@ export default function ProjectCalculator() {
             </div>
           </div>
 
-          {/* Right Column: Sticky Live Estimate Receipt */}
-          <div className="lg:col-span-1 relative">
-            {/* The sticky class here keeps it fixed to the top while scrolling */}
-            <div className="sticky top-32 bg-linear-to-b from-[#0a0f1c] to-[#050b14] border border-blue-500/30 rounded-3xl p-6 sm:p-8 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.8),inset_0_0_20px_rgba(59,130,246,0.05)] transition-all duration-500 z-20">
+          {/* Right Column wrapper */}
+          <div className="lg:col-span-1 h-full">
+            {/* The actual sticky block */}
+            <div className="sticky top-28 bg-linear-to-b from-[#0a0f1c] to-[#050b14] border border-blue-500/30 rounded-3xl p-6 sm:p-8 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.8),inset_0_0_20px_rgba(59,130,246,0.05)] transition-all duration-500 z-20">
               <h2 className="text-[12px] font-black text-blue-500 uppercase tracking-[0.2em] mb-6 m-0 flex items-center gap-2">
                 <Calculator className="w-4 h-4" /> Live Estimate
               </h2>
@@ -411,7 +410,6 @@ export default function ProjectCalculator() {
                   className="relative flex items-center justify-center w-full px-6 py-4 rounded-xl bg-linear-to-r from-[#1EBE5D] to-[#128C7E] shadow-[0_10px_20px_rgba(37,211,102,0.3)] hover:shadow-[0_15px_30px_rgba(37,211,102,0.4)] transition-all duration-300 hover:-translate-y-1 outline-none overflow-hidden group"
                 >
                   <div className="absolute top-0 left-0 w-full h-full bg-linear-to-r from-transparent via-white/20 to-transparent translate-x-[-150%] group-hover:translate-x-[150%] transition-transform duration-700 pointer-events-none" />
-                  {/* Text hata kar sirf WhatsApp Wordmark lagaya hai, bright white (brightness-0 invert) taake dark green background pe clear nazar aye */}
                   <Whatsapp
                     variant="wordmark"
                     className="h-6 w-auto brightness-0 invert"
