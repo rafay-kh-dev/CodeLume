@@ -42,6 +42,11 @@ app.post('/api/login', (req, res) => {
   }
 });
 
+// Apni backend file mein jahan middleware/routes hain wahan yeh add karein:
+app.get('/', (req, res) => {
+  res.status(200).send('CodeLume Backend is Awake and Running!');
+});
+
 // 1. CREATE A NEW BLOG POST
 app.post('/api/blogs', upload.single('coverImage'), async (req, res) => {
   try {
