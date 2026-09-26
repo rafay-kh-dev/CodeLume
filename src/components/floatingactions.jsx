@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { ArrowUp } from "lucide-react";
-// Official Whatsapp wordmark from @thesvg/react
 import { Whatsapp } from "@thesvg/react";
 
 export default function FloatingActions() {
@@ -27,7 +26,6 @@ export default function FloatingActions() {
   );
 
   return (
-    // items-end use kiya hai taake dono buttons right side par properly align rahein
     <div className="fixed bottom-6 right-6 z-50 flex flex-col gap-3 items-end">
       {/* Scroll to Top Button */}
       <button
@@ -42,16 +40,15 @@ export default function FloatingActions() {
         <ArrowUp className="w-5 h-5" />
       </button>
 
-      {/* Floating WhatsApp Wordmark Button (Pill Shape) */}
+      {/* Floating WhatsApp Button */}
       <a
         href={`https://wa.me/923347835980?text=${waMessage}`}
         target="_blank"
         rel="noreferrer"
-        className="px-5 py-3.5 rounded-full bg-[#0a0f1c] border border-white/10 shadow-[0_10px_25px_rgba(0,0,0,0.5)] hover:border-[#25D366]/50 hover:shadow-[0_15px_35px_rgba(37,211,102,0.15)] hover:-translate-y-1 flex items-center justify-center transition-all duration-300 outline-none group"
+        className="flex items-center justify-center outline-none hover:-translate-y-1 transition-all duration-300"
         aria-label="Chat on WhatsApp"
       >
-        {/* Exact code as requested, w-auto used to prevent squishing */}
-        <Whatsapp variant="wordmark" className="h-6 w-auto" />
+        <Whatsapp variant="wordmark" className="h-6 w-6" />
       </a>
     </div>
   );
