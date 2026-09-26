@@ -19,7 +19,6 @@ mongoose.connect(process.env.MONGO_URI)
   .catch(err => console.log('Database connection error:', err));
 
 // --- CATEGORY SCHEMA ---
-// Direct schema creation for categories
 const categorySchema = new mongoose.Schema({
   name: String,
   slug: String,
@@ -42,7 +41,7 @@ app.post('/api/login', (req, res) => {
   }
 });
 
-// Apni backend file mein jahan middleware/routes hain wahan yeh add karein:
+// UptimeRobot Keep-Awake Route
 app.get('/', (req, res) => {
   res.status(200).send('CodeLume Backend is Awake and Running!');
 });
@@ -80,18 +79,13 @@ app.get('/api/blogs', async (req, res) => {
   }
 });
 
-// --- NEW ROUTE: GET SINGLE BLOG POST BY SLUG ---
+// 3. GET SINGLE BLOG POST BY SLUG
 app.get('/api/blogs/:slug', async (req, res) => {
   try {
-    // Database mein us article ko uske 'slug' se dhoondein
     const blog = await Blog.findOne({ slug: req.params.slug });
-    
-    // Agar article nahi mila toh 404 error bhejein
     if (!blog) {
       return res.status(404).json({ message: 'Article not found' });
     }
-    
-    // Agar mil gaya toh article ka data wapas bhej dein
     res.status(200).json(blog);
   } catch (error) {
     console.error('Error fetching single blog:', error);
@@ -99,7 +93,42 @@ app.get('/api/blogs/:slug', async (req, res) => {
   }
 });
 
-// 3. DELETE A BLOG POST
+// ==========================================
+// 4. UPDATE A BLOG POST (THE NEW FIX!)
+// ==========================================
+app.put('/api/blogs/:id', upload.single('coverImage'), async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { title, slug, content, excerpt, category, imageAltText, metaTitle, metaDescription, tags, status, existingCoverImage } = req.body;
+    
+    // Nayi image aayi hai toh wo use karein, warna purani wali use karein
+    const coverImageUrl = req.file ? req.file.path : existingCoverImage;
+
+    let parsedTags = [];
+    if (tags) {
+      try { parsedTags = JSON.parse(tags); } catch { parsedTags = tags.split(','); }
+    }
+
+    const updatedData = {
+      title, slug, content, excerpt, category, imageAltText, metaTitle, metaDescription, tags: parsedTags, status, coverImage: coverImageUrl
+    };
+
+    const updatedBlog = await Blog.findByIdAndUpdate(id, updatedData, { new: true });
+
+    if (!updatedBlog) {
+      return res.status(404).json({ message: 'Post not found for update' });
+    }
+
+    res.status(200).json({ message: 'Blog post updated successfully!', blog: updatedBlog });
+  } catch (error) {
+    console.error('Error updating blog:', error);
+    res.status(500).json({ message: 'Error updating post in database', error: error.message });
+  }
+});
+// ==========================================
+
+
+// 5. DELETE A BLOG POST
 app.delete('/api/blogs/:id', async (req, res) => {
   try {
     await Blog.findByIdAndDelete(req.params.id);
@@ -109,7 +138,7 @@ app.delete('/api/blogs/:id', async (req, res) => {
   }
 });
 
-// 4. UPLOAD IMAGE TO MEDIA LIBRARY
+// 6. UPLOAD IMAGE TO MEDIA LIBRARY
 app.post('/api/media', upload.single('file'), async (req, res) => {
   try {
     if (!req.file) return res.status(400).json({ message: 'No image provided' });
@@ -119,7 +148,7 @@ app.post('/api/media', upload.single('file'), async (req, res) => {
   }
 });
 
-// 5. GET ALL CATEGORIES
+// 7. GET ALL CATEGORIES
 app.get('/api/categories', async (req, res) => {
   try {
     const categories = await Category.find();
@@ -129,7 +158,7 @@ app.get('/api/categories', async (req, res) => {
   }
 });
 
-// 6. CREATE A NEW CATEGORY
+// 8. CREATE A NEW CATEGORY
 app.post('/api/categories', async (req, res) => {
   try {
     const newCat = new Category({ name: req.body.name, slug: req.body.slug });
@@ -140,7 +169,7 @@ app.post('/api/categories', async (req, res) => {
   }
 });
 
-// 7. DELETE A CATEGORY
+// 9. DELETE A CATEGORY
 app.delete('/api/categories/:id', async (req, res) => {
   try {
     await Category.findByIdAndDelete(req.params.id);
