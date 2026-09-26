@@ -187,7 +187,8 @@ export default function ProjectCalculator() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 items-start relative">
+        {/* CSS Fix: yahan se 'items-start' remove kar diya hai taake grid columns full height tak stretch hon */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 relative">
           <div className="lg:col-span-2 space-y-12">
             <div className="space-y-6">
               <div className="flex items-center gap-3">
@@ -328,7 +329,8 @@ export default function ProjectCalculator() {
             </div>
           </div>
 
-          <div className="lg:col-span-1 h-full">
+          <div className="lg:col-span-1">
+            {/* CSS Fix: yahan 'sticky top-32' seamlessly kaam karega kyunki ab isko scroll hone ki space mil jayegi */}
             <div className="sticky top-32 bg-linear-to-b from-[#0a0f1c] to-[#050b14] border border-blue-500/30 rounded-3xl p-6 sm:p-8 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.8),inset_0_0_20px_rgba(59,130,246,0.05)] transition-all duration-500 z-20">
               <h2 className="text-[12px] font-black text-blue-500 uppercase tracking-[0.2em] mb-6 m-0 flex items-center gap-2">
                 <Calculator className="w-4 h-4" /> Live Estimate
