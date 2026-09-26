@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { ArrowLeft, Save, Loader2, Image as ImageIcon } from "lucide-react";
 
 export default function AdminEditPost() {
-  const { id } = useParams(); // URL se post ka ID nikalne ke liye
+  const { id } = useParams();
   const navigate = useNavigate();
   const API_BASE_URL =
     import.meta.env.VITE_API_URL || "https://codelume-backend.onrender.com";
@@ -28,29 +28,38 @@ export default function AdminEditPost() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Categories fetch karein (Dropdown ke liye)
+        // 1. Categories fetch karein
         const catRes = await fetch(`${API_BASE_URL}/api/categories`);
         if (catRes.ok) {
           const catData = await catRes.json();
           setCategories(catData);
         }
 
-        // Specific Post ka data fetch karein
-        const postRes = await fetch(`${API_BASE_URL}/api/blogs/${id}`);
+        // 2. Posts fetch karein aur ID se filter karein (Backend 404 bypass)
+        const postRes = await fetch(`${API_BASE_URL}/api/blogs`);
         if (postRes.ok) {
-          const postData = await postRes.json();
-          setFormData({
-            title: postData.title || "",
-            slug: postData.slug || "",
-            content: postData.content || "",
-            category: postData.category || "",
-            status: postData.status || "draft",
-            coverImage: postData.coverImage || "",
-            metaTitle: postData.metaTitle || "",
-            metaDescription: postData.metaDescription || "",
-          });
+          const allPosts = await postRes.json();
+
+          // Match the post using MongoDB _id
+          const postData = allPosts.find((p) => p._id === id);
+
+          if (postData) {
+            setFormData({
+              title: postData.title || "",
+              slug: postData.slug || "",
+              content: postData.content || "",
+              category: postData.category || "",
+              status: postData.status || "draft",
+              coverImage: postData.coverImage || "",
+              metaTitle: postData.metaTitle || "",
+              metaDescription: postData.metaDescription || "",
+            });
+          } else {
+            alert("Post not found in database!");
+            navigate("/admin/dashboard");
+          }
         } else {
-          alert("Post not found!");
+          alert("Failed to fetch posts from server.");
           navigate("/admin/dashboard");
         }
       } catch (error) {
@@ -83,12 +92,13 @@ export default function AdminEditPost() {
 
       if (response.ok) {
         alert("Post updated successfully!");
-        navigate("/admin/dashboard"); // Update hone ke baad wapas dashboard par bhej dein
+        navigate("/admin/dashboard"); // Update hone ke baad wapas dashboard par
       } else {
-        alert("Failed to update post.");
+        alert("Failed to update post. Check backend PUT route.");
       }
     } catch (error) {
       console.error("Error updating post:", error);
+      alert("An error occurred while updating.");
     } finally {
       setIsSaving(false);
     }
