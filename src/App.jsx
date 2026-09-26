@@ -14,7 +14,6 @@ import About from "./components/about";
 import CaseStudies from "./components/casestudies";
 import Service from "./components/service";
 import OurProcess from "./components/ourprocess";
-// Import fix kiya hai: File ka naam "calculator" hai aur humein component ka naam "Calculator" chahiye.
 import Calculator from "./components/calculator";
 import Testimonials from "./components/testimonial";
 import Blog from "./components/blogs";
@@ -65,7 +64,7 @@ function RouteTracker() {
   }, [pathname]);
 
   // Default SEO Data
-  let pageTitle = "CodeLume | Bespoke Web Development & Digital Design";
+  let pageTitle = "CodeLume® | Bespoke Web Engineering & Digital Agency";
   let pageDesc =
     "We build fast, scalable, and visually stunning digital experiences. From custom web apps to full brand identities, let's scale your business.";
   let pageUrl = `https://codelume.com${pathname}`;
@@ -88,15 +87,15 @@ function RouteTracker() {
     },
   };
 
-  // Clean, Human, and Click-Worthy SEO Titles
+  // Clean, Human, and Click-Worthy SEO Titles (With Dual Checks for Indexed URLs)
   if (pathname === "/") {
-    pageTitle = "CodeLume | Bespoke Web Development & Digital Design";
+    pageTitle = "CodeLume® | Bespoke Web Engineering & Digital Agency";
   } else if (pathname === "/start-project") {
     pageTitle = "Start a Project | CodeLume";
     pageDesc =
       "Ready to upgrade your digital presence? Book a consultation with Rafay and let's build something exceptional together.";
   } else if (pathname === "/services") {
-    pageTitle = "Digital Services | Web Dev, UI/UX & Branding | CodeLume";
+    pageTitle = "Services | CodeLume";
     pageDesc =
       "Explore our core services: MERN stack apps, custom Laravel backends, Webflow design, and complete 0-to-100 brand engineering.";
     schemaData = {
@@ -111,8 +110,11 @@ function RouteTracker() {
       description: pageDesc,
       areaServed: "Worldwide",
     };
-  } else if (pathname === "/services/mern-stack") {
-    pageTitle = "MERN Stack Development | Custom React & Node Apps | CodeLume";
+  } else if (
+    pathname === "/services/mern-stack" ||
+    pathname === "/mern-stack-development"
+  ) {
+    pageTitle = "Custom MERN Development | CodeLume";
     pageDesc =
       "Need a fast, scalable web app? We engineer bespoke MERN stack solutions tailored exactly to your business logic. Packages from $149.";
     schemaData = {
@@ -129,7 +131,7 @@ function RouteTracker() {
       },
     };
   } else if (pathname === "/services/php-laravel") {
-    pageTitle = "Custom PHP & Laravel Development | CodeLume";
+    pageTitle = "PHP & Laravel Development | CodeLume";
     pageDesc =
       "Bulletproof backend architecture for your business. We build secure, dynamic Laravel applications that scale seamlessly. From $139.";
     schemaData = {
@@ -163,7 +165,7 @@ function RouteTracker() {
       },
     };
   } else if (pathname === "/services/wordpress") {
-    pageTitle = "WordPress & WooCommerce Development | CodeLume";
+    pageTitle = "Custom WordPress Development | CodeLume";
     pageDesc =
       "High-converting WooCommerce stores and custom WordPress themes. Fast, secure, and easily manageable CMS solutions starting at $100.";
     schemaData = {
@@ -180,7 +182,7 @@ function RouteTracker() {
       },
     };
   } else if (pathname === "/services/shopify") {
-    pageTitle = "Custom Shopify Development | CodeLume";
+    pageTitle = "Shopify Development | CodeLume";
     pageDesc =
       "Turn visitors into buyers. We build bespoke, high-converting Shopify storefronts with custom Liquid coding and seamless integrations.";
     schemaData = {
@@ -197,7 +199,7 @@ function RouteTracker() {
       },
     };
   } else if (pathname === "/services/webflow") {
-    pageTitle = "Webflow Design Agency | CodeLume";
+    pageTitle = "Webflow Website Development | CodeLume";
     pageDesc =
       "Pixel-perfect, award-winning Webflow websites with advanced GSAP animations and zero bloat. Stand out from the competition.";
     schemaData = {
@@ -214,7 +216,7 @@ function RouteTracker() {
       },
     };
   } else if (pathname === "/services/custom-platforms") {
-    pageTitle = "Bespoke Web Platforms & SaaS Development | CodeLume";
+    pageTitle = "Custom Web Platforms | CodeLume";
     pageDesc =
       "Have a complex app idea? We engineer custom SaaS platforms, portals, and dashboards from the ground up. Enterprise solutions from $299.";
     schemaData = {
@@ -231,7 +233,7 @@ function RouteTracker() {
       },
     };
   } else if (pathname === "/services/api-integrations") {
-    pageTitle = "Custom API Development & Integrations | CodeLume";
+    pageTitle = "API Development & Integration | CodeLume";
     pageDesc =
       "Connect your systems flawlessly. We build secure REST/GraphQL APIs and handle complex third-party data synchronisation. Starting at $99.";
     schemaData = {
@@ -248,7 +250,7 @@ function RouteTracker() {
       },
     };
   } else if (pathname === "/services/mobile-apps") {
-    pageTitle = "Custom Mobile App Development | CodeLume";
+    pageTitle = "Mobile App Development | CodeLume";
     pageDesc =
       "High-performance, cross-platform mobile apps built to scale. Take your business native with bespoke iOS and Android solutions.";
     schemaData = {
@@ -265,7 +267,7 @@ function RouteTracker() {
       },
     };
   } else if (pathname === "/services/ui-ux-design") {
-    pageTitle = "UI/UX Design Services | CodeLume";
+    pageTitle = "UI/UX Design That Converts | CodeLume";
     pageDesc =
       "Data-driven interface design that converts. We craft stunning, user-centric web and mobile experiences from wireframe to final handoff.";
     schemaData = {
@@ -282,7 +284,7 @@ function RouteTracker() {
       },
     };
   } else if (pathname === "/services/full-branding") {
-    pageTitle = "0-to-100 Digital Branding & Web Development | CodeLume";
+    pageTitle = "Complete Brand & Web Solutions | CodeLume";
     pageDesc =
       "The ultimate launchpad. Bespoke logo design, enterprise web development, and targeted SEO to launch and scale your brand globally.";
     schemaData = {
@@ -302,7 +304,7 @@ function RouteTracker() {
     pageTitle = "Blogs | CodeLume";
     pageDesc =
       "Real-world technical tutorials, UI/UX trends, and digital strategy insights from an active full-stack developer.";
-  } else if (pathname === "/case-studies") {
+  } else if (pathname === "/case-studies" || pathname === "/portfolio") {
     pageTitle = "Case Studies | CodeLume";
     pageDesc =
       "See exactly how we solve complex business challenges through strategic design and bespoke web engineering.";
@@ -321,11 +323,11 @@ function RouteTracker() {
         name: "CodeLume",
       },
     };
-  } else if (pathname === "/terms-of-service") {
+  } else if (pathname === "/terms-of-service" || pathname === "/terms") {
     pageTitle = "Terms of Service | CodeLume";
     pageDesc =
       "Our operational guidelines and terms of service for engaging with CodeLume's web development and design projects.";
-  } else if (pathname === "/privacy-policy") {
+  } else if (pathname === "/privacy-policy" || pathname === "/privacy") {
     pageTitle = "Privacy Policy | CodeLume";
     pageDesc =
       "How we protect, manage, and secure your personal data across the CodeLume ecosystem.";
@@ -390,10 +392,16 @@ export default function App() {
               <Route path="/start-project" element={<StartProject />} />
               <Route path="/services" element={<Services />} />
 
+              {/* DUAL ROUTES: Jo purane link index ho gaye hain unhe theek karne ke liye */}
               <Route
                 path="/services/mern-stack"
                 element={<MernStackService />}
               />
+              <Route
+                path="/mern-stack-development"
+                element={<MernStackService />}
+              />
+
               <Route
                 path="/services/php-laravel"
                 element={<PhpLaravelService />}
@@ -430,15 +438,22 @@ export default function App() {
               />
 
               <Route path="/blogs" element={<Blog />} />
-              <Route path="/case-studies" element={<CaseStudies />} />
-              <Route path="/about" element={<AboutCodeLume />} />
               <Route path="/blogs/:slug" element={<Article />} />
 
-              <Route path="/terms-of-service" element={<TermsOfService />} />
-              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+              {/* Dual Routes for Case Studies & Privacy */}
+              <Route path="/case-studies" element={<CaseStudies />} />
+              <Route path="/portfolio" element={<CaseStudies />} />
 
+              <Route path="/about" element={<AboutCodeLume />} />
+
+              <Route path="/terms-of-service" element={<TermsOfService />} />
+              <Route path="/terms" element={<TermsOfService />} />
+
+              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+              <Route path="/privacy" element={<PrivacyPolicy />} />
+
+              {/* ADMIN ROUTES */}
               <Route path="/admin/login" element={<AdminLogin />} />
-              <Route path="*" element={<NotFound />} />
               <Route
                 path="/admin/dashboard"
                 element={
@@ -455,6 +470,9 @@ export default function App() {
                   </ProtectedRoute>
                 }
               />
+
+              {/* Catch-All Route (Must be at the very bottom) */}
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </main>
 
