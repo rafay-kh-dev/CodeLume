@@ -148,7 +148,7 @@ export default function FloatingActions() {
             aria-label="Contact Options"
           >
             {/* Website Match Blue Glow Effect */}
-            <div className="absolute inset-0 rounded-full bg-blue-600/30 blur-md opacity-60 group-hover:opacity-100 transition-opacity duration-300" />
+            <div className="absolute inset-0 rounded-full bg-blue-700/30 blur-md opacity-60 group-hover:opacity-100 transition-opacity duration-300" />
 
             {isOpen ? (
               <X className="w-5 h-5 sm:w-6 sm:h-6 relative z-10 transition-transform duration-300" />
