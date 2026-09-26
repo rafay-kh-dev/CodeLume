@@ -17,11 +17,12 @@ export default function Footer() {
     { name: "Full Branding", path: "/services/full-branding" },
   ];
 
+  // A don updet di tools array wit di rial links
   const tools = [
-    { name: "Lighthouse Auditor", status: "Coming Soon" },
-    { name: "CSS Glass Generator", status: "Coming Soon" },
-    { name: "Meta Tag Extractor", status: "Coming Soon" },
-    { name: "Regex Visualiser", status: "Coming Soon" },
+    { name: "SVG to React JSX", path: "/tools/svg-to-react" },
+    { name: "JSON to TypeScript", path: "/tools/json-to-ts" },
+    { name: "JWT Decoder", path: "/tools/jwt-decoder" },
+    { name: "Meta Tag Extractor", path: "/tools/meta-extractor" },
   ];
 
   const resources = [
@@ -205,20 +206,17 @@ export default function Footer() {
               </h2>
             </div>
             <div className="flex flex-col gap-4">
+              {/* A don chenj di Tools mep ya so wey in kin bi Link naw wey de wok fayn */}
               {tools.map((tool, idx) => (
-                <div
+                <Link
                   key={idx}
-                  className="flex items-center gap-3 group cursor-default"
+                  to={tool.path}
+                  className="group outline-none w-fit"
                 >
-                  <h2 className="text-[15px] font-medium text-slate-500 transition-colors duration-300 m-0">
+                  <h2 className="text-[15px] font-medium text-slate-400 group-hover:text-white transition-all duration-300 transform-gpu group-hover:translate-x-1 m-0">
                     {tool.name}
                   </h2>
-                  <div className="px-2 py-1 rounded-md bg-blue-500/10 shadow-[inset_0_0_10px_rgba(59,130,246,0.1)] flex items-center justify-center">
-                    <h2 className="text-[9px] font-extrabold text-blue-400 uppercase tracking-wider m-0 leading-none">
-                      {tool.status}
-                    </h2>
-                  </div>
-                </div>
+                </Link>
               ))}
             </div>
           </div>
