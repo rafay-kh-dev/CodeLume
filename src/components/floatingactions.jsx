@@ -91,7 +91,7 @@ export default function FloatingActions() {
       {/* Scroll to Top Button */}
       <button
         onClick={scrollToTop}
-        className={`pointer-events-auto w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-[#0a0f1c] border border-white/10 text-slate-400 hover:text-white hover:bg-white/10 hover:border-white/20 shadow-lg flex items-center justify-center transition-all duration-300 outline-none transform-gpu ${
+        className={`pointer-events-auto w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-linear-to-r from-blue-600 to-indigo-600 text-slate-400 hover:text-white hover:bg-white/10 hover:border-white/20 shadow-lg flex items-center justify-center transition-all duration-300 outline-none transform-gpu ${
           showScroll
             ? "translate-y-0 opacity-100 visible scale-100"
             : "translate-y-4 opacity-0 invisible scale-90"
