@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { ArrowUp } from "lucide-react";
+// Official Whatsapp wordmark from @thesvg/react
 import { Whatsapp } from "@thesvg/react";
 
 export default function FloatingActions() {
@@ -26,11 +27,11 @@ export default function FloatingActions() {
   );
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 flex flex-col gap-3 items-end">
+    <div className="fixed bottom-6 right-6 z-[100] flex flex-col gap-4 items-end pointer-events-none">
       {/* Scroll to Top Button */}
       <button
         onClick={scrollToTop}
-        className={`w-12 h-12 rounded-full bg-[#0a0f1c] border border-white/10 text-slate-400 hover:text-white hover:bg-white/5 hover:border-white/20 shadow-lg flex items-center justify-center transition-all duration-300 outline-none transform-gpu ${
+        className={`pointer-events-auto w-12 h-12 rounded-full bg-[#0a0f1c] border border-white/10 text-slate-400 hover:text-white hover:bg-white/5 hover:border-white/20 shadow-lg flex items-center justify-center transition-all duration-300 outline-none transform-gpu ${
           showScroll
             ? "translate-y-0 opacity-100 visible"
             : "translate-y-4 opacity-0 invisible"
@@ -40,16 +41,25 @@ export default function FloatingActions() {
         <ArrowUp className="w-5 h-5" />
       </button>
 
-      {/* Floating WhatsApp Button */}
-      <a
-        href={`https://wa.me/923347835980?text=${waMessage}`}
-        target="_blank"
-        rel="noreferrer"
-        className="flex items-center justify-center outline-none hover:-translate-y-1 transition-all duration-300"
-        aria-label="Chat on WhatsApp"
-      >
-        <Whatsapp variant="wordmark" className="h-6 w-6" />
-      </a>
+      {/* Floating WhatsApp Wordmark Button with "Focusing" Glow */}
+      <div className="relative pointer-events-auto">
+        {/* Yeh background glow button ko focus aur highlight karega (Pulse Animation) */}
+        <div className="absolute inset-0 bg-[#25D366] rounded-full blur-xl opacity-20 animate-pulse" />
+
+        <a
+          href={`https://wa.me/923347835980?text=${waMessage}`}
+          target="_blank"
+          rel="noreferrer"
+          className="relative flex items-center justify-center px-6 py-4 rounded-full bg-[#0a0f1c] border border-[#25D366]/40 shadow-[0_0_20px_rgba(37,211,102,0.2)] hover:shadow-[0_0_30px_rgba(37,211,102,0.5)] hover:-translate-y-1 transition-all duration-300 outline-none focus:ring-4 focus:ring-[#25D366]/50 group"
+          aria-label="Chat on WhatsApp"
+        >
+          {/* Size h-8 w-auto rakha hai taake logo bara aur clear nazar aaye */}
+          <Whatsapp
+            variant="wordmark"
+            className="h-8 w-auto transition-transform group-hover:scale-105"
+          />
+        </a>
+      </div>
     </div>
   );
 }
