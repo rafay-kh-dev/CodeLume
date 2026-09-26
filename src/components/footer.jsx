@@ -18,15 +18,9 @@ export default function Footer() {
   ];
 
   const tools = [
-    {
-      name: "SVG to React / JSX Converter",
-      status: "Coming Soon",
-    },
-    {
-      name: "JSON to TypeScript / Zod Schema Generator",
-      status: "Coming Soon",
-    },
-    { name: "JWT (JSON Web Token) Decoder & Inspector", status: "Coming Soon" },
+    { name: "Lighthouse Auditor", status: "Coming Soon" },
+    { name: "CSS Glass Generator", status: "Coming Soon" },
+    { name: "Meta Tag Extractor", status: "Coming Soon" },
     { name: "Regex Visualiser", status: "Coming Soon" },
   ];
 
