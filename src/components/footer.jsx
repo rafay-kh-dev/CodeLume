@@ -11,11 +11,10 @@ import {
 
 export default function Footer() {
   const services = [
-    { name: "MERN Stack Architecture", path: "/mern-stack" },
-    { name: "PHP & Laravel Systems", path: "/php-laravel" },
-    { name: "Custom Web Platforms", path: "/custom-platforms" },
-    { name: "Headless Shopify", path: "/shopify-development" },
-    { name: "WordPress & WooCommerce", path: "/wordpress-woocommerce" },
+    { name: "MERN Stack", path: "/services/mern-stack" },
+    { name: "Mobil Apps", path: "/services/mobile-apps" },
+    { name: "UI/UX Design", path: "/services/uiux-design" },
+    { name: "Full Branding", path: "/services/full-branding" },
   ];
 
   const tools = [
