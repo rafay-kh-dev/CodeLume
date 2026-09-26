@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { ArrowUp } from "lucide-react";
+// Official Whatsapp icon from @thesvg/react
 import { Whatsapp } from "@thesvg/react";
 
 export default function FloatingActions() {
@@ -48,8 +49,14 @@ export default function FloatingActions() {
         className="w-14 h-14 rounded-full bg-linear-to-tr from-[#128C7E] to-[#25D366] text-white shadow-[0_10px_25px_rgba(37,211,102,0.4)] hover:shadow-[0_15px_35px_rgba(37,211,102,0.6)] hover:-translate-y-1 flex items-center justify-center transition-all duration-300 outline-none group relative"
         aria-label="Chat on WhatsApp"
       >
+        {/* Ping Animation Effect */}
         <div className="absolute inset-0 rounded-full animate-ping bg-[#25D366] opacity-20 group-hover:opacity-40 transition-opacity" />
-        <Whatsapp className="w-8 h-8 relative z-10" />
+
+        {/* Explicitly using Monogram Variant and making it Pure White */}
+        <Whatsapp
+          variant="monogram"
+          className="w-8 h-8 relative z-10 brightness-0 invert"
+        />
       </a>
     </div>
   );
