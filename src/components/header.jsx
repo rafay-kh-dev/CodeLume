@@ -7,6 +7,9 @@ import {
   X,
   ChevronDown,
   ArrowRight,
+  Braces,
+  Key,
+  Globe
 } from "lucide-react";
 // Official SVG Icons
 import {
@@ -135,12 +138,53 @@ const servicesData = [
   },
 ];
 
+// Naya Tools Data (Ise aap easily future mein expand kar sakte hain)
+const toolsData = [
+  {
+    title: "SVG to React JSX",
+    link: "/tools/svg-to-react",
+    description: "Convert raw SVG code into functional React components instantly.",
+    icon: Code2,
+    color: "text-blue-400",
+    bgColor: "bg-blue-500/10",
+    hoverBg: "group-hover:bg-blue-500/20",
+  },
+  {
+    title: "JSON to TypeScript",
+    link: "/tools/json-to-ts",
+    description: "Generate TypeScript interfaces automatically from JSON data.",
+    icon: Braces,
+    color: "text-emerald-400",
+    bgColor: "bg-emerald-500/10",
+    hoverBg: "group-hover:bg-emerald-500/20",
+  },
+  {
+    title: "JWT Decoder",
+    link: "/tools/jwt-decoder",
+    description: "Decode and inspect JSON Web Tokens securely in your browser.",
+    icon: Key,
+    color: "text-amber-400",
+    bgColor: "bg-amber-500/10",
+    hoverBg: "group-hover:bg-amber-500/20",
+  },
+  {
+    title: "Meta Tag Extractor",
+    link: "/tools/meta-extractor",
+    description: "Extract and preview SEO meta tags from any live URL.",
+    icon: Globe,
+    color: "text-purple-400",
+    bgColor: "bg-purple-500/10",
+    hoverBg: "group-hover:bg-purple-500/20",
+  }
+];
+
 const standardLinks = ["Case Studies", "About", "Blogs"];
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
+  const [toolsOpen, setToolsOpen] = useState(false); // Tools drop-down ke liye naya state
 
   useEffect(() => {
     let ticking = false;
@@ -212,6 +256,8 @@ export default function Header() {
             </Link>
 
             <nav className="hidden lg:flex items-center gap-2">
+              
+              {/* SERVICES MEGA MENU */}
               <div
                 className="h-full flex items-center static"
                 onMouseEnter={() => setServicesOpen(true)}
@@ -230,7 +276,6 @@ export default function Header() {
                   </h2>
                 </Link>
 
-                {/* Centered Mega Menu with 3 columns */}
                 <div
                   className={`absolute top-full left-1/2 -translate-x-1/2 w-[980px] pt-5 transition-all duration-300 ease-out origin-top transform-gpu will-change-transform ${servicesOpen ? "opacity-100 translate-y-0 visible scale-100" : "opacity-0 -translate-y-3 invisible scale-95"}`}
                 >
@@ -281,6 +326,83 @@ export default function Header() {
                       >
                         <h2 className="m-0 text-inherit text-[14px] font-bold flex items-center gap-1.5">
                           Consult with us{" "}
+                          <ArrowRight className="w-4 h-4 transition-transform group-hover/link:translate-x-1 transform-gpu" />
+                        </h2>
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* FREE TOOLS MEGA MENU */}
+              <div
+                className="h-full flex items-center static"
+                onMouseEnter={() => setToolsOpen(true)}
+                onMouseLeave={() => setToolsOpen(false)}
+              >
+                <Link
+                  to="/tools"
+                  onClick={() => setToolsOpen(false)}
+                  className="flex items-center gap-1.5 px-4 py-2 rounded-full outline-none hover:bg-white/5 transition-colors duration-300"
+                >
+                  <h2 className="m-0 text-[14px] font-bold text-slate-300 group-hover:text-white transition-colors flex items-center gap-1.5">
+                    Free Tools
+                    <ChevronDown
+                      className={`w-3.5 h-3.5 transition-transform duration-300 ease-out text-slate-500 group-hover:text-blue-400 transform-gpu ${toolsOpen ? "rotate-180" : ""}`}
+                    />
+                  </h2>
+                </Link>
+
+                <div
+                  className={`absolute top-full left-1/2 -translate-x-1/2 w-[800px] pt-5 transition-all duration-300 ease-out origin-top transform-gpu will-change-transform ${toolsOpen ? "opacity-100 translate-y-0 visible scale-100" : "opacity-0 -translate-y-3 invisible scale-95"}`}
+                >
+                  <div className="bg-[#050b14]/95 backdrop-blur-xl rounded-3xl shadow-[0_30px_60px_-15px_rgba(0,0,0,0.8),inset_0_0_20px_rgba(255,255,255,0.02)] p-4 relative overflow-hidden">
+                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-linear-to-b from-blue-900/10 to-transparent pointer-events-none rounded-3xl" />
+                    <div className="absolute -top-32 right-0 w-64 h-64 bg-[radial-gradient(circle,rgba(79,70,229,0.15)_0%,transparent_70%)] pointer-events-none transform-gpu translate-z-0" />
+
+                    <div className="grid grid-cols-2 gap-3 relative z-10">
+                      {toolsData.map((tool) => {
+                        const Icon = tool.icon;
+                        return (
+                          <Link
+                            key={tool.title}
+                            to={tool.link}
+                            onClick={() => setToolsOpen(false)}
+                            className="relative flex items-start gap-4 p-4 rounded-2xl group outline-none overflow-hidden transition-all duration-300 hover:bg-white/3 hover:shadow-[0_10px_30px_-10px_rgba(0,0,0,0.5)]"
+                          >
+                            <div
+                              className={`relative z-10 shrink-0 w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-300 ${tool.bgColor} ${tool.hoverBg}`}
+                            >
+                              <Icon
+                                className={`w-5 h-5 ${tool.color} transition-transform duration-300 ease-out group-hover:scale-110 transform-gpu`}
+                              />
+                            </div>
+                            <div className="relative z-10 flex flex-col pt-0.5">
+                              <h2 className="text-[14px] font-extrabold text-slate-200 group-hover:text-white transition-colors flex items-center gap-1.5 m-0 leading-tight">
+                                {tool.title}
+                                <ArrowRight className="w-3 h-3 opacity-0 -translate-x-2 transition-all duration-300 ease-out group-hover:opacity-100 group-hover:translate-x-0 text-blue-400 transform-gpu" />
+                              </h2>
+                              <h2 className="text-[12.5px] font-medium text-slate-400 mt-1.5 leading-relaxed line-clamp-2 transition-colors group-hover:text-slate-300 m-0">
+                                {tool.description}
+                              </h2>
+                            </div>
+                          </Link>
+                        );
+                      })}
+                    </div>
+
+                    <div className="mt-4 bg-black/40 rounded-2xl p-5 flex items-center justify-between relative overflow-hidden shadow-[inset_0_0_10px_rgba(255,255,255,0.02)]">
+                      <div className="absolute inset-0 bg-linear-to-r from-blue-500/5 to-transparent pointer-events-none" />
+                      <h2 className="text-[14px] font-bold text-slate-300 m-0 relative z-10">
+                        Got an idea for a tool?
+                      </h2>
+                      <Link
+                        to="/start-project"
+                        onClick={() => setToolsOpen(false)}
+                        className="text-[14px] font-bold text-blue-400 hover:text-blue-300 flex items-center gap-1.5 group/link transition-colors relative z-10 outline-none"
+                      >
+                        <h2 className="m-0 text-inherit text-[14px] font-bold flex items-center gap-1.5">
+                          Suggest a Tool{" "}
                           <ArrowRight className="w-4 h-4 transition-transform group-hover/link:translate-x-1 transform-gpu" />
                         </h2>
                       </Link>
@@ -342,7 +464,8 @@ export default function Header() {
           <div className="absolute top-0 left-0 w-full h-32 bg-linear-to-b from-[#030712] via-[#030712]/80 to-transparent z-10 pointer-events-none" />
 
           <div className="relative z-0 px-6 py-8 h-full flex flex-col pt-32 pb-10 overflow-y-auto no-scrollbar">
-            <div className="mb-10 flex-none">
+            
+            <div className="mb-8 flex-none">
               <h2 className="text-[11px] font-extrabold text-blue-500 uppercase tracking-[0.2em] mb-6 m-0 px-2 opacity-80">
                 Web Capabilities
               </h2>
@@ -384,6 +507,49 @@ export default function Header() {
               </div>
             </div>
 
+            {/* MOBILE: FREE TOOLS SECTION */}
+            <div className="mb-10 flex-none mt-2">
+              <h2 className="text-[11px] font-extrabold text-blue-500 uppercase tracking-[0.2em] mb-6 m-0 px-2 opacity-80">
+                Free Developer Tools
+              </h2>
+              <div className="grid gap-3">
+                {toolsData.map((tool, idx) => {
+                  const Icon = tool.icon;
+                  return (
+                    <Link
+                      key={tool.title}
+                      to={tool.link}
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="flex items-center gap-5 p-4 rounded-2xl bg-white/2 hover:bg-white/5 transition-all duration-300 active:scale-[0.98] outline-none transform-gpu will-change-transform"
+                      style={{
+                        transitionDelay: mobileMenuOpen
+                          ? `${(idx + servicesData.length) * 40}ms`
+                          : "0ms",
+                        transform: mobileMenuOpen
+                          ? "translateY(0)"
+                          : "translateY(15px)",
+                        opacity: mobileMenuOpen ? 1 : 0,
+                      }}
+                    >
+                      <div
+                        className={`w-12 h-12 shrink-0 rounded-xl flex items-center justify-center ${tool.bgColor}`}
+                      >
+                        <Icon className={`w-6 h-6 ${tool.color}`} />
+                      </div>
+                      <div>
+                        <h2 className="block text-[17px] font-extrabold text-white m-0 tracking-tight">
+                          {tool.title}
+                        </h2>
+                        <h2 className="block text-[13px] font-medium text-slate-400 mt-1 line-clamp-1 m-0">
+                          {tool.description}
+                        </h2>
+                      </div>
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+
             <div className="space-y-2 mb-10 px-2 flex-none">
               {standardLinks.map((item, idx) => (
                 <Link
@@ -393,7 +559,7 @@ export default function Header() {
                   className="block py-2 outline-none group transform-gpu will-change-transform"
                   style={{
                     transitionDelay: mobileMenuOpen
-                      ? `${(idx + servicesData.length) * 40}ms`
+                      ? `${(idx + servicesData.length + toolsData.length) * 40}ms`
                       : "0ms",
                     transform: mobileMenuOpen
                       ? "translateY(0)"
