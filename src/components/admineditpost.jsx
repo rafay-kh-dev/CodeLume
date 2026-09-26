@@ -140,7 +140,6 @@ export default function AdminEditPost() {
     if (imageFile) {
       submitData.append("coverImage", imageFile);
     } else if (imagePreview && !imagePreview.startsWith("blob:")) {
-      // Keep existing image if no new file is selected
       submitData.append("existingCoverImage", imagePreview);
     }
 
@@ -162,18 +161,30 @@ export default function AdminEditPost() {
           navigate("/admin/dashboard");
         }, 1500);
       } else {
-        const errorData = await response.json();
-        setStatusMessage({
-          type: "error",
-          text:
-            errorData.error || errorData.message || "Failed to update post.",
-        });
+        // SAFE ERROR HANDLING: Check if response is JSON or HTML Text
+        const contentType = response.headers.get("content-type");
+        if (contentType && contentType.includes("application/json")) {
+          const errorData = await response.json();
+          setStatusMessage({
+            type: "error",
+            text:
+              errorData.error || errorData.message || "Failed to update post.",
+          });
+        } else {
+          // Agar HTML ya text aaye toh crash na ho
+          const errorText = await response.text();
+          console.error("Backend Error Text:", errorText);
+          setStatusMessage({
+            type: "error",
+            text: `Server Error (${response.status}). Check backend terminal logs!`,
+          });
+        }
       }
     } catch (error) {
-      console.error("Updating error:", error);
+      console.error("Updating error catch block:", error);
       setStatusMessage({
         type: "error",
-        text: "Network error. Is the Node.js server running?",
+        text: `Error: ${error.message} - Backend might be rejecting FormData.`,
       });
     } finally {
       setIsSaving(false);
