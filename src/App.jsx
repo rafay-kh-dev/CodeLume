@@ -345,6 +345,22 @@ function RouteTracker() {
     pageDesc = "Content management and administration dashboard.";
   } else if (pathname.includes("/blogs/")) {
     pageTitle = "Article | CodeLume Insights";
+  } else if (pathname === "/tools/svg-to-react") {
+    pageTitle = "Free SVG to React Component Converter | CodeLume";
+    pageDesc =
+      "Instantly convert SVG files into reusable React components. A free developer tool by CodeLume.";
+  } else if (pathname === "/tools/json-to-ts") {
+    pageTitle = "Free JSON to TypeScript Interface Generator | CodeLume";
+    pageDesc =
+      "Instantly generate TypeScript interfaces and types from JSON data. A free developer tool by CodeLume.";
+  } else if (pathname === "/tools/jwt-decoder") {
+    pageTitle = "Free JWT Decoder | CodeLume";
+    pageDesc =
+      "Securely decode, verify, and inspect JSON Web Tokens (JWT) directly in your browser. A free developer tool by CodeLume.";
+  } else if (pathname === "/tools/meta-extractor") {
+    pageTitle = "Free Meta Tag Extractor | CodeLume";
+    pageDesc =
+      "Extract and preview SEO meta tags, Open Graph data, and social media cards from any live URL. A free developer tool by CodeLume.";
   }
 
   return (
