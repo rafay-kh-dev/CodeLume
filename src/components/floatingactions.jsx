@@ -1,13 +1,19 @@
 import React, { useState, useEffect, useRef } from "react";
-import { ArrowUp, MessageCircle, X } from "lucide-react";
-import { Whatsapp, Telegram, Gmail2026, MicrosoftTeams } from "@thesvg/react";
+import { ArrowUp, X } from "lucide-react";
+import {
+  Whatsapp,
+  Telegram,
+  Gmail2026,
+  MicrosoftTeams,
+  GcpSupport,
+} from "@thesvg/react";
 
 export default function FloatingActions() {
   const [showScroll, setShowScroll] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const widgetRef = useRef(null);
 
-  // Handle scroll visibility for Back to Top button
+  // Scroll visibility check for Back to Top button
   useEffect(() => {
     const checkScroll = () => {
       if (window.scrollY > 400) {
@@ -20,7 +26,7 @@ export default function FloatingActions() {
     return () => window.removeEventListener("scroll", checkScroll);
   }, []);
 
-  // Close the popup when user clicks outside
+  // Close widget when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (widgetRef.current && !widgetRef.current.contains(event.target)) {
@@ -39,7 +45,7 @@ export default function FloatingActions() {
     "Hi Rafay! I was browsing the CodeLume website and have a quick question."
   );
 
-  // Contact channel configuration
+  // Contact channel configurations
   const contactChannels = [
     {
       id: "whatsapp",
@@ -114,7 +120,7 @@ export default function FloatingActions() {
               style={{
                 transitionDelay: isOpen ? `${index * 40}ms` : "0ms",
               }}
-              className={`flex items-center gap-3 px-4 py-2.5 rounded-full bg-[#0a0f1c]/95 border border-white/10 text-white shadow-xl backdrop-blur-md transition-all duration-300 hover:-translate-x-1 ${channel.hoverBorder} ${channel.hoverGlow}`}
+              className={`flex items-center gap-3 px-4 py-2.5 rounded-full bg-[#0a0f1c]/95 border border-blue-500/20 text-white shadow-xl backdrop-blur-md transition-all duration-300 hover:-translate-x-1 ${channel.hoverBorder} ${channel.hoverGlow}`}
             >
               <span className="text-xs sm:text-sm font-medium text-slate-200">
                 {channel.label}
@@ -126,23 +132,31 @@ export default function FloatingActions() {
           ))}
         </div>
 
-        {/* Main Support Trigger Button */}
-        <button
-          onClick={() => setIsOpen((prev) => !prev)}
-          className={`relative flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-[#0a0f1c] border border-cyan-500/40 text-cyan-400 shadow-[0_0_20px_rgba(6,182,212,0.2)] hover:shadow-[0_0_25px_rgba(6,182,212,0.45)] hover:border-cyan-400 hover:text-white transition-all duration-300 outline-none transform-gpu active:scale-95 ${
-            isOpen ? "bg-cyan-950/60 border-cyan-400 text-white rotate-90" : ""
-          }`}
-          aria-label="Contact Support Options"
-        >
-          {/* Subtle Ambient Glow */}
-          <div className="absolute inset-0 rounded-full bg-cyan-500/20 blur-md opacity-50 group-hover:opacity-100 transition-opacity" />
+        {/* Support Trigger Button Row with "Contact me" Badge */}
+        <div className="flex items-center gap-3 group">
+          {/* Left Text Badge */}
+          <div className="px-3.5 py-1.5 rounded-full bg-[#0a0f1c]/90 border border-blue-500/30 text-blue-400 text-xs sm:text-sm font-medium shadow-[0_0_15px_rgba(37,99,235,0.2)] backdrop-blur-md transition-all duration-300 group-hover:border-blue-400 group-hover:text-blue-300">
+            Contact me
+          </div>
 
-          {isOpen ? (
-            <X className="w-5 h-5 sm:w-6 sm:h-6 relative z-10 transition-transform duration-300" />
-          ) : (
-            <MessageCircle className="w-5 h-5 sm:w-6 sm:h-6 relative z-10 transition-transform duration-300" />
-          )}
-        </button>
+          {/* Main Support Trigger Button with GcpSupport Icon */}
+          <button
+            onClick={() => setIsOpen((prev) => !prev)}
+            className={`relative flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-[#0a0f1c] border border-blue-500/40 text-blue-400 shadow-[0_0_20px_rgba(37,99,235,0.25)] hover:shadow-[0_0_25px_rgba(37,99,235,0.5)] hover:border-blue-400 hover:text-white transition-all duration-300 outline-none transform-gpu active:scale-95 ${
+              isOpen ? "bg-blue-950/60 border-blue-400 text-white rotate-90" : ""
+            }`}
+            aria-label="Contact Options"
+          >
+            {/* Website Match Blue Glow Effect */}
+            <div className="absolute inset-0 rounded-full bg-blue-600/30 blur-md opacity-60 group-hover:opacity-100 transition-opacity duration-300" />
+
+            {isOpen ? (
+              <X className="w-5 h-5 sm:w-6 sm:h-6 relative z-10 transition-transform duration-300" />
+            ) : (
+              <GcpSupport className="w-6 h-6 sm:w-7 sm:h-7 relative z-10 transition-transform duration-300 group-hover:scale-110" />
+            )}
+          </button>
+        </div>
       </div>
     </div>
   );
