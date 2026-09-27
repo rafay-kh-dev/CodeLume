@@ -405,13 +405,13 @@ function RouteTracker() {
       <meta name="twitter:title" content={seoData.title} />
       <meta name="twitter:description" content={seoData.desc} />
 
-      {/* FIXED HELMET CRASH ISSUE: Safely rendering the schema script using dangerouslySetInnerHTML */}
-      {seoData.schema && Object.keys(seoData.schema).length > 0 && (
+      {/* YAHAN FIX KIYA HAI: && ko hata kar ternary operator lagaya hai taake empty schema par crash na ho */}
+      {seoData.schema && Object.keys(seoData.schema).length > 0 ? (
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(seoData.schema) }}
         />
-      )}
+      ) : null}
     </Helmet>
   );
 }
