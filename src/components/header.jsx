@@ -6,7 +6,7 @@ import {
   Menu,
   X,
   ChevronDown,
-  ArrowRight
+  ArrowRight,
 } from "lucide-react";
 // Official SVG Icons
 import {
@@ -23,7 +23,7 @@ import {
   Adobe,
   Typescript,
   Jwt,
-  GoogleSearchConsole
+  GoogleSearchConsole,
 } from "@thesvg/react";
 
 const servicesData = [
@@ -138,12 +138,12 @@ const servicesData = [
   },
 ];
 
-// Naya Tools Data (With Real SVG Icons)
 const toolsData = [
   {
     title: "SVG to React JSX",
     link: "/tools/svg-to-react",
-    description: "Convert raw SVG code into functional React components instantly.",
+    description:
+      "Convert raw SVG code into functional React components instantly.",
     icon: ReactIcon,
     color: "text-blue-400",
     bgColor: "bg-blue-500/10",
@@ -175,16 +175,19 @@ const toolsData = [
     color: "text-purple-400",
     bgColor: "bg-purple-500/10",
     hoverBg: "group-hover:bg-purple-500/20",
-  }
+  },
 ];
 
-const standardLinks = ["Case Studies", "About", "Blogs"];
+// Naya Tutorials Link Yahan Add Kiya Hai
+const standardLinks = ["Tutorials", "Case Studies", "About", "Blogs"];
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
   const [toolsOpen, setToolsOpen] = useState(false);
+  // Glitch fix ke liye timeout handler
+  const [activeMenuTimeout, setActiveMenuTimeout] = useState(null);
 
   useEffect(() => {
     let ticking = false;
@@ -208,6 +211,27 @@ export default function Header() {
     };
   }, [mobileMenuOpen]);
 
+  // Smooth hover handlers for Mega Menus
+  const handleServicesEnter = () => {
+    if (activeMenuTimeout) clearTimeout(activeMenuTimeout);
+    setToolsOpen(false);
+    setServicesOpen(true);
+  };
+  const handleServicesLeave = () => {
+    const timeout = setTimeout(() => setServicesOpen(false), 200);
+    setActiveMenuTimeout(timeout);
+  };
+
+  const handleToolsEnter = () => {
+    if (activeMenuTimeout) clearTimeout(activeMenuTimeout);
+    setServicesOpen(false);
+    setToolsOpen(true);
+  };
+  const handleToolsLeave = () => {
+    const timeout = setTimeout(() => setToolsOpen(false), 200);
+    setActiveMenuTimeout(timeout);
+  };
+
   return (
     <>
       <style>{`
@@ -217,6 +241,7 @@ export default function Header() {
         .animate-shimmer { animation: shimmer 2.5s infinite linear; will-change: transform; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .mega-menu-content { pointer-events: auto; }
       `}</style>
 
       <div className="font-jakarta text-slate-200">
@@ -255,18 +280,17 @@ export default function Header() {
               </div>
             </Link>
 
-            <nav className="hidden lg:flex items-center gap-2">
-              
+            <nav className="hidden lg:flex items-center gap-2 h-full relative z-50">
               {/* SERVICES MEGA MENU */}
               <div
-                className="h-full flex items-center static"
-                onMouseEnter={() => setServicesOpen(true)}
-                onMouseLeave={() => setServicesOpen(false)}
+                className="h-full flex items-center relative py-2"
+                onMouseEnter={handleServicesEnter}
+                onMouseLeave={handleServicesLeave}
               >
                 <Link
                   to="/services"
                   onClick={() => setServicesOpen(false)}
-                  className="flex items-center gap-1.5 px-4 py-2 rounded-full outline-none hover:bg-white/5 transition-colors duration-300"
+                  className="flex items-center gap-1.5 px-4 py-2 rounded-full outline-none hover:bg-white/5 transition-colors duration-300 relative z-10"
                 >
                   <h2 className="m-0 text-[15px] font-semibold text-slate-300 group-hover:text-white transition-colors flex items-center gap-1.5">
                     Services
@@ -277,7 +301,7 @@ export default function Header() {
                 </Link>
 
                 <div
-                  className={`absolute top-full left-1/2 -translate-x-1/2 w-[980px] pt-5 transition-all duration-300 ease-out origin-top transform-gpu will-change-transform ${servicesOpen ? "opacity-100 translate-y-0 visible scale-100" : "opacity-0 -translate-y-3 invisible scale-95"}`}
+                  className={`absolute top-full left-1/2 -translate-x-1/2 w-[980px] pt-4 transition-all duration-300 ease-out origin-top transform-gpu will-change-transform mega-menu-content ${servicesOpen ? "opacity-100 translate-y-0 visible scale-100" : "opacity-0 -translate-y-3 invisible scale-95"}`}
                 >
                   <div className="bg-[#050b14]/95 backdrop-blur-xl rounded-3xl shadow-[0_30px_60px_-15px_rgba(0,0,0,0.8),inset_0_0_20px_rgba(255,255,255,0.02)] p-4 relative overflow-hidden">
                     <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-linear-to-b from-blue-900/10 to-transparent pointer-events-none rounded-3xl" />
@@ -336,14 +360,14 @@ export default function Header() {
 
               {/* FREE TOOLS MEGA MENU */}
               <div
-                className="h-full flex items-center static"
-                onMouseEnter={() => setToolsOpen(true)}
-                onMouseLeave={() => setToolsOpen(false)}
+                className="h-full flex items-center relative py-2"
+                onMouseEnter={handleToolsEnter}
+                onMouseLeave={handleToolsLeave}
               >
                 <Link
                   to="/tools"
                   onClick={() => setToolsOpen(false)}
-                  className="flex items-center gap-1.5 px-4 py-2 rounded-full outline-none hover:bg-white/5 transition-colors duration-300"
+                  className="flex items-center gap-1.5 px-4 py-2 rounded-full outline-none hover:bg-white/5 transition-colors duration-300 relative z-10"
                 >
                   <h2 className="m-0 text-[15px] font-semibold text-slate-300 group-hover:text-white transition-colors flex items-center gap-1.5">
                     Free Tools
@@ -354,7 +378,7 @@ export default function Header() {
                 </Link>
 
                 <div
-                  className={`absolute top-full left-1/2 -translate-x-1/2 w-[800px] pt-5 transition-all duration-300 ease-out origin-top transform-gpu will-change-transform ${toolsOpen ? "opacity-100 translate-y-0 visible scale-100" : "opacity-0 -translate-y-3 invisible scale-95"}`}
+                  className={`absolute top-full left-1/2 -translate-x-1/2 w-[800px] pt-4 transition-all duration-300 ease-out origin-top transform-gpu will-change-transform mega-menu-content ${toolsOpen ? "opacity-100 translate-y-0 visible scale-100" : "opacity-0 -translate-y-3 invisible scale-95"}`}
                 >
                   <div className="bg-[#050b14]/95 backdrop-blur-xl rounded-3xl shadow-[0_30px_60px_-15px_rgba(0,0,0,0.8),inset_0_0_20px_rgba(255,255,255,0.02)] p-4 relative overflow-hidden">
                     <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-linear-to-b from-blue-900/10 to-transparent pointer-events-none rounded-3xl" />
@@ -411,6 +435,7 @@ export default function Header() {
                 </div>
               </div>
 
+              {/* Standard Links With Tutorials */}
               {standardLinks.map((item) => (
                 <Link
                   key={item}
@@ -464,7 +489,6 @@ export default function Header() {
           <div className="absolute top-0 left-0 w-full h-32 bg-linear-to-b from-[#030712] via-[#030712]/80 to-transparent z-10 pointer-events-none" />
 
           <div className="relative z-0 px-6 py-8 h-full flex flex-col pt-32 pb-10 overflow-y-auto no-scrollbar">
-            
             <div className="mb-8 flex-none">
               <h2 className="text-[12px] font-bold text-blue-500 uppercase tracking-[0.2em] mb-6 m-0 px-2 opacity-80">
                 Web Capabilities
@@ -550,6 +574,7 @@ export default function Header() {
               </div>
             </div>
 
+            {/* Standard Links including Tutorials for Mobile */}
             <div className="space-y-2 mb-10 px-2 flex-none">
               {standardLinks.map((item, idx) => (
                 <Link
