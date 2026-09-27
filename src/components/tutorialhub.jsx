@@ -57,7 +57,7 @@ export default function TutorialHub() {
   return (
     <section className="w-full min-h-dvh pt-32 pb-24 bg-[#030712] font-jakarta">
       <Helmet>
-        <title>Developer Courses | CodeLume</title>
+        <title>Tutorials | CodeLume</title>
       </Helmet>
       <div className="max-w-7xl mx-auto px-4">
         <div className="mb-12">
