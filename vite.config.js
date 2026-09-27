@@ -1,12 +1,9 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
+import Sitemap from 'vite-plugin-sitemap'
 
-export default defineConfig({
-  plugins: [react(), tailwindcss()],
-  base: '/',
-})
-
+// CodeLume ke tamam important URLs yahan define karein
 const dynamicRoutes = [
   '/', 
   '/about', 
@@ -28,7 +25,8 @@ const dynamicRoutes = [
 
 export default defineConfig({
   plugins: [
-    react(),
+    react(), 
+    tailwindcss(),
     // Sitemap Plugin Configuration
     Sitemap({
       hostname: 'https://www.codelume.online',
@@ -36,4 +34,5 @@ export default defineConfig({
       generateRobotsTxt: true, // Google bots ko batayega sitemap kahan hai
     })
   ],
+  base: '/',
 })
