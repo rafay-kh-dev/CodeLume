@@ -50,6 +50,7 @@ import PrivacyPolicy from "./components/privacypolicy";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 
+import Tools from "./components/tools";
 import SvgToReact from "./components/svgtoreact";
 import JsonToTs from "./components/jsontots";
 import JwtDecoder from "./components/jwtdecoder";
@@ -347,6 +348,10 @@ function RouteTracker() {
       pageDesc = "Content management and administration dashboard.";
     } else if (pathname.includes("/blogs/")) {
       pageTitle = "Article | CodeLume Insights";
+    } else if (pathname === "/tools") {
+      pageTitle = "Free Developer Tools | CodeLume";
+      pageDesc =
+        "Free, lightning-fast developer utilities to optimise your workflow. SVG converters, JWT decoders, and Meta tag extractors by CodeLume.";
     } else if (pathname === "/tools/svg-to-react") {
       pageTitle = "Free SVG to React Component Converter | CodeLume";
       pageDesc =
@@ -489,6 +494,7 @@ export default function App() {
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
               <Route path="/privacy" element={<PrivacyPolicy />} />
 
+              <Route path="/tools" element={<Tools />} />
               <Route path="/tools/svg-to-react" element={<SvgToReact />} />
               <Route path="/tools/json-to-ts" element={<JsonToTs />} />
               <Route path="/tools/jwt-decoder" element={<JwtDecoder />} />
