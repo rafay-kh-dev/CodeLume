@@ -8,87 +8,98 @@ import {
   ChevronRight,
   ChevronLeft,
   Code2,
+  Globe,
+  Zap,
+  Layers,
 } from "lucide-react";
 
 export default function Tutorials() {
-  // --- REACT COMPLETE COURSE DATA STRUCTURE ---
+  // --- REACT COMPLETE 0-100 COURSE DATA STRUCTURE ---
   const courseData = [
     {
-      category: "Getting started",
-      icon: BookOpen,
+      category: "1. The Origins & Setup",
+      icon: Globe,
       lessons: [
         {
-          id: "intro",
-          title: "Introduction to React",
+          id: "history-of-react",
+          title: "The History: Why React?",
           toc: [
-            { id: "what-is-react", label: "What is React?" },
-            { id: "why-react", label: "Why use React?" },
-            { id: "prerequisites", label: "Prerequisites" },
+            { id: "who-created-react", label: "Who Created React?" },
+            { id: "the-problem", label: "The Core Problem" },
+            { id: "the-solution", label: "The Virtual DOM Solution" },
           ],
           content: (
             <div className="space-y-6 text-[#94a3b8] leading-relaxed text-[16px]">
               <p className="text-xl text-slate-300">
-                React is a declarative, efficient, and flexible JavaScript
-                library for building user interfaces. It lets you compose
-                complex UIs from small and isolated pieces of code called
-                "components".
+                To truly master React, you must first understand the environment
+                that birthed it. React was not created just to be another
+                framework; it was engineered to solve a massive, specific
+                scaling problem at one of the world's largest tech companies.
               </p>
 
               <h2
-                id="what-is-react"
+                id="who-created-react"
                 className="text-2xl font-bold text-white mt-10 mb-4 scroll-mt-24"
               >
-                What is React?
+                Who Created React?
               </h2>
               <p>
-                Created by Facebook, React is a front-end library that handles
-                the view layer for web and mobile apps. React allows developers
-                to create large web applications that can change data, without
-                reloading the page. The main purpose of React is to be fast,
-                scalable, and simple.
+                React was created by <strong>Jordan Walke</strong>, a software
+                engineer at Facebook. He released an early prototype called
+                "FaxJS" in 2011. It was first deployed on Facebook's News Feed
+                in 2011 and later on Instagram in 2012. Facebook officially
+                open-sourced React at JSConf US in May 2013.
               </p>
 
               <h2
-                id="why-react"
+                id="the-problem"
                 className="text-2xl font-bold text-white mt-10 mb-4 scroll-mt-24"
               >
-                Why use React?
+                The Core Problem: Cascading DOM Updates
               </h2>
-              <ul className="space-y-3">
+              <p>
+                Before React, developers used libraries like jQuery or
+                frameworks like AngularJS. Facebook's application was growing
+                incredibly complex, specifically the Ads system and the chat
+                notifications.
+              </p>
+              <ul className="space-y-3 mt-4">
                 <li className="flex items-start gap-3">
-                  <CheckCircle2 className="w-5 h-5 text-blue-500 shrink-0 mt-0.5" />
+                  <CheckCircle2 className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
                   <span>
-                    <strong>Declarative:</strong> React makes it painless to
-                    create interactive UIs. Design simple views for each state
-                    in your application, and React will efficiently update and
-                    render just the right components.
+                    <strong>The UI State Nightmare:</strong> Whenever new data
+                    arrived (like a new chat message), tracking which exact HTML
+                    element needed updating became a tangled mess of spaghetti
+                    code.
                   </span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <CheckCircle2 className="w-5 h-5 text-blue-500 shrink-0 mt-0.5" />
+                  <CheckCircle2 className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
                   <span>
-                    <strong>Component-Based:</strong> Build encapsulated
-                    components that manage their own state, then compose them to
-                    make complex UIs.
+                    <strong>Slow DOM Manipulation:</strong> Traditional browsers
+                    are highly inefficient when you constantly tell them to
+                    rebuild the actual DOM tree. It caused massive performance
+                    bottlenecks.
                   </span>
                 </li>
               </ul>
 
               <h2
-                id="prerequisites"
+                id="the-solution"
                 className="text-2xl font-bold text-white mt-10 mb-4 scroll-mt-24"
               >
-                Prerequisites
+                The Virtual DOM Solution
               </h2>
               <p>
-                Before diving into React, you should have a solid understanding
-                of:
+                Jordan Walke realised that instead of manually manipulating the
+                browser's DOM, developers should just declare what the UI{" "}
+                <em>should</em> look like. React introduced the{" "}
+                <strong>Virtual DOM</strong>. It keeps a lightweight copy of the
+                UI in memory. When data changes, React compares the new Virtual
+                DOM with the old one (a process called <em>Reconciliation</em>),
+                calculates the absolute minimum number of changes required, and
+                updates the real browser DOM in one rapid batch.
               </p>
-              <ul className="list-disc pl-6 space-y-2 mt-4 text-slate-300">
-                <li>HTML and CSS fundamentals</li>
-                <li>JavaScript fundamentals (variables, arrays, objects)</li>
-                <li>ES6 features (arrow functions, destructuring, classes)</li>
-              </ul>
             </div>
           ),
         },
@@ -98,15 +109,14 @@ export default function Tutorials() {
           toc: [
             { id: "installing-nodejs", label: "Installing Node.js" },
             { id: "creating-project", label: "Creating a Vite Project" },
-            { id: "folder-structure", label: "Folder Structure" },
           ],
           content: (
             <div className="space-y-6 text-[#94a3b8] leading-relaxed text-[16px]">
               <p>
-                To start building React applications, you need to set up a local
-                development environment. We highly recommend using Vite as it is
-                incredibly fast and modern compared to the older Create React
-                App.
+                Modern React development has moved away from{" "}
+                <code>create-react-app</code>. To engineer high-performance
+                applications, we now standardise on <strong>Vite</strong>, a
+                lightning-fast build tool.
               </p>
 
               <h2
@@ -120,7 +130,7 @@ export default function Tutorials() {
                 new React project using Vite:
               </p>
 
-              <div className="bg-[#0f172a] border border-white/5 rounded-xl p-5 font-mono text-sm mt-4 text-slate-300">
+              <div className="bg-[#0f172a] border border-white/5 rounded-xl p-5 font-mono text-sm mt-4 text-slate-300 overflow-x-auto">
                 <span className="text-pink-400">npm</span> create vite@latest
                 my-react-app -- --template react
               </div>
@@ -130,100 +140,295 @@ export default function Tutorials() {
                 install the dependencies:
               </p>
 
-              <div className="bg-[#0f172a] border border-white/5 rounded-xl p-5 font-mono text-sm mt-4 text-slate-300 whitespace-pre">
+              <div className="bg-[#0f172a] border border-white/5 rounded-xl p-5 font-mono text-sm mt-4 text-slate-300 whitespace-pre overflow-x-auto">
                 <span className="text-pink-400">cd</span> my-react-app{"\n"}
                 <span className="text-pink-400">npm</span> install{"\n"}
                 <span className="text-pink-400">npm</span> run dev
               </div>
-
-              <h2
-                id="folder-structure"
-                className="text-2xl font-bold text-white mt-10 mb-4 scroll-mt-24"
-              >
-                Folder Structure
-              </h2>
-              <p>
-                After initialisation, you will see several folders. The most
-                important one is the <code>src</code> folder, which contains
-                your main <code>App.jsx</code> file where you will write your
-                code.
-              </p>
             </div>
           ),
         },
       ],
     },
     {
-      category: "React Core",
-      icon: Terminal,
+      category: "2. React Core Architecture",
+      icon: Layers,
       lessons: [
+        {
+          id: "jsx-deep-dive",
+          title: "JSX Under the Hood",
+          toc: [
+            { id: "what-is-jsx", label: "What is JSX?" },
+            { id: "jsx-rules", label: "The Strict Rules of JSX" },
+          ],
+          content: (
+            <div className="space-y-6 text-[#94a3b8] leading-relaxed text-[16px]">
+              <h2
+                id="what-is-jsx"
+                className="text-2xl font-bold text-white mt-10 mb-4 scroll-mt-24"
+              >
+                What is JSX?
+              </h2>
+              <p>
+                JSX stands for JavaScript XML. It is a syntax extension for
+                JavaScript that allows you to write HTML-like markup inside a
+                JavaScript file. Behind the scenes, tools like Babel compile JSX
+                down to standard <code>React.createElement()</code> function
+                calls.
+              </p>
+
+              <h2
+                id="jsx-rules"
+                className="text-2xl font-bold text-white mt-10 mb-4 scroll-mt-24"
+              >
+                The Strict Rules of JSX
+              </h2>
+              <ul className="space-y-3 mt-4">
+                <li className="flex items-start gap-3">
+                  <CheckCircle2 className="w-5 h-5 text-blue-500 shrink-0 mt-0.5" />
+                  <span>
+                    <strong>Return a single root element:</strong> To return
+                    multiple elements from a component, wrap them with a single
+                    parent tag or a Fragment <code>&lt;&gt;...&lt;/&gt;</code>.
+                  </span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <CheckCircle2 className="w-5 h-5 text-blue-500 shrink-0 mt-0.5" />
+                  <span>
+                    <strong>Close all the tags:</strong> JSX requires tags to be
+                    explicitly closed, e.g., <code>&lt;img /&gt;</code> instead
+                    of just <code>&lt;img&gt;</code>.
+                  </span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <CheckCircle2 className="w-5 h-5 text-blue-500 shrink-0 mt-0.5" />
+                  <span>
+                    <strong>camelCase all properties:</strong> Since JSX turns
+                    into JavaScript, attributes like <code>class</code> become{" "}
+                    <code>className</code>, and <code>onclick</code> becomes{" "}
+                    <code>onClick</code>.
+                  </span>
+                </li>
+              </ul>
+            </div>
+          ),
+        },
         {
           id: "components-props",
           title: "Components & Props",
           toc: [
             { id: "functional-components", label: "Functional Components" },
-            { id: "passing-props", label: "Passing Props" },
+            { id: "passing-props", label: "Passing & Destructuring Props" },
           ],
           content: (
             <div className="space-y-6 text-[#94a3b8] leading-relaxed text-[16px]">
-              <p>
-                Components are the independent and reusable bits of code. They
-                serve the same purpose as JavaScript functions, but work in
-                isolation and return HTML.
-              </p>
-
               <h2
                 id="functional-components"
                 className="text-2xl font-bold text-white mt-10 mb-4 scroll-mt-24"
               >
                 Functional Components
               </h2>
-              <div className="bg-[#0f172a] border border-white/5 rounded-xl p-5 font-mono text-sm mt-4 text-blue-300 whitespace-pre">
-                {`export default function Button() {\n  return (\n    <button className="bg-blue-500 text-white px-4 py-2">\n      Click Me\n    </button>\n  );\n}`}
+              <p>
+                Modern React exclusively uses functional components rather than
+                legacy class components. A component is merely a JavaScript
+                function that returns JSX.
+              </p>
+              <div className="bg-[#0f172a] border border-white/5 rounded-xl p-5 font-mono text-sm mt-4 text-blue-300 whitespace-pre overflow-x-auto">
+                {`export default function Button() {\n  return (\n    <button className="bg-blue-600 text-white px-4 py-2 rounded">\n      Execute Process\n    </button>\n  );\n}`}
               </div>
 
               <h2
                 id="passing-props"
                 className="text-2xl font-bold text-white mt-10 mb-4 scroll-mt-24"
               >
-                Passing Props
+                Passing & Destructuring Props
               </h2>
               <p>
-                React components use props (short for properties) to communicate
-                with each other. Every parent component can pass some
-                information to its child components by giving them props.
+                Props (properties) allow components to receive external data. To
+                optimise readability, we always destructure props directly in
+                the function signature.
               </p>
+              <div className="bg-[#0f172a] border border-white/5 rounded-xl p-5 font-mono text-sm mt-4 text-emerald-300 whitespace-pre overflow-x-auto">
+                {`// Parent Component\n<ProfileCard name="Rafay" role="Lead Engineer" />\n\n// Child Component\nexport default function ProfileCard({ name, role }) {\n  return (\n    <div>\n      <h2>{name}</h2>\n      <p>{role}</p>\n    </div>\n  );\n}`}
+              </div>
             </div>
           ),
         },
       ],
     },
     {
-      category: "State & Lifecycle",
-      icon: CheckCircle2,
+      category: "3. State & Reactivity",
+      icon: Terminal,
       lessons: [
         {
-          id: "usestate",
-          title: "The useState Hook",
-          toc: [],
+          id: "usestate-hook",
+          title: "Mastering useState",
+          toc: [
+            { id: "what-is-state", label: "What is State?" },
+            { id: "declaring-state", label: "Declaring State Variables" },
+          ],
           content: (
-            <div>
-              <h2 className="text-white text-2xl font-bold">Coming Soon</h2>
-              <p className="text-slate-400 mt-4">
-                This lesson is currently under construction.
+            <div className="space-y-6 text-[#94a3b8] leading-relaxed text-[16px]">
+              <h2
+                id="what-is-state"
+                className="text-2xl font-bold text-white mt-10 mb-4 scroll-mt-24"
+              >
+                What is State?
+              </h2>
+              <p>
+                Standard JavaScript variables do not trigger a UI update when
+                they change. State is a special React memory reserved for
+                variables that must re-render the component immediately upon
+                changing.
+              </p>
+
+              <h2
+                id="declaring-state"
+                className="text-2xl font-bold text-white mt-10 mb-4 scroll-mt-24"
+              >
+                Declaring State Variables
+              </h2>
+              <div className="bg-[#0f172a] border border-white/5 rounded-xl p-5 font-mono text-sm mt-4 text-blue-300 whitespace-pre overflow-x-auto">
+                {`import { useState } from 'react';\n\nexport default function Counter() {\n  const [count, setCount] = useState(0);\n\n  return (\n    <button onClick={() => setCount(count + 1)}>\n      Count is: {count}\n    </button>\n  );\n}`}
+              </div>
+              <p className="mt-4">
+                The <code>useState</code> hook returns an array with two values:
+                the current state, and a function to update it. We use array
+                destructuring to assign them names.
               </p>
             </div>
           ),
         },
         {
-          id: "useeffect",
-          title: "The useEffect Hook",
-          toc: [],
+          id: "useeffect-hook",
+          title: "Side Effects with useEffect",
+          toc: [
+            { id: "managing-effects", label: "Managing External Systems" },
+            { id: "dependency-array", label: "The Dependency Array" },
+          ],
           content: (
-            <div>
-              <h2 className="text-white text-2xl font-bold">Coming Soon</h2>
-              <p className="text-slate-400 mt-4">
-                This lesson is currently under construction.
+            <div className="space-y-6 text-[#94a3b8] leading-relaxed text-[16px]">
+              <h2
+                id="managing-effects"
+                className="text-2xl font-bold text-white mt-10 mb-4 scroll-mt-24"
+              >
+                Managing External Systems
+              </h2>
+              <p>
+                Components need to connect to external systems: fetching API
+                data, establishing WebSocket connections, or manipulating the
+                DOM directly. The <code>useEffect</code> hook lets you run code
+                after rendering so you can synchronise your component with these
+                outside systems.
+              </p>
+
+              <h2
+                id="dependency-array"
+                className="text-2xl font-bold text-white mt-10 mb-4 scroll-mt-24"
+              >
+                The Dependency Array
+              </h2>
+              <p>
+                The second argument to <code>useEffect</code> controls when the
+                effect executes to optimise performance.
+              </p>
+              <ul className="list-disc pl-6 space-y-2 mt-4 text-slate-300">
+                <li>
+                  <code>{`useEffect(() => {...})`}</code> — Runs on every render
+                  (Danger!).
+                </li>
+                <li>
+                  <code>{`useEffect(() => {...}, [])`}</code> — Runs exactly
+                  once on mount.
+                </li>
+                <li>
+                  <code>{`useEffect(() => {...}, [data])`}</code> — Runs only
+                  when <code>data</code> changes.
+                </li>
+              </ul>
+              <div className="bg-[#0f172a] border border-white/5 rounded-xl p-5 font-mono text-sm mt-4 text-amber-300 whitespace-pre overflow-x-auto">
+                {`useEffect(() => {\n  fetchData(userId).then(setData);\n\n  // Cleanup function\n  return () => {\n    abortController.abort();\n  };\n}, [userId]);`}
+              </div>
+            </div>
+          ),
+        },
+      ],
+    },
+    {
+      category: "4. Advanced Patterns",
+      icon: Zap,
+      lessons: [
+        {
+          id: "context-api",
+          title: "Global State (Context API)",
+          toc: [
+            { id: "prop-drilling", label: "The Prop Drilling Problem" },
+            { id: "use-context", label: "Implementing useContext" },
+          ],
+          content: (
+            <div className="space-y-6 text-[#94a3b8] leading-relaxed text-[16px]">
+              <h2
+                id="prop-drilling"
+                className="text-2xl font-bold text-white mt-10 mb-4 scroll-mt-24"
+              >
+                The Prop Drilling Problem
+              </h2>
+              <p>
+                Passing props deeply through multiple intermediate components
+                that don't need the data themselves is called "prop drilling".
+                It creates brittle architecture. The Context API solves this by
+                teleporting data directly to the components that need it.
+              </p>
+
+              <h2
+                id="use-context"
+                className="text-2xl font-bold text-white mt-10 mb-4 scroll-mt-24"
+              >
+                Implementing useContext
+              </h2>
+              <div className="bg-[#0f172a] border border-white/5 rounded-xl p-5 font-mono text-sm mt-4 text-emerald-300 whitespace-pre overflow-x-auto">
+                {`import { createContext, useContext } from 'react';\n\n// 1. Create Context\nconst ThemeContext = createContext('dark');\n\n// 2. Consume in Deep Child\nexport default function DeepComponent() {\n  const theme = useContext(ThemeContext);\n  return <div className={\`bg-\${theme}\`}>...</div>;\n}`}
+              </div>
+            </div>
+          ),
+        },
+        {
+          id: "performance-hooks",
+          title: "useMemo & useCallback",
+          toc: [
+            { id: "usememo", label: "Caching Values with useMemo" },
+            { id: "usecallback", label: "Caching Functions with useCallback" },
+          ],
+          content: (
+            <div className="space-y-6 text-[#94a3b8] leading-relaxed text-[16px]">
+              <h2
+                id="usememo"
+                className="text-2xl font-bold text-white mt-10 mb-4 scroll-mt-24"
+              >
+                Caching Values with useMemo
+              </h2>
+              <p>
+                If your component performs complex mathematical operations or
+                filters massive arrays, you should cache the result using{" "}
+                <code>useMemo</code> so it doesn't recalculate on every
+                unrelated render.
+              </p>
+              <div className="bg-[#0f172a] border border-white/5 rounded-xl p-5 font-mono text-sm mt-4 text-purple-300 whitespace-pre overflow-x-auto">
+                {`const filteredData = useMemo(() => {\n  return massiveArray.filter(item => item.id === targetId);\n}, [targetId, massiveArray]);`}
+              </div>
+
+              <h2
+                id="usecallback"
+                className="text-2xl font-bold text-white mt-10 mb-4 scroll-mt-24"
+              >
+                Caching Functions with useCallback
+              </h2>
+              <p>
+                Whenever a component re-renders, all inline functions are
+                recreated. If you pass these functions down to child components,
+                it forces the children to re-render. Wrap the function in{" "}
+                <code>useCallback</code> to retain the exact same function
+                reference between renders.
               </p>
             </div>
           ),
@@ -280,7 +485,7 @@ export default function Tutorials() {
       {/* Helmet SEO */}
       <Helmet>
         <title>
-          {currentLesson?.title || "Tutorials"} | CodeLume Tutorials
+          {currentLesson?.title || "Tutorials"} | CodeLume Engineering
         </title>
         <meta
           name="description"
@@ -355,7 +560,7 @@ export default function Tutorials() {
                 <span className="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-blue-400">
                   {currentLesson?.categoryName}
                 </span>
-                <span>Complete Course</span>
+                <span>CodeLume Engineering Course</span>
               </div>
             </div>
 

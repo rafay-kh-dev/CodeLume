@@ -370,8 +370,8 @@ function RouteTracker() {
       pageTitle = "Free Meta Tag Extractor | CodeLume";
       pageDesc =
         "Extract and preview SEO meta tags, Open Graph data, and social media cards from any live URL. A free developer tool by CodeLume.";
-    } else if (pathname === "/tutorials" || pathname === "/notes") {
-      pageTitle = "Developer Notes & Tutorials | CodeLume";
+    } else if (pathname === "/tutorials") {
+      pageTitle = "Tutorials | CodeLume";
       pageDesc =
         "Read our structured developer notes. Learn React, Node.js, and technical SEO completely free.";
     }
