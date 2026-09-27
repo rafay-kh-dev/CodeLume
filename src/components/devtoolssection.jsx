@@ -122,7 +122,7 @@ export default function DevToolsSection() {
         {/* Bottom Call to Action */}
         <div className="mt-16 text-center">
           <Link
-            to="/services"
+            to="/tools"
             className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-linear-to-r from-blue-600 to-indigo-600 text-white font-extrabold shadow-[0_10px_20px_rgba(37,99,235,0.3)] hover:shadow-[0_15px_30px_rgba(37,99,235,0.4)] transition-all duration-300 hover:-translate-y-1 group outline-none border border-blue-500/30"
           >
             Explore All Free Tools
