@@ -13,7 +13,8 @@ export default function DevToolsSection() {
   const tools = [
     {
       title: "SVG to React JSX",
-      description: "Convert raw SVG code into production-ready functional React components instantly with camelCase formatting.",
+      description:
+        "Convert raw SVG code into production-ready functional React components instantly with camelCase formatting.",
       link: "/tools/svg-to-react",
       icon: ReactIcon,
       color: "text-blue-400",
@@ -23,7 +24,8 @@ export default function DevToolsSection() {
     },
     {
       title: "JSON to TypeScript",
-      description: "Automatically generate deeply nested TypeScript interfaces and types from your raw JSON API payloads.",
+      description:
+        "Automatically generate deeply nested TypeScript interfaces and types from your raw JSON API payloads.",
       link: "/tools/json-to-ts",
       icon: Typescript,
       color: "text-emerald-400",
@@ -33,7 +35,8 @@ export default function DevToolsSection() {
     },
     {
       title: "JWT Decoder",
-      description: "Securely decode, verify, and inspect JSON Web Tokens locally in your browser. No server interaction required.",
+      description:
+        "Securely decode, verify, and inspect JSON Web Tokens locally in your browser. No server interaction required.",
       link: "/tools/jwt-decoder",
       icon: Jwt,
       color: "text-amber-400",
@@ -43,7 +46,8 @@ export default function DevToolsSection() {
     },
     {
       title: "Meta Tag Extractor",
-      description: "Extract SEO meta tags and preview Open Graph social media cards from any live URL to optimise sharing.",
+      description:
+        "Extract SEO meta tags and preview Open Graph social media cards from any live URL to optimise sharing.",
       link: "/tools/meta-extractor",
       icon: GoogleSearchConsole,
       color: "text-purple-400",
@@ -57,9 +61,8 @@ export default function DevToolsSection() {
     <section className="relative w-full py-24 bg-[#030712] font-jakarta overflow-hidden">
       {/* Background Ambient Glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl h-[400px] bg-[radial-gradient(ellipse_at_center,rgba(37,99,235,0.05)_0%,transparent_70%)] pointer-events-none -z-10" />
-      
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        
         {/* Section Header */}
         <div className="flex flex-col items-center text-center mb-16">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 mb-6 shadow-sm">
@@ -75,7 +78,9 @@ export default function DevToolsSection() {
             </span>
           </h2>
           <p className="text-slate-400 text-lg max-w-2xl m-0 leading-relaxed">
-            At CodeLume, we believe in giving back to the community. Speed up your workflow with our suite of free, lightning-fast developer tools.
+            At CodeLume, we believe in giving back to the community. Speed up
+            your workflow with our suite of free, lightning-fast developer
+            tools.
           </p>
         </div>
 
@@ -91,12 +96,14 @@ export default function DevToolsSection() {
               >
                 {/* Card Hover Gradient Background */}
                 <div className="absolute inset-0 bg-linear-to-br from-white/[0.02] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-                
+
                 <div className="relative z-10 flex items-start gap-5">
-                  <div className={`w-14 h-14 shrink-0 rounded-2xl flex items-center justify-center transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3 ${tool.bgColor}`}>
+                  <div
+                    className={`w-14 h-14 shrink-0 rounded-2xl flex items-center justify-center transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3 ${tool.bgColor}`}
+                  >
                     <Icon className={`w-7 h-7 ${tool.color}`} />
                   </div>
-                  
+
                   <div className="flex flex-col flex-1">
                     <h2 className="text-[22px] font-extrabold text-white mb-3 m-0 flex items-center justify-between">
                       {tool.title}
@@ -111,18 +118,17 @@ export default function DevToolsSection() {
             );
           })}
         </div>
-        
+
         {/* Bottom Call to Action */}
-        <div className="mt-16 flex justify-center">
+        <div className="mt-16 text-center">
           <Link
-            to="/tools"
-            className="group inline-flex items-center gap-3 px-8 py-4 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-blue-500/30 text-white transition-all duration-300 outline-none"
+            to="/services"
+            className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-linear-to-r from-blue-600 to-indigo-600 text-white font-extrabold shadow-[0_10px_20px_rgba(37,99,235,0.3)] hover:shadow-[0_15px_30px_rgba(37,99,235,0.4)] transition-all duration-300 hover:-translate-y-1 group outline-none border border-blue-500/30"
           >
-            <h2 className="text-[15px] font-bold m-0">View All Developer Tools</h2>
-            <ArrowRight className="w-4 h-4 text-blue-400 transition-transform duration-300 group-hover:translate-x-1" />
+            Explore All Free Tools
+            <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
           </Link>
         </div>
-
       </div>
     </section>
   );
