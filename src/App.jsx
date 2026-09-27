@@ -57,8 +57,8 @@ import JwtDecoder from "./components/jwtdecoder";
 import MetaExtractor from "./components/metaextractor";
 
 // FIXED IMPORTS FOR TUTORIALS & DATA (Exact Paths & Casing)
-import TutorialLayout from "./components/TutorialLayout";
-import TutorialHub from "./components/TutorialHub";
+import TutorialLayout from "./components/tutoriallayout";
+import TutorialHub from "./components/tutorialhub";
 import { reactCourseData } from "./data/reactCourseData";
 
 // Security Wrapper: Checks for a valid token before rendering the admin page
