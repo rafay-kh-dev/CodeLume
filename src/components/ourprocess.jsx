@@ -6,7 +6,7 @@ export default function OurProcess() {
     {
       num: "01",
       title: "Strategic Discovery",
-      desc: "We deeply analyse your business objectives to map out a highly customised and scalable technical blueprint.",
+      desc: "I deeply analyse your business objectives to map out a highly customised and scalable technical blueprint.",
       icon: Compass,
     },
     {
@@ -46,7 +46,7 @@ export default function OurProcess() {
             Our Methodology
           </h2>
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white tracking-tight m-0 mb-6">
-            How we engineer perfection.
+            How I engineer perfection.
           </h2>
           <h2 className="text-base text-slate-400 max-w-2xl leading-relaxed m-0">
             A streamlined, brutally efficient approach to building digital
