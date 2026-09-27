@@ -178,7 +178,6 @@ const toolsData = [
   },
 ];
 
-// Naya Tutorials Link Yahan Add Kiya Hai
 const standardLinks = ["Tutorials", "Case Studies", "About", "Blogs"];
 
 export default function Header() {
@@ -186,7 +185,6 @@ export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
   const [toolsOpen, setToolsOpen] = useState(false);
-  // Glitch fix ke liye timeout handler
   const [activeMenuTimeout, setActiveMenuTimeout] = useState(null);
 
   useEffect(() => {
@@ -211,7 +209,6 @@ export default function Header() {
     };
   }, [mobileMenuOpen]);
 
-  // Smooth hover handlers for Mega Menus
   const handleServicesEnter = () => {
     if (activeMenuTimeout) clearTimeout(activeMenuTimeout);
     setToolsOpen(false);
@@ -248,10 +245,11 @@ export default function Header() {
         <div
           className={`fixed top-0 inset-x-0 z-60 flex justify-center pointer-events-none px-4 sm:px-6 transition-all duration-300 ${mobileMenuOpen ? "pt-4" : ""}`}
         >
+          {/* Changed max-w-5xl to max-w-6xl for wider scroll capsule */}
           <header
             className={`pointer-events-auto flex items-center justify-between w-full transition-all duration-500 ease-out transform-gpu will-change-[max-width,transform,background-color] relative ${
               isScrolled || mobileMenuOpen
-                ? "max-w-5xl translate-y-4 rounded-full bg-[#030712]/90 backdrop-blur-xl shadow-[0_15px_30px_-10px_rgba(0,0,0,0.6)] py-3 px-5 sm:px-8 ring-1 ring-white/5"
+                ? "max-w-6xl translate-y-4 rounded-full bg-[#030712]/90 backdrop-blur-xl shadow-[0_15px_30px_-10px_rgba(0,0,0,0.6)] py-3 px-5 sm:px-8 ring-1 ring-white/5"
                 : "max-w-7xl translate-y-0 rounded-none bg-transparent shadow-none py-5 px-0"
             }`}
           >
@@ -292,7 +290,8 @@ export default function Header() {
                   onClick={() => setServicesOpen(false)}
                   className="flex items-center gap-1.5 px-4 py-2 rounded-full outline-none hover:bg-white/5 transition-colors duration-300 relative z-10"
                 >
-                  <h2 className="m-0 text-[15px] font-semibold text-slate-300 group-hover:text-white transition-colors flex items-center gap-1.5">
+                  {/* Added whitespace-nowrap */}
+                  <h2 className="m-0 text-[15px] font-semibold text-slate-300 group-hover:text-white transition-colors flex items-center gap-1.5 whitespace-nowrap">
                     Services
                     <ChevronDown
                       className={`w-3.5 h-3.5 transition-transform duration-300 ease-out text-slate-500 group-hover:text-blue-400 transform-gpu ${servicesOpen ? "rotate-180" : ""}`}
@@ -348,7 +347,7 @@ export default function Header() {
                         onClick={() => setServicesOpen(false)}
                         className="text-[15px] font-semibold text-blue-400 hover:text-blue-300 flex items-center gap-1.5 group/link transition-colors relative z-10 outline-none"
                       >
-                        <h2 className="m-0 text-inherit text-[15px] font-semibold flex items-center gap-1.5">
+                        <h2 className="m-0 text-inherit text-[15px] font-semibold flex items-center gap-1.5 whitespace-nowrap">
                           Consult with us{" "}
                           <ArrowRight className="w-4 h-4 transition-transform group-hover/link:translate-x-1 transform-gpu" />
                         </h2>
@@ -369,7 +368,8 @@ export default function Header() {
                   onClick={() => setToolsOpen(false)}
                   className="flex items-center gap-1.5 px-4 py-2 rounded-full outline-none hover:bg-white/5 transition-colors duration-300 relative z-10"
                 >
-                  <h2 className="m-0 text-[15px] font-semibold text-slate-300 group-hover:text-white transition-colors flex items-center gap-1.5">
+                  {/* Added whitespace-nowrap */}
+                  <h2 className="m-0 text-[15px] font-semibold text-slate-300 group-hover:text-white transition-colors flex items-center gap-1.5 whitespace-nowrap">
                     Free Tools
                     <ChevronDown
                       className={`w-3.5 h-3.5 transition-transform duration-300 ease-out text-slate-500 group-hover:text-blue-400 transform-gpu ${toolsOpen ? "rotate-180" : ""}`}
@@ -425,7 +425,7 @@ export default function Header() {
                         onClick={() => setToolsOpen(false)}
                         className="text-[15px] font-semibold text-blue-400 hover:text-blue-300 flex items-center gap-1.5 group/link transition-colors relative z-10 outline-none"
                       >
-                        <h2 className="m-0 text-inherit text-[15px] font-semibold flex items-center gap-1.5">
+                        <h2 className="m-0 text-inherit text-[15px] font-semibold flex items-center gap-1.5 whitespace-nowrap">
                           Suggest a Tool{" "}
                           <ArrowRight className="w-4 h-4 transition-transform group-hover/link:translate-x-1 transform-gpu" />
                         </h2>
@@ -442,7 +442,8 @@ export default function Header() {
                   to={`/${item.toLowerCase().replace(/ /g, "-")}`}
                   className="px-4 py-2 rounded-full outline-none hover:bg-white/5 transition-colors duration-300"
                 >
-                  <h2 className="m-0 text-slate-300 hover:text-white text-[15px] font-semibold transition-colors">
+                  {/* Added whitespace-nowrap here to prevent wrapping */}
+                  <h2 className="m-0 text-slate-300 hover:text-white text-[15px] font-semibold transition-colors whitespace-nowrap">
                     {item}
                   </h2>
                 </Link>
@@ -458,7 +459,7 @@ export default function Header() {
                 <div className="absolute top-0 left-0 w-full h-full bg-linear-to-r from-transparent via-white/20 to-transparent animate-shimmer pointer-events-none" />
                 <span className="relative z-10 flex items-center gap-2">
                   <Sparkles className="w-4 h-4 text-blue-200" />
-                  <h2 className="m-0 text-inherit text-[15px] font-bold tracking-wide">
+                  <h2 className="m-0 text-inherit text-[15px] font-bold tracking-wide whitespace-nowrap">
                     Start a Project
                   </h2>
                 </span>
