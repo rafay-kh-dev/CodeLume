@@ -1,5 +1,7 @@
 import React from "react";
 import { Globe, Layers, Terminal, Zap, Package, GitMerge } from "lucide-react";
+// Naya CodeBlock import kar liya
+import CodeBlock from "../components/codeblock";
 
 export const reactCourseData = [
   {
@@ -132,21 +134,20 @@ export const reactCourseData = [
               new React project using Vite:
             </p>
 
-            <div className="bg-[#0f172a] border border-white/5 rounded-xl p-5 font-mono text-sm mt-4 text-slate-300 overflow-x-auto">
-              <span className="text-pink-400">npm</span> create vite@latest
-              codelume-app -- --template react
-            </div>
+            <CodeBlock 
+              language="bash" 
+              code={`npm create vite@latest codelume-app -- --template react`} 
+            />
 
             <p className="mt-4">
               Once the project is generated, navigate into the folder, install
               the dependencies, and start the local development server:
             </p>
 
-            <div className="bg-[#0f172a] border border-white/5 rounded-xl p-5 font-mono text-sm mt-4 text-slate-300 whitespace-pre overflow-x-auto">
-              <span className="text-pink-400">cd</span> codelume-app{"\n"}
-              <span className="text-pink-400">npm</span> install{"\n"}
-              <span className="text-pink-400">npm</span> run dev
-            </div>
+            <CodeBlock 
+              language="bash" 
+              code={`cd codelume-app\nnpm install\nnpm run dev`} 
+            />
 
             <h2
               id="folder-structure"
@@ -257,9 +258,10 @@ export const reactCourseData = [
               You can embed any valid JavaScript expression inside JSX by
               wrapping it in curly braces <code>{}</code>.
             </p>
-            <div className="bg-[#0f172a] border border-white/5 rounded-xl p-5 font-mono text-sm mt-4 text-emerald-300 whitespace-pre overflow-x-auto">
-              {`const name = "CodeLume";\nconst isLive = true;\n\nreturn (\n  <div>\n    <h1>Welcome to {name}</h1>\n    <p>Status: {isLive ? "Online" : "Offline"}</p>\n  </div>\n);`}
-            </div>
+            <CodeBlock 
+              language="jsx" 
+              code={`const name = "CodeLume";\nconst isLive = true;\n\nreturn (\n  <div>\n    <h1>Welcome to {name}</h1>\n    <p>Status: {isLive ? "Online" : "Offline"}</p>\n  </div>\n);`} 
+            />
           </div>
         ),
       },
@@ -289,9 +291,11 @@ export const reactCourseData = [
               is merely a JavaScript function that starts with a Capital Letter
               and returns JSX.
             </p>
-            <div className="bg-[#0f172a] border border-white/5 rounded-xl p-5 font-mono text-sm mt-4 text-blue-300 whitespace-pre overflow-x-auto">
-              {`export default function Button() {\n  return (\n    <button className="bg-blue-600 text-white px-4 py-2 rounded">\n      Execute Process\n    </button>\n  );\n}`}
-            </div>
+            
+            <CodeBlock 
+              language="jsx" 
+              code={`export default function Button() {\n  return (\n    <button className="bg-blue-600 text-white px-4 py-2 rounded">\n      Execute Process\n    </button>\n  );\n}`} 
+            />
 
             <h2
               id="passing-props"
@@ -305,9 +309,11 @@ export const reactCourseData = [
               modify its own props. To optimise readability, we usually
               destructure props directly in the function signature.
             </p>
-            <div className="bg-[#0f172a] border border-white/5 rounded-xl p-5 font-mono text-sm mt-4 text-emerald-300 whitespace-pre overflow-x-auto">
-              {`// Parent Component\n<ProfileCard name="Rafay" role="Lead Engineer" />\n\n// Child Component\nexport default function ProfileCard({ name, role }) {\n  return (\n    <div className="card">\n      <h2>{name}</h2>\n      <p>{role}</p>\n    </div>\n  );\n}`}
-            </div>
+            
+            <CodeBlock 
+              language="jsx" 
+              code={`// Parent Component\n<ProfileCard name="Rafay" role="Lead Engineer" />\n\n// Child Component\nexport default function ProfileCard({ name, role }) {\n  return (\n    <div className="card">\n      <h2>{name}</h2>\n      <p>{role}</p>\n    </div>\n  );\n}`} 
+            />
 
             <h2
               id="children-prop"
@@ -321,9 +327,11 @@ export const reactCourseData = [
               <code>children</code> that captures whatever is placed between the
               component's opening and closing tags.
             </p>
-            <div className="bg-[#0f172a] border border-white/5 rounded-xl p-5 font-mono text-sm mt-4 text-amber-300 whitespace-pre overflow-x-auto">
-              {`// Parent\n<CardWrapper>\n  <h2>Dynamic Content</h2>\n  <p>Inside the wrapper.</p>\n</CardWrapper>\n\n// Child Component\nexport default function CardWrapper({ children }) {\n  return (\n    <div className="border border-white/10 rounded-xl p-6">\n      {children}\n    </div>\n  );\n}`}
-            </div>
+
+            <CodeBlock 
+              language="jsx" 
+              code={`// Parent\n<CardWrapper>\n  <h2>Dynamic Content</h2>\n  <p>Inside the wrapper.</p>\n</CardWrapper>\n\n// Child Component\nexport default function CardWrapper({ children }) {\n  return (\n    <div className="border border-white/10 rounded-xl p-6">\n      {children}\n    </div>\n  );\n}`} 
+            />
           </div>
         ),
       },
@@ -347,9 +355,11 @@ export const reactCourseData = [
               function to transform an array of data into an array of JSX
               elements.
             </p>
-            <div className="bg-[#0f172a] border border-white/5 rounded-xl p-5 font-mono text-sm mt-4 text-blue-300 whitespace-pre overflow-x-auto">
-              {`const technologies = ['React', 'Node.js', 'Express', 'MongoDB'];\n\nreturn (\n  <ul>\n    {technologies.map(tech => (\n      <li>{tech}</li>\n    ))}\n  </ul>\n);`}
-            </div>
+
+            <CodeBlock 
+              language="jsx" 
+              code={`const technologies = ['React', 'Node.js', 'Express', 'MongoDB'];\n\nreturn (\n  <ul>\n    {technologies.map(tech => (\n      <li>{tech}</li>\n    ))}\n  </ul>\n);`} 
+            />
 
             <h2
               id="why-keys"
@@ -369,9 +379,11 @@ export const reactCourseData = [
               the array <code>index</code> as a key if the list items can be
               reordered, as it will lead to bugs.
             </p>
-            <div className="bg-[#0f172a] border border-white/5 rounded-xl p-5 font-mono text-sm mt-4 text-emerald-300 whitespace-pre overflow-x-auto">
-              {`// Correct Implementation\n{users.map(user => (\n  <li key={user.id}>{user.name}</li>\n))}`}
-            </div>
+
+            <CodeBlock 
+              language="jsx" 
+              code={`// Correct Implementation\n{users.map(user => (\n  <li key={user.id}>{user.name}</li>\n))}`} 
+            />
           </div>
         ),
       },
@@ -410,9 +422,12 @@ export const reactCourseData = [
             >
               Declaring State Variables
             </h2>
-            <div className="bg-[#0f172a] border border-white/5 rounded-xl p-5 font-mono text-sm mt-4 text-blue-300 whitespace-pre overflow-x-auto">
-              {`import { useState } from 'react';\n\nexport default function Counter() {\n  const [count, setCount] = useState(0);\n\n  return (\n    <button onClick={() => setCount(count + 1)}>\n      Count is: {count}\n    </button>\n  );\n}`}
-            </div>
+
+            <CodeBlock 
+              language="jsx" 
+              code={`import { useState } from 'react';\n\nexport default function Counter() {\n  const [count, setCount] = useState(0);\n\n  return (\n    <button onClick={() => setCount(count + 1)}>\n      Count is: {count}\n    </button>\n  );\n}`} 
+            />
+            
             <p className="mt-4">
               The <code>useState</code> hook returns an array with two values:
               the current state, and a setter function to update it.
@@ -434,9 +449,11 @@ export const reactCourseData = [
               incrementing a counter rapidly), always pass a callback function
               to the setter:
             </p>
-            <div className="bg-[#0f172a] border border-white/5 rounded-xl p-5 font-mono text-sm mt-4 text-amber-300 whitespace-pre overflow-x-auto">
-              {`// Unsafe (Might drop updates if batched)\nsetCount(count + 1);\n\n// Safe (Always uses the latest previous state)\nsetCount(prevCount => prevCount + 1);`}
-            </div>
+
+            <CodeBlock 
+              language="javascript" 
+              code={`// Unsafe (Might drop updates if batched)\nsetCount(count + 1);\n\n// Safe (Always uses the latest previous state)\nsetCount(prevCount => prevCount + 1);`} 
+            />
           </div>
         ),
       },
@@ -503,9 +520,11 @@ export const reactCourseData = [
               from within the effect. React will run this cleanup function
               before the component unmounts or before the effect runs again.
             </p>
-            <div className="bg-[#0f172a] border border-white/5 rounded-xl p-5 font-mono text-sm mt-4 text-emerald-300 whitespace-pre overflow-x-auto">
-              {`useEffect(() => {\n  const timer = setInterval(() => {\n    console.log("Tick");\n  }, 1000);\n\n  // Cleanup function\n  return () => {\n    clearInterval(timer);\n  };\n}, []);`}
-            </div>
+
+            <CodeBlock 
+              language="javascript" 
+              code={`useEffect(() => {\n  const timer = setInterval(() => {\n    console.log("Tick");\n  }, 1000);\n\n  // Cleanup function\n  return () => {\n    clearInterval(timer);\n  };\n}, []);`} 
+            />
           </div>
         ),
       },
@@ -547,9 +566,11 @@ export const reactCourseData = [
               In vanilla JS, you use <code>document.getElementById()</code>. In
               React, you use refs to target elements.
             </p>
-            <div className="bg-[#0f172a] border border-white/5 rounded-xl p-5 font-mono text-sm mt-4 text-blue-300 whitespace-pre overflow-x-auto">
-              {`import { useRef } from 'react';\n\nexport default function FocusInput() {\n  const inputRef = useRef(null);\n\n  const handleFocus = () => {\n    inputRef.current.focus();\n  };\n\n  return (\n    <>\n      <input ref={inputRef} type="text" />\n      <button onClick={handleFocus}>Focus Input</button>\n    </>\n  );\n}`}
-            </div>
+
+            <CodeBlock 
+              language="jsx" 
+              code={`import { useRef } from 'react';\n\nexport default function FocusInput() {\n  const inputRef = useRef(null);\n\n  const handleFocus = () => {\n    inputRef.current.focus();\n  };\n\n  return (\n    <>\n      <input ref={inputRef} type="text" />\n      <button onClick={handleFocus}>Focus Input</button>\n    </>\n  );\n}`} 
+            />
 
             <h2
               id="storing-values"
@@ -597,13 +618,18 @@ export const reactCourseData = [
               Creating a useFetch Hook
             </h2>
             <p>Here is an industry-standard custom hook for API calls:</p>
-            <div className="bg-[#0f172a] border border-white/5 rounded-xl p-5 font-mono text-sm mt-4 text-purple-300 whitespace-pre overflow-x-auto">
-              {`import { useState, useEffect } from 'react';\n\nexport function useFetch(url) {\n  const [data, setData] = useState(null);\n  const [loading, setLoading] = useState(true);\n  const [error, setError] = useState(null);\n\n  useEffect(() => {\n    const fetchData = async () => {\n      try {\n        const response = await fetch(url);\n        const json = await response.json();\n        setData(json);\n      } catch (err) {\n        setError(err);\n      } finally {\n        setLoading(false);\n      }\n    };\n    fetchData();\n  }, [url]);\n\n  return { data, loading, error };\n}`}
-            </div>
+
+            <CodeBlock 
+              language="javascript" 
+              code={`import { useState, useEffect } from 'react';\n\nexport function useFetch(url) {\n  const [data, setData] = useState(null);\n  const [loading, setLoading] = useState(true);\n  const [error, setError] = useState(null);\n\n  useEffect(() => {\n    const fetchData = async () => {\n      try {\n        const response = await fetch(url);\n        const json = await response.json();\n        setData(json);\n      } catch (err) {\n        setError(err);\n      } finally {\n        setLoading(false);\n      }\n    };\n    fetchData();\n  }, [url]);\n\n  return { data, loading, error };\n}`} 
+            />
+
             <p className="mt-4">Now, any component can consume this easily:</p>
-            <div className="bg-[#0f172a] border border-white/5 rounded-xl p-5 font-mono text-sm mt-4 text-slate-300 whitespace-pre overflow-x-auto">
-              {`const { data, loading, error } = useFetch('https://api.example.com/users');`}
-            </div>
+
+            <CodeBlock 
+              language="javascript" 
+              code={`const { data, loading, error } = useFetch('https://api.example.com/users');`} 
+            />
           </div>
         ),
       },
@@ -642,9 +668,11 @@ export const reactCourseData = [
             >
               Implementing Context
             </h2>
-            <div className="bg-[#0f172a] border border-white/5 rounded-xl p-5 font-mono text-sm mt-4 text-emerald-300 whitespace-pre overflow-x-auto">
-              {`import { createContext, useContext, useState } from 'react';\n\n// 1. Create Context\nconst ThemeContext = createContext();\n\n// 2. Create Provider Component\nexport function ThemeProvider({ children }) {\n  const [theme, setTheme] = useState('dark');\n  return (\n    <ThemeContext.Provider value={{ theme, setTheme }}>\n      {children}\n    </ThemeContext.Provider>\n  );\n}\n\n// 3. Consume anywhere in the app\nexport default function Navbar() {\n  const { theme, setTheme } = useContext(ThemeContext);\n  return (\n    <button onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}>\n      Toggle Theme\n    </button>\n  );\n}`}
-            </div>
+
+            <CodeBlock 
+              language="jsx" 
+              code={`import { createContext, useContext, useState } from 'react';\n\n// 1. Create Context\nconst ThemeContext = createContext();\n\n// 2. Create Provider Component\nexport function ThemeProvider({ children }) {\n  const [theme, setTheme] = useState('dark');\n  return (\n    <ThemeContext.Provider value={{ theme, setTheme }}>\n      {children}\n    </ThemeContext.Provider>\n  );\n}\n\n// 3. Consume anywhere in the app\nexport default function Navbar() {\n  const { theme, setTheme } = useContext(ThemeContext);\n  return (\n    <button onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}>\n      Toggle Theme\n    </button>\n  );\n}`} 
+            />
           </div>
         ),
       },
@@ -688,9 +716,11 @@ export const reactCourseData = [
               <code>useMemo</code> so it doesn't recalculate on every unrelated
               render.
             </p>
-            <div className="bg-[#0f172a] border border-white/5 rounded-xl p-5 font-mono text-sm mt-4 text-purple-300 whitespace-pre overflow-x-auto">
-              {`const filteredData = useMemo(() => {\n  return massiveArray.filter(item => item.id === targetId);\n}, [targetId, massiveArray]);`}
-            </div>
+
+            <CodeBlock 
+              language="javascript" 
+              code={`const filteredData = useMemo(() => {\n  return massiveArray.filter(item => item.id === targetId);\n}, [targetId, massiveArray]);`} 
+            />
 
             <h2
               id="usecallback"
@@ -706,9 +736,11 @@ export const reactCourseData = [
               <code>useCallback</code> to retain the exact same function
               reference between renders.
             </p>
-            <div className="bg-[#0f172a] border border-white/5 rounded-xl p-5 font-mono text-sm mt-4 text-blue-300 whitespace-pre overflow-x-auto">
-              {`const handleSubmit = useCallback((data) => {\n  postToServer(data);\n}, []);`}
-            </div>
+
+            <CodeBlock 
+              language="javascript" 
+              code={`const handleSubmit = useCallback((data) => {\n  postToServer(data);\n}, []);`} 
+            />
           </div>
         ),
       },
