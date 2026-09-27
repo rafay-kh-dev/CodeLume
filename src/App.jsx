@@ -56,7 +56,9 @@ import JsonToTs from "./components/jsontots";
 import JwtDecoder from "./components/jwtdecoder";
 import MetaExtractor from "./components/metaextractor";
 
-import Tutorials from "./components/tutorials";
+import TutorialLayout from "./components/tutoriallayout";
+import { reactCourseData } from "../data/reactCourseData";
+import TutorialHub from "./components/TutorialHub";
 
 // Security Wrapper: Checks for a valid token before rendering the admin page
 const ProtectedRoute = ({ children }) => {
@@ -508,7 +510,16 @@ export default function App() {
               <Route path="/tools/jwt-decoder" element={<JwtDecoder />} />
               <Route path="/tools/meta-extractor" element={<MetaExtractor />} />
 
-              <Route path="/tutorials" element={<Tutorials />} />
+              <Route path="/tutorials" element={<TutorialHub />} />
+              <Route
+                path="/tutorials/react"
+                element={
+                  <TutorialLayout
+                    courseData={reactCourseData}
+                    courseTitle="React Mastery"
+                  />
+                }
+              />
 
               {/* ADMIN ROUTES */}
               <Route path="/admin/login" element={<AdminLogin />} />
