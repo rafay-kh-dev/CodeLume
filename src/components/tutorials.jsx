@@ -484,9 +484,8 @@ export default function Tutorials() {
     <section className="w-full min-h-dvh pt-24 bg-[#030712] font-jakarta relative flex flex-col">
       {/* Helmet SEO */}
       <Helmet>
-        <title>
-          {currentLesson?.title || "Tutorials"} | CodeLume Engineering
-        </title>
+        {/* YAHAN FIX KIYA HAI: Direct string interpolation use ki hai taake react array child crash na kare */}
+        <title>{`${currentLesson?.title || "Tutorials"} | CodeLume Engineering`}</title>
         <meta
           name="description"
           content="Complete React 0 to 100 documentation and tutorials by CodeLume."
