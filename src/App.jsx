@@ -370,7 +370,7 @@ function RouteTracker() {
       pageTitle = "Free Meta Tag Extractor | CodeLume";
       pageDesc =
         "Extract and preview SEO meta tags, Open Graph data, and social media cards from any live URL. A free developer tool by CodeLume.";
-    } else if (pathname === "/tutorials") {
+    } else if (pathname.startsWith("/tutorials")) {
       pageTitle = "Tutorials | CodeLume";
       pageDesc =
         "Read our structured developer notes. Learn React, Node.js, and technical SEO completely free.";
@@ -403,11 +403,11 @@ function RouteTracker() {
       <meta name="twitter:title" content={seoData.title} />
       <meta name="twitter:description" content={seoData.desc} />
 
-      {seoData.schema && Object.keys(seoData.schema).length > 0 && (
+      {seoData.schema && Object.keys(seoData.schema).length > 0 ? (
         <script type="application/ld+json">
           {JSON.stringify(seoData.schema)}
         </script>
-      )}
+      ) : null}
     </Helmet>
   );
 }
