@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -55,7 +55,6 @@ import JsonToTs from "./components/jsontots";
 import JwtDecoder from "./components/jwtdecoder";
 import MetaExtractor from "./components/metaextractor";
 
-
 // Security Wrapper: Checks for a valid token before rendering the admin page
 const ProtectedRoute = ({ children }) => {
   const token = localStorage.getItem("adminToken");
@@ -63,327 +62,341 @@ const ProtectedRoute = ({ children }) => {
   return children;
 };
 
-// Handles scrolling to top AND updating Tab Titles, Clean SEO & Schema Tags
+// Handles scrolling to top AND updating Tab Titles, Clean SEO & Schema Tags using State
 function RouteTracker() {
   const { pathname } = useLocation();
 
+  // State setup for SEO to guarantee re-renders for React Helmet
+  const [seoData, setSeoData] = useState({
+    title: "CodeLume® | Bespoke Web Engineering & Digital Agency",
+    desc: "We build fast, scalable, and visually stunning digital experiences. From custom web apps to full brand identities, let's scale your business.",
+    url: `https://www.codelume.online${pathname}`,
+    schema: {},
+  });
+
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, [pathname]);
 
-  // Default SEO Data
-  let pageTitle = "CodeLume® | Bespoke Web Engineering & Digital Agency";
-  let pageDesc =
-    "We build fast, scalable, and visually stunning digital experiences. From custom web apps to full brand identities, let's scale your business.";
-  let pageUrl = `https://codelume.com${pathname}`;
-
-  // Default Schema Markup (WebSite)
-  let schemaType = "WebSite";
-  let schemaData = {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    name: "CodeLume",
-    url: "https://codelume.com",
-    description: "Bespoke Web Engineering & Digital Agency built by Rafay.",
-    publisher: {
-      "@type": "Organization",
+    let pageTitle = "CodeLume® | Bespoke Web Engineering & Digital Agency";
+    let pageDesc =
+      "We build fast, scalable, and visually stunning digital experiences. From custom web apps to full brand identities, let's scale your business.";
+    let schemaData = {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
       name: "CodeLume",
-      logo: {
-        "@type": "ImageObject",
-        url: "https://codelume.com/logo.png",
-      },
-    },
-  };
-
-  // Clean, Human, and Click-Worthy SEO Titles (With Dual Checks for Indexed URLs)
-  if (pathname === "/") {
-    pageTitle = "CodeLume® | Bespoke Web Engineering & Digital Agency";
-  } else if (pathname === "/start-project") {
-    pageTitle = "Start a Project | CodeLume";
-    pageDesc =
-      "Ready to upgrade your digital presence? Book a consultation with Rafay and let's build something exceptional together.";
-  } else if (pathname === "/services") {
-    pageTitle = "Services | CodeLume";
-    pageDesc =
-      "Explore our core services: MERN stack apps, custom Laravel backends, Webflow design, and complete 0-to-100 brand engineering.";
-    schemaData = {
-      "@context": "https://schema.org",
-      "@type": "Service",
-      serviceType: "Web Development & Digital Marketing",
-      provider: {
-        "@type": "Person",
-        name: "Rafay",
-        url: "https://codelume.com/about",
-      },
-      description: pageDesc,
-      areaServed: "Worldwide",
-    };
-  } else if (
-    pathname === "/services/mern-stack" ||
-    pathname === "/mern-stack-development"
-  ) {
-    pageTitle = "Custom MERN Development | CodeLume";
-    pageDesc =
-      "Need a fast, scalable web app? We engineer bespoke MERN stack solutions tailored exactly to your business logic. Packages from $149.";
-    schemaData = {
-      "@context": "https://schema.org",
-      "@type": "Product",
-      name: "MERN Stack Web Development",
-      description: pageDesc,
-      brand: { "@type": "Brand", name: "CodeLume" },
-      offers: {
-        "@type": "Offer",
-        price: "149.00",
-        priceCurrency: "USD",
-        availability: "https://schema.org/InStock",
-      },
-    };
-  } else if (pathname === "/services/php-laravel") {
-    pageTitle = "PHP & Laravel Development | CodeLume";
-    pageDesc =
-      "Bulletproof backend architecture for your business. We build secure, dynamic Laravel applications that scale seamlessly. From $139.";
-    schemaData = {
-      "@context": "https://schema.org",
-      "@type": "Product",
-      name: "PHP & Laravel Development",
-      description: pageDesc,
-      brand: { "@type": "Brand", name: "CodeLume" },
-      offers: {
-        "@type": "Offer",
-        price: "139.00",
-        priceCurrency: "USD",
-        availability: "https://schema.org/InStock",
-      },
-    };
-  } else if (pathname === "/services/angular-apps") {
-    pageTitle = "Angular Web App Development | CodeLume";
-    pageDesc =
-      "High-performance, enterprise-grade Angular frontends built for speed and complexity. Upgrade your user experience today. From $135.";
-    schemaData = {
-      "@context": "https://schema.org",
-      "@type": "Product",
-      name: "Angular Web App Development",
-      description: pageDesc,
-      brand: { "@type": "Brand", name: "CodeLume" },
-      offers: {
-        "@type": "Offer",
-        price: "135.00",
-        priceCurrency: "USD",
-        availability: "https://schema.org/InStock",
-      },
-    };
-  } else if (pathname === "/services/wordpress") {
-    pageTitle = "Custom WordPress Development | CodeLume";
-    pageDesc =
-      "High-converting WooCommerce stores and custom WordPress themes. Fast, secure, and easily manageable CMS solutions starting at $100.";
-    schemaData = {
-      "@context": "https://schema.org",
-      "@type": "Product",
-      name: "WordPress & WooCommerce Services",
-      description: pageDesc,
-      brand: { "@type": "Brand", name: "CodeLume" },
-      offers: {
-        "@type": "Offer",
-        price: "100.00",
-        priceCurrency: "USD",
-        availability: "https://schema.org/InStock",
-      },
-    };
-  } else if (pathname === "/services/shopify") {
-    pageTitle = "Shopify Development | CodeLume";
-    pageDesc =
-      "Turn visitors into buyers. We build bespoke, high-converting Shopify storefronts with custom Liquid coding and seamless integrations.";
-    schemaData = {
-      "@context": "https://schema.org",
-      "@type": "Product",
-      name: "Shopify Development",
-      description: pageDesc,
-      brand: { "@type": "Brand", name: "CodeLume" },
-      offers: {
-        "@type": "Offer",
-        price: "115.00",
-        priceCurrency: "USD",
-        availability: "https://schema.org/InStock",
-      },
-    };
-  } else if (pathname === "/services/webflow") {
-    pageTitle = "Webflow Website Development | CodeLume";
-    pageDesc =
-      "Pixel-perfect, award-winning Webflow websites with advanced GSAP animations and zero bloat. Stand out from the competition.";
-    schemaData = {
-      "@context": "https://schema.org",
-      "@type": "Product",
-      name: "Webflow Site Design",
-      description: pageDesc,
-      brand: { "@type": "Brand", name: "CodeLume" },
-      offers: {
-        "@type": "Offer",
-        price: "149.00",
-        priceCurrency: "USD",
-        availability: "https://schema.org/InStock",
-      },
-    };
-  } else if (pathname === "/services/custom-platforms") {
-    pageTitle = "Custom Web Platforms | CodeLume";
-    pageDesc =
-      "Have a complex app idea? We engineer custom SaaS platforms, portals, and dashboards from the ground up. Enterprise solutions from $299.";
-    schemaData = {
-      "@context": "https://schema.org",
-      "@type": "Product",
-      name: "Custom Platform Engineering",
-      description: pageDesc,
-      brand: { "@type": "Brand", name: "CodeLume" },
-      offers: {
-        "@type": "Offer",
-        price: "299.00",
-        priceCurrency: "USD",
-        availability: "https://schema.org/InStock",
-      },
-    };
-  } else if (pathname === "/services/api-integrations") {
-    pageTitle = "API Development & Integration | CodeLume";
-    pageDesc =
-      "Connect your systems flawlessly. We build secure REST/GraphQL APIs and handle complex third-party data synchronisation. Starting at $99.";
-    schemaData = {
-      "@context": "https://schema.org",
-      "@type": "Product",
-      name: "API & Integrations",
-      description: pageDesc,
-      brand: { "@type": "Brand", name: "CodeLume" },
-      offers: {
-        "@type": "Offer",
-        price: "99.00",
-        priceCurrency: "USD",
-        availability: "https://schema.org/InStock",
-      },
-    };
-  } else if (pathname === "/services/mobile-apps") {
-    pageTitle = "Mobile App Development | CodeLume";
-    pageDesc =
-      "High-performance, cross-platform mobile apps built to scale. Take your business native with bespoke iOS and Android solutions.";
-    schemaData = {
-      "@context": "https://schema.org",
-      "@type": "Product",
-      name: "Mobile App Development",
-      description: pageDesc,
-      brand: { "@type": "Brand", name: "CodeLume" },
-      offers: {
-        "@type": "Offer",
-        price: "399.00",
-        priceCurrency: "USD",
-        availability: "https://schema.org/InStock",
-      },
-    };
-  } else if (pathname === "/services/ui-ux-design") {
-    pageTitle = "UI/UX Design That Converts | CodeLume";
-    pageDesc =
-      "Data-driven interface design that converts. We craft stunning, user-centric web and mobile experiences from wireframe to final handoff.";
-    schemaData = {
-      "@context": "https://schema.org",
-      "@type": "Product",
-      name: "UI/UX Design Services",
-      description: pageDesc,
-      brand: { "@type": "Brand", name: "CodeLume" },
-      offers: {
-        "@type": "Offer",
-        price: "199.00",
-        priceCurrency: "USD",
-        availability: "https://schema.org/InStock",
-      },
-    };
-  } else if (pathname === "/services/full-branding") {
-    pageTitle = "Complete Brand & Web Solutions | CodeLume";
-    pageDesc =
-      "The ultimate launchpad. Bespoke logo design, enterprise web development, and targeted SEO to launch and scale your brand globally.";
-    schemaData = {
-      "@context": "https://schema.org",
-      "@type": "Product",
-      name: "Full Branding & Marketing Services",
-      description: pageDesc,
-      brand: { "@type": "Brand", name: "CodeLume" },
-      offers: {
-        "@type": "Offer",
-        price: "1499.00",
-        priceCurrency: "USD",
-        availability: "https://schema.org/InStock",
-      },
-    };
-  } else if (pathname === "/blogs") {
-    pageTitle = "Blogs | CodeLume";
-    pageDesc =
-      "Real-world technical tutorials, UI/UX trends, and digital strategy insights from an active full-stack developer.";
-  } else if (pathname === "/case-studies" || pathname === "/portfolio") {
-    pageTitle = "Case Studies | CodeLume";
-    pageDesc =
-      "See exactly how we solve complex business challenges through strategic design and bespoke web engineering.";
-  } else if (pathname === "/about") {
-    pageTitle = "About | CodeLume";
-    pageDesc =
-      "Meet the engineer behind CodeLume. I specialise in the MERN stack, Laravel, and bespoke UI/UX design to help businesses grow.";
-    schemaData = {
-      "@context": "https://schema.org",
-      "@type": "Person",
-      name: "Rafay",
-      jobTitle: "Freelance Web Developer & UI/UX Designer",
-      url: "https://codelume.com/about",
-      worksFor: {
+      url: "https://www.codelume.online",
+      description: "Bespoke Web Engineering & Digital Agency built by Rafay.",
+      publisher: {
         "@type": "Organization",
         name: "CodeLume",
+        logo: {
+          "@type": "ImageObject",
+          url: "https://www.codelume.online/logo.png",
+        },
       },
     };
-  } else if (pathname === "/terms-of-service" || pathname === "/terms") {
-    pageTitle = "Terms of Service | CodeLume";
-    pageDesc =
-      "Our operational guidelines and terms of service for engaging with CodeLume's web development and design projects.";
-  } else if (pathname === "/privacy-policy" || pathname === "/privacy") {
-    pageTitle = "Privacy Policy | CodeLume";
-    pageDesc =
-      "How we protect, manage, and secure your personal data across the CodeLume ecosystem.";
-  } else if (pathname === "/admin/login") {
-    pageTitle = "Admin Login | CodeLume";
-    pageDesc = "Secure portal for CodeLume administration.";
-  } else if (pathname.includes("/admin")) {
-    pageTitle = "Dashboard | CodeLume Admin";
-    pageDesc = "Content management and administration dashboard.";
-  } else if (pathname.includes("/blogs/")) {
-    pageTitle = "Article | CodeLume Insights";
-  } else if (pathname === "/tools/svg-to-react") {
-    pageTitle = "Free SVG to React Component Converter | CodeLume";
-    pageDesc =
-      "Instantly convert SVG files into reusable React components. A free developer tool by CodeLume.";
-  } else if (pathname === "/tools/json-to-ts") {
-    pageTitle = "Free JSON to TypeScript Interface Generator | CodeLume";
-    pageDesc =
-      "Instantly generate TypeScript interfaces and types from JSON data. A free developer tool by CodeLume.";
-  } else if (pathname === "/tools/jwt-decoder") {
-    pageTitle = "Free JWT Decoder | CodeLume";
-    pageDesc =
-      "Securely decode, verify, and inspect JSON Web Tokens (JWT) directly in your browser. A free developer tool by CodeLume.";
-  } else if (pathname === "/tools/meta-extractor") {
-    pageTitle = "Free Meta Tag Extractor | CodeLume";
-    pageDesc =
-      "Extract and preview SEO meta tags, Open Graph data, and social media cards from any live URL. A free developer tool by CodeLume.";
-  }
+
+    if (pathname === "/") {
+      pageTitle = "CodeLume® | Bespoke Web Engineering & Digital Agency";
+    } else if (pathname === "/start-project") {
+      pageTitle = "Start a Project | CodeLume";
+      pageDesc =
+        "Ready to upgrade your digital presence? Book a consultation with Rafay and let's build something exceptional together.";
+    } else if (pathname === "/services") {
+      pageTitle = "Services | CodeLume";
+      pageDesc =
+        "Explore our core services: MERN stack apps, custom Laravel backends, Webflow design, and complete 0-to-100 brand engineering.";
+      schemaData = {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        serviceType: "Web Development & Digital Marketing",
+        provider: {
+          "@type": "Person",
+          name: "Rafay",
+          url: "https://www.codelume.online/about",
+        },
+        description: pageDesc,
+        areaServed: "Worldwide",
+      };
+    } else if (
+      pathname === "/services/mern-stack" ||
+      pathname === "/mern-stack-development"
+    ) {
+      pageTitle = "MERN Stack Development | CodeLume";
+      pageDesc =
+        "Need a fast, scalable web app? We engineer bespoke MERN stack solutions tailored exactly to your business logic. Packages from $149.";
+      schemaData = {
+        "@context": "https://schema.org",
+        "@type": "Product",
+        name: "MERN Stack Web Development",
+        description: pageDesc,
+        brand: { "@type": "Brand", name: "CodeLume" },
+        offers: {
+          "@type": "Offer",
+          price: "149.00",
+          priceCurrency: "USD",
+          availability: "https://schema.org/InStock",
+        },
+      };
+    } else if (pathname === "/services/php-laravel") {
+      pageTitle = "PHP & Laravel Development | CodeLume";
+      pageDesc =
+        "Bulletproof backend architecture for your business. We build secure, dynamic Laravel applications that scale seamlessly. From $139.";
+      schemaData = {
+        "@context": "https://schema.org",
+        "@type": "Product",
+        name: "PHP & Laravel Development",
+        description: pageDesc,
+        brand: { "@type": "Brand", name: "CodeLume" },
+        offers: {
+          "@type": "Offer",
+          price: "139.00",
+          priceCurrency: "USD",
+          availability: "https://schema.org/InStock",
+        },
+      };
+    } else if (pathname === "/services/angular-apps") {
+      pageTitle = "Angular Web App Development | CodeLume";
+      pageDesc =
+        "High-performance, enterprise-grade Angular frontends built for speed and complexity. Upgrade your user experience today. From $135.";
+      schemaData = {
+        "@context": "https://schema.org",
+        "@type": "Product",
+        name: "Angular Web App Development",
+        description: pageDesc,
+        brand: { "@type": "Brand", name: "CodeLume" },
+        offers: {
+          "@type": "Offer",
+          price: "135.00",
+          priceCurrency: "USD",
+          availability: "https://schema.org/InStock",
+        },
+      };
+    } else if (pathname === "/services/wordpress") {
+      pageTitle = "WordPress Development | CodeLume";
+      pageDesc =
+        "High-converting WooCommerce stores and custom WordPress themes. Fast, secure, and easily manageable CMS solutions starting at $100.";
+      schemaData = {
+        "@context": "https://schema.org",
+        "@type": "Product",
+        name: "WordPress & WooCommerce Services",
+        description: pageDesc,
+        brand: { "@type": "Brand", name: "CodeLume" },
+        offers: {
+          "@type": "Offer",
+          price: "100.00",
+          priceCurrency: "USD",
+          availability: "https://schema.org/InStock",
+        },
+      };
+    } else if (pathname === "/services/shopify") {
+      pageTitle = "Shopify Development | CodeLume";
+      pageDesc =
+        "Turn visitors into buyers. We build bespoke, high-converting Shopify storefronts with custom Liquid coding and seamless integrations.";
+      schemaData = {
+        "@context": "https://schema.org",
+        "@type": "Product",
+        name: "Shopify Development",
+        description: pageDesc,
+        brand: { "@type": "Brand", name: "CodeLume" },
+        offers: {
+          "@type": "Offer",
+          price: "115.00",
+          priceCurrency: "USD",
+          availability: "https://schema.org/InStock",
+        },
+      };
+    } else if (pathname === "/services/webflow") {
+      pageTitle = "Webflow Website Development | CodeLume";
+      pageDesc =
+        "Pixel-perfect, award-winning Webflow websites with advanced GSAP animations and zero bloat. Stand out from the competition.";
+      schemaData = {
+        "@context": "https://schema.org",
+        "@type": "Product",
+        name: "Webflow Site Design",
+        description: pageDesc,
+        brand: { "@type": "Brand", name: "CodeLume" },
+        offers: {
+          "@type": "Offer",
+          price: "149.00",
+          priceCurrency: "USD",
+          availability: "https://schema.org/InStock",
+        },
+      };
+    } else if (pathname === "/services/custom-platforms") {
+      pageTitle = "Custom Web Platforms | CodeLume";
+      pageDesc =
+        "Have a complex app idea? We engineer custom SaaS platforms, portals, and dashboards from the ground up. Enterprise solutions from $299.";
+      schemaData = {
+        "@context": "https://schema.org",
+        "@type": "Product",
+        name: "Custom Platform Engineering",
+        description: pageDesc,
+        brand: { "@type": "Brand", name: "CodeLume" },
+        offers: {
+          "@type": "Offer",
+          price: "299.00",
+          priceCurrency: "USD",
+          availability: "https://schema.org/InStock",
+        },
+      };
+    } else if (pathname === "/services/api-integrations") {
+      pageTitle = "API Development & Integration | CodeLume";
+      pageDesc =
+        "Connect your systems flawlessly. We build secure REST/GraphQL APIs and handle complex third-party data synchronisation. Starting at $99.";
+      schemaData = {
+        "@context": "https://schema.org",
+        "@type": "Product",
+        name: "API & Integrations",
+        description: pageDesc,
+        brand: { "@type": "Brand", name: "CodeLume" },
+        offers: {
+          "@type": "Offer",
+          price: "99.00",
+          priceCurrency: "USD",
+          availability: "https://schema.org/InStock",
+        },
+      };
+    } else if (pathname === "/services/mobile-apps") {
+      pageTitle = "Mobile App Development | CodeLume";
+      pageDesc =
+        "High-performance, cross-platform mobile apps built to scale. Take your business native with bespoke iOS and Android solutions.";
+      schemaData = {
+        "@context": "https://schema.org",
+        "@type": "Product",
+        name: "Mobile App Development",
+        description: pageDesc,
+        brand: { "@type": "Brand", name: "CodeLume" },
+        offers: {
+          "@type": "Offer",
+          price: "399.00",
+          priceCurrency: "USD",
+          availability: "https://schema.org/InStock",
+        },
+      };
+    } else if (pathname === "/services/ui-ux-design") {
+      pageTitle = "UI/UX Design That Converts | CodeLume";
+      pageDesc =
+        "Data-driven interface design that converts. We craft stunning, user-centric web and mobile experiences from wireframe to final handoff.";
+      schemaData = {
+        "@context": "https://schema.org",
+        "@type": "Product",
+        name: "UI/UX Design",
+        description: pageDesc,
+        brand: { "@type": "Brand", name: "CodeLume" },
+        offers: {
+          "@type": "Offer",
+          price: "199.00",
+          priceCurrency: "USD",
+          availability: "https://schema.org/InStock",
+        },
+      };
+    } else if (pathname === "/services/full-branding") {
+      pageTitle = "Services | CodeLume";
+      pageDesc =
+        "The ultimate launchpad. Bespoke logo design, enterprise web development, and targeted SEO to launch and scale your brand globally.";
+      schemaData = {
+        "@context": "https://schema.org",
+        "@type": "Product",
+        name: "Full Branding & Marketing Services",
+        description: pageDesc,
+        brand: { "@type": "Brand", name: "CodeLume" },
+        offers: {
+          "@type": "Offer",
+          price: "1499.00",
+          priceCurrency: "USD",
+          availability: "https://schema.org/InStock",
+        },
+      };
+    } else if (pathname === "/blogs") {
+      pageTitle = "Blogs | CodeLume";
+      pageDesc =
+        "Real-world technical tutorials, UI/UX trends, and digital strategy insights from an active full-stack developer.";
+    } else if (pathname === "/case-studies" || pathname === "/portfolio") {
+      pageTitle = "Case Studies | CodeLume";
+      pageDesc =
+        "See exactly how we solve complex business challenges through strategic design and bespoke web engineering.";
+    } else if (pathname === "/about") {
+      pageTitle = "About | CodeLume";
+      pageDesc =
+        "Meet the engineer behind CodeLume. I specialise in the MERN stack, Laravel, and bespoke UI/UX design to help businesses grow.";
+      schemaData = {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        name: "Rafay",
+        jobTitle: "Freelance Web Developer & UI/UX Designer",
+        url: "https://www.codelume.online/about",
+        worksFor: {
+          "@type": "Organization",
+          name: "CodeLume",
+        },
+      };
+    } else if (pathname === "/terms-of-service" || pathname === "/terms") {
+      pageTitle = "Terms of Service | CodeLume";
+      pageDesc =
+        "Our operational guidelines and terms of service for engaging with CodeLume's web development and design projects.";
+    } else if (pathname === "/privacy-policy" || pathname === "/privacy") {
+      pageTitle = "Privacy Policy | CodeLume";
+      pageDesc =
+        "How we protect, manage, and secure your personal data across the CodeLume ecosystem.";
+    } else if (pathname === "/admin/login") {
+      pageTitle = "Admin Login | CodeLume";
+      pageDesc = "Secure portal for CodeLume administration.";
+    } else if (pathname.includes("/admin")) {
+      pageTitle = "Dashboard | CodeLume Admin";
+      pageDesc = "Content management and administration dashboard.";
+    } else if (pathname.includes("/blogs/")) {
+      pageTitle = "Article | CodeLume Insights";
+    } else if (pathname === "/tools/svg-to-react") {
+      pageTitle = "Free SVG to React Component Converter | CodeLume";
+      pageDesc =
+        "Instantly convert SVG files into reusable React components. A free developer tool by CodeLume.";
+    } else if (pathname === "/tools/json-to-ts") {
+      pageTitle = "Free JSON to TypeScript Interface Generator | CodeLume";
+      pageDesc =
+        "Instantly generate TypeScript interfaces and types from JSON data. A free developer tool by CodeLume.";
+    } else if (pathname === "/tools/jwt-decoder") {
+      pageTitle = "Free JWT Decoder | CodeLume";
+      pageDesc =
+        "Securely decode, verify, and inspect JSON Web Tokens (JWT) directly in your browser. A free developer tool by CodeLume.";
+    } else if (pathname === "/tools/meta-extractor") {
+      pageTitle = "Free Meta Tag Extractor | CodeLume";
+      pageDesc =
+        "Extract and preview SEO meta tags, Open Graph data, and social media cards from any live URL. A free developer tool by CodeLume.";
+    }
+
+    // Set Final State
+    setSeoData({
+      title: pageTitle,
+      desc: pageDesc,
+      url: `https://www.codelume.online${pathname}`,
+      schema: schemaData,
+    });
+  }, [pathname]);
 
   return (
     <Helmet>
-      <title>{pageTitle}</title>
-      <meta name="description" content={pageDesc} />
-      <link rel="canonical" href={pageUrl} />
+      <title>{seoData.title}</title>
+      <meta name="description" content={seoData.desc} />
+      <link rel="canonical" href={seoData.url} />
 
       <meta
         property="og:type"
         content={pathname.includes("/blogs/") ? "article" : "website"}
       />
-      <meta property="og:url" content={pageUrl} />
-      <meta property="og:title" content={pageTitle} />
-      <meta property="og:description" content={pageDesc} />
+      <meta property="og:url" content={seoData.url} />
+      <meta property="og:title" content={seoData.title} />
+      <meta property="og:description" content={seoData.desc} />
 
       <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:title" content={pageTitle} />
-      <meta name="twitter:description" content={pageDesc} />
+      <meta name="twitter:title" content={seoData.title} />
+      <meta name="twitter:description" content={seoData.desc} />
 
-      <script type="application/ld+json">{JSON.stringify(schemaData)}</script>
+      {seoData.schema && Object.keys(seoData.schema).length > 0 && (
+        <script type="application/ld+json">
+          {JSON.stringify(seoData.schema)}
+        </script>
+      )}
     </Helmet>
   );
 }
@@ -417,7 +430,7 @@ export default function App() {
               <Route path="/start-project" element={<StartProject />} />
               <Route path="/services" element={<Services />} />
 
-              {/* DUAL ROUTES: Jo purane link index ho gaye hain unhe theek karne ke liye */}
+              {/* DUAL ROUTES */}
               <Route
                 path="/services/mern-stack"
                 element={<MernStackService />}
@@ -465,7 +478,6 @@ export default function App() {
               <Route path="/blogs" element={<Blog />} />
               <Route path="/blogs/:slug" element={<Article />} />
 
-              {/* Dual Routes for Case Studies & Privacy */}
               <Route path="/case-studies" element={<CaseStudies />} />
               <Route path="/portfolio" element={<CaseStudies />} />
 
@@ -500,7 +512,6 @@ export default function App() {
                   </ProtectedRoute>
                 }
               />
-
               <Route
                 path="/admin/edit-post/:id"
                 element={
@@ -510,7 +521,7 @@ export default function App() {
                 }
               />
 
-              {/* Catch-All Route (Must be at the very bottom) */}
+              {/* Catch-All Route */}
               <Route path="*" element={<NotFound />} />
             </Routes>
           </main>
