@@ -61,7 +61,7 @@ export default function TutorialLayout({ courseData, courseTitle }) {
               to="/tutorials"
               className="text-slate-400 hover:text-white transition-colors font-bold text-sm tracking-wide"
             >
-              &larr; All Courses
+              &larr; All Tutorials
             </Link>
           </div>
 
