@@ -60,6 +60,9 @@ import MetaExtractor from "./components/metaextractor";
 import TutorialLayout from "./components/tutoriallayout";
 import TutorialHub from "./components/tutorialhub";
 import { reactCourseData } from "./data/reactCourseData";
+import { nodeCourseData } from "./data/nodecoursedata";
+import { expressCourseData } from "./data/expresscoursedata";
+import { mongodbCourseData } from "./data/mongodbcoursedata";
 
 // Security Wrapper: Checks for a valid token before rendering the admin page
 const ProtectedRoute = ({ children }) => {
@@ -517,6 +520,33 @@ export default function App() {
                   <TutorialLayout
                     courseData={reactCourseData}
                     courseTitle="React Mastery"
+                  />
+                }
+              />
+              <Route
+                path="/tutorials/node"
+                element={
+                  <TutorialLayout
+                    courseData={nodeCourseData}
+                    courseTitle="Node.js Architecture"
+                  />
+                }
+              />
+              <Route
+                path="/tutorials/express"
+                element={
+                  <TutorialLayout
+                    courseData={expressCourseData}
+                    courseTitle="Express.js APIs"
+                  />
+                }
+              />
+              <Route
+                path="/tutorials/mongodb"
+                element={
+                  <TutorialLayout
+                    courseData={mongodbCourseData}
+                    courseTitle="MongoDB Databases"
                   />
                 }
               />
