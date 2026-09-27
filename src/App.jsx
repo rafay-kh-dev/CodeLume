@@ -56,9 +56,10 @@ import JsonToTs from "./components/jsontots";
 import JwtDecoder from "./components/jwtdecoder";
 import MetaExtractor from "./components/metaextractor";
 
-import TutorialLayout from "./components/tutoriallayout";
-import { reactCourseData } from "./data/reactCourseData";
+// FIXED IMPORTS FOR TUTORIALS & DATA (Exact Paths & Casing)
+import TutorialLayout from "./components/TutorialLayout";
 import TutorialHub from "./components/TutorialHub";
+import { reactCourseData } from "./data/reactCourseData";
 
 // Security Wrapper: Checks for a valid token before rendering the admin page
 const ProtectedRoute = ({ children }) => {
@@ -405,7 +406,6 @@ function RouteTracker() {
       <meta name="twitter:title" content={seoData.title} />
       <meta name="twitter:description" content={seoData.desc} />
 
-      {/* YAHAN FIX KIYA HAI: && ko hata kar ternary operator lagaya hai taake empty schema par crash na ho */}
       {seoData.schema && Object.keys(seoData.schema).length > 0 ? (
         <script
           type="application/ld+json"
