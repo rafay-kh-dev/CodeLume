@@ -245,7 +245,6 @@ export default function Header() {
         <div
           className={`fixed top-0 inset-x-0 z-60 flex justify-center pointer-events-none px-4 sm:px-6 transition-all duration-300 ${mobileMenuOpen ? "pt-4" : ""}`}
         >
-          {/* Changed max-w-5xl to max-w-6xl for wider scroll capsule */}
           <header
             className={`pointer-events-auto flex items-center justify-between w-full transition-all duration-500 ease-out transform-gpu will-change-[max-width,transform,background-color] relative ${
               isScrolled || mobileMenuOpen
@@ -278,10 +277,12 @@ export default function Header() {
               </div>
             </Link>
 
-            <nav className="hidden lg:flex items-center gap-2 h-full relative z-50">
+            {/* YAHAN FIX KIYA HAI: nav ko static banaya hai taake absolute dropdown theek centering le sakay */}
+            <nav className="hidden lg:flex items-center gap-2 h-full static z-50">
               {/* SERVICES MEGA MENU */}
+              {/* Wrapper ko bhi static rakha hai */}
               <div
-                className="h-full flex items-center relative py-2"
+                className="h-full flex items-center static py-2"
                 onMouseEnter={handleServicesEnter}
                 onMouseLeave={handleServicesLeave}
               >
@@ -290,7 +291,6 @@ export default function Header() {
                   onClick={() => setServicesOpen(false)}
                   className="flex items-center gap-1.5 px-4 py-2 rounded-full outline-none hover:bg-white/5 transition-colors duration-300 relative z-10"
                 >
-                  {/* Added whitespace-nowrap */}
                   <h2 className="m-0 text-[15px] font-semibold text-slate-300 group-hover:text-white transition-colors flex items-center gap-1.5 whitespace-nowrap">
                     Services
                     <ChevronDown
@@ -299,6 +299,7 @@ export default function Header() {
                   </h2>
                 </Link>
 
+                {/* Dropdown relative to <header> */}
                 <div
                   className={`absolute top-full left-1/2 -translate-x-1/2 w-[980px] pt-4 transition-all duration-300 ease-out origin-top transform-gpu will-change-transform mega-menu-content ${servicesOpen ? "opacity-100 translate-y-0 visible scale-100" : "opacity-0 -translate-y-3 invisible scale-95"}`}
                 >
@@ -358,8 +359,9 @@ export default function Header() {
               </div>
 
               {/* FREE TOOLS MEGA MENU */}
+              {/* Wrapper ko bhi static rakha hai */}
               <div
-                className="h-full flex items-center relative py-2"
+                className="h-full flex items-center static py-2"
                 onMouseEnter={handleToolsEnter}
                 onMouseLeave={handleToolsLeave}
               >
@@ -368,7 +370,6 @@ export default function Header() {
                   onClick={() => setToolsOpen(false)}
                   className="flex items-center gap-1.5 px-4 py-2 rounded-full outline-none hover:bg-white/5 transition-colors duration-300 relative z-10"
                 >
-                  {/* Added whitespace-nowrap */}
                   <h2 className="m-0 text-[15px] font-semibold text-slate-300 group-hover:text-white transition-colors flex items-center gap-1.5 whitespace-nowrap">
                     Free Tools
                     <ChevronDown
@@ -377,6 +378,7 @@ export default function Header() {
                   </h2>
                 </Link>
 
+                {/* Dropdown relative to <header> */}
                 <div
                   className={`absolute top-full left-1/2 -translate-x-1/2 w-[800px] pt-4 transition-all duration-300 ease-out origin-top transform-gpu will-change-transform mega-menu-content ${toolsOpen ? "opacity-100 translate-y-0 visible scale-100" : "opacity-0 -translate-y-3 invisible scale-95"}`}
                 >
@@ -442,7 +444,6 @@ export default function Header() {
                   to={`/${item.toLowerCase().replace(/ /g, "-")}`}
                   className="px-4 py-2 rounded-full outline-none hover:bg-white/5 transition-colors duration-300"
                 >
-                  {/* Added whitespace-nowrap here to prevent wrapping */}
                   <h2 className="m-0 text-slate-300 hover:text-white text-[15px] font-semibold transition-colors whitespace-nowrap">
                     {item}
                   </h2>
