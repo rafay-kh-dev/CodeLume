@@ -60,7 +60,7 @@ export default function Tools() {
   return (
     <section className="w-full min-h-dvh pt-32 pb-24 bg-[#030712] font-jakarta text-white relative overflow-hidden">
       <Helmet>
-        <title>Developer Tools | CodeLume</title>
+        <title>Free Developer Tools | CodeLume</title>
         <meta
           name="description"
           content="Free, lightning-fast developer utilities to optimise your workflow. Built by CodeLume."
