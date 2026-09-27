@@ -9,12 +9,12 @@ export default function FAQ() {
     {
       question: "What is your typical payment structure?",
       answer:
-        "We usually work on a 50/50 model. A 50% deposit is required to commence the project and block out development time, and the final 50% is billed upon project completion and before the final launch or code handover.",
+        "I usually work on a 50/50 model. A 50% deposit is required to commence the project and block out development time, and the final 50% is billed upon project completion and before the final launch or code handover.",
     },
     {
       question: "Do you provide domain registration and web hosting?",
       answer:
-        "While we don't act as a direct hosting provider, we strongly assist our clients in setting up premium, secure cloud hosting (like AWS, Vercel, or Hostinger) and configuring domains under their own ownership for maximum security.",
+        "While I don't act as a direct hosting provider, we strongly assist our clients in setting up premium, secure cloud hosting (like AWS, Vercel, or Hostinger) and configuring domains under their own ownership for maximum security.",
     },
     {
       question: "How long does a standard web project take?",
@@ -24,12 +24,12 @@ export default function FAQ() {
     {
       question: "How many design revisions do I get?",
       answer:
-        "We offer up to 3 rounds of design revisions during the UI/UX prototyping phase. We ensure you are 100% satisfied with the visual design before we move into the development and coding phase.",
+        "I offer up to 3 rounds of design revisions during the UI/UX prototyping phase. I ensure you are 100% satisfied with the visual design before I move into the development and coding phase.",
     },
     {
       question: "Will my website be mobile-friendly and SEO-optimised?",
       answer:
-        "Absolutely. Every digital product we engineer is fully responsive across all devices (mobile, tablet, desktop) and built with a strong technical SEO foundation to ensure maximum visibility on search engines.",
+        "Absolutely. Every digital product I engineer is fully responsive across all devices (mobile, tablet, desktop) and built with a strong technical SEO foundation to ensure maximum visibility on search engines.",
     },
   ];
 
