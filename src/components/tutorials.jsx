@@ -6,7 +6,8 @@ import {
   Terminal,
   CheckCircle2,
   ChevronRight,
-  Github,
+  ChevronLeft,
+  Code2,
 } from "lucide-react";
 
 export default function Tutorials() {
@@ -207,7 +208,10 @@ export default function Tutorials() {
           toc: [],
           content: (
             <div>
-              <h2 className="text-white text-2xl">Coming Soon</h2>
+              <h2 className="text-white text-2xl font-bold">Coming Soon</h2>
+              <p className="text-slate-400 mt-4">
+                This lesson is currently under construction.
+              </p>
             </div>
           ),
         },
@@ -217,7 +221,10 @@ export default function Tutorials() {
           toc: [],
           content: (
             <div>
-              <h2 className="text-white text-2xl">Coming Soon</h2>
+              <h2 className="text-white text-2xl font-bold">Coming Soon</h2>
+              <p className="text-slate-400 mt-4">
+                This lesson is currently under construction.
+              </p>
             </div>
           ),
         },
@@ -231,17 +238,34 @@ export default function Tutorials() {
   );
   const [activeHeadingId, setActiveHeadingId] = useState("");
 
-  let currentLesson = null;
-  let currentCategory = null;
+  // Create a flat array of all lessons for easy Next/Prev navigation
+  const allLessonsFlat = courseData.flatMap((category) =>
+    category.lessons.map((lesson) => ({
+      ...lesson,
+      categoryName: category.category,
+    })),
+  );
 
-  courseData.forEach((category) => {
-    category.lessons.forEach((lesson) => {
-      if (lesson.id === activeLessonId) {
-        currentLesson = lesson;
-        currentCategory = category;
-      }
-    });
-  });
+  const currentLessonIndex = allLessonsFlat.findIndex(
+    (l) => l.id === activeLessonId,
+  );
+
+  // Safety Fallback (If lesson not found, pick the first one)
+  const currentLesson =
+    currentLessonIndex !== -1
+      ? allLessonsFlat[currentLessonIndex]
+      : allLessonsFlat[0];
+
+  const hasNext = currentLessonIndex < allLessonsFlat.length - 1;
+  const hasPrev = currentLessonIndex > 0;
+
+  const goToNext = () => {
+    if (hasNext) setActiveLessonId(allLessonsFlat[currentLessonIndex + 1].id);
+  };
+
+  const goToPrev = () => {
+    if (hasPrev) setActiveLessonId(allLessonsFlat[currentLessonIndex - 1].id);
+  };
 
   // Smooth scroll to top when lesson changes
   useEffect(() => {
@@ -249,12 +273,15 @@ export default function Tutorials() {
     if (currentLesson?.toc?.length > 0) {
       setActiveHeadingId(currentLesson.toc[0].id);
     }
-  }, [activeLessonId]);
+  }, [activeLessonId, currentLesson]);
 
   return (
     <section className="w-full min-h-dvh pt-24 bg-[#030712] font-jakarta relative flex flex-col">
+      {/* Helmet SEO */}
       <Helmet>
-        <title>{currentLesson?.title} | CodeLume Tutorials</title>
+        <title>
+          {currentLesson?.title || "Tutorials"} | CodeLume Tutorials
+        </title>
         <meta
           name="description"
           content="Complete React 0 to 100 documentation and tutorials by CodeLume."
@@ -270,7 +297,7 @@ export default function Tutorials() {
           <div className="mb-8">
             <Link
               to="/"
-              className="text-slate-400 hover:text-white transition-colors font-bold text-sm tracking-wide"
+              className="text-slate-400 hover:text-white transition-colors font-bold text-sm tracking-wide flex items-center gap-2"
             >
               &larr; Back to Home
             </Link>
@@ -326,22 +353,38 @@ export default function Tutorials() {
               </h2>
               <div className="flex items-center gap-3 text-slate-400 text-sm font-medium">
                 <span className="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-blue-400">
-                  {currentCategory?.category}
+                  {currentLesson?.categoryName}
                 </span>
-                <span>Complete React Course</span>
+                <span>Complete Course</span>
               </div>
             </div>
 
             {/* Dynamic Content */}
-            <div className="animate-in fade-in duration-500">
+            <div className="animate-in fade-in duration-500 min-h-[300px]">
               {currentLesson?.content}
             </div>
 
-            {/* Next Lesson Pagination */}
-            <div className="mt-20 flex justify-end">
-              <button className="flex items-center gap-2 bg-white/5 hover:bg-white/10 text-white px-6 py-4 rounded-xl font-bold transition-all border border-white/10 hover:border-blue-500/50">
-                Next Topic <ChevronRight className="w-5 h-5" />
-              </button>
+            {/* Pagination / Navigation Buttons */}
+            <div className="mt-20 pt-8 border-t border-white/10 flex justify-between items-center">
+              {hasPrev ? (
+                <button
+                  onClick={goToPrev}
+                  className="flex items-center gap-2 bg-transparent text-slate-400 hover:text-white px-4 py-2 font-bold transition-all outline-none"
+                >
+                  <ChevronLeft className="w-5 h-5" /> Previous
+                </button>
+              ) : (
+                <div /> /* Empty div to keep Next button aligned right */
+              )}
+
+              {hasNext && (
+                <button
+                  onClick={goToNext}
+                  className="flex items-center gap-2 bg-white/5 hover:bg-white/10 text-white px-6 py-4 rounded-xl font-bold transition-all border border-white/10 hover:border-blue-500/50 outline-none"
+                >
+                  Next Topic <ChevronRight className="w-5 h-5" />
+                </button>
+              )}
             </div>
           </div>
         </main>
