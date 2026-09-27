@@ -57,7 +57,7 @@ import JwtDecoder from "./components/jwtdecoder";
 import MetaExtractor from "./components/metaextractor";
 
 import TutorialLayout from "./components/tutoriallayout";
-import { reactCourseData } from "../data/reactCourseData";
+import { reactCourseData } from "./data/reactCourseData";
 import TutorialHub from "./components/TutorialHub";
 
 // Security Wrapper: Checks for a valid token before rendering the admin page
