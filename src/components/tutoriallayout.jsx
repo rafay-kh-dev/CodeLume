@@ -1,10 +1,9 @@
-// src/components/TutorialLayout.jsx
+// src/components/tutoriallayout.jsx
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { ChevronRight, ChevronLeft, Code2 } from "lucide-react";
 
-// Yahan humne courseData aur courseTitle as props receive kiye
 export default function TutorialLayout({ courseData, courseTitle }) {
   const [activeLessonId, setActiveLessonId] = useState(
     courseData[0].lessons[0].id,
@@ -53,7 +52,9 @@ export default function TutorialLayout({ courseData, courseTitle }) {
       </Helmet>
 
       <div className="max-w-[1600px] mx-auto w-full px-4 sm:px-6 lg:px-8 flex-grow flex flex-col md:flex-row relative z-10">
-        {/* Left Sidebar */}
+        {/* =========================================
+            COLUMN 1: LEFT NAVIGATION SIDEBAR 
+            ========================================= */}
         <aside className="w-full md:w-[260px] lg:w-[280px] shrink-0 md:sticky md:top-24 h-auto md:h-[calc(100vh-6rem)] overflow-y-auto pt-8 pb-12 pr-6 custom-scrollbar border-r border-white/5 hidden md:block">
           <div className="mb-8 flex items-center gap-2">
             <Link
@@ -80,7 +81,11 @@ export default function TutorialLayout({ courseData, courseTitle }) {
                       <button
                         key={lesson.id}
                         onClick={() => setActiveLessonId(lesson.id)}
-                        className={`text-left text-[14px] py-1.5 transition-colors outline-none ${activeLessonId === lesson.id ? "text-blue-400 font-semibold" : "text-slate-400 hover:text-slate-200"}`}
+                        className={`text-left text-[14px] py-1.5 transition-colors outline-none ${
+                          activeLessonId === lesson.id
+                            ? "text-blue-400 font-semibold"
+                            : "text-slate-400 hover:text-slate-200"
+                        }`}
                       >
                         {lesson.title}
                       </button>
@@ -92,7 +97,9 @@ export default function TutorialLayout({ courseData, courseTitle }) {
           </div>
         </aside>
 
-        {/* Center Main Content */}
+        {/* =========================================
+            COLUMN 2: MAIN CONTENT AREA 
+            ========================================= */}
         <main className="flex-1 min-w-0 pt-8 pb-24 md:px-10 lg:px-16">
           <div className="max-w-4xl mx-auto">
             <div className="mb-10">
@@ -135,9 +142,76 @@ export default function TutorialLayout({ courseData, courseTitle }) {
           </div>
         </main>
 
-        {/* Right Sidebar (TOC) */}
-        {/* ... Same Right Sidebar code as before ... */}
+        {/* =========================================
+            COLUMN 3: RIGHT SIDEBAR (TOC & PROMO) 
+            ========================================= */}
+        <aside className="w-64 shrink-0 sticky top-24 h-[calc(100vh-6rem)] overflow-y-auto pt-8 pb-12 pl-8 hidden xl:flex flex-col custom-scrollbar">
+          {/* On this page (Table of Contents) */}
+          {currentLesson?.toc?.length > 0 && (
+            <div className="mb-10">
+              <h2 className="text-[12px] font-extrabold text-white uppercase tracking-wider mb-4 m-0">
+                On this page
+              </h2>
+              <div className="flex flex-col space-y-2 border-l border-white/10 pl-3">
+                {currentLesson.toc.map((heading) => (
+                  <a
+                    key={heading.id}
+                    href={`#${heading.id}`}
+                    onClick={() => setActiveHeadingId(heading.id)}
+                    className={`text-[13px] leading-tight transition-colors hover:text-white ${
+                      activeHeadingId === heading.id
+                        ? "text-blue-400 font-semibold"
+                        : "text-slate-400"
+                    }`}
+                  >
+                    {heading.label}
+                  </a>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Sponsored/Promo Box */}
+          <div className="mt-auto bg-[#0a0f1c] border border-white/5 rounded-2xl p-5 shadow-lg relative overflow-hidden group cursor-pointer hover:border-blue-500/30 transition-colors">
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-600/10 to-transparent pointer-events-none" />
+            <div className="relative z-10">
+              <div className="w-full bg-[#030712] rounded-lg p-4 mb-4 flex items-center justify-center border border-white/5">
+                <Code2 className="w-8 h-8 text-blue-500" />
+              </div>
+              <h2 className="text-[14px] font-bold text-white leading-tight mb-2 m-0">
+                Need a Custom Web App?
+              </h2>
+              <p className="text-[12px] text-slate-400 leading-relaxed m-0 mb-4">
+                CodeLume engineers high-performance web applications tailored to
+                your business needs.
+              </p>
+              <Link
+                to="/start-project"
+                className="text-[12px] font-bold text-blue-400 hover:text-blue-300 transition-colors"
+              >
+                Start a project &rarr;
+              </Link>
+            </div>
+          </div>
+        </aside>
       </div>
+
+      <style>{`
+        /* Minimal Custom Scrollbar for sidebars */
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: rgba(255, 255, 255, 0.1);
+          border-radius: 10px;
+        }
+        .custom-scrollbar:hover::-webkit-scrollbar-thumb {
+          background: rgba(255, 255, 255, 0.2);
+        }
+      `}</style>
     </section>
   );
 }
