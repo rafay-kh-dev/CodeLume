@@ -1,4 +1,3 @@
-// src/components/tutorialhub.jsx
 import React from "react";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
@@ -26,31 +25,31 @@ export default function TutorialHub() {
       title: "Node.js Architecture",
       description:
         "Master event-driven programming and build highly scalable backend systems.",
-      link: "#",
+      link: "/tutorials/node", // Yahan node ke route ka link daal diya hai
       icon: Nodedotjs,
       color: "text-[#339933]", // Node Green
       bgColor: "bg-[#339933]/10",
-      status: "Coming Soon",
+      status: "Live",
     },
     {
       title: "Express.js APIs",
       description:
         "Engineer robust, secure RESTful APIs and handle complex middleware.",
-      link: "#",
+      link: "/tutorials/express",
       icon: Expressdotjs,
       color: "text-white",
       bgColor: "bg-white/10",
-      status: "Coming Soon",
+      status: "Live",
     },
     {
       title: "MongoDB Databases",
       description:
         "NoSQL document modelling, indexing, and complex data aggregation.",
-      link: "#",
+      link: "/tutorials/mongodb",
       icon: Mongodb,
       color: "text-[#47A248]", // Mongo Green
       bgColor: "bg-[#47A248]/10",
-      status: "Coming Soon",
+      status: "Live",
     },
   ];
 
@@ -73,18 +72,17 @@ export default function TutorialHub() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {courses.map((course, idx) => {
             const Icon = course.icon;
-            const isComingSoon = course.status === "Coming Soon";
 
             return (
-              <div
+              <Link
                 key={idx}
-                className={`p-8 rounded-3xl bg-[#0a0f1c] border border-white/5 relative overflow-hidden transition-all duration-300 ${isComingSoon ? "opacity-70 grayscale-[30%]" : "hover:-translate-y-2 hover:border-blue-500/30"}`}
+                to={course.link}
+                // Pura box ab ek link ban gaya hai
+                className="p-8 rounded-3xl bg-[#0a0f1c] border border-white/5 relative overflow-hidden transition-all duration-300 hover:-translate-y-2 hover:border-blue-500/30 block group outline-none"
               >
                 {/* Status Badge */}
                 <div className="absolute top-6 right-6">
-                  <span
-                    className={`px-3 py-1 rounded-full text-xs font-bold tracking-wider uppercase ${isComingSoon ? "bg-white/10 text-slate-400" : "bg-blue-500/20 text-blue-400 border border-blue-500/30"}`}
-                  >
+                  <span className="px-3 py-1 rounded-full text-xs font-bold tracking-wider uppercase bg-blue-500/20 text-blue-400 border border-blue-500/30">
                     {course.status}
                   </span>
                 </div>
@@ -100,23 +98,11 @@ export default function TutorialHub() {
                 </h2>
                 <p className="text-slate-400 mb-6">{course.description}</p>
 
-                {/* Conditional Link */}
-                {isComingSoon ? (
-                  <button
-                    disabled
-                    className="text-sm font-bold text-slate-500 cursor-not-allowed"
-                  >
-                    Development in progress...
-                  </button>
-                ) : (
-                  <Link
-                    to={course.link}
-                    className="text-sm font-bold text-blue-400 hover:text-blue-300 flex items-center gap-1"
-                  >
-                    Start Course &rarr;
-                  </Link>
-                )}
-              </div>
+                {/* Yahan pe text update ho gaya hai aur ye ab ek simple span hai */}
+                <span className="text-sm font-bold text-blue-400 group-hover:text-blue-300 flex items-center gap-1 transition-colors">
+                  View all lessons &rarr;
+                </span>
+              </Link>
             );
           })}
         </div>
