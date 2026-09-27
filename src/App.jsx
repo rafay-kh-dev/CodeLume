@@ -56,6 +56,8 @@ import JsonToTs from "./components/jsontots";
 import JwtDecoder from "./components/jwtdecoder";
 import MetaExtractor from "./components/metaextractor";
 
+import Tutorials from "./components/tutorials";
+
 // Security Wrapper: Checks for a valid token before rendering the admin page
 const ProtectedRoute = ({ children }) => {
   const token = localStorage.getItem("adminToken");
@@ -368,6 +370,10 @@ function RouteTracker() {
       pageTitle = "Free Meta Tag Extractor | CodeLume";
       pageDesc =
         "Extract and preview SEO meta tags, Open Graph data, and social media cards from any live URL. A free developer tool by CodeLume.";
+    } else if (pathname === "/tutorials" || pathname === "/notes") {
+      pageTitle = "Developer Notes & Tutorials | CodeLume";
+      pageDesc =
+        "Read our structured developer notes. Learn React, Node.js, and technical SEO completely free.";
     }
 
     // Set Final State
@@ -499,6 +505,8 @@ export default function App() {
               <Route path="/tools/json-to-ts" element={<JsonToTs />} />
               <Route path="/tools/jwt-decoder" element={<JwtDecoder />} />
               <Route path="/tools/meta-extractor" element={<MetaExtractor />} />
+
+              <Route path="/tutorials" element={<Tutorials />} />
 
               {/* ADMIN ROUTES */}
               <Route path="/admin/login" element={<AdminLogin />} />
