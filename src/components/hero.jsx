@@ -11,48 +11,7 @@ import {
   SiNodedotjs,
 } from "react-icons/si";
 
-// 1. CYBERPUNK TEXT SCRAMBLER COMPONENT (The Hacker Flex)
-const CyberpunkText = ({ text, className }) => {
-  const [displayText, setDisplayText] = useState(text);
-  const intervalRef = useRef(null);
-  const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()<>-_\\/[]{}";
-
-  const handleMouseEnter = () => {
-    let iteration = 0;
-    clearInterval(intervalRef.current);
-
-    intervalRef.current = setInterval(() => {
-      setDisplayText(
-        text
-          .split("")
-          .map((letter, index) => {
-            if (index < iteration) {
-              return text[index];
-            }
-            return letters[Math.floor(Math.random() * letters.length)];
-          })
-          .join(""),
-      );
-
-      if (iteration >= text.length) {
-        clearInterval(intervalRef.current);
-      }
-
-      iteration += 1 / 3; // Speed of decoding
-    }, 30);
-  };
-
-  return (
-    <span
-      onMouseEnter={handleMouseEnter}
-      className={`${className} cursor-crosshair transition-all duration-300`}
-    >
-      {displayText}
-    </span>
-  );
-};
-
-// 2. INTERACTIVE PARTICLE NETWORK COMPONENT (The Engineering Web)
+// 1. INTERACTIVE PARTICLE NETWORK COMPONENT (The Engineering Web)
 const ParticleNetwork = () => {
   const canvasRef = useRef(null);
 
@@ -197,7 +156,7 @@ const ParticleNetwork = () => {
   );
 };
 
-// 3. MAIN HERO SECTION
+// 2. MAIN HERO SECTION
 export default function HeroSection() {
   const techStack = [
     { name: "MERN Stack", Icon: SiReact },
@@ -206,7 +165,7 @@ export default function HeroSection() {
     { name: "Custom APIs", Icon: Webhook },
     { name: "WordPress", Icon: SiWordpress },
     { name: "Shopify", Icon: SiShopify },
-    { name: "Webflow", Icon: SiWebflow },
+    { name: "Webflow", Icon: SiNodedotjs },
     { name: "Node.js Architecture", Icon: SiNodedotjs },
   ];
 
@@ -224,14 +183,14 @@ export default function HeroSection() {
         `}
       </style>
 
-      {/* --- ADDED: Interactive Particle Network --- */}
+      {/* Interactive Particle Network */}
       <ParticleNetwork />
 
       {/* Ambient Glow Effects */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[300px] bg-linear-to-b from-blue-600/20 via-indigo-500/10 to-transparent blur-[110px] pointer-events-none rounded-full transform-gpu" />
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] bg-cyan-500/10 blur-[140px] pointer-events-none rounded-full transform-gpu" />
 
-      {/* Dot Matrix Grid Pattern (Kept as a subtle backdrop for depth) */}
+      {/* Dot Matrix Grid Pattern */}
       <div
         className="absolute inset-0 z-0 opacity-[0.12] pointer-events-none transform-gpu"
         style={{
@@ -248,11 +207,9 @@ export default function HeroSection() {
         <div className="max-w-6xl mx-auto text-center flex flex-col items-center">
           <h1 className="text-[2.4rem] sm:text-5xl lg:text-[4.5rem] font-extrabold tracking-tight leading-[1.12] mb-6">
             <span className="text-white block">Lead Your Industry With</span>
-            {/* --- ADDED: Cyberpunk Text Scrambler on Hover --- */}
-            <CyberpunkText
-              text="Next-Generation"
-              className="text-transparent bg-clip-text bg-linear-to-r from-blue-400 via-indigo-300 to-cyan-400 drop-shadow-[0_0_35px_rgba(37,99,235,0.35)] block py-2"
-            />
+            <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-400 via-indigo-300 to-cyan-400 drop-shadow-[0_0_35px_rgba(37,99,235,0.35)] block py-2">
+              Next-Generation
+            </span>
             <span className="text-white block">Optimised Web Solutions.</span>
           </h1>
 
