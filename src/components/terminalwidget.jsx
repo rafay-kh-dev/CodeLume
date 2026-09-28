@@ -1,11 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Terminal as TerminalIcon, X } from "lucide-react";
+import { Terminal as TerminalIcon, X, ChevronRight } from "lucide-react";
 
 export default function TerminalWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState("");
   const [history, setHistory] = useState([
-    { type: "system", text: "CodeLume OS v2.0.0 initialised." },
+    { type: "system", text: "CodeLume OS v3.0.0 initialised." },
     { type: "system", text: 'Type "help" to see available commands.' },
   ]);
 
@@ -29,52 +29,102 @@ export default function TerminalWidget() {
         case "help":
           newHistory.push({
             type: "output",
-            text: "Available commands: about, stack, services, tutorials, tools, hire, ls, clear",
+            text: "Available commands: about, services, mern stack, ui ux, blogs, case studies, tools, tutorials, hire, admin, clear",
           });
           break;
         case "about":
           newHistory.push({
             type: "output",
-            text: "Rafay is a bespoke MERN stack engineer & UI/UX designer building highly optimised digital experiences for modern enterprises.",
-          });
-          break;
-        case "stack":
-          newHistory.push({
-            type: "output",
-            text: "Frontend: React, Tailwind CSS | Backend: Node.js, Express | Database: MongoDB",
+            text: "CodeLume: Engineered for high-performance digital experiences. Specialising in MERN stack and bespoke UI/UX design.",
           });
           break;
         case "services":
           newHistory.push({
             type: "output",
-            text: "CodeLume Services: 1. MERN Stack Dev 2. UI/UX Design 3. Mobile Apps 4. Full Branding 5. API Integrations",
+            text: "Our Expertise: MERN Stack, PHP/Laravel, Angular, WordPress, Shopify, Webflow, Custom Platforms, UI/UX Design, Full Branding, API Integrations. Type specific service for details.",
+          });
+          break;
+        case "mern stack":
+        case "mern":
+        case "react":
+        case "node":
+          newHistory.push({
+            type: "output",
+            text: "Enterprise-grade MERN Stack Development. MongoDB, Express.js, React, Node.js. Navigate to /services/mern-stack",
+          });
+          break;
+        case "ui ux":
+        case "design":
+        case "branding":
+          newHistory.push({
+            type: "output",
+            text: "Pixel-perfect, high-conversion UI/UX & Full Branding. Navigate to /services/ui-ux-design",
+          });
+          break;
+        case "wordpress":
+        case "shopify":
+        case "webflow":
+          newHistory.push({
+            type: "output",
+            text: `Yes, we build highly optimised ${cmd} platforms. Navigate to /services/${cmd.replace(" ", "-")}`,
+          });
+          break;
+        case "blogs":
+        case "blog":
+          newHistory.push({
+            type: "output",
+            text: "Read our latest engineering insights and tech articles. Navigate to /blogs",
+          });
+          break;
+        case "case studies":
+        case "portfolio":
+        case "work":
+          newHistory.push({
+            type: "output",
+            text: "View our successful client projects and technical case studies. Navigate to /case-studies",
           });
           break;
         case "tutorials":
         case "courses":
           newHistory.push({
             type: "output",
-            text: "Free MERN Mastery Hub: React Course, Node.js Architecture, Express.js APIs, MongoDB Databases. Navigate to /tutorials to start learning.",
+            text: "Free Mastery Hub: React, Node.js, Express.js, MongoDB. Navigate to /tutorials",
           });
           break;
         case "tools":
         case "free tools":
-        case "freetools":
           newHistory.push({
             type: "output",
-            text: "Developer Toolkit: SVG to React JSX, JSON to TypeScript, JWT Decoder, Meta Tag Extractor. Check the Dev Tools section!",
+            text: "Dev Tools: SVG to React, JSON to TS, JWT Decoder, Meta Extractor. Navigate to /tools",
+          });
+          break;
+        case "admin":
+        case "login":
+        case "dashboard":
+          newHistory.push({
+            type: "error",
+            text: "Security Alert: Restricted area. Admin privileges required. Redirecting to /admin/login...",
+          });
+          break;
+        case "privacy":
+        case "terms":
+          newHistory.push({
+            type: "output",
+            text: "Legal documentation available at /privacy-policy and /terms-of-service",
+          });
+          break;
+        case "hire":
+        case "contact":
+        case "start project":
+          newHistory.push({
+            type: "output",
+            text: "Initialising contact protocol... Navigate to /start-project to access the Live Estimator.",
           });
           break;
         case "ls":
           newHistory.push({
             type: "output",
-            text: "Directories: /services  /tutorials  /tools  /case-studies  /blogs  /about",
-          });
-          break;
-        case "whoami":
-          newHistory.push({
-            type: "output",
-            text: "guest - Welcome to CodeLume OS. You have limited privileges.",
+            text: "Directories: /services  /tutorials  /tools  /case-studies  /blogs  /about  /admin",
           });
           break;
         case "sudo":
@@ -82,13 +132,6 @@ export default function TerminalWidget() {
           newHistory.push({
             type: "error",
             text: "Access Denied: Nice try! Only Rafay has root access to this system.",
-          });
-          break;
-        case "hire":
-        case "contact":
-          newHistory.push({
-            type: "output",
-            text: "Initialising contact protocol... Navigate to /start-project to build something extraordinary.",
           });
           break;
         case "clear":
