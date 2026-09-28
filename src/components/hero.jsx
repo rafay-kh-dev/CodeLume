@@ -11,7 +11,7 @@ import {
   SiNodedotjs,
 } from "react-icons/si";
 
-// 1. ELASTIC SPIDER WEB NETWORK (Physics-Based Net)
+// 1. ELASTIC SPIDER WEB + CYBER SPIDER PHYSICS
 const SpiderWebNetwork = () => {
   const canvasRef = useRef(null);
 
@@ -22,22 +22,16 @@ const SpiderWebNetwork = () => {
     const ctx = canvas.getContext("2d");
     let animationFrameId;
     let nodesArray = [];
+    let cyberSpider;
 
-    // Mouse properties
     let mouse = {
-      x: null,
-      y: null,
-      radius: 180, // How far the web stretches towards the mouse
+      x: window.innerWidth / 2,
+      y: window.innerHeight / 2,
     };
 
     const handleMouseMove = (event) => {
       mouse.x = event.clientX;
       mouse.y = event.clientY;
-    };
-
-    const handleMouseOut = () => {
-      mouse.x = null;
-      mouse.y = null;
     };
 
     const handleResize = () => {
@@ -47,51 +41,132 @@ const SpiderWebNetwork = () => {
     };
 
     window.addEventListener("mousemove", handleMouseMove);
-    window.addEventListener("mouseout", handleMouseOut);
     window.addEventListener("resize", handleResize);
 
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
+    // --- CYBER SPIDER CLASS ---
+    class CyberSpider {
+      constructor(x, y) {
+        this.x = x;
+        this.y = y;
+        this.vx = 0;
+        this.vy = 0;
+        this.angle = 0;
+        this.legPhase = 0;
+        this.radius = 160; // Kitni door tak jaala iski taraf khinchega
+      }
+
+      update() {
+        let dx = mouse.x - this.x;
+        let dy = mouse.y - this.y;
+        let distance = Math.sqrt(dx * dx + dy * dy);
+
+        if (distance > 2) {
+          this.angle = Math.atan2(dy, dx);
+
+          // Smooth chasing physics
+          this.vx = dx * 0.05;
+          this.vy = dy * 0.05;
+
+          this.x += this.vx;
+          this.y += this.vy;
+
+          // Walking animation speed based on movement velocity
+          this.legPhase +=
+            Math.sqrt(this.vx * this.vx + this.vy * this.vy) * 0.25;
+        }
+      }
+
+      draw() {
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.rotate(this.angle);
+
+        ctx.fillStyle = "#3b82f6"; // Navy Blue Theme
+        ctx.strokeStyle = "#3b82f6";
+        ctx.lineWidth = 1.5;
+
+        // Spider Abdomen (Peeche wala hissa)
+        ctx.beginPath();
+        ctx.ellipse(-4, 0, 7, 5, 0, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Spider Head
+        ctx.beginPath();
+        ctx.arc(4, 0, 3, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Spider Legs Physics
+        const legBases = [
+          { x: 3, y: 2 },
+          { x: 1, y: 3 },
+          { x: -1, y: 3 },
+          { x: -3, y: 2 },
+        ];
+
+        for (let i = 0; i < 4; i++) {
+          let base = legBases[i];
+          let phaseOffset = i * (Math.PI / 2);
+
+          // Right legs
+          let swingR = Math.sin(this.legPhase + phaseOffset);
+          ctx.beginPath();
+          ctx.moveTo(base.x, base.y);
+          ctx.lineTo(base.x + 3 + swingR * 3, base.y + 7); // Knee
+          ctx.lineTo(base.x - 2 + swingR * 5, base.y + 14); // Foot
+          ctx.stroke();
+
+          // Left legs
+          let swingL = Math.sin(this.legPhase + phaseOffset + Math.PI);
+          ctx.beginPath();
+          ctx.moveTo(base.x, -base.y);
+          ctx.lineTo(base.x + 3 + swingL * 3, -base.y - 7);
+          ctx.lineTo(base.x - 2 + swingL * 5, -base.y - 14);
+          ctx.stroke();
+        }
+        ctx.restore();
+      }
+    }
+
+    // --- WEB NODES CLASS ---
     class Node {
       constructor(x, y) {
-        this.baseX = x; // Original anchor point
+        this.baseX = x;
         this.baseY = y;
-        this.x = x; // Current stretching point
+        this.x = x;
         this.y = y;
-        this.vx = 0; // Velocity X
-        this.vy = 0; // Velocity Y
+        this.vx = 0;
+        this.vy = 0;
         this.size = 1.5;
       }
 
       update() {
-        // 1. Spring Physics (Pull back to original position)
-        let forceX = (this.baseX - this.x) * 0.05; // Spring constant
+        // 1. Spring Physics (Pull back to original)
+        let forceX = (this.baseX - this.x) * 0.05;
         let forceY = (this.baseY - this.y) * 0.05;
 
-        // 2. Mouse Pull (Stretch towards cursor)
-        if (mouse.x !== null && mouse.y !== null) {
-          let dx = mouse.x - this.x;
-          let dy = mouse.y - this.y;
+        // 2. Spider Pull (Jaala Spider ki taraf khinchega, cursor ki taraf nahi)
+        if (cyberSpider) {
+          let dx = cyberSpider.x - this.x;
+          let dy = cyberSpider.y - this.y;
           let distance = Math.sqrt(dx * dx + dy * dy);
 
-          if (distance < mouse.radius) {
-            let pullForce = (mouse.radius - distance) / mouse.radius;
-            // The closer the mouse, the stronger the pull
-            forceX += (dx / distance) * pullForce * 1.5;
-            forceY += (dy / distance) * pullForce * 1.5;
+          if (distance < cyberSpider.radius) {
+            let pullForce =
+              (cyberSpider.radius - distance) / cyberSpider.radius;
+            forceX += (dx / distance) * pullForce * 2.2;
+            forceY += (dy / distance) * pullForce * 2.2;
           }
         }
 
-        // Apply forces to velocity
         this.vx += forceX;
         this.vy += forceY;
 
-        // Add friction so it doesn't bounce forever
-        this.vx *= 0.85;
-        this.vy *= 0.85;
+        this.vx *= 0.82; // Friction
+        this.vy *= 0.82;
 
-        // Update actual position
         this.x += this.vx;
         this.y += this.vy;
       }
@@ -99,31 +174,31 @@ const SpiderWebNetwork = () => {
       draw() {
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
-        ctx.fillStyle = "rgba(56, 189, 248, 0.8)"; // Cyan dots
+        ctx.fillStyle = "rgba(59, 130, 246, 0.8)"; // Original Blue theme
         ctx.fill();
       }
     }
 
     const init = () => {
       nodesArray = [];
-      // Create a uniform grid of nodes to form a structured web/net
-      let spacing = 90; // Distance between nodes
+      cyberSpider = new CyberSpider(
+        window.innerWidth / 2,
+        window.innerHeight / 2,
+      );
+
+      let spacing = 90;
       let cols = Math.floor(window.innerWidth / spacing);
       let rows = Math.floor(window.innerHeight / spacing);
 
-      // Calculate offsets to center the grid
       let offsetX = (window.innerWidth - cols * spacing) / 2;
       let offsetY = (window.innerHeight - rows * spacing) / 2;
 
       for (let i = 0; i <= cols; i++) {
         for (let j = 0; j <= rows; j++) {
-          // Add a slight random jitter so it looks organic, not perfectly square
           let jitterX = (Math.random() - 0.5) * 40;
           let jitterY = (Math.random() - 0.5) * 40;
-
           let x = i * spacing + offsetX + jitterX;
           let y = j * spacing + offsetY + jitterY;
-
           nodesArray.push(new Node(x, y));
         }
       }
@@ -133,28 +208,29 @@ const SpiderWebNetwork = () => {
       animationFrameId = requestAnimationFrame(animate);
       ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
-      // Update node positions based on physics
+      // Update & Draw Spider First
+      cyberSpider.update();
+
+      // Update Nodes
       for (let i = 0; i < nodesArray.length; i++) {
         nodesArray[i].update();
         nodesArray[i].draw();
       }
 
-      // Draw the Web (Connect nearby nodes)
-      ctx.lineWidth = 1;
+      // Draw Web Threads (Original Navy Blue Theme)
+      ctx.lineWidth = 1.2;
       for (let a = 0; a < nodesArray.length; a++) {
         for (let b = a + 1; b < nodesArray.length; b++) {
           let pA = nodesArray[a];
           let pB = nodesArray[b];
 
-          // Calculate distance between the two stretching nodes
           let dx = pA.x - pB.x;
           let dy = pA.y - pB.y;
           let distance = Math.sqrt(dx * dx + dy * dy);
 
-          // If they are close enough, draw a web thread
           if (distance < 130) {
             let opacity = 1 - distance / 130;
-            ctx.strokeStyle = `rgba(56, 189, 248, ${opacity * 0.4})`; // Cyan threads
+            ctx.strokeStyle = `rgba(59, 130, 246, ${opacity * 0.4})`; // Navy blue color
             ctx.beginPath();
             ctx.moveTo(pA.x, pA.y);
             ctx.lineTo(pB.x, pB.y);
@@ -162,6 +238,9 @@ const SpiderWebNetwork = () => {
           }
         }
       }
+
+      // Draw Spider on top of the web
+      cyberSpider.draw();
     };
 
     init();
@@ -169,7 +248,6 @@ const SpiderWebNetwork = () => {
 
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("mouseout", handleMouseOut);
       window.removeEventListener("resize", handleResize);
       cancelAnimationFrame(animationFrameId);
     };
@@ -183,7 +261,7 @@ const SpiderWebNetwork = () => {
   );
 };
 
-// 2. MAIN HERO SECTION
+// 2. MAIN HERO SECTION (Colors reverted to original Luxury MERN style)
 export default function HeroSection() {
   const techStack = [
     { name: "MERN Stack", Icon: SiReact },
@@ -210,17 +288,18 @@ export default function HeroSection() {
         `}
       </style>
 
-      {/* Physics Elastic Spider Web Network */}
+      {/* Spider Web Network with Cyber Spider */}
       <SpiderWebNetwork />
 
-      {/* Ambient Static Glow Effects */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[300px] bg-gradient-to-b from-blue-600/15 via-cyan-500/5 to-transparent blur-[110px] pointer-events-none rounded-full transform-gpu" />
+      {/* Ambient Static Glow Effects (Back to original colors) */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[300px] bg-gradient-to-b from-blue-600/20 via-indigo-500/10 to-transparent blur-[110px] pointer-events-none rounded-full transform-gpu" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] bg-cyan-500/10 blur-[140px] pointer-events-none rounded-full transform-gpu" />
 
       <div className="flex-1 flex flex-col justify-center items-center w-full relative z-10 px-4 sm:px-6 lg:px-8 pt-16 sm:pt-20 pb-4 my-auto">
         <div className="max-w-6xl mx-auto text-center flex flex-col items-center">
           <h1 className="text-[2.4rem] sm:text-5xl lg:text-[4.5rem] font-extrabold tracking-tight leading-[1.12] mb-6 select-none cursor-default">
             <span className="text-white block">Lead Your Industry With</span>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-300 to-indigo-400 drop-shadow-[0_0_35px_rgba(37,99,235,0.35)] block py-2">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-300 to-cyan-400 drop-shadow-[0_0_35px_rgba(37,99,235,0.35)] block py-2">
               Next-Generation
             </span>
             <span className="text-white block">Optimised Web Solutions.</span>
@@ -234,9 +313,9 @@ export default function HeroSection() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-5 w-full sm:w-auto relative z-20">
             <Link
               to="/start-project"
-              className="group relative flex items-center justify-center gap-2 w-full sm:w-auto px-10 py-4 rounded-xl bg-gradient-to-b from-blue-500 to-cyan-600 text-white shadow-[0_0_35px_-8px_rgba(6,182,212,0.6)] hover:shadow-[0_0_50px_-10px_rgba(6,182,212,0.8)] border border-cyan-400/30 transition-all duration-300 active:scale-[0.98] outline-none overflow-hidden transform-gpu"
+              className="group relative flex items-center justify-center gap-2 w-full sm:w-auto px-10 py-4 rounded-xl bg-gradient-to-b from-blue-500 to-blue-700 text-white shadow-[0_0_35px_-8px_rgba(37,99,235,0.6)] hover:shadow-[0_0_50px_-10px_rgba(37,99,235,0.8)] border border-blue-400/30 transition-all duration-300 active:scale-[0.98] outline-none overflow-hidden transform-gpu"
             >
-              <Sparkles className="w-5 h-5 text-cyan-100 relative z-10" />
+              <Sparkles className="w-5 h-5 text-blue-100 relative z-10" />
               <span className="text-[16px] font-bold relative z-10 tracking-wide text-white">
                 Initialise Project
               </span>
@@ -272,7 +351,7 @@ export default function HeroSection() {
                 return (
                   <div
                     key={index}
-                    className="flex items-center gap-2.5 text-slate-400 hover:text-cyan-400 transition-colors duration-300"
+                    className="flex items-center gap-2.5 text-slate-400 hover:text-blue-400 transition-colors duration-300"
                   >
                     <IconComponent className="w-4 h-4 fill-current" />
                     <span className="text-[11px] font-bold tracking-[0.18em] uppercase">
