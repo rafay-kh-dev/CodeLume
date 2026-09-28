@@ -1,11 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Terminal as TerminalIcon, X, ChevronRight } from "lucide-react";
+import { Terminal as TerminalIcon, X } from "lucide-react";
 
 export default function TerminalWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState("");
   const [history, setHistory] = useState([
-    { type: "system", text: "CodeLume OS v1.0.0 initialised." },
+    { type: "system", text: "CodeLume OS v2.0.0 initialised." },
     { type: "system", text: 'Type "help" to see available commands.' },
   ]);
 
@@ -29,25 +29,66 @@ export default function TerminalWidget() {
         case "help":
           newHistory.push({
             type: "output",
-            text: "Available commands: about, stack, hire, clear",
+            text: "Available commands: about, stack, services, tutorials, tools, hire, ls, clear",
           });
           break;
         case "about":
           newHistory.push({
             type: "output",
-            text: "Rafay is a bespoke MERN stack engineer building highly optimised digital experiences.",
+            text: "Rafay is a bespoke MERN stack engineer & UI/UX designer building highly optimised digital experiences for modern enterprises.",
           });
           break;
         case "stack":
           newHistory.push({
             type: "output",
-            text: "MongoDB, Express.js, React, Node.js, Tailwind CSS, TypeScript",
+            text: "Frontend: React, Tailwind CSS | Backend: Node.js, Express | Database: MongoDB",
+          });
+          break;
+        case "services":
+          newHistory.push({
+            type: "output",
+            text: "CodeLume Services: 1. MERN Stack Dev 2. UI/UX Design 3. Mobile Apps 4. Full Branding 5. API Integrations",
+          });
+          break;
+        case "tutorials":
+        case "courses":
+          newHistory.push({
+            type: "output",
+            text: "Free MERN Mastery Hub: React Course, Node.js Architecture, Express.js APIs, MongoDB Databases. Navigate to /tutorials to start learning.",
+          });
+          break;
+        case "tools":
+        case "free tools":
+        case "freetools":
+          newHistory.push({
+            type: "output",
+            text: "Developer Toolkit: SVG to React JSX, JSON to TypeScript, JWT Decoder, Meta Tag Extractor. Check the Dev Tools section!",
+          });
+          break;
+        case "ls":
+          newHistory.push({
+            type: "output",
+            text: "Directories: /services  /tutorials  /tools  /case-studies  /blogs  /about",
+          });
+          break;
+        case "whoami":
+          newHistory.push({
+            type: "output",
+            text: "guest - Welcome to CodeLume OS. You have limited privileges.",
+          });
+          break;
+        case "sudo":
+        case "sudo su":
+          newHistory.push({
+            type: "error",
+            text: "Access Denied: Nice try! Only Rafay has root access to this system.",
           });
           break;
         case "hire":
+        case "contact":
           newHistory.push({
             type: "output",
-            text: "Initialising contact protocol... Navigate to /start-project to proceed.",
+            text: "Initialising contact protocol... Navigate to /start-project to build something extraordinary.",
           });
           break;
         case "clear":
