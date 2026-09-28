@@ -178,12 +178,11 @@ const ParticleNetwork = () => {
   );
 };
 
-// 3. THE HANGING SCROLL-LINKED SPIDER (The Masterpiece)
+// 3. THE HANGING SCROLL-LINKED SPIDER (Natural Pendulum Physics)
 const HangingScrollSpider = () => {
   const canvasRef = useRef(null);
 
   useEffect(() => {
-    // Disable on Mobile
     if (window.innerWidth <= 768) return;
 
     const canvas = canvasRef.current;
@@ -194,14 +193,18 @@ const HangingScrollSpider = () => {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    // Physics Variables
+    // Physics Engine Variables
     let scrollY = window.scrollY;
+    const startX = window.innerWidth * 0.12; // 12% from left
+    const startY = -20; // Anchor point slightly above screen
 
-    // Spider position config
-    const spiderX = window.innerWidth * 0.12; // 12% from the left edge
-    let currentY = -100; // Starts off-screen (top)
+    let currentDropY = 0; // Starts from anchor
     let velocityY = 0;
-    let time = 0; // For leg wiggling
+
+    let currentSwing = 0; // Pendulum swing angle
+    let swingVelocity = 0;
+
+    let time = 0;
 
     const handleScroll = () => {
       scrollY = window.scrollY;
@@ -215,68 +218,77 @@ const HangingScrollSpider = () => {
     window.addEventListener("scroll", handleScroll);
     window.addEventListener("resize", handleResize);
 
-    const drawSpider = (x, y, velocity) => {
+    const drawSpider = (dropLength, swingAngle, fallSpeed) => {
       ctx.save();
-      ctx.translate(x, y);
 
-      // The spider is pointing downwards (Math.PI / 2)
-      ctx.rotate(Math.PI / 2);
+      // 1. Anchor the entire system to the starting point
+      ctx.translate(startX, startY);
 
-      // Draw the silk thread straight up
+      // 2. Apply Pendulum Swing (Rotate from the top anchor)
+      ctx.rotate(swingAngle);
+
+      // 3. Draw the Silk Thread straight down from anchor
       ctx.beginPath();
-      // Undo rotation math for the line to always go straight up the screen
-      ctx.moveTo(-15, 0);
-      // Line goes all the way to the top of the viewport
-      ctx.lineTo(-y - 20, 0);
-      ctx.strokeStyle = "rgba(255, 255, 255, 0.25)";
-      ctx.lineWidth = 1.5;
-      ctx.setLineDash([4, 2]); // Silky dashed look
+      ctx.moveTo(0, 0);
+      ctx.lineTo(0, dropLength);
+      ctx.strokeStyle = "rgba(255, 255, 255, 0.35)";
+      ctx.lineWidth = 1.2;
+      ctx.setLineDash([3, 2]); // Silky dashed look
       ctx.stroke();
       ctx.setLineDash([]);
 
-      ctx.shadowColor = "rgba(0, 0, 0, 0.8)";
-      ctx.shadowBlur = 15;
-      ctx.shadowOffsetY = 5;
+      // 4. Move down to the end of the thread to draw the spider
+      ctx.translate(0, dropLength);
 
-      // Air Drag Physics on Legs
-      // If falling fast, legs point UP (negative drag). If still, legs wiggle gently.
-      let dragOffset = Math.max(-1.2, Math.min(1.2, velocity * 0.05));
-      let wiggle = Math.sin(time) * 0.15;
+      // Rotate spider to face DOWN relative to the thread
+      ctx.rotate(Math.PI / 2);
 
-      // Draw 8 Dangling Legs
+      ctx.shadowColor = "rgba(0, 0, 0, 0.9)";
+      ctx.shadowBlur = 12;
+      ctx.shadowOffsetY = 6;
+
+      // Leg Tucking Physics: When falling fast, spiders tuck legs UP (backwards relative to facing down)
+      // Calculate how tucked the legs should be based on vertical velocity
+      let tuckFactor = Math.max(0, Math.min(1, Math.abs(fallSpeed) * 0.08));
+
+      // Idle breathing/wiggling
+      let breathing = Math.sin(time * 2) * 0.1;
+
+      // 8 Articulated Legs
       const legAngles = [
-        Math.PI * 0.2,
-        Math.PI * 0.4,
-        Math.PI * 0.6,
-        Math.PI * 0.8,
-        -Math.PI * 0.2,
-        -Math.PI * 0.4,
-        -Math.PI * 0.6,
-        -Math.PI * 0.8,
+        Math.PI * 0.25,
+        Math.PI * 0.45,
+        Math.PI * 0.65,
+        Math.PI * 0.85,
+        -Math.PI * 0.25,
+        -Math.PI * 0.45,
+        -Math.PI * 0.65,
+        -Math.PI * 0.85,
       ];
 
       for (let i = 0; i < 8; i++) {
-        let baseAngle = legAngles[i];
         let isLeft = i >= 4;
+        let baseAngle = legAngles[i];
 
-        // Add wiggle and aerodynamic drag
-        let currentAngle =
-          baseAngle +
-          (isLeft ? -wiggle : wiggle) +
-          (isLeft ? dragOffset : -dragOffset);
+        // As tuckFactor increases, legs fold backwards (towards PI)
+        let tuckedAngle =
+          baseAngle + (isLeft ? -tuckFactor * 0.5 : tuckFactor * 0.5);
+        let finalAngle = tuckedAngle + (isLeft ? -breathing : breathing);
 
-        // Leg joints
-        let jointX = Math.cos(currentAngle) * 6;
-        let jointY = Math.sin(currentAngle) * 6;
+        // Tucking also brings legs closer to the body
+        let legStretch = 20 - tuckFactor * 6;
 
-        let kneeX = jointX + Math.cos(currentAngle) * 20;
-        let kneeY = jointY + Math.sin(currentAngle) * 20;
+        let jointX = Math.cos(finalAngle) * 5;
+        let jointY = Math.sin(finalAngle) * 5;
 
-        // Feet tuck inwards slightly
-        let footAngle = currentAngle + (isLeft ? 0.5 : -0.5);
-        let footX = kneeX + Math.cos(footAngle) * 22;
-        let footY = kneeY + Math.sin(footAngle) * 22;
+        let kneeX = jointX + Math.cos(finalAngle) * legStretch;
+        let kneeY = jointY + Math.sin(finalAngle) * legStretch;
 
+        let footAngle = finalAngle + (isLeft ? 0.6 : -0.6);
+        let footX = kneeX + Math.cos(footAngle) * (legStretch * 0.9);
+        let footY = kneeY + Math.sin(footAngle) * (legStretch * 0.9);
+
+        // Draw Femur
         ctx.beginPath();
         ctx.moveTo(jointX, jointY);
         ctx.lineTo(kneeX, kneeY);
@@ -285,6 +297,7 @@ const HangingScrollSpider = () => {
         ctx.lineCap = "round";
         ctx.stroke();
 
+        // Draw Tibia
         ctx.beginPath();
         ctx.moveTo(kneeX, kneeY);
         ctx.lineTo(footX, footY);
@@ -295,32 +308,32 @@ const HangingScrollSpider = () => {
 
       ctx.shadowColor = "transparent";
 
-      // Abdomen (Rear, connected to thread)
+      // Abdomen
       let abGrad = ctx.createRadialGradient(-10, 0, 0, -10, 0, 15);
       abGrad.addColorStop(0, "#3b82f6");
       abGrad.addColorStop(0.7, "#1e3a8a");
       abGrad.addColorStop(1, "#020617");
 
       ctx.beginPath();
-      ctx.ellipse(-12, 0, 15, 10, 0, 0, Math.PI * 2);
+      ctx.ellipse(-10, 0, 14, 10, 0, 0, Math.PI * 2);
       ctx.fillStyle = abGrad;
       ctx.fill();
 
-      // Head (Pointing down)
+      // Head
       ctx.beginPath();
-      ctx.ellipse(2, 0, 7, 6, 0, 0, Math.PI * 2);
+      ctx.ellipse(3, 0, 7, 6, 0, 0, Math.PI * 2);
       ctx.fillStyle = "#0f172a";
       ctx.fill();
 
-      // Glowing Cyan Eyes
+      // Glowing Eyes
       ctx.fillStyle = "#22d3ee";
       ctx.shadowColor = "#22d3ee";
       ctx.shadowBlur = 6;
       ctx.beginPath();
-      ctx.arc(6, -2, 1.2, 0, Math.PI * 2);
+      ctx.arc(7, -2, 1.2, 0, Math.PI * 2);
       ctx.fill();
       ctx.beginPath();
-      ctx.arc(6, 2, 1.2, 0, Math.PI * 2);
+      ctx.arc(7, 2, 1.2, 0, Math.PI * 2);
       ctx.fill();
 
       ctx.restore();
@@ -330,19 +343,31 @@ const HangingScrollSpider = () => {
       animationFrameId = requestAnimationFrame(animate);
       ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
-      // Spring Physics for Scroll
-      // Base resting position is 150px from top. Scrolling adds to it.
-      let targetY = 150 + scrollY * 0.7;
+      // --- VERTICAL DROP PHYSICS ---
+      // Fix 1: Restrict maximum drop so it doesn't go off-screen
+      let maxDrop = window.innerHeight * 0.45; // Max 45% of screen height
 
-      // Calculate spring force
-      let force = (targetY - currentY) * 0.08; // Spring stiffness
-      velocityY += force;
-      velocityY *= 0.85; // Friction/Damping - lower means more bouncy!
-      currentY += velocityY;
+      // Base resting position is 120px down. Scrolling adds to it smoothly.
+      let targetY = 120 + Math.min(scrollY * 0.6, maxDrop);
 
-      time += 0.05; // Advance time for leg wiggling
+      let forceY = (targetY - currentDropY) * 0.05; // Spring tension
+      velocityY += forceY;
+      velocityY *= 0.82; // Damping (bounciness)
+      currentDropY += velocityY;
 
-      drawSpider(spiderX, currentY, velocityY);
+      // --- HORIZONTAL PENDULUM PHYSICS ---
+      // Fix 2: When falling/bouncing vertically, wind pushes it sideways slightly
+      let targetSwing = velocityY * -0.003; // Fall creates a slight swing
+      targetSwing += Math.sin(time) * 0.03; // Natural ambient wind breeze
+
+      let swingForce = (targetSwing - currentSwing) * 0.04;
+      swingVelocity += swingForce;
+      swingVelocity *= 0.92; // Swing damping
+      currentSwing += swingVelocity;
+
+      time += 0.04;
+
+      drawSpider(currentDropY, currentSwing, velocityY);
     };
 
     animate();
@@ -389,17 +414,15 @@ export default function HeroSection() {
         `}
       </style>
 
-      {/* 1. Base Particles (Background) */}
+      {/* Background Dots Network */}
       <ParticleNetwork />
 
-      {/* 2. The Hanging Parallax Spider (Foreground Overlay, Desktop Only) */}
+      {/* 100% Natural Pendulum Hanging Spider */}
       <HangingScrollSpider />
 
-      {/* Ambient Glow Effects */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[300px] bg-gradient-to-b from-blue-600/20 via-indigo-500/10 to-transparent blur-[110px] pointer-events-none rounded-full transform-gpu" />
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] bg-cyan-500/10 blur-[140px] pointer-events-none rounded-full transform-gpu" />
 
-      {/* Dot Matrix Grid Pattern */}
       <div
         className="absolute inset-0 z-0 opacity-[0.12] pointer-events-none transform-gpu"
         style={{
@@ -416,7 +439,6 @@ export default function HeroSection() {
         <div className="max-w-6xl mx-auto text-center flex flex-col items-center">
           <h2 className="text-[2.4rem] sm:text-5xl lg:text-[4.5rem] font-extrabold tracking-tight leading-[1.12] mb-6 select-none cursor-default">
             <span className="text-white block">Lead Your Industry With</span>
-            {/* Cyberpunk Text Scrambler on Hover */}
             <CyberpunkText
               text="Next-Generation"
               className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-300 to-cyan-400 drop-shadow-[0_0_35px_rgba(37,99,235,0.35)] block py-2"
