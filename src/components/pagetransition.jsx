@@ -4,16 +4,16 @@ import { motion } from "framer-motion";
 export default function PageTransition({ children }) {
   return (
     <motion.div
-      // Starts far left with a cinematic motion blur and slightly zoomed out
-      initial={{ opacity: 0, x: "-15vw", scale: 0.98, filter: "blur(8px)" }}
+      // Naya page neechay (bottom) se aayega, thora blur hoga
+      initial={{ opacity: 0, y: 100, filter: "blur(8px)" }}
       
-      // Snaps perfectly into the center, sharp and clear
-      animate={{ opacity: 1, x: 0, scale: 1, filter: "blur(0px)" }}
+      // Screen ke bilkul center mein aakar clear aur lock ho jayega
+      animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
       
-      // Swipes far right, blurring out as it leaves
-      exit={{ opacity: 0, x: "15vw", scale: 0.98, filter: "blur(8px)" }}
+      // Purana page upar (top) ki taraf slide out ho jayega
+      exit={{ opacity: 0, y: -100, filter: "blur(8px)" }}
       
-      // Slightly longer duration so the user ACTUALLY sees it happen
+      // Timing 0.6s rakhi hai taake user ko maza aaye aur proper feel ho
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
       
       className="w-full h-full"
