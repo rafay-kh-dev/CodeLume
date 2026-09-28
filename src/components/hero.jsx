@@ -11,171 +11,83 @@ import {
   SiNodedotjs,
 } from "react-icons/si";
 
-// 1. ADVANCED 3D SPACE PARALLAX NETWORK (Idea 1 Enhanced to Extreme)
-const ParticleNetwork = () => {
-  const canvasRef = useRef(null);
+// 1. ADVANCED DARK FLUID DISTORTION BACKGROUND
+const FluidBackground = () => {
+  const interactiveRef = useRef(null);
 
   useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const ctx = canvas.getContext("2d");
-    let animationFrameId;
-    let particlesArray = [];
-
-    let mouse = {
-      x: null,
-      y: null,
-      radius: 130, // Repulsion area
-    };
-
-    const handleMouseMove = (event) => {
-      mouse.x = event.x;
-      mouse.y = event.y;
-    };
-
-    const handleMouseOut = () => {
-      mouse.x = null;
-      mouse.y = null;
-    };
-
-    const handleResize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      init();
+    const handleMouseMove = (e) => {
+      if (interactiveRef.current) {
+        // Centering the 500px orb on the cursor
+        const x = e.clientX - 250;
+        const y = e.clientY - 250;
+        interactiveRef.current.style.transform = `translate(${x}px, ${y}px)`;
+      }
     };
 
     window.addEventListener("mousemove", handleMouseMove);
-    window.addEventListener("mouseout", handleMouseOut);
-    window.addEventListener("resize", handleResize);
-
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    class Particle {
-      constructor(x, y, directionX, directionY, zDepth) {
-        this.x = x;
-        this.y = y;
-        this.zDepth = zDepth; // Pure 3D Depth variable (0.1 to 1.0)
-
-        // Depth Math (Extreme): Foreground ones move very fast
-        this.directionX = directionX * Math.pow(this.zDepth, 2) * 1.5;
-        this.directionY = directionY * Math.pow(this.zDepth, 2) * 1.5;
-
-        // Depth Math (Extreme): Foreground ones are massive, background are tiny dots
-        this.size = 1 + zDepth * 8;
-
-        // Depth Math (Extreme): Foreground ones are solid, background are faint ghosts
-        this.opacity = 0.05 + zDepth * 0.95;
-      }
-
-      draw() {
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
-        ctx.fillStyle = `rgba(59, 130, 246, ${this.opacity})`;
-        ctx.fill();
-      }
-
-      update() {
-        if (this.x > canvas.width || this.x < 0)
-          this.directionX = -this.directionX;
-        if (this.y > canvas.height || this.y < 0)
-          this.directionY = -this.directionY;
-
-        if (mouse.x !== null && mouse.y !== null) {
-          let dx = mouse.x - this.x;
-          let dy = mouse.y - this.y;
-          let distance = Math.sqrt(dx * dx + dy * dy);
-
-          if (distance < mouse.radius) {
-            const forceDirectionX = dx / distance;
-            const forceDirectionY = dy / distance;
-            const force = (mouse.radius - distance) / mouse.radius;
-
-            // Extreme Mouse Repulsion: Background ones ignore mouse, foreground ones go "zing"!
-            this.x -= forceDirectionX * force * 20 * Math.pow(this.zDepth, 3);
-            this.y -= forceDirectionY * force * 20 * Math.pow(this.zDepth, 3);
-          }
-        }
-
-        this.x += this.directionX;
-        this.y += this.directionY;
-        this.draw();
-      }
-    }
-
-    const init = () => {
-      particlesArray = [];
-      // Reduce number for clearer 3D layers, fewer massive foreground ones
-      let numberOfParticles = (canvas.height * canvas.width) / 10000;
-
-      for (let i = 0; i < numberOfParticles; i++) {
-        let x = Math.random() * (window.innerWidth - 20 - 20) + 20;
-        let y = Math.random() * (window.innerHeight - 20 - 20) + 20;
-        let directionX = Math.random() * 2 - 1;
-        let directionY = Math.random() * 2 - 1;
-
-        // Non-linear depth distribution: Lots of ghosts, a few solid big ones
-        let zDepth = Math.pow(Math.random(), 2) * 0.9 + 0.1;
-
-        particlesArray.push(new Particle(x, y, directionX, directionY, zDepth));
-      }
-    };
-
-    const animate = () => {
-      animationFrameId = requestAnimationFrame(animate);
-      ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-
-      for (let i = 0; i < particlesArray.length; i++) {
-        particlesArray[i].update();
-      }
-
-      for (let a = 0; a < particlesArray.length; a++) {
-        for (let b = a; b < particlesArray.length; b++) {
-          let dx = particlesArray[a].x - particlesArray[b].x;
-          let dy = particlesArray[a].y - particlesArray[b].y;
-          let distanceSq = dx * dx + dy * dy;
-
-          // Only draw lines within shallow depth planes
-          if (distanceSq < 20000) {
-            let depthDifference = Math.abs(
-              particlesArray[a].zDepth - particlesArray[b].zDepth,
-            );
-
-            if (depthDifference < 0.25) {
-              // Lines themselves have depth: ghosts draw faint lines
-              let lineOpacity =
-                (1 - distanceSq / 20000) *
-                Math.min(particlesArray[a].zDepth, particlesArray[b].zDepth) *
-                0.6;
-              ctx.strokeStyle = `rgba(59, 130, 246, ${lineOpacity})`;
-              ctx.lineWidth = 1;
-              ctx.beginPath();
-              ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
-              ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
-              ctx.stroke();
-            }
-          }
-        }
-      }
-    };
-
-    init();
-    animate();
-
-    return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("mouseout", handleMouseOut);
-      window.removeEventListener("resize", handleResize);
-      cancelAnimationFrame(animationFrameId);
-    };
+    return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
   return (
-    <canvas
-      ref={canvasRef}
-      className="absolute inset-0 z-0 pointer-events-none opacity-80"
-    />
+    <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+      {/* SVG Liquid Distortion Filter */}
+      <svg className="absolute w-0 h-0">
+        <filter id="liquid-distortion">
+          <feTurbulence
+            type="fractalNoise"
+            baseFrequency="0.005"
+            numOctaves="4"
+            result="noise"
+          >
+            {/* Animating the noise to make the liquid feel "alive" even when still */}
+            <animate
+              attributeName="baseFrequency"
+              dur="20s"
+              values="0.005;0.008;0.005"
+              repeatCount="indefinite"
+            />
+          </feTurbulence>
+          <feDisplacementMap
+            in="SourceGraphic"
+            in2="noise"
+            scale="60"
+            xChannelSelector="R"
+            yChannelSelector="G"
+          />
+        </filter>
+      </svg>
+
+      {/* The Liquid Container */}
+      <div
+        className="absolute inset-0 w-full h-full opacity-60"
+        style={{ filter: "url(#liquid-distortion)" }}
+      >
+        {/* Animated Background Orbs */}
+        <div className="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] bg-blue-700/50 rounded-full blur-[100px] mix-blend-screen animate-blob" />
+        <div className="absolute top-[20%] right-[-10%] w-[45vw] h-[45vw] bg-indigo-600/40 rounded-full blur-[120px] mix-blend-screen animate-blob animation-delay-2000" />
+        <div className="absolute bottom-[-20%] left-[20%] w-[55vw] h-[55vw] bg-blue-900/60 rounded-full blur-[100px] mix-blend-screen animate-blob animation-delay-4000" />
+
+        {/* Interactive Mouse Tracking Orb */}
+        <div
+          ref={interactiveRef}
+          className="absolute top-0 left-0 w-[500px] h-[500px] bg-cyan-400/50 rounded-full blur-[90px] mix-blend-screen will-change-transform duration-75 ease-out"
+        />
+      </div>
+
+      {/* Grid Overlay to add technical texture over the liquid */}
+      <div
+        className="absolute inset-0 z-10 opacity-[0.15] mix-blend-overlay"
+        style={{
+          backgroundImage: `radial-gradient(rgba(255, 255, 255, 0.4) 1px, transparent 1px)`,
+          backgroundSize: "32px 32px",
+          maskImage:
+            "radial-gradient(ellipse 80% 80% at 50% 50%, #000 40%, transparent 100%)",
+          WebkitMaskImage:
+            "radial-gradient(ellipse 80% 80% at 50% 50%, #000 40%, transparent 100%)",
+        }}
+      />
+    </div>
   );
 };
 
@@ -201,32 +113,28 @@ export default function HeroSection() {
           ::-webkit-scrollbar { width: 8px; height: 8px; }
           ::-webkit-scrollbar-track { background: #030712; }
           ::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 10px; }
+          
+          /* Marquee Animation */
           @keyframes marquee { 0% { transform: translate3d(0,0,0); } 100% { transform: translate3d(-50%,0,0); } }
           .animate-marquee { animation: marquee 35s linear infinite; will-change: transform; }
+          
+          /* Fluid Blob Keyframes */
+          @keyframes blob {
+            0% { transform: translate(0px, 0px) scale(1); }
+            33% { transform: translate(30px, -50px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+            100% { transform: translate(0px, 0px) scale(1); }
+          }
+          .animate-blob { animation: blob 15s infinite alternate; }
+          .animation-delay-2000 { animation-delay: 2s; }
+          .animation-delay-4000 { animation-delay: 4s; }
         `}
       </style>
 
-      {/* Extreme 3D Space Parallax Network */}
-      <ParticleNetwork />
+      {/* The new liquid distortion background */}
+      <FluidBackground />
 
-      {/* Ambient Glow Effects */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[300px] bg-gradient-to-b from-blue-600/20 via-indigo-500/10 to-transparent blur-[110px] pointer-events-none rounded-full transform-gpu" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] bg-cyan-500/10 blur-[140px] pointer-events-none rounded-full transform-gpu" />
-
-      {/* Dot Matrix Grid Pattern */}
-      <div
-        className="absolute inset-0 z-0 opacity-[0.12] pointer-events-none transform-gpu"
-        style={{
-          backgroundImage: `radial-gradient(rgba(255, 255, 255, 0.25) 1px, transparent 1px)`,
-          backgroundSize: "32px 32px",
-          maskImage:
-            "radial-gradient(ellipse 70% 70% at 50% 50%, #000 40%, transparent 100%)",
-          WebkitMaskImage:
-            "radial-gradient(ellipse 70% 70% at 50% 50%, #000 40%, transparent 100%)",
-        }}
-      />
-
-      <div className="flex-1 flex flex-col justify-center items-center w-full relative z-10 px-4 sm:px-6 lg:px-8 pt-16 sm:pt-20 pb-4 my-auto">
+      <div className="flex-1 flex flex-col justify-center items-center w-full relative z-20 px-4 sm:px-6 lg:px-8 pt-16 sm:pt-20 pb-4 my-auto">
         <div className="max-w-6xl mx-auto text-center flex flex-col items-center">
           <h1 className="text-[2.4rem] sm:text-5xl lg:text-[4.5rem] font-extrabold tracking-tight leading-[1.12] mb-6 select-none">
             <span className="text-white block">Lead Your Industry With</span>
@@ -241,7 +149,7 @@ export default function HeroSection() {
             conversion rates, scale customer acquisition, and maximise revenue.
           </p>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-5 w-full sm:w-auto relative z-20">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-5 w-full sm:w-auto">
             <Link
               to="/start-project"
               className="group relative flex items-center justify-center gap-2 w-full sm:w-auto px-10 py-4 rounded-xl bg-gradient-to-b from-blue-500 to-blue-700 text-white shadow-[0_0_35px_-8px_rgba(37,99,235,0.6)] hover:shadow-[0_0_50px_-10px_rgba(37,99,235,0.8)] border border-blue-400/30 transition-all duration-300 active:scale-[0.98] outline-none overflow-hidden transform-gpu"
@@ -266,7 +174,7 @@ export default function HeroSection() {
       </div>
 
       <div
-        className="w-full h-14 bg-[#030712]/90 backdrop-blur-xl overflow-hidden flex items-center z-30 border-t border-white/[0.04] shrink-0 transform-gpu relative z-30"
+        className="w-full h-14 bg-[#030712]/90 backdrop-blur-xl overflow-hidden flex items-center z-30 border-t border-white/[0.04] shrink-0 transform-gpu relative"
         style={{
           maskImage:
             "linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%)",
