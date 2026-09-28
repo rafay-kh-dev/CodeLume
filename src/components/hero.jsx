@@ -12,7 +12,7 @@ import {
 } from "react-icons/si";
 import * as THREE from "three";
 
-// 1. ADVANCED 3D MAGNETIC WAVE (Custom Shaders + Physics)
+// 1. PURE BLUE 3D MAGNETIC WAVE (Custom Shaders + Physics)
 const ThreeBackground = () => {
   const mountRef = useRef(null);
 
@@ -21,7 +21,6 @@ const ThreeBackground = () => {
 
     // Scene Setup
     const scene = new THREE.Scene();
-    // Adding Fog to smoothly blend the edges into the dark background
     scene.fog = new THREE.FogExp2(0x030712, 0.0035);
     
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 1000);
@@ -57,11 +56,11 @@ const ThreeBackground = () => {
     geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
     geometry.setAttribute("scale", new THREE.BufferAttribute(scales, 1));
 
-    // CUSTOM SHADER: Colors change based on wave height
+    // CUSTOM SHADER: Pure Primary Blue Colors
     const material = new THREE.ShaderMaterial({
       uniforms: {
-        colorDeep: { value: new THREE.Color("#0c1838") }, // Dark Navy for valleys
-        colorHigh: { value: new THREE.Color("#22d3ee") }, // Bright Cyan for peaks
+        colorDeep: { value: new THREE.Color("#0f172a") }, // Very Dark Slate/Blue for valleys
+        colorHigh: { value: new THREE.Color("#3b82f6") }, // Primary Blue for peaks
       },
       vertexShader: `
         attribute float scale;
@@ -70,7 +69,6 @@ const ThreeBackground = () => {
         uniform vec3 colorHigh;
         
         void main() {
-          // Calculate color based on Y height
           float heightFactor = (position.y + 4.0) / 10.0;
           vColor = mix(colorDeep, colorHigh, clamp(heightFactor, 0.0, 1.0));
           
@@ -82,12 +80,10 @@ const ThreeBackground = () => {
       fragmentShader: `
         varying vec3 vColor;
         void main() {
-          // Circular particle with soft edges
           vec2 xy = gl_PointCoord.xy - vec2(0.5);
           float ll = length(xy);
           if (ll > 0.5) discard;
           
-          // Outer glow effect
           float opacity = (0.5 - ll) * 2.0;
           gl_FragColor = vec4(vColor, opacity * 0.9);
         }
@@ -131,7 +127,6 @@ const ThreeBackground = () => {
       const positionsArray = particles.geometry.attributes.position.array;
       const scalesArray = particles.geometry.attributes.scale.array;
 
-      // Map screen mouse position roughly to 3D space for interaction
       let worldMouseX = (mouseX / windowHalfX) * 100;
       let worldMouseZ = (mouseY / windowHalfY) * 100 - 30;
 
@@ -143,23 +138,20 @@ const ThreeBackground = () => {
           let x = positionsArray[i];
           let z = positionsArray[i + 2];
 
-          // Complex intersecting ocean wave math
           let y = Math.sin((ix + particlePhase) * 0.3) * 3.5 +
                   Math.sin((iy + particlePhase) * 0.5) * 3.5;
 
-          // MAGNETIC LIFT PHYSICS: Wave rises up towards the mouse
+          // MAGNETIC LIFT PHYSICS
           let dx = x - worldMouseX;
           let dz = z - worldMouseZ;
           let distance = Math.sqrt(dx * dx + dz * dz);
           
           if (distance < 40) {
-            let lift = (40 - distance) * 0.35; // Lifts the wave
+            let lift = (40 - distance) * 0.35; 
             y += lift;
           }
 
           positionsArray[i + 1] = y;
-
-          // Scale based on height (peaks are larger)
           scalesArray[j] = (y + 5) * 0.6;
 
           i += 3;
@@ -222,32 +214,23 @@ export default function HeroSection() {
           @keyframes marquee { 0% { transform: translate3d(0,0,0); } 100% { transform: translate3d(-50%,0,0); } }
           .animate-marquee { animation: marquee 35s linear infinite; will-change: transform; }
           
-          /* The Scanner Laser Animation for the Navy Block */
-          @keyframes scanLaser {
-            0% { transform: translateX(-200%); }
-            100% { transform: translateX(200%); }
+          /* Clean Premium Blue Glow for the Text */
+          @keyframes textBlueGlow {
+            0%, 100% { filter: drop-shadow(0 0 12px rgba(59, 130, 246, 0.4)); }
+            50% { filter: drop-shadow(0 0 28px rgba(59, 130, 246, 0.8)); }
           }
-          .animate-scan {
-            animation: scanLaser 3s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-          }
-          
-          /* Breathing Glow for the Box Edge */
-          @keyframes boxBreathing {
-            0%, 100% { box-shadow: 0 0 15px rgba(34, 211, 238, 0.2), inset 0 0 10px rgba(15, 23, 42, 0.8); }
-            50% { box-shadow: 0 0 35px rgba(34, 211, 238, 0.5), inset 0 0 20px rgba(15, 23, 42, 0.9); }
-          }
-          .animate-box-breathing {
-            animation: boxBreathing 4s ease-in-out infinite;
+          .animate-text-blue-glow {
+            animation: textBlueGlow 3.5s ease-in-out infinite;
           }
         `}
       </style>
 
-      {/* Advanced 3D Magnetic Ocean Wave */}
+      {/* Advanced 3D Magnetic Ocean Wave (Pure Blue Theme) */}
       <ThreeBackground />
 
-      {/* Ambient Deep Sea Glow Overlays */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[300px] bg-gradient-to-b from-blue-700/10 via-indigo-600/5 to-transparent blur-[120px] pointer-events-none rounded-full transform-gpu" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] bg-cyan-500/5 blur-[150px] pointer-events-none rounded-full transform-gpu" />
+      {/* Ambient Blue Glow Overlays */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[300px] bg-blue-600/15 blur-[120px] pointer-events-none rounded-full transform-gpu" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] bg-blue-500/10 blur-[150px] pointer-events-none rounded-full transform-gpu" />
 
       {/* Technical Grid Overlay */}
       <div
@@ -265,26 +248,18 @@ export default function HeroSection() {
           
           <h2 className="text-[2.4rem] sm:text-5xl lg:text-[4.5rem] font-extrabold tracking-tight leading-[1.12] mb-6 select-none cursor-default flex flex-col items-center">
             
-            <span className="text-white block mb-4">
+            <span className="text-white block mb-2 sm:mb-4">
               Lead Your Industry With
             </span>
             
-            {/* THE NEW NAVY BLUE HIGHLIGHT BOX */}
-            <span className="relative inline-flex items-center justify-center px-8 py-1 sm:py-3 my-2 overflow-hidden rounded-2xl group animate-box-breathing border border-blue-500/20 bg-[#06102b] backdrop-blur-md">
-              
-              {/* Internal Shadow for Depth */}
-              <span className="absolute inset-0 bg-gradient-to-r from-[#020617] via-transparent to-[#020617] opacity-80"></span>
-              
-              {/* Cyan Laser Scanning Line */}
-              <span className="absolute inset-0 w-[150%] h-full bg-[linear-gradient(90deg,transparent,rgba(34,211,238,0.4),transparent)] animate-scan skew-x-[-20deg]"></span>
-              
-              {/* Text Inside the Block */}
-              <span className="relative z-10 text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-blue-200 to-cyan-400 font-black tracking-wide drop-shadow-[0_0_12px_rgba(34,211,238,0.6)]">
+            {/* CLEAN TEXT REVERTED: Pure Blue gradient with breathing glow */}
+            <span className="block py-2 animate-text-blue-glow">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-300 via-blue-500 to-blue-700 font-black tracking-wide">
                 Next-Generation
               </span>
             </span>
             
-            <span className="text-white block mt-4">
+            <span className="text-white block mt-2 sm:mt-4">
               Optimised Web Solutions.
             </span>
           </h2>
