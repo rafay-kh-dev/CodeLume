@@ -7,6 +7,7 @@ import {
   Navigate,
 } from "react-router-dom";
 import { Helmet, HelmetProvider } from "react-helmet-async";
+import { AnimatePresence } from "framer-motion";
 
 import Navbar from "./components/header";
 import Hero from "./components/hero";
@@ -56,7 +57,7 @@ import JsonToTs from "./components/jsontots";
 import JwtDecoder from "./components/jwtdecoder";
 import MetaExtractor from "./components/metaextractor";
 
-// FIXED IMPORTS FOR TUTORIALS & DATA (Exact Paths & Casing)
+// FIXED IMPORTS FOR TUTORIALS & DATA
 import TutorialLayout from "./components/tutoriallayout";
 import TutorialHub from "./components/tutorialhub";
 import { reactCourseData } from "./data/reactCourseData";
@@ -66,18 +67,20 @@ import { mongodbCourseData } from "./data/mongodbcoursedata";
 
 import TerminalWidget from "./components/terminalwidget";
 
-// Security Wrapper: Checks for a valid token before rendering the admin page
+// NEW: Import the Page Transition Wrapper
+import PageTransition from "./components/pagetransition";
+
+// Security Wrapper
 const ProtectedRoute = ({ children }) => {
   const token = localStorage.getItem("adminToken");
   if (!token) return <Navigate to="/admin/login" replace />;
   return children;
 };
 
-// Handles scrolling to top AND updating Tab Titles, Clean SEO & Schema Tags using State
+// RouteTracker for SEO & Scroll Reset
 function RouteTracker() {
   const { pathname } = useLocation();
 
-  // State setup for SEO to guarantee re-renders for React Helmet
   const [seoData, setSeoData] = useState({
     title: "CodeLume® | Bespoke Web Engineering & Digital Agency",
     desc: "We build fast, scalable, and visually stunning digital experiences. From custom web apps to full brand identities, let's scale your business.",
@@ -86,7 +89,8 @@ function RouteTracker() {
   });
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    // Add a tiny delay to allow exit animations to finish before snapping to top
+    setTimeout(() => window.scrollTo(0, 0), 100);
 
     let pageTitle = "CodeLume® | Bespoke Web Engineering & Digital Agency";
     let pageDesc =
@@ -153,172 +157,42 @@ function RouteTracker() {
       pageTitle = "PHP & Laravel Development | CodeLume";
       pageDesc =
         "Bulletproof backend architecture for your business. We build secure, dynamic Laravel applications that scale seamlessly. From $139.";
-      schemaData = {
-        "@context": "https://schema.org",
-        "@type": "Product",
-        name: "PHP & Laravel Development",
-        description: pageDesc,
-        brand: { "@type": "Brand", name: "CodeLume" },
-        offers: {
-          "@type": "Offer",
-          price: "139.00",
-          priceCurrency: "USD",
-          availability: "https://schema.org/InStock",
-        },
-      };
     } else if (pathname === "/services/angular-apps") {
       pageTitle = "Angular Web App Development | CodeLume";
       pageDesc =
         "High-performance, enterprise-grade Angular frontends built for speed and complexity. Upgrade your user experience today. From $135.";
-      schemaData = {
-        "@context": "https://schema.org",
-        "@type": "Product",
-        name: "Angular Web App Development",
-        description: pageDesc,
-        brand: { "@type": "Brand", name: "CodeLume" },
-        offers: {
-          "@type": "Offer",
-          price: "135.00",
-          priceCurrency: "USD",
-          availability: "https://schema.org/InStock",
-        },
-      };
     } else if (pathname === "/services/wordpress") {
       pageTitle = "WordPress Development | CodeLume";
       pageDesc =
         "High-converting WooCommerce stores and custom WordPress themes. Fast, secure, and easily manageable CMS solutions starting at $100.";
-      schemaData = {
-        "@context": "https://schema.org",
-        "@type": "Product",
-        name: "WordPress & WooCommerce Services",
-        description: pageDesc,
-        brand: { "@type": "Brand", name: "CodeLume" },
-        offers: {
-          "@type": "Offer",
-          price: "100.00",
-          priceCurrency: "USD",
-          availability: "https://schema.org/InStock",
-        },
-      };
     } else if (pathname === "/services/shopify") {
       pageTitle = "Shopify Development | CodeLume";
       pageDesc =
         "Turn visitors into buyers. We build bespoke, high-converting Shopify storefronts with custom Liquid coding and seamless integrations.";
-      schemaData = {
-        "@context": "https://schema.org",
-        "@type": "Product",
-        name: "Shopify Development",
-        description: pageDesc,
-        brand: { "@type": "Brand", name: "CodeLume" },
-        offers: {
-          "@type": "Offer",
-          price: "115.00",
-          priceCurrency: "USD",
-          availability: "https://schema.org/InStock",
-        },
-      };
     } else if (pathname === "/services/webflow") {
       pageTitle = "Webflow Website Development | CodeLume";
       pageDesc =
         "Pixel-perfect, award-winning Webflow websites with advanced GSAP animations and zero bloat. Stand out from the competition.";
-      schemaData = {
-        "@context": "https://schema.org",
-        "@type": "Product",
-        name: "Webflow Site Design",
-        description: pageDesc,
-        brand: { "@type": "Brand", name: "CodeLume" },
-        offers: {
-          "@type": "Offer",
-          price: "149.00",
-          priceCurrency: "USD",
-          availability: "https://schema.org/InStock",
-        },
-      };
     } else if (pathname === "/services/custom-platforms") {
       pageTitle = "Custom Web Platforms | CodeLume";
       pageDesc =
         "Have a complex app idea? We engineer custom SaaS platforms, portals, and dashboards from the ground up. Enterprise solutions from $299.";
-      schemaData = {
-        "@context": "https://schema.org",
-        "@type": "Product",
-        name: "Custom Platform Engineering",
-        description: pageDesc,
-        brand: { "@type": "Brand", name: "CodeLume" },
-        offers: {
-          "@type": "Offer",
-          price: "299.00",
-          priceCurrency: "USD",
-          availability: "https://schema.org/InStock",
-        },
-      };
     } else if (pathname === "/services/api-integrations") {
       pageTitle = "API Development & Integration | CodeLume";
       pageDesc =
         "Connect your systems flawlessly. We build secure REST/GraphQL APIs and handle complex third-party data synchronisation. Starting at $99.";
-      schemaData = {
-        "@context": "https://schema.org",
-        "@type": "Product",
-        name: "API & Integrations",
-        description: pageDesc,
-        brand: { "@type": "Brand", name: "CodeLume" },
-        offers: {
-          "@type": "Offer",
-          price: "99.00",
-          priceCurrency: "USD",
-          availability: "https://schema.org/InStock",
-        },
-      };
     } else if (pathname === "/services/mobile-apps") {
       pageTitle = "Mobile App Development | CodeLume";
       pageDesc =
         "High-performance, cross-platform mobile apps built to scale. Take your business native with bespoke iOS and Android solutions.";
-      schemaData = {
-        "@context": "https://schema.org",
-        "@type": "Product",
-        name: "Mobile App Development",
-        description: pageDesc,
-        brand: { "@type": "Brand", name: "CodeLume" },
-        offers: {
-          "@type": "Offer",
-          price: "399.00",
-          priceCurrency: "USD",
-          availability: "https://schema.org/InStock",
-        },
-      };
     } else if (pathname === "/services/ui-ux-design") {
       pageTitle = "UI/UX Design That Converts | CodeLume";
       pageDesc =
         "Data-driven interface design that converts. We craft stunning, user-centric web and mobile experiences from wireframe to final handoff.";
-      schemaData = {
-        "@context": "https://schema.org",
-        "@type": "Product",
-        name: "UI/UX Design",
-        description: pageDesc,
-        brand: { "@type": "Brand", name: "CodeLume" },
-        offers: {
-          "@type": "Offer",
-          price: "199.00",
-          priceCurrency: "USD",
-          availability: "https://schema.org/InStock",
-        },
-      };
     } else if (pathname === "/services/full-branding") {
       pageTitle = "Services | CodeLume";
       pageDesc =
         "The ultimate launchpad. Bespoke logo design, enterprise web development, and targeted SEO to launch and scale your brand globally.";
-      schemaData = {
-        "@context": "https://schema.org",
-        "@type": "Product",
-        name: "Full Branding & Marketing Services",
-        description: pageDesc,
-        brand: { "@type": "Brand", name: "CodeLume" },
-        offers: {
-          "@type": "Offer",
-          price: "1499.00",
-          priceCurrency: "USD",
-          availability: "https://schema.org/InStock",
-        },
-      };
     } else if (pathname === "/blogs") {
       pageTitle = "Blogs | CodeLume";
       pageDesc =
@@ -331,17 +205,6 @@ function RouteTracker() {
       pageTitle = "About | CodeLume";
       pageDesc =
         "Meet the engineer behind CodeLume. I specialise in the MERN stack, Laravel, and bespoke UI/UX design to help businesses grow.";
-      schemaData = {
-        "@context": "https://schema.org",
-        "@type": "Person",
-        name: "Rafay",
-        jobTitle: "Freelance Web Developer & UI/UX Designer",
-        url: "https://www.codelume.online/about",
-        worksFor: {
-          "@type": "Organization",
-          name: "CodeLume",
-        },
-      };
     } else if (pathname === "/terms-of-service" || pathname === "/terms") {
       pageTitle = "Terms of Service | CodeLume";
       pageDesc =
@@ -384,7 +247,6 @@ function RouteTracker() {
         "Read our structured developer notes. Learn React, Node.js, and technical SEO completely free.";
     }
 
-    // Set Final State
     setSeoData({
       title: pageTitle,
       desc: pageDesc,
@@ -421,170 +283,150 @@ function RouteTracker() {
   );
 }
 
+// NEW: Extracted Routes Component for Animation Tracking
+function AnimatedRoutes() {
+  const location = useLocation();
+
+  return (
+    <AnimatePresence mode="wait">
+      <Routes location={location} key={location.pathname}>
+        <Route
+          path="/"
+          element={
+            <PageTransition>
+              <Hero />
+              <About />
+              <Service />
+              <DevToolsSection />
+              <Calculator />
+              <OurProcess />
+              <FAQ />
+              <Testimonials />
+            </PageTransition>
+          }
+        />
+
+        <Route path="/start-project" element={<PageTransition><StartProject /></PageTransition>} />
+        <Route path="/services" element={<PageTransition><Services /></PageTransition>} />
+
+        {/* DUAL ROUTES */}
+        <Route path="/services/mern-stack" element={<PageTransition><MernStackService /></PageTransition>} />
+        <Route path="/mern-stack-development" element={<PageTransition><MernStackService /></PageTransition>} />
+
+        <Route path="/services/php-laravel" element={<PageTransition><PhpLaravelService /></PageTransition>} />
+        <Route path="/services/angular-apps" element={<PageTransition><AngularAppsService /></PageTransition>} />
+        <Route path="/services/wordpress" element={<PageTransition><WordPressService /></PageTransition>} />
+        <Route path="/services/shopify" element={<PageTransition><ShopifyService /></PageTransition>} />
+        <Route path="/services/webflow" element={<PageTransition><WebflowService /></PageTransition>} />
+        <Route path="/services/custom-platforms" element={<PageTransition><CustomPlatformsService /></PageTransition>} />
+        <Route path="/services/api-integrations" element={<PageTransition><ApiIntegrationsService /></PageTransition>} />
+        <Route path="/services/mobile-apps" element={<PageTransition><MobileAppsService /></PageTransition>} />
+        <Route path="/services/ui-ux-design" element={<PageTransition><UiUxDesignService /></PageTransition>} />
+        <Route path="/services/full-branding" element={<PageTransition><FullBrandingService /></PageTransition>} />
+
+        <Route path="/blogs" element={<PageTransition><Blog /></PageTransition>} />
+        <Route path="/blogs/:slug" element={<PageTransition><Article /></PageTransition>} />
+
+        <Route path="/case-studies" element={<PageTransition><CaseStudies /></PageTransition>} />
+        <Route path="/portfolio" element={<PageTransition><CaseStudies /></PageTransition>} />
+
+        <Route path="/about" element={<PageTransition><AboutCodeLume /></PageTransition>} />
+
+        <Route path="/terms-of-service" element={<PageTransition><TermsOfService /></PageTransition>} />
+        <Route path="/terms" element={<PageTransition><TermsOfService /></PageTransition>} />
+
+        <Route path="/privacy-policy" element={<PageTransition><PrivacyPolicy /></PageTransition>} />
+        <Route path="/privacy" element={<PageTransition><PrivacyPolicy /></PageTransition>} />
+
+        <Route path="/tools" element={<PageTransition><Tools /></PageTransition>} />
+        <Route path="/tools/svg-to-react" element={<PageTransition><SvgToReact /></PageTransition>} />
+        <Route path="/tools/json-to-ts" element={<PageTransition><JsonToTs /></PageTransition>} />
+        <Route path="/tools/jwt-decoder" element={<PageTransition><JwtDecoder /></PageTransition>} />
+        <Route path="/tools/meta-extractor" element={<PageTransition><MetaExtractor /></PageTransition>} />
+
+        <Route path="/tutorials" element={<PageTransition><TutorialHub /></PageTransition>} />
+        <Route
+          path="/tutorials/react"
+          element={
+            <PageTransition>
+              <TutorialLayout courseData={reactCourseData} courseTitle="React Mastery" />
+            </PageTransition>
+          }
+        />
+        <Route
+          path="/tutorials/node"
+          element={
+            <PageTransition>
+              <TutorialLayout courseData={nodeCourseData} courseTitle="Node.js Architecture" />
+            </PageTransition>
+          }
+        />
+        <Route
+          path="/tutorials/express"
+          element={
+            <PageTransition>
+              <TutorialLayout courseData={expressCourseData} courseTitle="Express.js APIs" />
+            </PageTransition>
+          }
+        />
+        <Route
+          path="/tutorials/mongodb"
+          element={
+            <PageTransition>
+              <TutorialLayout courseData={mongodbCourseData} courseTitle="MongoDB Databases" />
+            </PageTransition>
+          }
+        />
+
+        {/* ADMIN ROUTES */}
+        <Route path="/admin/login" element={<PageTransition><AdminLogin /></PageTransition>} />
+        <Route
+          path="/admin/dashboard"
+          element={
+            <ProtectedRoute>
+              <PageTransition><AdminDashboard /></PageTransition>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/create-post"
+          element={
+            <ProtectedRoute>
+              <PageTransition><AdminCreatePost /></PageTransition>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/edit-post/:id"
+          element={
+            <ProtectedRoute>
+              <PageTransition><AdminEditPost /></PageTransition>
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Catch-All Route */}
+        <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
+      </Routes>
+    </AnimatePresence>
+  );
+}
+
 export default function App() {
   return (
     <HelmetProvider>
       <Router>
         <RouteTracker />
         <div className="min-h-screen bg-[#030712] text-white selection:bg-blue-500 selection:text-white">
+          {/* Navbar sits outside the routes so it doesn't animate out */}
           <Navbar />
 
           <main>
-            <Routes>
-              <Route
-                path="/"
-                element={
-                  <>
-                    <Hero />
-                    <About />
-                    <Service />
-                    <DevToolsSection />
-                    <Calculator />
-                    <OurProcess />
-                    <FAQ />
-                    <Testimonials />
-                  </>
-                }
-              />
-
-              <Route path="/start-project" element={<StartProject />} />
-              <Route path="/services" element={<Services />} />
-
-              {/* DUAL ROUTES */}
-              <Route
-                path="/services/mern-stack"
-                element={<MernStackService />}
-              />
-              <Route
-                path="/mern-stack-development"
-                element={<MernStackService />}
-              />
-
-              <Route
-                path="/services/php-laravel"
-                element={<PhpLaravelService />}
-              />
-              <Route
-                path="/services/angular-apps"
-                element={<AngularAppsService />}
-              />
-              <Route
-                path="/services/wordpress"
-                element={<WordPressService />}
-              />
-              <Route path="/services/shopify" element={<ShopifyService />} />
-              <Route path="/services/webflow" element={<WebflowService />} />
-              <Route
-                path="/services/custom-platforms"
-                element={<CustomPlatformsService />}
-              />
-              <Route
-                path="/services/api-integrations"
-                element={<ApiIntegrationsService />}
-              />
-              <Route
-                path="/services/mobile-apps"
-                element={<MobileAppsService />}
-              />
-              <Route
-                path="/services/ui-ux-design"
-                element={<UiUxDesignService />}
-              />
-              <Route
-                path="/services/full-branding"
-                element={<FullBrandingService />}
-              />
-
-              <Route path="/blogs" element={<Blog />} />
-              <Route path="/blogs/:slug" element={<Article />} />
-
-              <Route path="/case-studies" element={<CaseStudies />} />
-              <Route path="/portfolio" element={<CaseStudies />} />
-
-              <Route path="/about" element={<AboutCodeLume />} />
-
-              <Route path="/terms-of-service" element={<TermsOfService />} />
-              <Route path="/terms" element={<TermsOfService />} />
-
-              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-              <Route path="/privacy" element={<PrivacyPolicy />} />
-
-              <Route path="/tools" element={<Tools />} />
-              <Route path="/tools/svg-to-react" element={<SvgToReact />} />
-              <Route path="/tools/json-to-ts" element={<JsonToTs />} />
-              <Route path="/tools/jwt-decoder" element={<JwtDecoder />} />
-              <Route path="/tools/meta-extractor" element={<MetaExtractor />} />
-
-              <Route path="/tutorials" element={<TutorialHub />} />
-              <Route
-                path="/tutorials/react"
-                element={
-                  <TutorialLayout
-                    courseData={reactCourseData}
-                    courseTitle="React Mastery"
-                  />
-                }
-              />
-              <Route
-                path="/tutorials/node"
-                element={
-                  <TutorialLayout
-                    courseData={nodeCourseData}
-                    courseTitle="Node.js Architecture"
-                  />
-                }
-              />
-              <Route
-                path="/tutorials/express"
-                element={
-                  <TutorialLayout
-                    courseData={expressCourseData}
-                    courseTitle="Express.js APIs"
-                  />
-                }
-              />
-              <Route
-                path="/tutorials/mongodb"
-                element={
-                  <TutorialLayout
-                    courseData={mongodbCourseData}
-                    courseTitle="MongoDB Databases"
-                  />
-                }
-              />
-
-              {/* ADMIN ROUTES */}
-              <Route path="/admin/login" element={<AdminLogin />} />
-              <Route
-                path="/admin/dashboard"
-                element={
-                  <ProtectedRoute>
-                    <AdminDashboard />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/admin/create-post"
-                element={
-                  <ProtectedRoute>
-                    <AdminCreatePost />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/admin/edit-post/:id"
-                element={
-                  <ProtectedRoute>
-                    <AdminEditPost />
-                  </ProtectedRoute>
-                }
-              />
-
-              {/* Catch-All Route */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
+            {/* The routes and their animations happen here */}
+            <AnimatedRoutes />
           </main>
 
+          {/* Footer and fixed elements sit outside so they stay stable */}
           <Footer />
           <CookieBanner />
           <FloatingActions />
