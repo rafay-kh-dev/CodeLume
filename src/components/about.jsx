@@ -35,7 +35,8 @@ export default function About() {
 
   return (
     <section
-      className="w-full py-16 sm:py-24 lg:py-32 bg-[#030712] font-jakarta"
+      // CHANGED: Replaced bg-[#030712] with bg-transparent so the global glow shines through!
+      className="w-full py-16 sm:py-24 lg:py-32 bg-transparent font-jakarta"
       id="about"
     >
       <style>
