@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { ChevronRight, Sparkles, Webhook } from "lucide-react";
 import {
@@ -11,10 +11,50 @@ import {
   SiNodedotjs,
 } from "react-icons/si";
 
-// 1. ULTRA-SMOOTH ELASTIC WEB & REALISTIC SPIDER
-const SpiderWebNetwork = () => {
+// 1. CYBERPUNK TEXT SCRAMBLER COMPONENT (The Hacker Flex)
+const CyberpunkText = ({ text, className }) => {
+  const [displayText, setDisplayText] = useState(text);
+  const intervalRef = useRef(null);
+  const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()<>-_\\/[]{}";
+
+  const handleMouseEnter = () => {
+    let iteration = 0;
+    clearInterval(intervalRef.current);
+
+    intervalRef.current = setInterval(() => {
+      setDisplayText(
+        text
+          .split("")
+          .map((letter, index) => {
+            if (index < iteration) {
+              return text[index];
+            }
+            return letters[Math.floor(Math.random() * letters.length)];
+          })
+          .join(""),
+      );
+
+      if (iteration >= text.length) {
+        clearInterval(intervalRef.current);
+      }
+
+      iteration += 1 / 3; // Speed of decoding
+    }, 30);
+  };
+
+  return (
+    <span
+      onMouseEnter={handleMouseEnter}
+      className={`${className} cursor-crosshair transition-all duration-300`}
+    >
+      {displayText}
+    </span>
+  );
+};
+
+// 2. INTERACTIVE PARTICLE NETWORK COMPONENT (The Engineering Web)
+const ParticleNetwork = () => {
   const canvasRef = useRef(null);
-  const [isDesktop, setIsDesktop] = useState(window.innerWidth > 768);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -22,12 +62,13 @@ const SpiderWebNetwork = () => {
 
     const ctx = canvas.getContext("2d");
     let animationFrameId;
-    let nodesArray = [];
-    let smoothSpider;
+    let particlesArray = [];
 
+    // Mouse tracking
     let mouse = {
-      x: window.innerWidth / 2,
-      y: window.innerHeight / 2,
+      x: null,
+      y: null,
+      radius: 120, // Repulsion area
     };
 
     const handleMouseMove = (event) => {
@@ -35,334 +76,83 @@ const SpiderWebNetwork = () => {
       mouse.y = event.clientY;
     };
 
+    const handleMouseOut = () => {
+      mouse.x = null;
+      mouse.y = null;
+    };
+
     const handleResize = () => {
-      const desktopCheck = window.innerWidth > 768;
-      setIsDesktop(desktopCheck);
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
       init();
     };
 
     window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mouseout", handleMouseOut);
     window.addEventListener("resize", handleResize);
 
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    // --- SMOOTH PROCEDURAL SPIDER LEG ---
-    class SmoothLeg {
-      constructor(offsetX, offsetY, reach, angleOffset, isLeft) {
-        this.offsetX = offsetX;
-        this.offsetY = offsetY;
-        this.reach = reach;
-        this.angleOffset = angleOffset;
-        this.isLeft = isLeft;
-
-        this.footX = 0;
-        this.footY = 0;
-        this.oldFootX = 0;
-        this.oldFootY = 0;
-        this.stepProgress = 1; // 1 means foot is on the ground
-      }
-
-      update(bodyX, bodyY, bodyAngle, bodySpeed) {
-        let idealAngle = bodyAngle + this.angleOffset;
-        let idealX = bodyX + Math.cos(idealAngle) * this.reach;
-        let idealY = bodyY + Math.sin(idealAngle) * this.reach;
-
-        let distFromIdeal = Math.hypot(
-          this.footX - idealX,
-          this.footY - idealY,
-        );
-
-        // If foot is on ground but stretched too far -> Take a step
-        if (this.stepProgress >= 1 && distFromIdeal > this.reach * 0.5) {
-          this.stepProgress = 0;
-          this.oldFootX = this.footX;
-          this.oldFootY = this.footY;
-
-          // Predict where the body will be so the step is natural
-          this.targetFootX = idealX + Math.cos(bodyAngle) * (this.reach * 0.3);
-          this.targetFootY = idealY + Math.sin(bodyAngle) * (this.reach * 0.3);
-        }
-
-        // Animate the step
-        if (this.stepProgress < 1) {
-          // Adjust step speed based on how fast body is moving
-          let stepSpeed = Math.max(0.1, bodySpeed * 0.05);
-          this.stepProgress += stepSpeed;
-
-          if (this.stepProgress >= 1) {
-            this.stepProgress = 1;
-            this.footX = this.targetFootX;
-            this.footY = this.targetFootY;
-          } else {
-            // Smooth easing
-            let ease = 1 - Math.pow(1 - this.stepProgress, 3);
-            this.footX =
-              this.oldFootX + (this.targetFootX - this.oldFootX) * ease;
-            this.footY =
-              this.oldFootY + (this.targetFootY - this.oldFootY) * ease;
-          }
-        }
-      }
-
-      draw(bodyX, bodyY, bodyAngle) {
-        // Joint position on the spider's body
-        let jointX =
-          bodyX +
-          Math.cos(bodyAngle) * this.offsetX -
-          Math.sin(bodyAngle) * this.offsetY;
-        let jointY =
-          bodyY +
-          Math.sin(bodyAngle) * this.offsetX +
-          Math.cos(bodyAngle) * this.offsetY;
-
-        // Midpoint for the knee
-        let midX = (jointX + this.footX) / 2;
-        let midY = (jointY + this.footY) / 2;
-
-        let dx = this.footX - jointX;
-        let dy = this.footY - jointY;
-        let perpAngle =
-          Math.atan2(dy, dx) + (this.isLeft ? -Math.PI / 2 : Math.PI / 2);
-
-        // Knee bends outwards and lifts when stepping
-        let lift =
-          this.stepProgress < 1
-            ? Math.sin(this.stepProgress * Math.PI) * 20
-            : 0;
-        let kneeBend = 20 - Math.hypot(dx, dy) * 0.1;
-
-        let kneeX =
-          midX + Math.cos(perpAngle) * kneeBend - Math.cos(bodyAngle) * lift;
-        let kneeY =
-          midY + Math.sin(perpAngle) * kneeBend - Math.sin(bodyAngle) * lift;
-
-        // Draw shadow only when leg is lifted
-        if (lift > 0) {
-          ctx.shadowColor = "rgba(0, 0, 0, 0.5)";
-          ctx.shadowBlur = lift;
-          ctx.shadowOffsetY = lift * 0.5;
-        }
-
-        // Draw Femur (Thick part)
-        ctx.beginPath();
-        ctx.moveTo(jointX, jointY);
-        ctx.lineTo(kneeX, kneeY);
-        ctx.strokeStyle = "#0f172a";
-        ctx.lineWidth = 3;
-        ctx.lineCap = "round";
-        ctx.stroke();
-
-        // Draw Tibia (Thin part)
-        ctx.beginPath();
-        ctx.moveTo(kneeX, kneeY);
-        ctx.lineTo(this.footX, this.footY);
-        ctx.strokeStyle = "#1e3a8a";
-        ctx.lineWidth = 1.5;
-        ctx.stroke();
-
-        ctx.shadowColor = "transparent"; // Reset shadow
-      }
-    }
-
-    // --- CYBER SPIDER BODY ---
-    class SmoothSpider {
-      constructor(x, y) {
+    class Particle {
+      constructor(x, y, directionX, directionY, size, color) {
         this.x = x;
         this.y = y;
-        this.vx = 0;
-        this.vy = 0;
-        this.angle = 0;
-        this.radius = 200; // Web pull radius
-        this.speed = 0;
-
-        // offsetX, offsetY, reach, angleOffset, isLeft
-        this.legs = [
-          new SmoothLeg(6, 6, 50, Math.PI / 4, false),
-          new SmoothLeg(0, 7, 45, Math.PI / 2, false),
-          new SmoothLeg(-6, 7, 45, Math.PI * 0.75, false),
-          new SmoothLeg(-12, 5, 55, Math.PI * 0.9, false),
-
-          new SmoothLeg(6, -6, 50, -Math.PI / 4, true),
-          new SmoothLeg(0, -7, 45, -Math.PI / 2, true),
-          new SmoothLeg(-6, -7, 45, -Math.PI * 0.75, true),
-          new SmoothLeg(-12, -5, 55, -Math.PI * 0.9, true),
-        ];
-
-        // Initialize leg positions
-        for (let leg of this.legs) {
-          leg.footX =
-            this.x + Math.cos(this.angle + leg.angleOffset) * leg.reach;
-          leg.footY =
-            this.y + Math.sin(this.angle + leg.angleOffset) * leg.reach;
-        }
-      }
-
-      update() {
-        let dx = mouse.x - this.x;
-        let dy = mouse.y - this.y;
-        let distance = Math.hypot(dx, dy);
-
-        if (distance > 5) {
-          let targetAngle = Math.atan2(dy, dx);
-          let angleDiff = targetAngle - this.angle;
-
-          while (angleDiff > Math.PI) angleDiff -= Math.PI * 2;
-          while (angleDiff < -Math.PI) angleDiff += Math.PI * 2;
-          this.angle += angleDiff * 0.08;
-
-          let forwardSpeed = Math.max(0, Math.cos(angleDiff)) * 4;
-          this.speed += (forwardSpeed - this.speed) * 0.1;
-
-          this.vx = Math.cos(this.angle) * this.speed;
-          this.vy = Math.sin(this.angle) * this.speed;
-
-          this.x += this.vx;
-          this.y += this.vy;
-        } else {
-          this.speed *= 0.8; // Smooth stop
-        }
-
-        // Stagger leg updates so they don't all step at once
-        for (let i = 0; i < this.legs.length; i++) {
-          // Allow step if alternating leg is planted
-          let oppositeLegIndex = (i + 4) % 8;
-          if (
-            this.legs[oppositeLegIndex].stepProgress > 0.5 ||
-            this.speed < 0.5
-          ) {
-            this.legs[i].update(this.x, this.y, this.angle, this.speed);
-          }
-        }
-      }
-
-      draw() {
-        for (let leg of this.legs) leg.draw(this.x, this.y, this.angle);
-
-        ctx.save();
-        ctx.translate(this.x, this.y);
-        ctx.rotate(this.angle);
-
-        // Body Shadow
-        ctx.shadowColor = "rgba(0, 0, 0, 0.7)";
-        ctx.shadowBlur = 10;
-        ctx.shadowOffsetY = 4;
-
-        // Abdomen
-        let abGrad = ctx.createRadialGradient(-10, 0, 0, -10, 0, 15);
-        abGrad.addColorStop(0, "#60a5fa"); // Shiny top
-        abGrad.addColorStop(0.5, "#1e3a8a");
-        abGrad.addColorStop(1, "#020617"); // Dark edges
-
-        ctx.beginPath();
-        ctx.ellipse(-12, 0, 16, 11, 0, 0, Math.PI * 2);
-        ctx.fillStyle = abGrad;
-        ctx.fill();
-
-        // Head
-        ctx.beginPath();
-        ctx.ellipse(3, 0, 8, 7, 0, 0, Math.PI * 2);
-        ctx.fillStyle = "#0f172a";
-        ctx.fill();
-
-        // Glowing Eyes
-        ctx.fillStyle = "#22d3ee";
-        ctx.shadowColor = "#22d3ee";
-        ctx.shadowBlur = 5;
-        ctx.beginPath();
-        ctx.arc(8, -2, 1.5, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.beginPath();
-        ctx.arc(8, 2, 1.5, 0, Math.PI * 2);
-        ctx.fill();
-
-        ctx.restore();
-      }
-    }
-
-    // --- ELASTIC WEB NODES CLASS ---
-    class Node {
-      constructor(x, y) {
-        this.baseX = x;
-        this.baseY = y;
-        this.x = x;
-        this.y = y;
-        this.vx = 0;
-        this.vy = 0;
-        this.size = 1.5;
-      }
-
-      update() {
-        let forceX = (this.baseX - this.x) * 0.05;
-        let forceY = (this.baseY - this.y) * 0.05;
-
-        // Desktop: Web stretches towards Spider. Mobile: Web stretches towards Mouse.
-        let target =
-          window.innerWidth > 768 && smoothSpider ? smoothSpider : mouse;
-        let radius = window.innerWidth > 768 ? 220 : 150;
-
-        if (target.x !== null) {
-          let dx = target.x - this.x;
-          let dy = target.y - this.y;
-          // Performance Optimization: Fast skip square root if too far
-          if (Math.abs(dx) < radius && Math.abs(dy) < radius) {
-            let distance = Math.hypot(dx, dy);
-            if (distance < radius) {
-              let pullForce = (radius - distance) / radius;
-              forceX += (dx / distance) * pullForce * 2.5;
-              forceY += (dy / distance) * pullForce * 2.5;
-            }
-          }
-        }
-
-        this.vx += forceX;
-        this.vy += forceY;
-        this.vx *= 0.8; // Friction
-        this.vy *= 0.8;
-
-        this.x += this.vx;
-        this.y += this.vy;
+        this.directionX = directionX;
+        this.directionY = directionY;
+        this.size = size;
+        this.color = color;
       }
 
       draw() {
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
-        ctx.fillStyle = "rgba(59, 130, 246, 0.7)";
+        ctx.fillStyle = this.color;
         ctx.fill();
+      }
+
+      update() {
+        if (this.x > canvas.width || this.x < 0)
+          this.directionX = -this.directionX;
+        if (this.y > canvas.height || this.y < 0)
+          this.directionY = -this.directionY;
+
+        // Collision logic (Mouse Repulsion Effect)
+        if (mouse.x !== null && mouse.y !== null) {
+          let dx = mouse.x - this.x;
+          let dy = mouse.y - this.y;
+          let distance = Math.sqrt(dx * dx + dy * dy);
+
+          if (distance < mouse.radius) {
+            const forceDirectionX = dx / distance;
+            const forceDirectionY = dy / distance;
+            const force = (mouse.radius - distance) / mouse.radius;
+
+            this.x -= forceDirectionX * force * 5;
+            this.y -= forceDirectionY * force * 5;
+          }
+        }
+
+        this.x += this.directionX;
+        this.y += this.directionY;
+        this.draw();
       }
     }
 
     const init = () => {
-      nodesArray = [];
-
-      // Optimization: Increase spacing for fewer nodes (prevents lag)
-      let spacing = window.innerWidth > 768 ? 95 : 120;
-      let cols = Math.floor(window.innerWidth / spacing) + 1;
-      let rows = Math.floor(window.innerHeight / spacing) + 1;
-
-      let offsetX = (window.innerWidth - cols * spacing) / 2;
-      let offsetY = (window.innerHeight - rows * spacing) / 2;
-
-      for (let i = 0; i <= cols; i++) {
-        for (let j = 0; j <= rows; j++) {
-          let jitterX = (Math.random() - 0.5) * 30;
-          let jitterY = (Math.random() - 0.5) * 30;
-          nodesArray.push(
-            new Node(
-              i * spacing + offsetX + jitterX,
-              j * spacing + offsetY + jitterY,
-            ),
-          );
-        }
-      }
-
-      if (window.innerWidth > 768) {
-        smoothSpider = new SmoothSpider(
-          window.innerWidth / 2,
-          window.innerHeight / 2,
-        );
+      particlesArray = [];
+      let numberOfParticles = (canvas.height * canvas.width) / 9000;
+      for (let i = 0; i < numberOfParticles; i++) {
+        let size = Math.random() * 2 + 1;
+        let x =
+          Math.random() * (window.innerWidth - size * 2 - size * 2) + size * 2;
+        let y =
+          Math.random() * (window.innerHeight - size * 2 - size * 2) + size * 2;
+        let directionX = Math.random() * 1.5 - 0.75;
+        let directionY = Math.random() * 1.5 - 0.75;
+        particlesArray.push(
+          new Particle(x, y, directionX, directionY, size, "#3b82f6"),
+        ); // Blue matching theme
       }
     };
 
@@ -370,41 +160,28 @@ const SpiderWebNetwork = () => {
       animationFrameId = requestAnimationFrame(animate);
       ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
-      // 1. Update and Draw Nodes
-      for (let i = 0; i < nodesArray.length; i++) {
-        nodesArray[i].update();
-        nodesArray[i].draw();
+      for (let i = 0; i < particlesArray.length; i++) {
+        particlesArray[i].update();
       }
 
-      // 2. Draw Web Threads (Highly Optimized Loop)
-      ctx.lineWidth = 1;
-      let connectionDistance = window.innerWidth > 768 ? 140 : 160;
-
-      for (let a = 0; a < nodesArray.length; a++) {
-        for (let b = a + 1; b < nodesArray.length; b++) {
-          let dx = nodesArray[a].x - nodesArray[b].x;
-          // Fast fail to save math operations (fixes lag)
-          if (Math.abs(dx) > connectionDistance) continue;
-
-          let dy = nodesArray[a].y - nodesArray[b].y;
-          if (Math.abs(dy) > connectionDistance) continue;
-
+      // Connect dots
+      for (let a = 0; a < particlesArray.length; a++) {
+        for (let b = a + 1; b < particlesArray.length; b++) {
+          let dx = particlesArray[a].x - particlesArray[b].x;
+          let dy = particlesArray[a].y - particlesArray[b].y;
           let distanceSq = dx * dx + dy * dy;
-          if (distanceSq < connectionDistance * connectionDistance) {
-            let opacity = 1 - Math.sqrt(distanceSq) / connectionDistance;
-            ctx.strokeStyle = `rgba(59, 130, 246, ${opacity * 0.4})`;
+
+          if (distanceSq < 12000) {
+            // Connection line length
+            let opacityValue = 1 - distanceSq / 12000;
+            ctx.strokeStyle = `rgba(59, 130, 246, ${opacityValue * 0.4})`;
+            ctx.lineWidth = 1;
             ctx.beginPath();
-            ctx.moveTo(nodesArray[a].x, nodesArray[a].y);
-            ctx.lineTo(nodesArray[b].x, nodesArray[b].y);
+            ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
+            ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
             ctx.stroke();
           }
         }
-      }
-
-      // 3. Update & Draw Spider ONLY ON DESKTOP
-      if (window.innerWidth > 768 && smoothSpider) {
-        smoothSpider.update();
-        smoothSpider.draw();
       }
     };
 
@@ -413,6 +190,7 @@ const SpiderWebNetwork = () => {
 
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseout", handleMouseOut);
       window.removeEventListener("resize", handleResize);
       cancelAnimationFrame(animationFrameId);
     };
@@ -421,12 +199,12 @@ const SpiderWebNetwork = () => {
   return (
     <canvas
       ref={canvasRef}
-      className="absolute inset-0 z-0 pointer-events-none opacity-80"
+      className="absolute inset-0 z-0 pointer-events-none opacity-60"
     />
   );
 };
 
-// 2. MAIN HERO SECTION
+// 3. MAIN HERO SECTION
 export default function HeroSection() {
   const techStack = [
     { name: "MERN Stack", Icon: SiReact },
@@ -453,20 +231,35 @@ export default function HeroSection() {
         `}
       </style>
 
-      {/* Spider Web (Spider only shows on Desktop) */}
-      <SpiderWebNetwork />
+      {/* Reverted to Original Interactive Particle Network */}
+      <ParticleNetwork />
 
-      {/* Ambient Static Glow Effects */}
+      {/* Ambient Glow Effects */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[300px] bg-gradient-to-b from-blue-600/20 via-indigo-500/10 to-transparent blur-[110px] pointer-events-none rounded-full transform-gpu" />
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] bg-cyan-500/10 blur-[140px] pointer-events-none rounded-full transform-gpu" />
+
+      {/* Dot Matrix Grid Pattern */}
+      <div
+        className="absolute inset-0 z-0 opacity-[0.12] pointer-events-none transform-gpu"
+        style={{
+          backgroundImage: `radial-gradient(rgba(255, 255, 255, 0.25) 1px, transparent 1px)`,
+          backgroundSize: "32px 32px",
+          maskImage:
+            "radial-gradient(ellipse 70% 70% at 50% 50%, #000 40%, transparent 100%)",
+          WebkitMaskImage:
+            "radial-gradient(ellipse 70% 70% at 50% 50%, #000 40%, transparent 100%)",
+        }}
+      />
 
       <div className="flex-1 flex flex-col justify-center items-center w-full relative z-10 px-4 sm:px-6 lg:px-8 pt-16 sm:pt-20 pb-4 my-auto">
         <div className="max-w-6xl mx-auto text-center flex flex-col items-center">
           <h2 className="text-[2.4rem] sm:text-5xl lg:text-[4.5rem] font-extrabold tracking-tight leading-[1.12] mb-6 select-none cursor-default">
             <span className="text-white block">Lead Your Industry With</span>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-300 to-cyan-400 drop-shadow-[0_0_35px_rgba(37,99,235,0.35)] block py-2">
-              Next-Generation
-            </span>
+            {/* Cyberpunk Text Scrambler on Hover */}
+            <CyberpunkText
+              text="Next-Generation"
+              className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-300 to-cyan-400 drop-shadow-[0_0_35px_rgba(37,99,235,0.35)] block py-2"
+            />
             <span className="text-white block">Optimised Web Solutions.</span>
           </h2>
 
