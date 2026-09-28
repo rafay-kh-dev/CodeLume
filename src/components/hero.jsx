@@ -11,83 +11,184 @@ import {
   SiNodedotjs,
 } from "react-icons/si";
 
-// 1. ADVANCED DARK FLUID DISTORTION BACKGROUND
-const FluidBackground = () => {
-  const interactiveRef = useRef(null);
+// 1. MOUSE ENERGY NEXUS (The Laser Connection Network)
+const ParticleNexus = () => {
+  const canvasRef = useRef(null);
 
   useEffect(() => {
-    const handleMouseMove = (e) => {
-      if (interactiveRef.current) {
-        // Centering the 500px orb on the cursor
-        const x = e.clientX - 250;
-        const y = e.clientY - 250;
-        interactiveRef.current.style.transform = `translate(${x}px, ${y}px)`;
-      }
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext("2d");
+    let animationFrameId;
+    let particlesArray = [];
+
+    // Nexus Aura Radius (Kitni door tak laser connect hogi)
+    let mouse = {
+      x: null,
+      y: null,
+      radius: 300,
+    };
+
+    const handleMouseMove = (event) => {
+      mouse.x = event.clientX;
+      mouse.y = event.clientY;
+    };
+
+    const handleMouseOut = () => {
+      mouse.x = null;
+      mouse.y = null;
+    };
+
+    const handleResize = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      init();
     };
 
     window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mouseout", handleMouseOut);
+    window.addEventListener("resize", handleResize);
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    class Particle {
+      constructor(x, y, directionX, directionY, size) {
+        this.x = x;
+        this.y = y;
+        this.directionX = directionX;
+        this.directionY = directionY;
+        this.size = size;
+      }
+
+      update() {
+        if (this.x > canvas.width || this.x < 0)
+          this.directionX = -this.directionX;
+        if (this.y > canvas.height || this.y < 0)
+          this.directionY = -this.directionY;
+
+        this.x += this.directionX;
+        this.y += this.directionY;
+      }
+    }
+
+    const init = () => {
+      particlesArray = [];
+      let numberOfParticles = (canvas.height * canvas.width) / 6000; // Optimal density
+
+      for (let i = 0; i < numberOfParticles; i++) {
+        let size = Math.random() * 2 + 1;
+        let x =
+          Math.random() * (window.innerWidth - size * 2 - size * 2) + size * 2;
+        let y =
+          Math.random() * (window.innerHeight - size * 2 - size * 2) + size * 2;
+        let directionX = Math.random() * 1.5 - 0.75;
+        let directionY = Math.random() * 1.5 - 0.75;
+
+        particlesArray.push(new Particle(x, y, directionX, directionY, size));
+      }
+    };
+
+    const animate = () => {
+      animationFrameId = requestAnimationFrame(animate);
+      ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+
+      // Draw Soft Core Glow at Mouse Position
+      if (mouse.x !== null && mouse.y !== null) {
+        let glow = ctx.createRadialGradient(
+          mouse.x,
+          mouse.y,
+          0,
+          mouse.x,
+          mouse.y,
+          mouse.radius * 0.8,
+        );
+        glow.addColorStop(0, "rgba(56, 189, 248, 0.15)"); // Bright Cyan core
+        glow.addColorStop(1, "rgba(56, 189, 248, 0)"); // Fades out
+        ctx.fillStyle = glow;
+        ctx.beginPath();
+        ctx.arc(mouse.x, mouse.y, mouse.radius, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // Update Particles
+      for (let i = 0; i < particlesArray.length; i++) {
+        particlesArray[i].update();
+        let p = particlesArray[i];
+
+        if (mouse.x !== null && mouse.y !== null) {
+          let dxMouse = mouse.x - p.x;
+          let dyMouse = mouse.y - p.y;
+          let distMouse = Math.sqrt(dxMouse * dxMouse + dyMouse * dyMouse);
+
+          // ONLY draw particles and lasers if they are inside the Mouse Radius
+          if (distMouse < mouse.radius) {
+            let dynamicOpacity = 1 - distMouse / mouse.radius;
+
+            // 1. Draw Particle
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2, false);
+            ctx.fillStyle = `rgba(56, 189, 248, ${dynamicOpacity})`; // Cyan Blue
+            ctx.fill();
+
+            // 2. Draw Laser Beam from Mouse to Particle
+            ctx.beginPath();
+            ctx.moveTo(mouse.x, mouse.y);
+            ctx.lineTo(p.x, p.y);
+            ctx.strokeStyle = `rgba(56, 189, 248, ${dynamicOpacity * 0.6})`;
+            ctx.lineWidth = 1;
+            ctx.stroke();
+          }
+        }
+      }
+
+      // 3. Draw Laser Web between particles that are BOTH lit up by the mouse
+      for (let a = 0; a < particlesArray.length; a++) {
+        for (let b = a + 1; b < particlesArray.length; b++) {
+          let pA = particlesArray[a];
+          let pB = particlesArray[b];
+
+          if (mouse.x !== null && mouse.y !== null) {
+            let distToMouseA = Math.hypot(mouse.x - pA.x, mouse.y - pA.y);
+            let distToMouseB = Math.hypot(mouse.x - pB.x, mouse.y - pB.y);
+
+            if (distToMouseA < mouse.radius && distToMouseB < mouse.radius) {
+              let distBetween = Math.hypot(pA.x - pB.x, pA.y - pB.y);
+
+              if (distBetween < 100) {
+                // Web connection distance
+                let op =
+                  (1 - distBetween / 100) * (1 - distToMouseA / mouse.radius);
+                ctx.beginPath();
+                ctx.moveTo(pA.x, pA.y);
+                ctx.lineTo(pB.x, pB.y);
+                ctx.strokeStyle = `rgba(56, 189, 248, ${op * 0.8})`;
+                ctx.lineWidth = 1.5;
+                ctx.stroke();
+              }
+            }
+          }
+        }
+      }
+    };
+
+    init();
+    animate();
+
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseout", handleMouseOut);
+      window.removeEventListener("resize", handleResize);
+      cancelAnimationFrame(animationFrameId);
+    };
   }, []);
 
   return (
-    <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-      {/* SVG Liquid Distortion Filter */}
-      <svg className="absolute w-0 h-0">
-        <filter id="liquid-distortion">
-          <feTurbulence
-            type="fractalNoise"
-            baseFrequency="0.005"
-            numOctaves="4"
-            result="noise"
-          >
-            {/* Animating the noise to make the liquid feel "alive" even when still */}
-            <animate
-              attributeName="baseFrequency"
-              dur="20s"
-              values="0.005;0.008;0.005"
-              repeatCount="indefinite"
-            />
-          </feTurbulence>
-          <feDisplacementMap
-            in="SourceGraphic"
-            in2="noise"
-            scale="60"
-            xChannelSelector="R"
-            yChannelSelector="G"
-          />
-        </filter>
-      </svg>
-
-      {/* The Liquid Container */}
-      <div
-        className="absolute inset-0 w-full h-full opacity-60"
-        style={{ filter: "url(#liquid-distortion)" }}
-      >
-        {/* Animated Background Orbs */}
-        <div className="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] bg-blue-700/50 rounded-full blur-[100px] mix-blend-screen animate-blob" />
-        <div className="absolute top-[20%] right-[-10%] w-[45vw] h-[45vw] bg-indigo-600/40 rounded-full blur-[120px] mix-blend-screen animate-blob animation-delay-2000" />
-        <div className="absolute bottom-[-20%] left-[20%] w-[55vw] h-[55vw] bg-blue-900/60 rounded-full blur-[100px] mix-blend-screen animate-blob animation-delay-4000" />
-
-        {/* Interactive Mouse Tracking Orb */}
-        <div
-          ref={interactiveRef}
-          className="absolute top-0 left-0 w-[500px] h-[500px] bg-cyan-400/50 rounded-full blur-[90px] mix-blend-screen will-change-transform duration-75 ease-out"
-        />
-      </div>
-
-      {/* Grid Overlay to add technical texture over the liquid */}
-      <div
-        className="absolute inset-0 z-10 opacity-[0.15] mix-blend-overlay"
-        style={{
-          backgroundImage: `radial-gradient(rgba(255, 255, 255, 0.4) 1px, transparent 1px)`,
-          backgroundSize: "32px 32px",
-          maskImage:
-            "radial-gradient(ellipse 80% 80% at 50% 50%, #000 40%, transparent 100%)",
-          WebkitMaskImage:
-            "radial-gradient(ellipse 80% 80% at 50% 50%, #000 40%, transparent 100%)",
-        }}
-      />
-    </div>
+    <canvas
+      ref={canvasRef}
+      className="absolute inset-0 z-0 pointer-events-none opacity-90"
+    />
   );
 };
 
@@ -113,32 +214,35 @@ export default function HeroSection() {
           ::-webkit-scrollbar { width: 8px; height: 8px; }
           ::-webkit-scrollbar-track { background: #030712; }
           ::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 10px; }
-          
-          /* Marquee Animation */
           @keyframes marquee { 0% { transform: translate3d(0,0,0); } 100% { transform: translate3d(-50%,0,0); } }
           .animate-marquee { animation: marquee 35s linear infinite; will-change: transform; }
-          
-          /* Fluid Blob Keyframes */
-          @keyframes blob {
-            0% { transform: translate(0px, 0px) scale(1); }
-            33% { transform: translate(30px, -50px) scale(1.1); }
-            66% { transform: translate(-20px, 20px) scale(0.9); }
-            100% { transform: translate(0px, 0px) scale(1); }
-          }
-          .animate-blob { animation: blob 15s infinite alternate; }
-          .animation-delay-2000 { animation-delay: 2s; }
-          .animation-delay-4000 { animation-delay: 4s; }
         `}
       </style>
 
-      {/* The new liquid distortion background */}
-      <FluidBackground />
+      {/* The Laser Energy Nexus Background */}
+      <ParticleNexus />
 
-      <div className="flex-1 flex flex-col justify-center items-center w-full relative z-20 px-4 sm:px-6 lg:px-8 pt-16 sm:pt-20 pb-4 my-auto">
+      {/* Ambient Static Glow Effects to maintain luxury feel */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[300px] bg-gradient-to-b from-blue-600/10 via-indigo-500/5 to-transparent blur-[110px] pointer-events-none rounded-full transform-gpu" />
+
+      {/* Subtle Dot Matrix Overlay for depth */}
+      <div
+        className="absolute inset-0 z-0 opacity-[0.15] pointer-events-none transform-gpu"
+        style={{
+          backgroundImage: `radial-gradient(rgba(255, 255, 255, 0.25) 1px, transparent 1px)`,
+          backgroundSize: "32px 32px",
+          maskImage:
+            "radial-gradient(ellipse 70% 70% at 50% 50%, #000 40%, transparent 100%)",
+          WebkitMaskImage:
+            "radial-gradient(ellipse 70% 70% at 50% 50%, #000 40%, transparent 100%)",
+        }}
+      />
+
+      <div className="flex-1 flex flex-col justify-center items-center w-full relative z-10 px-4 sm:px-6 lg:px-8 pt-16 sm:pt-20 pb-4 my-auto">
         <div className="max-w-6xl mx-auto text-center flex flex-col items-center">
           <h1 className="text-[2.4rem] sm:text-5xl lg:text-[4.5rem] font-extrabold tracking-tight leading-[1.12] mb-6 select-none">
             <span className="text-white block">Lead Your Industry With</span>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-300 to-cyan-400 drop-shadow-[0_0_35px_rgba(37,99,235,0.35)] block py-2">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-300 to-indigo-400 drop-shadow-[0_0_35px_rgba(37,99,235,0.35)] block py-2">
               Next-Generation
             </span>
             <span className="text-white block">Optimised Web Solutions.</span>
@@ -149,12 +253,12 @@ export default function HeroSection() {
             conversion rates, scale customer acquisition, and maximise revenue.
           </p>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-5 w-full sm:w-auto">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-5 w-full sm:w-auto relative z-20">
             <Link
               to="/start-project"
-              className="group relative flex items-center justify-center gap-2 w-full sm:w-auto px-10 py-4 rounded-xl bg-gradient-to-b from-blue-500 to-blue-700 text-white shadow-[0_0_35px_-8px_rgba(37,99,235,0.6)] hover:shadow-[0_0_50px_-10px_rgba(37,99,235,0.8)] border border-blue-400/30 transition-all duration-300 active:scale-[0.98] outline-none overflow-hidden transform-gpu"
+              className="group relative flex items-center justify-center gap-2 w-full sm:w-auto px-10 py-4 rounded-xl bg-gradient-to-b from-blue-500 to-cyan-600 text-white shadow-[0_0_35px_-8px_rgba(6,182,212,0.6)] hover:shadow-[0_0_50px_-10px_rgba(6,182,212,0.8)] border border-cyan-400/30 transition-all duration-300 active:scale-[0.98] outline-none overflow-hidden transform-gpu"
             >
-              <Sparkles className="w-5 h-5 text-blue-100 relative z-10" />
+              <Sparkles className="w-5 h-5 text-cyan-100 relative z-10" />
               <span className="text-[16px] font-bold relative z-10 tracking-wide text-white">
                 Initialise Project
               </span>
@@ -174,7 +278,7 @@ export default function HeroSection() {
       </div>
 
       <div
-        className="w-full h-14 bg-[#030712]/90 backdrop-blur-xl overflow-hidden flex items-center z-30 border-t border-white/[0.04] shrink-0 transform-gpu relative"
+        className="w-full h-14 bg-[#030712]/90 backdrop-blur-xl overflow-hidden flex items-center z-30 border-t border-white/[0.04] shrink-0 transform-gpu relative z-30"
         style={{
           maskImage:
             "linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%)",
@@ -190,7 +294,7 @@ export default function HeroSection() {
                 return (
                   <div
                     key={index}
-                    className="flex items-center gap-2.5 text-slate-400 hover:text-blue-400 transition-colors duration-300"
+                    className="flex items-center gap-2.5 text-slate-400 hover:text-cyan-400 transition-colors duration-300"
                   >
                     <IconComponent className="w-4 h-4 fill-current" />
                     <span className="text-[11px] font-bold tracking-[0.18em] uppercase">
