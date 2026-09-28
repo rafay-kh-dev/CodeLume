@@ -4,17 +4,23 @@ import { motion } from "framer-motion";
 export default function PageTransition({ children }) {
   return (
     <motion.div
-      // Naya page neechay (bottom) se aayega, thora blur hoga
-      initial={{ opacity: 0, y: 100, filter: "blur(8px)" }}
+      // Distance thora kam kiya (40px) taake movement makkhan ki tarah ho
+      initial={{ opacity: 0, y: 40 }}
       
-      // Screen ke bilkul center mein aakar clear aur lock ho jayega
-      animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+      // Center lock
+      animate={{ opacity: 1, y: 0 }}
       
-      // Purana page upar (top) ki taraf slide out ho jayega
-      exit={{ opacity: 0, y: -100, filter: "blur(8px)" }}
+      // Exit upward smoothly
+      exit={{ opacity: 0, y: -40 }}
       
-      // Timing 0.6s rakhi hai taake user ko maza aaye aur proper feel ho
-      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+      // Timing aur Easing: Yeh curve shuru mein taiz aur end mein bhot naram (smooth) hota hai
+      transition={{ 
+        duration: 0.5, 
+        ease: [0.25, 1, 0.5, 1] 
+      }}
+      
+      // HARDWARE ACCELERATION: Yeh browser ko force karta hai ke animation GPU par chalaye bina lag ke
+      style={{ willChange: "transform, opacity" }}
       
       className="w-full h-full"
     >
