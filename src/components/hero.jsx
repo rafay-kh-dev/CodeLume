@@ -11,7 +11,7 @@ import {
   SiNodedotjs,
 } from "react-icons/si";
 
-// 1. INTERACTIVE PARTICLE NETWORK (3D Parallax Depth - ESLint Fixed)
+// 1. ADVANCED 3D SPACE PARALLAX NETWORK (Idea 1 Enhanced to Extreme)
 const ParticleNetwork = () => {
   const canvasRef = useRef(null);
 
@@ -26,7 +26,7 @@ const ParticleNetwork = () => {
     let mouse = {
       x: null,
       y: null,
-      radius: 130,
+      radius: 130, // Repulsion area
     };
 
     const handleMouseMove = (event) => {
@@ -53,20 +53,26 @@ const ParticleNetwork = () => {
     canvas.height = window.innerHeight;
 
     class Particle {
-      constructor(x, y, directionX, directionY, size, zDepth) {
+      constructor(x, y, directionX, directionY, zDepth) {
         this.x = x;
         this.y = y;
-        this.zDepth = zDepth;
+        this.zDepth = zDepth; // Pure 3D Depth variable (0.1 to 1.0)
 
-        this.directionX = directionX * (this.zDepth * 1.5);
-        this.directionY = directionY * (this.zDepth * 1.5);
-        this.size = size * this.zDepth;
+        // Depth Math (Extreme): Foreground ones move very fast
+        this.directionX = directionX * Math.pow(this.zDepth, 2) * 1.5;
+        this.directionY = directionY * Math.pow(this.zDepth, 2) * 1.5;
+
+        // Depth Math (Extreme): Foreground ones are massive, background are tiny dots
+        this.size = 1 + zDepth * 8;
+
+        // Depth Math (Extreme): Foreground ones are solid, background are faint ghosts
+        this.opacity = 0.05 + zDepth * 0.95;
       }
 
       draw() {
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
-        ctx.fillStyle = `rgba(59, 130, 246, ${this.zDepth * 0.8})`;
+        ctx.fillStyle = `rgba(59, 130, 246, ${this.opacity})`;
         ctx.fill();
       }
 
@@ -86,8 +92,9 @@ const ParticleNetwork = () => {
             const forceDirectionY = dy / distance;
             const force = (mouse.radius - distance) / mouse.radius;
 
-            this.x -= forceDirectionX * force * 5 * this.zDepth;
-            this.y -= forceDirectionY * force * 5 * this.zDepth;
+            // Extreme Mouse Repulsion: Background ones ignore mouse, foreground ones go "zing"!
+            this.x -= forceDirectionX * force * 20 * Math.pow(this.zDepth, 3);
+            this.y -= forceDirectionY * force * 20 * Math.pow(this.zDepth, 3);
           }
         }
 
@@ -99,22 +106,19 @@ const ParticleNetwork = () => {
 
     const init = () => {
       particlesArray = [];
-      let numberOfParticles = (canvas.height * canvas.width) / 8000;
+      // Reduce number for clearer 3D layers, fewer massive foreground ones
+      let numberOfParticles = (canvas.height * canvas.width) / 10000;
 
       for (let i = 0; i < numberOfParticles; i++) {
-        let size = Math.random() * 2 + 1;
-        let x =
-          Math.random() * (window.innerWidth - size * 2 - size * 2) + size * 2;
-        let y =
-          Math.random() * (window.innerHeight - size * 2 - size * 2) + size * 2;
-        let directionX = Math.random() * 1.5 - 0.75;
-        let directionY = Math.random() * 1.5 - 0.75;
+        let x = Math.random() * (window.innerWidth - 20 - 20) + 20;
+        let y = Math.random() * (window.innerHeight - 20 - 20) + 20;
+        let directionX = Math.random() * 2 - 1;
+        let directionY = Math.random() * 2 - 1;
 
-        let zDepth = Math.random() * 0.8 + 0.2;
+        // Non-linear depth distribution: Lots of ghosts, a few solid big ones
+        let zDepth = Math.pow(Math.random(), 2) * 0.9 + 0.1;
 
-        particlesArray.push(
-          new Particle(x, y, directionX, directionY, size, zDepth),
-        );
+        particlesArray.push(new Particle(x, y, directionX, directionY, zDepth));
       }
     };
 
@@ -130,19 +134,21 @@ const ParticleNetwork = () => {
         for (let b = a; b < particlesArray.length; b++) {
           let dx = particlesArray[a].x - particlesArray[b].x;
           let dy = particlesArray[a].y - particlesArray[b].y;
-          let distance = dx * dx + dy * dy;
+          let distanceSq = dx * dx + dy * dy;
 
-          if (distance < 15000) {
+          // Only draw lines within shallow depth planes
+          if (distanceSq < 20000) {
             let depthDifference = Math.abs(
               particlesArray[a].zDepth - particlesArray[b].zDepth,
             );
 
-            if (depthDifference < 0.4) {
-              let opacityValue =
-                (1 - distance / 15000) *
+            if (depthDifference < 0.25) {
+              // Lines themselves have depth: ghosts draw faint lines
+              let lineOpacity =
+                (1 - distanceSq / 20000) *
                 Math.min(particlesArray[a].zDepth, particlesArray[b].zDepth) *
-                0.5;
-              ctx.strokeStyle = `rgba(59, 130, 246, ${opacityValue})`;
+                0.6;
+              ctx.strokeStyle = `rgba(59, 130, 246, ${lineOpacity})`;
               ctx.lineWidth = 1;
               ctx.beginPath();
               ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
@@ -168,7 +174,7 @@ const ParticleNetwork = () => {
   return (
     <canvas
       ref={canvasRef}
-      className="absolute inset-0 z-0 pointer-events-none opacity-70"
+      className="absolute inset-0 z-0 pointer-events-none opacity-80"
     />
   );
 };
@@ -200,7 +206,7 @@ export default function HeroSection() {
         `}
       </style>
 
-      {/* 3D Particle Network */}
+      {/* Extreme 3D Space Parallax Network */}
       <ParticleNetwork />
 
       {/* Ambient Glow Effects */}
@@ -222,7 +228,7 @@ export default function HeroSection() {
 
       <div className="flex-1 flex flex-col justify-center items-center w-full relative z-10 px-4 sm:px-6 lg:px-8 pt-16 sm:pt-20 pb-4 my-auto">
         <div className="max-w-6xl mx-auto text-center flex flex-col items-center">
-          <h1 className="text-[2.4rem] sm:text-5xl lg:text-[4.5rem] font-extrabold tracking-tight leading-[1.12] mb-6">
+          <h1 className="text-[2.4rem] sm:text-5xl lg:text-[4.5rem] font-extrabold tracking-tight leading-[1.12] mb-6 select-none">
             <span className="text-white block">Lead Your Industry With</span>
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-300 to-cyan-400 drop-shadow-[0_0_35px_rgba(37,99,235,0.35)] block py-2">
               Next-Generation
@@ -235,7 +241,7 @@ export default function HeroSection() {
             conversion rates, scale customer acquisition, and maximise revenue.
           </p>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-5 w-full sm:w-auto">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-5 w-full sm:w-auto relative z-20">
             <Link
               to="/start-project"
               className="group relative flex items-center justify-center gap-2 w-full sm:w-auto px-10 py-4 rounded-xl bg-gradient-to-b from-blue-500 to-blue-700 text-white shadow-[0_0_35px_-8px_rgba(37,99,235,0.6)] hover:shadow-[0_0_50px_-10px_rgba(37,99,235,0.8)] border border-blue-400/30 transition-all duration-300 active:scale-[0.98] outline-none overflow-hidden transform-gpu"
@@ -260,7 +266,7 @@ export default function HeroSection() {
       </div>
 
       <div
-        className="w-full h-14 bg-[#030712]/90 backdrop-blur-xl overflow-hidden flex items-center z-30 border-t border-white/[0.04] shrink-0 transform-gpu"
+        className="w-full h-14 bg-[#030712]/90 backdrop-blur-xl overflow-hidden flex items-center z-30 border-t border-white/[0.04] shrink-0 transform-gpu relative z-30"
         style={{
           maskImage:
             "linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%)",
