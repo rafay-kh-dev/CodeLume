@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { ChevronRight, Sparkles, Webhook } from "lucide-react";
 import {
@@ -11,12 +11,14 @@ import {
   SiNodedotjs,
 } from "react-icons/si";
 
-// 1. INTERACTIVE PARTICLE NETWORK (Aapka pasandeeda background effect wapas aa gaya)
+// 1. INTERACTIVE PARTICLE NETWORK (3D Parallax Depth - ESLint Fixed)
 const ParticleNetwork = () => {
   const canvasRef = useRef(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
+    if (!canvas) return;
+
     const ctx = canvas.getContext("2d");
     let animationFrameId;
     let particlesArray = [];
@@ -24,7 +26,7 @@ const ParticleNetwork = () => {
     let mouse = {
       x: null,
       y: null,
-      radius: 120,
+      radius: 130,
     };
 
     const handleMouseMove = (event) => {
@@ -37,31 +39,34 @@ const ParticleNetwork = () => {
       mouse.y = null;
     };
 
-    window.addEventListener("mousemove", handleMouseMove);
-    window.addEventListener("mouseout", handleMouseOut);
-    window.addEventListener("resize", () => {
+    const handleResize = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
       init();
-    });
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mouseout", handleMouseOut);
+    window.addEventListener("resize", handleResize);
 
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
     class Particle {
-      constructor(x, y, directionX, directionY, size, color) {
+      constructor(x, y, directionX, directionY, size, zDepth) {
         this.x = x;
         this.y = y;
-        this.directionX = directionX;
-        this.directionY = directionY;
-        this.size = size;
-        this.color = color;
+        this.zDepth = zDepth;
+
+        this.directionX = directionX * (this.zDepth * 1.5);
+        this.directionY = directionY * (this.zDepth * 1.5);
+        this.size = size * this.zDepth;
       }
 
       draw() {
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
-        ctx.fillStyle = "#3b82f6";
+        ctx.fillStyle = `rgba(59, 130, 246, ${this.zDepth * 0.8})`;
         ctx.fill();
       }
 
@@ -71,17 +76,19 @@ const ParticleNetwork = () => {
         if (this.y > canvas.height || this.y < 0)
           this.directionY = -this.directionY;
 
-        let dx = mouse.x - this.x;
-        let dy = mouse.y - this.y;
-        let distance = Math.sqrt(dx * dx + dy * dy);
+        if (mouse.x !== null && mouse.y !== null) {
+          let dx = mouse.x - this.x;
+          let dy = mouse.y - this.y;
+          let distance = Math.sqrt(dx * dx + dy * dy);
 
-        if (distance < mouse.radius) {
-          const forceDirectionX = dx / distance;
-          const forceDirectionY = dy / distance;
-          const force = (mouse.radius - distance) / mouse.radius;
+          if (distance < mouse.radius) {
+            const forceDirectionX = dx / distance;
+            const forceDirectionY = dy / distance;
+            const force = (mouse.radius - distance) / mouse.radius;
 
-          this.x -= forceDirectionX * force * 5;
-          this.y -= forceDirectionY * force * 5;
+            this.x -= forceDirectionX * force * 5 * this.zDepth;
+            this.y -= forceDirectionY * force * 5 * this.zDepth;
+          }
         }
 
         this.x += this.directionX;
@@ -92,22 +99,28 @@ const ParticleNetwork = () => {
 
     const init = () => {
       particlesArray = [];
-      let numberOfParticles = (canvas.height * canvas.width) / 9000;
+      let numberOfParticles = (canvas.height * canvas.width) / 8000;
+
       for (let i = 0; i < numberOfParticles; i++) {
         let size = Math.random() * 2 + 1;
-        let x = Math.random() * (innerWidth - size * 2 - size * 2) + size * 2;
-        let y = Math.random() * (innerHeight - size * 2 - size * 2) + size * 2;
+        let x =
+          Math.random() * (window.innerWidth - size * 2 - size * 2) + size * 2;
+        let y =
+          Math.random() * (window.innerHeight - size * 2 - size * 2) + size * 2;
         let directionX = Math.random() * 1.5 - 0.75;
         let directionY = Math.random() * 1.5 - 0.75;
+
+        let zDepth = Math.random() * 0.8 + 0.2;
+
         particlesArray.push(
-          new Particle(x, y, directionX, directionY, size, "#3b82f6"),
+          new Particle(x, y, directionX, directionY, size, zDepth),
         );
       }
     };
 
     const animate = () => {
       animationFrameId = requestAnimationFrame(animate);
-      ctx.clearRect(0, 0, innerWidth, innerHeight);
+      ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
       for (let i = 0; i < particlesArray.length; i++) {
         particlesArray[i].update();
@@ -115,20 +128,27 @@ const ParticleNetwork = () => {
 
       for (let a = 0; a < particlesArray.length; a++) {
         for (let b = a; b < particlesArray.length; b++) {
-          let distance =
-            (particlesArray[a].x - particlesArray[b].x) *
-              (particlesArray[a].x - particlesArray[b].x) +
-            (particlesArray[a].y - particlesArray[b].y) *
-              (particlesArray[a].y - particlesArray[b].y);
+          let dx = particlesArray[a].x - particlesArray[b].x;
+          let dy = particlesArray[a].y - particlesArray[b].y;
+          let distance = dx * dx + dy * dy;
 
-          if (distance < 12000) {
-            let opacityValue = 1 - distance / 12000;
-            ctx.strokeStyle = `rgba(59, 130, 246, ${opacityValue * 0.4})`;
-            ctx.lineWidth = 1;
-            ctx.beginPath();
-            ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
-            ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
-            ctx.stroke();
+          if (distance < 15000) {
+            let depthDifference = Math.abs(
+              particlesArray[a].zDepth - particlesArray[b].zDepth,
+            );
+
+            if (depthDifference < 0.4) {
+              let opacityValue =
+                (1 - distance / 15000) *
+                Math.min(particlesArray[a].zDepth, particlesArray[b].zDepth) *
+                0.5;
+              ctx.strokeStyle = `rgba(59, 130, 246, ${opacityValue})`;
+              ctx.lineWidth = 1;
+              ctx.beginPath();
+              ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
+              ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
+              ctx.stroke();
+            }
           }
         }
       }
@@ -140,6 +160,7 @@ const ParticleNetwork = () => {
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseout", handleMouseOut);
+      window.removeEventListener("resize", handleResize);
       cancelAnimationFrame(animationFrameId);
     };
   }, []);
@@ -147,7 +168,7 @@ const ParticleNetwork = () => {
   return (
     <canvas
       ref={canvasRef}
-      className="absolute inset-0 z-0 pointer-events-none opacity-60"
+      className="absolute inset-0 z-0 pointer-events-none opacity-70"
     />
   );
 };
@@ -179,11 +200,11 @@ export default function HeroSection() {
         `}
       </style>
 
-      {/* Particle Network is back */}
+      {/* 3D Particle Network */}
       <ParticleNetwork />
 
       {/* Ambient Glow Effects */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[300px] bg-linear-to-b from-blue-600/20 via-indigo-500/10 to-transparent blur-[110px] pointer-events-none rounded-full transform-gpu" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[300px] bg-gradient-to-b from-blue-600/20 via-indigo-500/10 to-transparent blur-[110px] pointer-events-none rounded-full transform-gpu" />
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] bg-cyan-500/10 blur-[140px] pointer-events-none rounded-full transform-gpu" />
 
       {/* Dot Matrix Grid Pattern */}
@@ -203,8 +224,7 @@ export default function HeroSection() {
         <div className="max-w-6xl mx-auto text-center flex flex-col items-center">
           <h1 className="text-[2.4rem] sm:text-5xl lg:text-[4.5rem] font-extrabold tracking-tight leading-[1.12] mb-6">
             <span className="text-white block">Lead Your Industry With</span>
-            {/* CLEAN, READABLE LUXURY GRADIENT TEXT */}
-            <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-400 via-indigo-300 to-cyan-400 drop-shadow-[0_0_35px_rgba(37,99,235,0.35)] block py-2">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-300 to-cyan-400 drop-shadow-[0_0_35px_rgba(37,99,235,0.35)] block py-2">
               Next-Generation
             </span>
             <span className="text-white block">Optimised Web Solutions.</span>
@@ -218,7 +238,7 @@ export default function HeroSection() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-5 w-full sm:w-auto">
             <Link
               to="/start-project"
-              className="group relative flex items-center justify-center gap-2 w-full sm:w-auto px-10 py-4 rounded-xl bg-linear-to-b from-blue-500 to-blue-700 text-white shadow-[0_0_35px_-8px_rgba(37,99,235,0.6)] hover:shadow-[0_0_50px_-10px_rgba(37,99,235,0.8)] border border-blue-400/30 transition-all duration-300 active:scale-[0.98] outline-none overflow-hidden transform-gpu"
+              className="group relative flex items-center justify-center gap-2 w-full sm:w-auto px-10 py-4 rounded-xl bg-gradient-to-b from-blue-500 to-blue-700 text-white shadow-[0_0_35px_-8px_rgba(37,99,235,0.6)] hover:shadow-[0_0_50px_-10px_rgba(37,99,235,0.8)] border border-blue-400/30 transition-all duration-300 active:scale-[0.98] outline-none overflow-hidden transform-gpu"
             >
               <Sparkles className="w-5 h-5 text-blue-100 relative z-10" />
               <span className="text-[16px] font-bold relative z-10 tracking-wide text-white">
