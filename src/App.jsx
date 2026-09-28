@@ -67,8 +67,9 @@ import { mongodbCourseData } from "./data/mongodbcoursedata";
 
 import TerminalWidget from "./components/terminalwidget";
 
-// NEW: Import the Page Transition Wrapper
 import PageTransition from "./components/pagetransition";
+
+import GlobalBackground from "./components/globalbackground";
 
 // Security Wrapper
 const ProtectedRoute = ({ children }) => {
@@ -419,6 +420,9 @@ export default function App() {
         <RouteTracker />
         <div className="min-h-screen bg-[#030712] text-white selection:bg-blue-500 selection:text-white">
           {/* Navbar sits outside the routes so it doesn't animate out */}
+
+          <GlobalBackground />
+
           <Navbar />
 
           <main>
