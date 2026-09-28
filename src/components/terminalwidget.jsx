@@ -166,7 +166,7 @@ export default function TerminalWidget() {
         <div className="flex items-center gap-2">
           <TerminalIcon className="w-4 h-4 text-slate-400" />
           <span className="text-xs text-slate-400">
-            bash - CodeLume Engineer
+            bash - CodeLume Terminal
           </span>
         </div>
         <button
