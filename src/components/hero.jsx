@@ -11,7 +11,7 @@ import {
   SiNodedotjs,
 } from "react-icons/si";
 
-// 1. CYBERPUNK TEXT SCRAMBLER
+// 1. CYBERPUNK TEXT SCRAMBLER (Professional Tech Vibe)
 const CyberpunkText = ({ text, className }) => {
   const [displayText, setDisplayText] = useState(text);
   const intervalRef = useRef(null);
@@ -45,7 +45,7 @@ const CyberpunkText = ({ text, className }) => {
   );
 };
 
-// 2. BACKGROUND PARTICLE NETWORK
+// 2. BACKGROUND PARTICLE NETWORK (Clean, Elegant Connectivity)
 const ParticleNetwork = () => {
   const canvasRef = useRef(null);
 
@@ -178,216 +178,7 @@ const ParticleNetwork = () => {
   );
 };
 
-// 3. THE HANGING SCROLL-LINKED SPIDER (Natural Pendulum Physics)
-const HangingScrollSpider = () => {
-  const canvasRef = useRef(null);
-
-  useEffect(() => {
-    if (window.innerWidth <= 768) return;
-
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    let animationFrameId;
-
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    // Physics Engine Variables
-    let scrollY = window.scrollY;
-    const startX = window.innerWidth * 0.12; // 12% from left
-    const startY = -20; // Anchor point slightly above screen
-
-    let currentDropY = 0; // Starts from anchor
-    let velocityY = 0;
-
-    let currentSwing = 0; // Pendulum swing angle
-    let swingVelocity = 0;
-
-    let time = 0;
-
-    const handleScroll = () => {
-      scrollY = window.scrollY;
-    };
-
-    const handleResize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    window.addEventListener("resize", handleResize);
-
-    const drawSpider = (dropLength, swingAngle, fallSpeed) => {
-      ctx.save();
-
-      // 1. Anchor the entire system to the starting point
-      ctx.translate(startX, startY);
-
-      // 2. Apply Pendulum Swing (Rotate from the top anchor)
-      ctx.rotate(swingAngle);
-
-      // 3. Draw the Silk Thread straight down from anchor
-      ctx.beginPath();
-      ctx.moveTo(0, 0);
-      ctx.lineTo(0, dropLength);
-      ctx.strokeStyle = "rgba(255, 255, 255, 0.35)";
-      ctx.lineWidth = 1.2;
-      ctx.setLineDash([3, 2]); // Silky dashed look
-      ctx.stroke();
-      ctx.setLineDash([]);
-
-      // 4. Move down to the end of the thread to draw the spider
-      ctx.translate(0, dropLength);
-
-      // Rotate spider to face DOWN relative to the thread
-      ctx.rotate(Math.PI / 2);
-
-      ctx.shadowColor = "rgba(0, 0, 0, 0.9)";
-      ctx.shadowBlur = 12;
-      ctx.shadowOffsetY = 6;
-
-      // Leg Tucking Physics: When falling fast, spiders tuck legs UP (backwards relative to facing down)
-      // Calculate how tucked the legs should be based on vertical velocity
-      let tuckFactor = Math.max(0, Math.min(1, Math.abs(fallSpeed) * 0.08));
-
-      // Idle breathing/wiggling
-      let breathing = Math.sin(time * 2) * 0.1;
-
-      // 8 Articulated Legs
-      const legAngles = [
-        Math.PI * 0.25,
-        Math.PI * 0.45,
-        Math.PI * 0.65,
-        Math.PI * 0.85,
-        -Math.PI * 0.25,
-        -Math.PI * 0.45,
-        -Math.PI * 0.65,
-        -Math.PI * 0.85,
-      ];
-
-      for (let i = 0; i < 8; i++) {
-        let isLeft = i >= 4;
-        let baseAngle = legAngles[i];
-
-        // As tuckFactor increases, legs fold backwards (towards PI)
-        let tuckedAngle =
-          baseAngle + (isLeft ? -tuckFactor * 0.5 : tuckFactor * 0.5);
-        let finalAngle = tuckedAngle + (isLeft ? -breathing : breathing);
-
-        // Tucking also brings legs closer to the body
-        let legStretch = 20 - tuckFactor * 6;
-
-        let jointX = Math.cos(finalAngle) * 5;
-        let jointY = Math.sin(finalAngle) * 5;
-
-        let kneeX = jointX + Math.cos(finalAngle) * legStretch;
-        let kneeY = jointY + Math.sin(finalAngle) * legStretch;
-
-        let footAngle = finalAngle + (isLeft ? 0.6 : -0.6);
-        let footX = kneeX + Math.cos(footAngle) * (legStretch * 0.9);
-        let footY = kneeY + Math.sin(footAngle) * (legStretch * 0.9);
-
-        // Draw Femur
-        ctx.beginPath();
-        ctx.moveTo(jointX, jointY);
-        ctx.lineTo(kneeX, kneeY);
-        ctx.strokeStyle = "#0f172a";
-        ctx.lineWidth = 2.5;
-        ctx.lineCap = "round";
-        ctx.stroke();
-
-        // Draw Tibia
-        ctx.beginPath();
-        ctx.moveTo(kneeX, kneeY);
-        ctx.lineTo(footX, footY);
-        ctx.strokeStyle = "#1e3a8a";
-        ctx.lineWidth = 1.5;
-        ctx.stroke();
-      }
-
-      ctx.shadowColor = "transparent";
-
-      // Abdomen
-      let abGrad = ctx.createRadialGradient(-10, 0, 0, -10, 0, 15);
-      abGrad.addColorStop(0, "#3b82f6");
-      abGrad.addColorStop(0.7, "#1e3a8a");
-      abGrad.addColorStop(1, "#020617");
-
-      ctx.beginPath();
-      ctx.ellipse(-10, 0, 14, 10, 0, 0, Math.PI * 2);
-      ctx.fillStyle = abGrad;
-      ctx.fill();
-
-      // Head
-      ctx.beginPath();
-      ctx.ellipse(3, 0, 7, 6, 0, 0, Math.PI * 2);
-      ctx.fillStyle = "#0f172a";
-      ctx.fill();
-
-      // Glowing Eyes
-      ctx.fillStyle = "#22d3ee";
-      ctx.shadowColor = "#22d3ee";
-      ctx.shadowBlur = 6;
-      ctx.beginPath();
-      ctx.arc(7, -2, 1.2, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.beginPath();
-      ctx.arc(7, 2, 1.2, 0, Math.PI * 2);
-      ctx.fill();
-
-      ctx.restore();
-    };
-
-    const animate = () => {
-      animationFrameId = requestAnimationFrame(animate);
-      ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-
-      // --- VERTICAL DROP PHYSICS ---
-      // Fix 1: Restrict maximum drop so it doesn't go off-screen
-      let maxDrop = window.innerHeight * 0.45; // Max 45% of screen height
-
-      // Base resting position is 120px down. Scrolling adds to it smoothly.
-      let targetY = 120 + Math.min(scrollY * 0.6, maxDrop);
-
-      let forceY = (targetY - currentDropY) * 0.05; // Spring tension
-      velocityY += forceY;
-      velocityY *= 0.82; // Damping (bounciness)
-      currentDropY += velocityY;
-
-      // --- HORIZONTAL PENDULUM PHYSICS ---
-      // Fix 2: When falling/bouncing vertically, wind pushes it sideways slightly
-      let targetSwing = velocityY * -0.003; // Fall creates a slight swing
-      targetSwing += Math.sin(time) * 0.03; // Natural ambient wind breeze
-
-      let swingForce = (targetSwing - currentSwing) * 0.04;
-      swingVelocity += swingForce;
-      swingVelocity *= 0.92; // Swing damping
-      currentSwing += swingVelocity;
-
-      time += 0.04;
-
-      drawSpider(currentDropY, currentSwing, velocityY);
-    };
-
-    animate();
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("resize", handleResize);
-      cancelAnimationFrame(animationFrameId);
-    };
-  }, []);
-
-  return (
-    <canvas
-      ref={canvasRef}
-      className="fixed top-0 left-0 w-full h-full pointer-events-none z-50 hidden md:block"
-    />
-  );
-};
-
-// 4. MAIN HERO SECTION
+// 3. MAIN HERO SECTION
 export default function HeroSection() {
   const techStack = [
     { name: "MERN Stack", Icon: SiReact },
@@ -417,12 +208,11 @@ export default function HeroSection() {
       {/* Background Dots Network */}
       <ParticleNetwork />
 
-      {/* 100% Natural Pendulum Hanging Spider */}
-      <HangingScrollSpider />
-
+      {/* Ambient Glow Effects */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[300px] bg-gradient-to-b from-blue-600/20 via-indigo-500/10 to-transparent blur-[110px] pointer-events-none rounded-full transform-gpu" />
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] bg-cyan-500/10 blur-[140px] pointer-events-none rounded-full transform-gpu" />
 
+      {/* Dot Matrix Grid Pattern */}
       <div
         className="absolute inset-0 z-0 opacity-[0.12] pointer-events-none transform-gpu"
         style={{
