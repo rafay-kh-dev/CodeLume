@@ -12,65 +12,94 @@ import {
 } from "react-icons/si";
 import * as THREE from "three";
 
-// 1. PURE BLUE 3D MAGNETIC WAVE 
+// 1. THE REAL POWER OF THREE.JS - QUANTUM GALAXY VORTEX
 const ThreeBackground = () => {
   const mountRef = useRef(null);
 
   useEffect(() => {
     if (!mountRef.current) return;
 
+    // 1. Setup Scene & Camera
     const scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0x030712, 0.0035);
+    scene.fog = new THREE.FogExp2(0x030712, 0.007); // Smoothly hides distant particles
     
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 1000);
-    camera.position.set(0, 25, 60);
-    camera.rotation.x = -0.25;
+    const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 1000);
+    camera.position.set(0, 35, 75);
 
-    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: "high-performance" });
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // Optimized for high refresh rate
     mountRef.current.appendChild(renderer.domElement);
 
-    const amountX = 130;
-    const amountY = 130;
-    const separation = 2.2;
-    const numParticles = amountX * amountY;
+    // 2. Galaxy Math Generation
+    const parameters = {
+      count: 15000, // Massive amount of particles
+      radius: 65,   // Size of the galaxy
+      branches: 4,  // Number of spiral arms
+      spin: 1.2,    // How tightly it spirals
+      randomness: 6,
+      randomnessPower: 3
+    };
 
     const geometry = new THREE.BufferGeometry();
-    const positions = new Float32Array(numParticles * 3);
-    const scales = new Float32Array(numParticles);
+    const positions = new Float32Array(parameters.count * 3);
+    const colors = new Float32Array(parameters.count * 3);
+    const scales = new Float32Array(parameters.count);
 
-    let count = 0;
-    for (let ix = 0; ix < amountX; ix++) {
-      for (let iy = 0; iy < amountY; iy++) {
-        positions[count * 3] = ix * separation - (amountX * separation) / 2;
-        positions[count * 3 + 1] = 0; 
-        positions[count * 3 + 2] = iy * separation - (amountY * separation) / 2;
-        scales[count] = 1;
-        count++;
+    // Strict Corporate Blue Palette
+    const colorInside = new THREE.Color("#ffffff"); // Bright glowing core
+    const colorPrimary = new THREE.Color("#3b82f6"); // CodeLume Blue
+    const colorOutside = new THREE.Color("#0f172a"); // Deep space background blue
+
+    for (let i = 0; i < parameters.count; i++) {
+      const i3 = i * 3;
+      
+      // Spiral Math
+      const radius = Math.random() * parameters.radius;
+      const spinAngle = radius * parameters.spin * 0.1;
+      const branchAngle = ((i % parameters.branches) / parameters.branches) * Math.PI * 2;
+
+      // Clustering randomness (more particles in the center of the arm)
+      const randomX = Math.pow(Math.random(), parameters.randomnessPower) * (Math.random() < 0.5 ? 1 : -1) * parameters.randomness;
+      const randomY = Math.pow(Math.random(), parameters.randomnessPower) * (Math.random() < 0.5 ? 1 : -1) * (parameters.randomness * 1.5);
+      const randomZ = Math.pow(Math.random(), parameters.randomnessPower) * (Math.random() < 0.5 ? 1 : -1) * parameters.randomness;
+
+      // Positioning
+      positions[i3] = Math.cos(branchAngle + spinAngle) * radius + randomX;
+      positions[i3 + 1] = randomY * (1.2 - (radius / parameters.radius)); // Flattens out at the edges
+      positions[i3 + 2] = Math.sin(branchAngle + spinAngle) * radius + randomZ;
+
+      // Color Gradient Logic
+      let mixedColor = new THREE.Color();
+      if (radius < 15) {
+        // Core to Primary Blue
+        mixedColor = colorPrimary.clone().lerp(colorInside, 1 - (radius / 15));
+      } else {
+        // Primary Blue to Deep Dark Edge
+        mixedColor = colorOutside.clone().lerp(colorPrimary, 1 - (radius / parameters.radius));
       }
+
+      colors[i3] = mixedColor.r;
+      colors[i3 + 1] = mixedColor.g;
+      colors[i3 + 2] = mixedColor.b;
+
+      // Base random scale for variety
+      scales[i] = Math.random() * 1.5 + 0.5;
     }
 
     geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+    geometry.setAttribute("color", new THREE.BufferAttribute(colors, 3));
     geometry.setAttribute("scale", new THREE.BufferAttribute(scales, 1));
 
+    // Custom Shader for Twinkling & Glowing Dots
     const material = new THREE.ShaderMaterial({
-      uniforms: {
-        colorDeep: { value: new THREE.Color("#0f172a") }, 
-        colorHigh: { value: new THREE.Color("#3b82f6") }, 
-      },
       vertexShader: `
         attribute float scale;
         varying vec3 vColor;
-        uniform vec3 colorDeep;
-        uniform vec3 colorHigh;
-        
         void main() {
-          float heightFactor = (position.y + 4.0) / 10.0;
-          vColor = mix(colorDeep, colorHigh, clamp(heightFactor, 0.0, 1.0));
-          
-          vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
-          gl_PointSize = scale * ( 90.0 / - mvPosition.z );
+          vColor = color;
+          vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+          gl_PointSize = scale * (120.0 / -mvPosition.z);
           gl_Position = projectionMatrix * mvPosition;
         }
       `,
@@ -82,21 +111,24 @@ const ThreeBackground = () => {
           if (ll > 0.5) discard;
           
           float opacity = (0.5 - ll) * 2.0;
-          gl_FragColor = vec4(vColor, opacity * 0.9);
+          gl_FragColor = vec4(vColor, opacity * 0.95);
         }
       `,
       transparent: true,
       blending: THREE.AdditiveBlending,
-      depthWrite: false
+      depthWrite: false,
+      vertexColors: true
     });
 
-    const particles = new THREE.Points(geometry, material);
-    scene.add(particles);
+    const galaxy = new THREE.Points(geometry, material);
+    // Tilt the entire galaxy for a better 3D cinematic view
+    galaxy.rotation.x = 0.2; 
+    galaxy.rotation.z = -0.1;
+    scene.add(galaxy);
 
+    // 3. Mouse Interaction & Animation Loop
     let mouseX = 0;
     let mouseY = 0;
-    let targetX = 0;
-    let targetY = 0;
     const windowHalfX = window.innerWidth / 2;
     const windowHalfY = window.innerHeight / 2;
 
@@ -106,55 +138,28 @@ const ThreeBackground = () => {
     };
     window.addEventListener("mousemove", onPointerMove);
 
-    let particlePhase = 0;
+    const clock = new THREE.Clock();
     let animationFrameId;
 
     const animate = () => {
       animationFrameId = requestAnimationFrame(animate);
+      const elapsedTime = clock.getElapsedTime();
 
-      targetX = mouseX * 0.03;
-      targetY = mouseY * 0.03;
-      camera.position.x += (targetX - camera.position.x) * 0.05;
-      camera.position.y += (-targetY + 25 - camera.position.y) * 0.05;
+      // Continuous Galaxy Rotation
+      galaxy.rotation.y += 0.0015;
+
+      // Mouse Parallax (Dynamic 3D Camera Shift)
+      camera.position.x += (mouseX * 0.02 - camera.position.x) * 0.05;
+      camera.position.y += (-mouseY * 0.02 + 35 - camera.position.y) * 0.05;
       camera.lookAt(scene.position);
 
-      particlePhase += 0.03;
-      const positionsArray = particles.geometry.attributes.position.array;
-      const scalesArray = particles.geometry.attributes.scale.array;
-
-      let worldMouseX = (mouseX / windowHalfX) * 100;
-      let worldMouseZ = (mouseY / windowHalfY) * 100 - 30;
-
-      let i = 0;
-      let j = 0;
-
-      for (let ix = 0; ix < amountX; ix++) {
-        for (let iy = 0; iy < amountY; iy++) {
-          let x = positionsArray[i];
-          let z = positionsArray[i + 2];
-
-          let y = Math.sin((ix + particlePhase) * 0.3) * 3.5 +
-                  Math.sin((iy + particlePhase) * 0.5) * 3.5;
-
-          let dx = x - worldMouseX;
-          let dz = z - worldMouseZ;
-          let distance = Math.sqrt(dx * dx + dz * dz);
-          
-          if (distance < 40) {
-            let lift = (40 - distance) * 0.35; 
-            y += lift;
-          }
-
-          positionsArray[i + 1] = y;
-          scalesArray[j] = (y + 5) * 0.6;
-
-          i += 3;
-          j++;
-        }
+      // Particle Twinkling Effect (Breathing via sine wave)
+      const scalesArray = galaxy.geometry.attributes.scale.array;
+      for (let i = 0; i < parameters.count; i++) {
+         scalesArray[i] = (Math.sin(elapsedTime * 2.5 + i) + 1.0) * 0.6 + 0.4;
       }
+      galaxy.geometry.attributes.scale.needsUpdate = true;
 
-      particles.geometry.attributes.position.needsUpdate = true;
-      particles.geometry.attributes.scale.needsUpdate = true;
       renderer.render(scene, camera);
     };
 
@@ -178,11 +183,11 @@ const ThreeBackground = () => {
     };
   }, []);
 
-  return <div ref={mountRef} className="absolute inset-0 z-0 pointer-events-none opacity-90" />;
+  return <div ref={mountRef} className="absolute inset-0 z-0 pointer-events-none opacity-85 mix-blend-screen" />;
 };
 
 
-// 2. MAIN HERO SECTION
+// 2. MAIN HERO SECTION (Heading exactly as you wanted)
 export default function HeroSection() {
   const techStack = [
     { name: "MERN Stack", Icon: SiReact },
@@ -245,7 +250,7 @@ export default function HeroSection() {
         `}
       </style>
 
-      {/* Advanced 3D Magnetic Ocean Wave (Pure Blue Theme) */}
+      {/* NEW THE REAL POWER OF THREE.JS (GALAXY VORTEX) */}
       <ThreeBackground />
 
       {/* Ambient Blue Glow Overlays */}
@@ -272,7 +277,7 @@ export default function HeroSection() {
               Lead Your Industry With
             </span>
             
-            {/* NEW FOCUS ELEMENT: Brilliant White/Silver Text with Heavy Blue Pulsing Glow */}
+            {/* FOCUS ELEMENT: Brilliant White/Silver Text with Heavy Blue Pulsing Glow */}
             <span className="block py-2 animate-extreme-focus">
               <span className="text-focus-shimmer font-black tracking-wide">
                 Next-Generation
