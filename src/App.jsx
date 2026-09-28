@@ -423,6 +423,14 @@ export default function App() {
 
           <GlobalBackground />
 
+          <style>
+            {`
+              main section, main div {
+                background-color: transparent !important;
+              }
+            `}
+          </style>
+
           <Navbar />
 
           <main>
