@@ -35,7 +35,7 @@ export default function About() {
 
   return (
     <section
-      className="w-full py-16 sm:py-24 lg:py-32 font-jakarta"
+      className="w-full py-16 sm:py-24 lg:py-32 bg-transparent font-jakarta"
       id="about"
     >
       <style>
