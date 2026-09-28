@@ -11,7 +11,7 @@ import {
   SiNodedotjs,
 } from "react-icons/si";
 
-// 1. ELASTIC SPIDER WEB + CYBER SPIDER PHYSICS
+// 1. ELASTIC SPIDER WEB + HIGHLY REALISTIC SPIDER PHYSICS
 const SpiderWebNetwork = () => {
   const canvasRef = useRef(null);
 
@@ -22,7 +22,7 @@ const SpiderWebNetwork = () => {
     const ctx = canvas.getContext("2d");
     let animationFrameId;
     let nodesArray = [];
-    let cyberSpider;
+    let realisticSpider;
 
     let mouse = {
       x: window.innerWidth / 2,
@@ -46,8 +46,8 @@ const SpiderWebNetwork = () => {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    // --- CYBER SPIDER CLASS ---
-    class CyberSpider {
+    // --- HIGHLY REALISTIC PROCEDURAL SPIDER ---
+    class RealisticSpider {
       constructor(x, y) {
         this.x = x;
         this.y = y;
@@ -55,7 +55,8 @@ const SpiderWebNetwork = () => {
         this.vy = 0;
         this.angle = 0;
         this.legPhase = 0;
-        this.radius = 160; // Kitni door tak jaala iski taraf khinchega
+        this.speed = 0;
+        this.radius = 220; // How far the web stretches under its weight
       }
 
       update() {
@@ -63,19 +64,31 @@ const SpiderWebNetwork = () => {
         let dy = mouse.y - this.y;
         let distance = Math.sqrt(dx * dx + dy * dy);
 
-        if (distance > 2) {
-          this.angle = Math.atan2(dy, dx);
+        if (distance > 5) {
+          let targetAngle = Math.atan2(dy, dx);
+          let angleDiff = targetAngle - this.angle;
 
-          // Smooth chasing physics
-          this.vx = dx * 0.05;
-          this.vy = dy * 0.05;
+          // Smooth rotation logic
+          while (angleDiff > Math.PI) angleDiff -= Math.PI * 2;
+          while (angleDiff < -Math.PI) angleDiff += Math.PI * 2;
+          this.angle += angleDiff * 0.08;
+
+          // Forward movement (slows down when turning sharply)
+          let forwardThrust = Math.max(0, Math.cos(angleDiff));
+          let maxSpeed = 3.5 * forwardThrust;
+
+          this.speed += (maxSpeed - this.speed) * 0.1;
+          this.vx = Math.cos(this.angle) * this.speed;
+          this.vy = Math.sin(this.angle) * this.speed;
 
           this.x += this.vx;
           this.y += this.vy;
 
-          // Walking animation speed based on movement velocity
-          this.legPhase +=
-            Math.sqrt(this.vx * this.vx + this.vy * this.vy) * 0.25;
+          // Link leg movement speed directly to body speed
+          this.legPhase += this.speed * 0.15;
+        } else {
+          this.speed *= 0.8; // Decelerate smoothly
+          this.legPhase += this.speed * 0.15;
         }
       }
 
@@ -84,48 +97,121 @@ const SpiderWebNetwork = () => {
         ctx.translate(this.x, this.y);
         ctx.rotate(this.angle);
 
-        ctx.fillStyle = "#3b82f6"; // Navy Blue Theme
-        ctx.strokeStyle = "#3b82f6";
-        ctx.lineWidth = 1.5;
+        // Realistic Drop Shadow for Depth
+        ctx.shadowColor = "rgba(0, 0, 0, 0.7)";
+        ctx.shadowBlur = 12;
+        ctx.shadowOffsetX = 3;
+        ctx.shadowOffsetY = 3;
 
-        // Spider Abdomen (Peeche wala hissa)
-        ctx.beginPath();
-        ctx.ellipse(-4, 0, 7, 5, 0, 0, Math.PI * 2);
-        ctx.fill();
+        // --- 1. DRAW ARTICULATED LEGS (Under the body) ---
+        // Angles are relative to the body facing Right (0 radians)
+        const legConfig = [
+          { baseX: 4, baseY: 4, len: 45, ang: Math.PI / 4, bend: 1 }, // Front Right
+          { baseX: 2, baseY: 6, len: 40, ang: Math.PI / 2 - 0.2, bend: 1 }, // Mid-Front Right
+          { baseX: -2, baseY: 6, len: 40, ang: Math.PI / 2 + 0.4, bend: 1 }, // Mid-Back Right
+          { baseX: -6, baseY: 4, len: 50, ang: (Math.PI * 3) / 4, bend: 1 }, // Back Right
 
-        // Spider Head
-        ctx.beginPath();
-        ctx.arc(4, 0, 3, 0, Math.PI * 2);
-        ctx.fill();
-
-        // Spider Legs Physics
-        const legBases = [
-          { x: 3, y: 2 },
-          { x: 1, y: 3 },
-          { x: -1, y: 3 },
-          { x: -3, y: 2 },
+          { baseX: 4, baseY: -4, len: 45, ang: -Math.PI / 4, bend: -1 }, // Front Left
+          { baseX: 2, baseY: -6, len: 40, ang: -Math.PI / 2 + 0.2, bend: -1 }, // Mid-Front Left
+          { baseX: -2, baseY: -6, len: 40, ang: -Math.PI / 2 - 0.4, bend: -1 }, // Mid-Back Left
+          { baseX: -6, baseY: -4, len: 50, ang: (-Math.PI * 3) / 4, bend: -1 }, // Back Left
         ];
 
-        for (let i = 0; i < 4; i++) {
-          let base = legBases[i];
-          let phaseOffset = i * (Math.PI / 2);
+        for (let i = 0; i < 8; i++) {
+          let leg = legConfig[i];
+          // Tetrapod gait: Alternating legs move together
+          let isGroup1 = i === 0 || i === 2 || i === 5 || i === 7;
+          let phase = this.legPhase + (isGroup1 ? 0 : Math.PI);
 
-          // Right legs
-          let swingR = Math.sin(this.legPhase + phaseOffset);
+          let swing = Math.sin(phase) * 0.45; // Back and forth movement
+          let lift = Math.cos(phase); // Up and down movement
+
+          // Calculate where the foot lands
+          let currentAng = leg.ang + swing;
+          let footX = leg.baseX + Math.cos(currentAng) * leg.len;
+          let footY = leg.baseY + Math.sin(currentAng) * leg.len;
+
+          // Calculate the Knee Joint (bends outwards and lifts up)
+          let kneeBendAmount = 15 + (lift > 0 ? lift * 12 : 0);
+          let midX = (leg.baseX + footX) / 2;
+          let midY = (leg.baseY + footY) / 2;
+          let kneeX =
+            midX +
+            Math.cos(currentAng - (Math.PI / 2) * leg.bend) * kneeBendAmount;
+          let kneeY =
+            midY +
+            Math.sin(currentAng - (Math.PI / 2) * leg.bend) * kneeBendAmount;
+
+          // Draw Femur (Thick upper leg)
           ctx.beginPath();
-          ctx.moveTo(base.x, base.y);
-          ctx.lineTo(base.x + 3 + swingR * 3, base.y + 7); // Knee
-          ctx.lineTo(base.x - 2 + swingR * 5, base.y + 14); // Foot
+          ctx.moveTo(leg.baseX, leg.baseY);
+          ctx.lineTo(kneeX, kneeY);
+          ctx.strokeStyle = "#0f172a";
+          ctx.lineWidth = 3;
+          ctx.lineCap = "round";
           ctx.stroke();
 
-          // Left legs
-          let swingL = Math.sin(this.legPhase + phaseOffset + Math.PI);
+          // Draw Tibia/Tarsus (Thinner lower leg)
           ctx.beginPath();
-          ctx.moveTo(base.x, -base.y);
-          ctx.lineTo(base.x + 3 + swingL * 3, -base.y - 7);
-          ctx.lineTo(base.x - 2 + swingL * 5, -base.y - 14);
+          ctx.moveTo(kneeX, kneeY);
+          ctx.lineTo(footX, footY);
+          ctx.strokeStyle = "#1e3a8a";
+          ctx.lineWidth = 1.5;
           ctx.stroke();
         }
+
+        // --- 2. DRAW THE REALISTIC BODY ---
+        // Abdomen (Large back section) with 3D Radial Gradient
+        let abGrad = ctx.createRadialGradient(-15, 0, 2, -15, 0, 16);
+        abGrad.addColorStop(0, "#3b82f6"); // Premium Navy highlight
+        abGrad.addColorStop(0.6, "#1e3a8a");
+        abGrad.addColorStop(1, "#020617"); // Dark shadow edge
+
+        ctx.beginPath();
+        ctx.ellipse(-15, 0, 17, 12, 0, 0, Math.PI * 2);
+        ctx.fillStyle = abGrad;
+        ctx.fill();
+
+        // Cephalothorax (Head/Chest) with 3D Gradient
+        let headGrad = ctx.createRadialGradient(2, 0, 1, 2, 0, 9);
+        headGrad.addColorStop(0, "#60a5fa");
+        headGrad.addColorStop(1, "#0f172a");
+
+        ctx.beginPath();
+        ctx.ellipse(3, 0, 9, 8, 0, 0, Math.PI * 2);
+        ctx.fillStyle = headGrad;
+        ctx.fill();
+
+        // Pedipalps (Front feelers/fangs)
+        ctx.beginPath();
+        ctx.moveTo(10, -2);
+        ctx.lineTo(16, -5);
+        ctx.moveTo(10, 2);
+        ctx.lineTo(16, 5);
+        ctx.strokeStyle = "#0f172a";
+        ctx.lineWidth = 2.5;
+        ctx.stroke();
+
+        // --- 3. GLOWING CYBER EYES ---
+        ctx.fillStyle = "#22d3ee"; // Cyan
+        ctx.shadowColor = "#22d3ee";
+        ctx.shadowBlur = 6;
+
+        // Main front eyes
+        ctx.beginPath();
+        ctx.arc(9, -2, 1.5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(9, 2, 1.5, 0, Math.PI * 2);
+        ctx.fill();
+        // Side secondary eyes
+        ctx.beginPath();
+        ctx.arc(7, -4.5, 1, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(7, 4.5, 1, 0, Math.PI * 2);
+        ctx.fill();
+
         ctx.restore();
       }
     }
@@ -143,21 +229,21 @@ const SpiderWebNetwork = () => {
       }
 
       update() {
-        // 1. Spring Physics (Pull back to original)
         let forceX = (this.baseX - this.x) * 0.05;
         let forceY = (this.baseY - this.y) * 0.05;
 
-        // 2. Spider Pull (Jaala Spider ki taraf khinchega, cursor ki taraf nahi)
-        if (cyberSpider) {
-          let dx = cyberSpider.x - this.x;
-          let dy = cyberSpider.y - this.y;
+        // Spider pulls the web under its weight
+        if (realisticSpider) {
+          let dx = realisticSpider.x - this.x;
+          let dy = realisticSpider.y - this.y;
           let distance = Math.sqrt(dx * dx + dy * dy);
 
-          if (distance < cyberSpider.radius) {
+          if (distance < realisticSpider.radius) {
             let pullForce =
-              (cyberSpider.radius - distance) / cyberSpider.radius;
-            forceX += (dx / distance) * pullForce * 2.2;
-            forceY += (dy / distance) * pullForce * 2.2;
+              (realisticSpider.radius - distance) / realisticSpider.radius;
+            // Web stretches towards the spider's center of mass
+            forceX += (dx / distance) * pullForce * 2.5;
+            forceY += (dy / distance) * pullForce * 2.5;
           }
         }
 
@@ -174,14 +260,14 @@ const SpiderWebNetwork = () => {
       draw() {
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
-        ctx.fillStyle = "rgba(59, 130, 246, 0.8)"; // Original Blue theme
+        ctx.fillStyle = "rgba(59, 130, 246, 0.8)";
         ctx.fill();
       }
     }
 
     const init = () => {
       nodesArray = [];
-      cyberSpider = new CyberSpider(
+      realisticSpider = new RealisticSpider(
         window.innerWidth / 2,
         window.innerHeight / 2,
       );
@@ -208,16 +294,14 @@ const SpiderWebNetwork = () => {
       animationFrameId = requestAnimationFrame(animate);
       ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
-      // Update & Draw Spider First
-      cyberSpider.update();
+      realisticSpider.update();
 
-      // Update Nodes
       for (let i = 0; i < nodesArray.length; i++) {
         nodesArray[i].update();
         nodesArray[i].draw();
       }
 
-      // Draw Web Threads (Original Navy Blue Theme)
+      // Draw Web Threads
       ctx.lineWidth = 1.2;
       for (let a = 0; a < nodesArray.length; a++) {
         for (let b = a + 1; b < nodesArray.length; b++) {
@@ -230,7 +314,7 @@ const SpiderWebNetwork = () => {
 
           if (distance < 130) {
             let opacity = 1 - distance / 130;
-            ctx.strokeStyle = `rgba(59, 130, 246, ${opacity * 0.4})`; // Navy blue color
+            ctx.strokeStyle = `rgba(59, 130, 246, ${opacity * 0.4})`;
             ctx.beginPath();
             ctx.moveTo(pA.x, pA.y);
             ctx.lineTo(pB.x, pB.y);
@@ -239,8 +323,8 @@ const SpiderWebNetwork = () => {
         }
       }
 
-      // Draw Spider on top of the web
-      cyberSpider.draw();
+      // Draw Spider on top
+      realisticSpider.draw();
     };
 
     init();
@@ -261,7 +345,7 @@ const SpiderWebNetwork = () => {
   );
 };
 
-// 2. MAIN HERO SECTION (Colors reverted to original Luxury MERN style)
+// 2. MAIN HERO SECTION
 export default function HeroSection() {
   const techStack = [
     { name: "MERN Stack", Icon: SiReact },
@@ -288,22 +372,22 @@ export default function HeroSection() {
         `}
       </style>
 
-      {/* Spider Web Network with Cyber Spider */}
+      {/* Physics Web and Realistic Spider */}
       <SpiderWebNetwork />
 
-      {/* Ambient Static Glow Effects (Back to original colors) */}
+      {/* Ambient Static Glow Effects */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[300px] bg-gradient-to-b from-blue-600/20 via-indigo-500/10 to-transparent blur-[110px] pointer-events-none rounded-full transform-gpu" />
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] bg-cyan-500/10 blur-[140px] pointer-events-none rounded-full transform-gpu" />
 
       <div className="flex-1 flex flex-col justify-center items-center w-full relative z-10 px-4 sm:px-6 lg:px-8 pt-16 sm:pt-20 pb-4 my-auto">
         <div className="max-w-6xl mx-auto text-center flex flex-col items-center">
-          <h1 className="text-[2.4rem] sm:text-5xl lg:text-[4.5rem] font-extrabold tracking-tight leading-[1.12] mb-6 select-none cursor-default">
+          <h2 className="text-[2.4rem] sm:text-5xl lg:text-[4.5rem] font-extrabold tracking-tight leading-[1.12] mb-6 select-none cursor-default">
             <span className="text-white block">Lead Your Industry With</span>
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-300 to-cyan-400 drop-shadow-[0_0_35px_rgba(37,99,235,0.35)] block py-2">
               Next-Generation
             </span>
             <span className="text-white block">Optimised Web Solutions.</span>
-          </h1>
+          </h2>
 
           <p className="text-base sm:text-lg lg:text-xl text-slate-400 mb-10 leading-relaxed max-w-3xl font-medium tracking-wide pointer-events-none">
             We engineer lightning-fast digital experiences designed to boost
