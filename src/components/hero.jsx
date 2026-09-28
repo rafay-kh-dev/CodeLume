@@ -10,104 +10,174 @@ import {
   SiWebflow,
   SiNodedotjs,
 } from "react-icons/si";
+import * as THREE from "three";
 
-// 1. BACKGROUND PARTICLE NETWORK (Clean, Elegant Connectivity)
-const ParticleNetwork = () => {
-  const canvasRef = useRef(null);
+// 1. THREE.JS 3D PARTICLE WAVE BACKGROUND
+const ThreeBackground = () => {
+  const mountRef = useRef(null);
 
   useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    let animationFrameId;
-    let particlesArray = [];
+    if (!mountRef.current) return;
+
+    // Scene Setup
+    const scene = new THREE.Scene();
     
-    let mouse = { x: null, y: null, radius: 120 };
+    // Camera Setup (Wide angle, looking slightly down at the wave)
+    const camera = new THREE.PerspectiveCamera(
+      75,
+      window.innerWidth / window.innerHeight,
+      1,
+      1000
+    );
+    camera.position.y = 15;
+    camera.position.z = 45;
+    camera.rotation.x = -0.2;
 
-    const handleMouseMove = (event) => { mouse.x = event.clientX; mouse.y = event.clientY; };
-    const handleMouseOut = () => { mouse.x = null; mouse.y = null; };
-    const handleResize = () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; init(); };
+    // Renderer Setup
+    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(window.devicePixelRatio);
+    mountRef.current.appendChild(renderer.domElement);
 
-    window.addEventListener("mousemove", handleMouseMove);
-    window.addEventListener("mouseout", handleMouseOut);
-    window.addEventListener("resize", handleResize);
+    // Wave Configuration
+    const amountX = 100;
+    const amountY = 100;
+    const separation = 2;
+    const numParticles = amountX * amountY;
 
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    // Particle Geometry
+    const geometry = new THREE.BufferGeometry();
+    const positions = new Float32Array(numParticles * 3);
+    const scales = new Float32Array(numParticles);
 
-    class Particle {
-      constructor(x, y, directionX, directionY, size, color) {
-        this.x = x; this.y = y; this.directionX = directionX; this.directionY = directionY;
-        this.size = size; this.color = color;
-      }
-      draw() {
-        ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
-        ctx.fillStyle = this.color; ctx.fill();
-      }
-      update() {
-        if (this.x > canvas.width || this.x < 0) this.directionX = -this.directionX;
-        if (this.y > canvas.height || this.y < 0) this.directionY = -this.directionY;
-
-        if (mouse.x !== null && mouse.y !== null) {
-          let dx = mouse.x - this.x; let dy = mouse.y - this.y;
-          let distance = Math.sqrt(dx * dx + dy * dy);
-          if (distance < mouse.radius) {
-            const forceDirectionX = dx / distance; const forceDirectionY = dy / distance;
-            const force = (mouse.radius - distance) / mouse.radius;
-            this.x -= forceDirectionX * force * 5; this.y -= forceDirectionY * force * 5;
-          }
-        }
-        this.x += this.directionX; this.y += this.directionY;
-        this.draw();
+    let count = 0;
+    for (let ix = 0; ix < amountX; ix++) {
+      for (let iy = 0; iy < amountY; iy++) {
+        positions[count * 3] = ix * separation - (amountX * separation) / 2; // x
+        positions[count * 3 + 1] = 0; // y (will be animated)
+        positions[count * 3 + 2] = iy * separation - (amountY * separation) / 2; // z
+        scales[count] = 1;
+        count++;
       }
     }
 
-    const init = () => {
-      particlesArray = [];
-      let numberOfParticles = (canvas.height * canvas.width) / 9000;
-      for (let i = 0; i < numberOfParticles; i++) {
-        let size = (Math.random() * 2) + 1;
-        let x = (Math.random() * ((window.innerWidth - size * 2) - (size * 2)) + size * 2);
-        let y = (Math.random() * ((window.innerHeight - size * 2) - (size * 2)) + size * 2);
-        let directionX = (Math.random() * 1.5) - 0.75; let directionY = (Math.random() * 1.5) - 0.75;
-        particlesArray.push(new Particle(x, y, directionX, directionY, size, "#3b82f6")); 
-      }
+    geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+    geometry.setAttribute("scale", new THREE.BufferAttribute(scales, 1));
+
+    // Custom Shader Material for glowing dots that fade in the distance
+    const material = new THREE.ShaderMaterial({
+      uniforms: {
+        color: { value: new THREE.Color(0x3b82f6) }, // Premium Navy Blue
+      },
+      vertexShader: `
+        attribute float scale;
+        void main() {
+          vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
+          // Dots get smaller further away to enhance 3D depth
+          gl_PointSize = scale * ( 70.0 / - mvPosition.z );
+          gl_Position = projectionMatrix * mvPosition;
+        }
+      `,
+      fragmentShader: `
+        uniform vec3 color;
+        void main() {
+          // Make dots circular with a soft glowing edge
+          if ( length( gl_PointCoord - vec2( 0.5, 0.5 ) ) > 0.47 ) discard;
+          gl_FragColor = vec4( color, 0.8 );
+        }
+      `,
+      transparent: true,
+      blending: THREE.AdditiveBlending,
+    });
+
+    const particles = new THREE.Points(geometry, material);
+    scene.add(particles);
+
+    // Mouse Interaction Math
+    let mouseX = 0;
+    let mouseY = 0;
+    let targetX = 0;
+    let targetY = 0;
+    const windowHalfX = window.innerWidth / 2;
+    const windowHalfY = window.innerHeight / 2;
+
+    const onPointerMove = (event) => {
+      mouseX = event.clientX - windowHalfX;
+      mouseY = event.clientY - windowHalfY;
     };
+
+    window.addEventListener("mousemove", onPointerMove);
+
+    // Animation Loop
+    let particlePhase = 0;
+    let animationFrameId;
 
     const animate = () => {
       animationFrameId = requestAnimationFrame(animate);
-      ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
-      for (let i = 0; i < particlesArray.length; i++) particlesArray[i].update();
+      // Smooth Camera Pan based on mouse (Parallax)
+      targetX = mouseX * 0.05;
+      targetY = mouseY * 0.05;
+      camera.position.x += (targetX - camera.position.x) * 0.02;
       
-      for (let a = 0; a < particlesArray.length; a++) {
-        for (let b = a + 1; b < particlesArray.length; b++) {
-          let dx = particlesArray[a].x - particlesArray[b].x;
-          let dy = particlesArray[a].y - particlesArray[b].y;
-          let distanceSq = dx * dx + dy * dy;
-          if (distanceSq < 12000) { 
-            let opacityValue = 1 - (distanceSq / 12000);
-            ctx.strokeStyle = `rgba(59, 130, 246, ${opacityValue * 0.4})`;
-            ctx.lineWidth = 1; ctx.beginPath();
-            ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
-            ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
-            ctx.stroke();
-          }
+      // Animate the Wave
+      particlePhase += 0.04; // Speed of the ocean wave
+      const positions = particles.geometry.attributes.position.array;
+      const scales = particles.geometry.attributes.scale.array;
+
+      let i = 0;
+      let j = 0;
+
+      for (let ix = 0; ix < amountX; ix++) {
+        for (let iy = 0; iy < amountY; iy++) {
+          // Complex Sine Wave Math for fluid 3D motion
+          positions[i + 1] =
+            Math.sin((ix + particlePhase) * 0.3) * 3 +
+            Math.sin((iy + particlePhase) * 0.5) * 3;
+            
+          // Scale pulses based on height
+          scales[j] = (Math.sin((ix + particlePhase) * 0.3) + 1) * 1.5 +
+                      (Math.sin((iy + particlePhase) * 0.5) + 1) * 1.5;
+
+          i += 3;
+          j++;
         }
       }
+
+      particles.geometry.attributes.position.needsUpdate = true;
+      particles.geometry.attributes.scale.needsUpdate = true;
+
+      renderer.render(scene, camera);
     };
 
-    init(); animate();
+    animate();
+
+    // Handle Resize
+    const onWindowResize = () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    };
+
+    window.addEventListener("resize", onWindowResize);
+
+    // Cleanup to prevent memory leaks
     return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("mouseout", handleMouseOut);
-      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("resize", onWindowResize);
+      window.removeEventListener("mousemove", onPointerMove);
       cancelAnimationFrame(animationFrameId);
+      if (mountRef.current) {
+        mountRef.current.removeChild(renderer.domElement);
+      }
+      geometry.dispose();
+      material.dispose();
+      renderer.dispose();
     };
   }, []);
 
-  return <canvas ref={canvasRef} className="absolute inset-0 z-0 pointer-events-none opacity-60" />;
+  return <div ref={mountRef} className="absolute inset-0 z-0 pointer-events-none opacity-80" />;
 };
+
 
 // 2. MAIN HERO SECTION
 export default function HeroSection() {
@@ -135,44 +205,43 @@ export default function HeroSection() {
           @keyframes marquee { 0% { transform: translate3d(0,0,0); } 100% { transform: translate3d(-50%,0,0); } }
           .animate-marquee { animation: marquee 35s linear infinite; will-change: transform; }
           
-          /* New Glowing & Shimmer Text Animations */
-          @keyframes textShimmer {
+          /* The 'Khatarnak' Liquid Navy Text Animation */
+          @keyframes liquidSweep {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
           }
-          .animate-text-shimmer {
-            background-size: 200% auto;
-            animation: textShimmer 4s ease infinite;
-          }
           
-          @keyframes textGlow {
-            0%, 100% { filter: drop-shadow(0 0 12px rgba(56, 189, 248, 0.3)); }
-            50% { filter: drop-shadow(0 0 28px rgba(56, 189, 248, 0.7)); }
+          .text-liquid-navy {
+            background: linear-gradient(
+              to right,
+              #1e3a8a 10%,   /* Deep Navy */
+              #3b82f6 30%,   /* Bright Blue */
+              #22d3ee 50%,   /* Hot Cyan Core */
+              #3b82f6 70%,   /* Bright Blue */
+              #1e3a8a 90%    /* Deep Navy */
+            );
+            background-size: 200% auto;
+            color: transparent;
+            -webkit-background-clip: text;
+            background-clip: text;
+            animation: liquidSweep 3.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+            position: relative;
           }
-          .animate-text-glow {
-            animation: textGlow 3s ease-in-out infinite;
+
+          /* Optional secondary outer glow for the text */
+          .text-glow-wrapper {
+            filter: drop-shadow(0 0 25px rgba(59, 130, 246, 0.4));
           }
         `}
       </style>
 
-      {/* Background Dots Network */}
-      <ParticleNetwork />
+      {/* The 3D Three.js Ocean Wave Background */}
+      <ThreeBackground />
 
-      {/* Ambient Glow Effects */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[300px] bg-gradient-to-b from-blue-600/20 via-indigo-500/10 to-transparent blur-[110px] pointer-events-none rounded-full transform-gpu" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] bg-cyan-500/10 blur-[140px] pointer-events-none rounded-full transform-gpu" />
-
-      {/* Dot Matrix Grid Pattern */}
-      <div
-        className="absolute inset-0 z-0 opacity-[0.12] pointer-events-none transform-gpu"
-        style={{
-          backgroundImage: `radial-gradient(rgba(255, 255, 255, 0.25) 1px, transparent 1px)`,
-          backgroundSize: "32px 32px",
-          maskImage: "radial-gradient(ellipse 70% 70% at 50% 50%, #000 40%, transparent 100%)",
-          WebkitMaskImage: "radial-gradient(ellipse 70% 70% at 50% 50%, #000 40%, transparent 100%)",
-        }}
-      />
+      {/* Ambient Lighting to blend the 3D scene with the background */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[300px] bg-gradient-to-b from-blue-600/10 via-indigo-500/5 to-transparent blur-[110px] pointer-events-none rounded-full transform-gpu" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] bg-cyan-500/5 blur-[140px] pointer-events-none rounded-full transform-gpu" />
 
       <div className="flex-1 flex flex-col justify-center items-center w-full relative z-10 px-4 sm:px-6 lg:px-8 pt-16 sm:pt-20 pb-4 my-auto">
         <div className="max-w-6xl mx-auto text-center flex flex-col items-center">
@@ -182,9 +251,9 @@ export default function HeroSection() {
               Lead Your Industry With
             </span>
             
-            {/* The New Premium Glowing & Shimmering Focus Text */}
-            <span className="block py-2 animate-text-glow">
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-300 to-indigo-400 animate-text-shimmer">
+            {/* The Animated Liquid Navy Text */}
+            <span className="block py-2 text-glow-wrapper">
+              <span className="text-liquid-navy font-black tracking-tight">
                 Next-Generation
               </span>
             </span>
