@@ -69,7 +69,7 @@ export default function TerminalWidget() {
     return (
       <button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 left-6 w-14 h-14 bg-[#071d16] border border-[#2fe43b]/30 rounded-full flex items-center justify-center text-[#2fe43b] hover:bg-[#2fe43b] hover:text-black transition-all shadow-[0_0_15px_rgba(47,228,59,0.3)] z-[999] transform-gpu hover:scale-110"
+        className="fixed bottom-6 left-6 w-14 h-14 bg-[#0a0f1c] border border-blue-500/30 rounded-full flex items-center justify-center text-blue-500 hover:bg-blue-600 hover:text-white transition-all shadow-[0_0_15px_rgba(59,130,246,0.3)] z-[999] transform-gpu hover:scale-110"
       >
         <TerminalIcon className="w-6 h-6" />
       </button>
@@ -107,7 +107,7 @@ export default function TerminalWidget() {
                   ? "text-red-400"
                   : line.type === "system"
                     ? "text-slate-500"
-                    : "text-[#2fe43b]"
+                    : "text-blue-400"
             }`}
           >
             {line.text}
@@ -122,7 +122,7 @@ export default function TerminalWidget() {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleCommand}
-            className="flex-1 bg-transparent border-none outline-none text-white caret-[#2fe43b]"
+            className="flex-1 bg-transparent border-none outline-none text-white caret-blue-400"
             spellCheck="false"
             autoComplete="off"
           />
