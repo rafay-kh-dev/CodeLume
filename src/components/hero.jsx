@@ -12,14 +12,13 @@ import {
 } from "react-icons/si";
 import * as THREE from "three";
 
-// 1. PURE BLUE 3D MAGNETIC WAVE (Custom Shaders + Physics)
+// 1. PURE BLUE 3D MAGNETIC WAVE 
 const ThreeBackground = () => {
   const mountRef = useRef(null);
 
   useEffect(() => {
     if (!mountRef.current) return;
 
-    // Scene Setup
     const scene = new THREE.Scene();
     scene.fog = new THREE.FogExp2(0x030712, 0.0035);
     
@@ -32,7 +31,6 @@ const ThreeBackground = () => {
     renderer.setPixelRatio(window.devicePixelRatio);
     mountRef.current.appendChild(renderer.domElement);
 
-    // Wave Grid Configuration
     const amountX = 130;
     const amountY = 130;
     const separation = 2.2;
@@ -56,11 +54,10 @@ const ThreeBackground = () => {
     geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
     geometry.setAttribute("scale", new THREE.BufferAttribute(scales, 1));
 
-    // CUSTOM SHADER: Pure Primary Blue Colors
     const material = new THREE.ShaderMaterial({
       uniforms: {
-        colorDeep: { value: new THREE.Color("#0f172a") }, // Very Dark Slate/Blue for valleys
-        colorHigh: { value: new THREE.Color("#3b82f6") }, // Primary Blue for peaks
+        colorDeep: { value: new THREE.Color("#0f172a") }, 
+        colorHigh: { value: new THREE.Color("#3b82f6") }, 
       },
       vertexShader: `
         attribute float scale;
@@ -96,7 +93,6 @@ const ThreeBackground = () => {
     const particles = new THREE.Points(geometry, material);
     scene.add(particles);
 
-    // Mouse Tracking for Magnetic Lift
     let mouseX = 0;
     let mouseY = 0;
     let targetX = 0;
@@ -116,7 +112,6 @@ const ThreeBackground = () => {
     const animate = () => {
       animationFrameId = requestAnimationFrame(animate);
 
-      // Camera Parallax
       targetX = mouseX * 0.03;
       targetY = mouseY * 0.03;
       camera.position.x += (targetX - camera.position.x) * 0.05;
@@ -141,7 +136,6 @@ const ThreeBackground = () => {
           let y = Math.sin((ix + particlePhase) * 0.3) * 3.5 +
                   Math.sin((iy + particlePhase) * 0.5) * 3.5;
 
-          // MAGNETIC LIFT PHYSICS
           let dx = x - worldMouseX;
           let dz = z - worldMouseZ;
           let distance = Math.sqrt(dx * dx + dz * dz);
@@ -214,13 +208,39 @@ export default function HeroSection() {
           @keyframes marquee { 0% { transform: translate3d(0,0,0); } 100% { transform: translate3d(-50%,0,0); } }
           .animate-marquee { animation: marquee 35s linear infinite; will-change: transform; }
           
-          /* Clean Premium Blue Glow for the Text */
-          @keyframes textBlueGlow {
-            0%, 100% { filter: drop-shadow(0 0 12px rgba(59, 130, 246, 0.4)); }
-            50% { filter: drop-shadow(0 0 28px rgba(59, 130, 246, 0.8)); }
+          /* HIGH CONTRAST FOCUS EFFECT */
+          @keyframes extremeFocus {
+            0%, 100% { 
+              filter: drop-shadow(0 0 12px rgba(59, 130, 246, 0.4)) drop-shadow(0 0 20px rgba(59, 130, 246, 0.2)); 
+            }
+            50% { 
+              filter: drop-shadow(0 0 25px rgba(59, 130, 246, 0.9)) drop-shadow(0 0 60px rgba(59, 130, 246, 0.7)); 
+            }
           }
-          .animate-text-blue-glow {
-            animation: textBlueGlow 3.5s ease-in-out infinite;
+          .animate-extreme-focus {
+            display: inline-block;
+            animation: extremeFocus 3s ease-in-out infinite;
+          }
+
+          /* BRILLIANT METALLIC SHIMMER (Creates contrast against blue background) */
+          @keyframes textShimmer {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
+          }
+          .text-focus-shimmer {
+            background: linear-gradient(
+              to right, 
+              #ffffff 0%,       /* Pure White */
+              #dbeafe 25%,      /* Very Light Ice Blue */
+              #ffffff 50%,      /* Pure White */
+              #bfdbfe 75%,      /* Light Blue */
+              #ffffff 100%      /* Pure White */
+            );
+            background-size: 200% auto;
+            color: transparent;
+            -webkit-background-clip: text;
+            background-clip: text;
+            animation: textShimmer 4s linear infinite;
           }
         `}
       </style>
@@ -252,9 +272,9 @@ export default function HeroSection() {
               Lead Your Industry With
             </span>
             
-            {/* CLEAN TEXT REVERTED: Pure Blue gradient with breathing glow */}
-            <span className="block py-2 animate-text-blue-glow">
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-300 via-blue-500 to-blue-700 font-black tracking-wide">
+            {/* NEW FOCUS ELEMENT: Brilliant White/Silver Text with Heavy Blue Pulsing Glow */}
+            <span className="block py-2 animate-extreme-focus">
+              <span className="text-focus-shimmer font-black tracking-wide">
                 Next-Generation
               </span>
             </span>
