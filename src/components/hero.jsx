@@ -11,7 +11,7 @@ import {
   SiNodedotjs,
 } from "react-icons/si";
 
-// 1. ELASTIC SPIDER WEB + HIGHLY REALISTIC SPIDER PHYSICS
+// 1. TRUE INVERSE KINEMATICS (IK) SPIDER & ELASTIC WEB
 const SpiderWebNetwork = () => {
   const canvasRef = useRef(null);
 
@@ -22,7 +22,7 @@ const SpiderWebNetwork = () => {
     const ctx = canvas.getContext("2d");
     let animationFrameId;
     let nodesArray = [];
-    let realisticSpider;
+    let ikSpider;
 
     let mouse = {
       x: window.innerWidth / 2,
@@ -46,176 +46,6 @@ const SpiderWebNetwork = () => {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    // --- HIGHLY REALISTIC PROCEDURAL SPIDER ---
-    class RealisticSpider {
-      constructor(x, y) {
-        this.x = x;
-        this.y = y;
-        this.vx = 0;
-        this.vy = 0;
-        this.angle = 0;
-        this.legPhase = 0;
-        this.speed = 0;
-        this.radius = 220; // How far the web stretches under its weight
-      }
-
-      update() {
-        let dx = mouse.x - this.x;
-        let dy = mouse.y - this.y;
-        let distance = Math.sqrt(dx * dx + dy * dy);
-
-        if (distance > 5) {
-          let targetAngle = Math.atan2(dy, dx);
-          let angleDiff = targetAngle - this.angle;
-
-          // Smooth rotation logic
-          while (angleDiff > Math.PI) angleDiff -= Math.PI * 2;
-          while (angleDiff < -Math.PI) angleDiff += Math.PI * 2;
-          this.angle += angleDiff * 0.08;
-
-          // Forward movement (slows down when turning sharply)
-          let forwardThrust = Math.max(0, Math.cos(angleDiff));
-          let maxSpeed = 3.5 * forwardThrust;
-
-          this.speed += (maxSpeed - this.speed) * 0.1;
-          this.vx = Math.cos(this.angle) * this.speed;
-          this.vy = Math.sin(this.angle) * this.speed;
-
-          this.x += this.vx;
-          this.y += this.vy;
-
-          // Link leg movement speed directly to body speed
-          this.legPhase += this.speed * 0.15;
-        } else {
-          this.speed *= 0.8; // Decelerate smoothly
-          this.legPhase += this.speed * 0.15;
-        }
-      }
-
-      draw() {
-        ctx.save();
-        ctx.translate(this.x, this.y);
-        ctx.rotate(this.angle);
-
-        // Realistic Drop Shadow for Depth
-        ctx.shadowColor = "rgba(0, 0, 0, 0.7)";
-        ctx.shadowBlur = 12;
-        ctx.shadowOffsetX = 3;
-        ctx.shadowOffsetY = 3;
-
-        // --- 1. DRAW ARTICULATED LEGS (Under the body) ---
-        // Angles are relative to the body facing Right (0 radians)
-        const legConfig = [
-          { baseX: 4, baseY: 4, len: 45, ang: Math.PI / 4, bend: 1 }, // Front Right
-          { baseX: 2, baseY: 6, len: 40, ang: Math.PI / 2 - 0.2, bend: 1 }, // Mid-Front Right
-          { baseX: -2, baseY: 6, len: 40, ang: Math.PI / 2 + 0.4, bend: 1 }, // Mid-Back Right
-          { baseX: -6, baseY: 4, len: 50, ang: (Math.PI * 3) / 4, bend: 1 }, // Back Right
-
-          { baseX: 4, baseY: -4, len: 45, ang: -Math.PI / 4, bend: -1 }, // Front Left
-          { baseX: 2, baseY: -6, len: 40, ang: -Math.PI / 2 + 0.2, bend: -1 }, // Mid-Front Left
-          { baseX: -2, baseY: -6, len: 40, ang: -Math.PI / 2 - 0.4, bend: -1 }, // Mid-Back Left
-          { baseX: -6, baseY: -4, len: 50, ang: (-Math.PI * 3) / 4, bend: -1 }, // Back Left
-        ];
-
-        for (let i = 0; i < 8; i++) {
-          let leg = legConfig[i];
-          // Tetrapod gait: Alternating legs move together
-          let isGroup1 = i === 0 || i === 2 || i === 5 || i === 7;
-          let phase = this.legPhase + (isGroup1 ? 0 : Math.PI);
-
-          let swing = Math.sin(phase) * 0.45; // Back and forth movement
-          let lift = Math.cos(phase); // Up and down movement
-
-          // Calculate where the foot lands
-          let currentAng = leg.ang + swing;
-          let footX = leg.baseX + Math.cos(currentAng) * leg.len;
-          let footY = leg.baseY + Math.sin(currentAng) * leg.len;
-
-          // Calculate the Knee Joint (bends outwards and lifts up)
-          let kneeBendAmount = 15 + (lift > 0 ? lift * 12 : 0);
-          let midX = (leg.baseX + footX) / 2;
-          let midY = (leg.baseY + footY) / 2;
-          let kneeX =
-            midX +
-            Math.cos(currentAng - (Math.PI / 2) * leg.bend) * kneeBendAmount;
-          let kneeY =
-            midY +
-            Math.sin(currentAng - (Math.PI / 2) * leg.bend) * kneeBendAmount;
-
-          // Draw Femur (Thick upper leg)
-          ctx.beginPath();
-          ctx.moveTo(leg.baseX, leg.baseY);
-          ctx.lineTo(kneeX, kneeY);
-          ctx.strokeStyle = "#0f172a";
-          ctx.lineWidth = 3;
-          ctx.lineCap = "round";
-          ctx.stroke();
-
-          // Draw Tibia/Tarsus (Thinner lower leg)
-          ctx.beginPath();
-          ctx.moveTo(kneeX, kneeY);
-          ctx.lineTo(footX, footY);
-          ctx.strokeStyle = "#1e3a8a";
-          ctx.lineWidth = 1.5;
-          ctx.stroke();
-        }
-
-        // --- 2. DRAW THE REALISTIC BODY ---
-        // Abdomen (Large back section) with 3D Radial Gradient
-        let abGrad = ctx.createRadialGradient(-15, 0, 2, -15, 0, 16);
-        abGrad.addColorStop(0, "#3b82f6"); // Premium Navy highlight
-        abGrad.addColorStop(0.6, "#1e3a8a");
-        abGrad.addColorStop(1, "#020617"); // Dark shadow edge
-
-        ctx.beginPath();
-        ctx.ellipse(-15, 0, 17, 12, 0, 0, Math.PI * 2);
-        ctx.fillStyle = abGrad;
-        ctx.fill();
-
-        // Cephalothorax (Head/Chest) with 3D Gradient
-        let headGrad = ctx.createRadialGradient(2, 0, 1, 2, 0, 9);
-        headGrad.addColorStop(0, "#60a5fa");
-        headGrad.addColorStop(1, "#0f172a");
-
-        ctx.beginPath();
-        ctx.ellipse(3, 0, 9, 8, 0, 0, Math.PI * 2);
-        ctx.fillStyle = headGrad;
-        ctx.fill();
-
-        // Pedipalps (Front feelers/fangs)
-        ctx.beginPath();
-        ctx.moveTo(10, -2);
-        ctx.lineTo(16, -5);
-        ctx.moveTo(10, 2);
-        ctx.lineTo(16, 5);
-        ctx.strokeStyle = "#0f172a";
-        ctx.lineWidth = 2.5;
-        ctx.stroke();
-
-        // --- 3. GLOWING CYBER EYES ---
-        ctx.fillStyle = "#22d3ee"; // Cyan
-        ctx.shadowColor = "#22d3ee";
-        ctx.shadowBlur = 6;
-
-        // Main front eyes
-        ctx.beginPath();
-        ctx.arc(9, -2, 1.5, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.beginPath();
-        ctx.arc(9, 2, 1.5, 0, Math.PI * 2);
-        ctx.fill();
-        // Side secondary eyes
-        ctx.beginPath();
-        ctx.arc(7, -4.5, 1, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.beginPath();
-        ctx.arc(7, 4.5, 1, 0, Math.PI * 2);
-        ctx.fill();
-
-        ctx.restore();
-      }
-    }
-
     // --- WEB NODES CLASS ---
     class Node {
       constructor(x, y) {
@@ -226,30 +56,24 @@ const SpiderWebNetwork = () => {
         this.vx = 0;
         this.vy = 0;
         this.size = 1.5;
+        this.isGrabbed = false; // Is a spider foot on this node?
       }
 
       update() {
+        // Spring Physics (Pull back to original)
         let forceX = (this.baseX - this.x) * 0.05;
         let forceY = (this.baseY - this.y) * 0.05;
 
-        // Spider pulls the web under its weight
-        if (realisticSpider) {
-          let dx = realisticSpider.x - this.x;
-          let dy = realisticSpider.y - this.y;
-          let distance = Math.sqrt(dx * dx + dy * dy);
-
-          if (distance < realisticSpider.radius) {
-            let pullForce =
-              (realisticSpider.radius - distance) / realisticSpider.radius;
-            // Web stretches towards the spider's center of mass
-            forceX += (dx / distance) * pullForce * 2.5;
-            forceY += (dy / distance) * pullForce * 2.5;
-          }
+        // If a spider foot is grabbing this node, it pulls the node!
+        if (this.isGrabbed && ikSpider) {
+          let dx = ikSpider.x - this.x;
+          let dy = ikSpider.y - this.y;
+          forceX += dx * 0.03; // Drag the web towards the spider body
+          forceY += dy * 0.03;
         }
 
         this.vx += forceX;
         this.vy += forceY;
-
         this.vx *= 0.82; // Friction
         this.vy *= 0.82;
 
@@ -260,61 +84,301 @@ const SpiderWebNetwork = () => {
       draw() {
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
-        ctx.fillStyle = "rgba(59, 130, 246, 0.8)";
+        ctx.fillStyle = "rgba(59, 130, 246, 0.6)";
         ctx.fill();
+      }
+    }
+
+    // --- TRUE IK SPIDER LEG CLASS ---
+    class SpiderLeg {
+      constructor(offsetX, offsetY, reach, angleOffset) {
+        this.offsetX = offsetX;
+        this.offsetY = offsetY;
+        this.reach = reach;
+        this.angleOffset = angleOffset;
+
+        this.targetNode = null; // Which web node is this foot grabbing?
+        this.oldX = 0;
+        this.oldY = 0;
+        this.currentX = 0;
+        this.currentY = 0;
+        this.stepProgress = 1; // 1 = fully planted on a node
+      }
+
+      update(bodyX, bodyY, bodyAngle) {
+        // Calculate where the leg *wants* to be ideally
+        let idealAngle = bodyAngle + this.angleOffset;
+        let idealX = bodyX + Math.cos(idealAngle) * this.reach;
+        let idealY = bodyY + Math.sin(idealAngle) * this.reach;
+
+        // If planted, foot moves with the grabbed web node
+        if (this.stepProgress >= 1 && this.targetNode) {
+          this.currentX = this.targetNode.x;
+          this.currentY = this.targetNode.y;
+
+          // Check if foot is stretched too far from ideal position -> initiate step
+          let distToIdeal = Math.hypot(
+            this.currentX - idealX,
+            this.currentY - idealY,
+          );
+          if (distToIdeal > this.reach * 0.75) {
+            this.stepProgress = 0;
+            this.oldX = this.currentX;
+            this.oldY = this.currentY;
+            if (this.targetNode) this.targetNode.isGrabbed = false;
+
+            // Find the *nearest web node* to the new ideal position
+            let nearest = null;
+            let minDist = Infinity;
+            for (let node of nodesArray) {
+              let d = Math.hypot(node.x - idealX, node.y - idealY);
+              if (d < minDist) {
+                minDist = d;
+                nearest = node;
+              }
+            }
+            this.targetNode = nearest;
+            if (this.targetNode) this.targetNode.isGrabbed = true;
+          }
+        }
+        // If stepping, animate foot through the air
+        else if (this.stepProgress < 1) {
+          this.stepProgress += 0.12; // Speed of the step
+          if (this.stepProgress >= 1) this.stepProgress = 1;
+
+          if (this.targetNode) {
+            // Linear interpolation between old foot position and new web node
+            let targetX = this.targetNode.x;
+            let targetY = this.targetNode.y;
+            this.currentX =
+              this.oldX + (targetX - this.oldX) * this.stepProgress;
+            this.currentY =
+              this.oldY + (targetY - this.oldY) * this.stepProgress;
+          }
+        }
+      }
+
+      draw(bodyX, bodyY, bodyAngle) {
+        // Calculate joint/knee position based on IK
+        let bodyAttachX =
+          bodyX +
+          Math.cos(bodyAngle) * this.offsetX -
+          Math.sin(bodyAngle) * this.offsetY;
+        let bodyAttachY =
+          bodyY +
+          Math.sin(bodyAngle) * this.offsetX +
+          Math.cos(bodyAngle) * this.offsetY;
+
+        let dx = this.currentX - bodyAttachX;
+        let dy = this.currentY - bodyAttachY;
+        let distance = Math.hypot(dx, dy);
+
+        // Midpoint
+        let midX = bodyAttachX + dx * 0.4;
+        let midY = bodyAttachY + dy * 0.4;
+
+        // Push knee out to the side
+        let perpAngle =
+          Math.atan2(dy, dx) - (this.offsetY > 0 ? Math.PI / 2 : -Math.PI / 2);
+
+        // Calculate knee lift (higher when stepping)
+        let lift = 0;
+        if (this.stepProgress < 1) {
+          lift = Math.sin(this.stepProgress * Math.PI) * 20;
+        }
+
+        let kneeX =
+          midX +
+          Math.cos(perpAngle) * (20 - distance * 0.1) -
+          Math.cos(bodyAngle) * lift;
+        let kneeY =
+          midY +
+          Math.sin(perpAngle) * (20 - distance * 0.1) -
+          Math.sin(bodyAngle) * lift;
+
+        // Shadow for depth
+        ctx.shadowColor = "rgba(0, 0, 0, 0.8)";
+        ctx.shadowBlur = 5 + lift;
+        ctx.shadowOffsetY = 2 + lift * 0.5;
+
+        // Thigh
+        ctx.beginPath();
+        ctx.moveTo(bodyAttachX, bodyAttachY);
+        ctx.lineTo(kneeX, kneeY);
+        ctx.strokeStyle = "#0f172a";
+        ctx.lineWidth = 3.5;
+        ctx.lineCap = "round";
+        ctx.stroke();
+
+        // Shin (down to the web node)
+        ctx.beginPath();
+        ctx.moveTo(kneeX, kneeY);
+        ctx.lineTo(this.currentX, this.currentY);
+        ctx.strokeStyle = "#1e3a8a"; // Navy
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        ctx.shadowColor = "transparent"; // Reset
+      }
+    }
+
+    // --- CYBER SPIDER BODY ---
+    class TrueSpider {
+      constructor(x, y) {
+        this.x = x;
+        this.y = y;
+        this.vx = 0;
+        this.vy = 0;
+        this.angle = 0;
+
+        // Create 8 IK Legs (offsetX, offsetY, reach, angleOffset)
+        this.legs = [
+          new SpiderLeg(5, 7, 60, Math.PI / 4), // Front Right
+          new SpiderLeg(0, 8, 55, Math.PI / 2), // Mid-Front Right
+          new SpiderLeg(-5, 8, 55, Math.PI * 0.75), // Mid-Back Right
+          new SpiderLeg(-10, 6, 65, Math.PI), // Back Right
+
+          new SpiderLeg(5, -7, 60, -Math.PI / 4), // Front Left
+          new SpiderLeg(0, -8, 55, -Math.PI / 2), // Mid-Front Left
+          new SpiderLeg(-5, -8, 55, -Math.PI * 0.75), // Mid-Back Left
+          new SpiderLeg(-10, -6, 65, -Math.PI), // Back Left
+        ];
+      }
+
+      update() {
+        let dx = mouse.x - this.x;
+        let dy = mouse.y - this.y;
+        let distance = Math.sqrt(dx * dx + dy * dy);
+
+        if (distance > 10) {
+          let targetAngle = Math.atan2(dy, dx);
+          let angleDiff = targetAngle - this.angle;
+
+          // Smooth rotation
+          while (angleDiff > Math.PI) angleDiff -= Math.PI * 2;
+          while (angleDiff < -Math.PI) angleDiff += Math.PI * 2;
+          this.angle += angleDiff * 0.06;
+
+          // Movement towards mouse
+          let speed = Math.max(0, Math.cos(angleDiff)) * 3;
+          this.vx = Math.cos(this.angle) * speed;
+          this.vy = Math.sin(this.angle) * speed;
+
+          this.x += this.vx;
+          this.y += this.vy;
+        }
+
+        // Initialize feet to initial node positions on first frame
+        for (let leg of this.legs) {
+          if (!leg.targetNode && nodesArray.length > 0) {
+            let idealX =
+              this.x + Math.cos(this.angle + leg.angleOffset) * leg.reach;
+            let idealY =
+              this.y + Math.sin(this.angle + leg.angleOffset) * leg.reach;
+            let nearest = nodesArray[0];
+            let minDist = Infinity;
+            for (let node of nodesArray) {
+              let d = Math.hypot(node.x - idealX, node.y - idealY);
+              if (d < minDist) {
+                minDist = d;
+                nearest = node;
+              }
+            }
+            leg.targetNode = nearest;
+            leg.currentX = nearest.x;
+            leg.currentY = nearest.y;
+            nearest.isGrabbed = true;
+          }
+          // Update leg IK logic
+          leg.update(this.x, this.y, this.angle);
+        }
+      }
+
+      draw() {
+        // Draw legs first so they go under the body
+        for (let leg of this.legs) {
+          leg.draw(this.x, this.y, this.angle);
+        }
+
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.rotate(this.angle);
+
+        ctx.shadowColor = "rgba(0, 0, 0, 0.8)";
+        ctx.shadowBlur = 15;
+        ctx.shadowOffsetY = 4;
+
+        // Abdomen
+        let abGrad = ctx.createRadialGradient(-12, 0, 2, -12, 0, 18);
+        abGrad.addColorStop(0, "#3b82f6");
+        abGrad.addColorStop(0.7, "#1e3a8a");
+        abGrad.addColorStop(1, "#020617");
+
+        ctx.beginPath();
+        ctx.ellipse(-12, 0, 18, 13, 0, 0, Math.PI * 2);
+        ctx.fillStyle = abGrad;
+        ctx.fill();
+
+        // Head/Thorax
+        let headGrad = ctx.createRadialGradient(4, 0, 1, 4, 0, 10);
+        headGrad.addColorStop(0, "#60a5fa");
+        headGrad.addColorStop(1, "#0f172a");
+
+        ctx.beginPath();
+        ctx.ellipse(4, 0, 10, 9, 0, 0, Math.PI * 2);
+        ctx.fillStyle = headGrad;
+        ctx.fill();
+
+        ctx.restore();
       }
     }
 
     const init = () => {
       nodesArray = [];
-      realisticSpider = new RealisticSpider(
-        window.innerWidth / 2,
-        window.innerHeight / 2,
-      );
 
-      let spacing = 90;
-      let cols = Math.floor(window.innerWidth / spacing);
-      let rows = Math.floor(window.innerHeight / spacing);
+      let spacing = 80; // Denser web for better stepping
+      let cols = Math.floor(window.innerWidth / spacing) + 2;
+      let rows = Math.floor(window.innerHeight / spacing) + 2;
 
       let offsetX = (window.innerWidth - cols * spacing) / 2;
       let offsetY = (window.innerHeight - rows * spacing) / 2;
 
       for (let i = 0; i <= cols; i++) {
         for (let j = 0; j <= rows; j++) {
-          let jitterX = (Math.random() - 0.5) * 40;
-          let jitterY = (Math.random() - 0.5) * 40;
+          let jitterX = (Math.random() - 0.5) * 45;
+          let jitterY = (Math.random() - 0.5) * 45;
           let x = i * spacing + offsetX + jitterX;
           let y = j * spacing + offsetY + jitterY;
           nodesArray.push(new Node(x, y));
         }
       }
+
+      ikSpider = new TrueSpider(window.innerWidth / 2, window.innerHeight / 2);
     };
 
     const animate = () => {
       animationFrameId = requestAnimationFrame(animate);
       ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
-      realisticSpider.update();
-
       for (let i = 0; i < nodesArray.length; i++) {
         nodesArray[i].update();
         nodesArray[i].draw();
       }
 
-      // Draw Web Threads
+      // Draw Web Threads connecting the nodes
       ctx.lineWidth = 1.2;
       for (let a = 0; a < nodesArray.length; a++) {
         for (let b = a + 1; b < nodesArray.length; b++) {
           let pA = nodesArray[a];
           let pB = nodesArray[b];
-
           let dx = pA.x - pB.x;
           let dy = pA.y - pB.y;
-          let distance = Math.sqrt(dx * dx + dy * dy);
+          let distanceSq = dx * dx + dy * dy;
 
-          if (distance < 130) {
-            let opacity = 1 - distance / 130;
-            ctx.strokeStyle = `rgba(59, 130, 246, ${opacity * 0.4})`;
+          if (distanceSq < 18000) {
+            // Math.sqrt(18000) is roughly 134
+            let opacity = 1 - distanceSq / 18000;
+            ctx.strokeStyle = `rgba(59, 130, 246, ${opacity * 0.35})`; // Navy threads
             ctx.beginPath();
             ctx.moveTo(pA.x, pA.y);
             ctx.lineTo(pB.x, pB.y);
@@ -323,8 +387,11 @@ const SpiderWebNetwork = () => {
         }
       }
 
-      // Draw Spider on top
-      realisticSpider.draw();
+      // Update and draw the IK Spider
+      if (ikSpider) {
+        ikSpider.update();
+        ikSpider.draw();
+      }
     };
 
     init();
@@ -372,7 +439,7 @@ export default function HeroSection() {
         `}
       </style>
 
-      {/* Physics Web and Realistic Spider */}
+      {/* True IK Physics Web and Realistic Spider */}
       <SpiderWebNetwork />
 
       {/* Ambient Static Glow Effects */}
