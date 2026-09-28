@@ -428,7 +428,6 @@ export default function App() {
         <RouteTracker />
         <div className="min-h-screen bg-[#030712] text-white selection:bg-blue-500 selection:text-white">
           <Navbar />
-          <TerminalWidget />
 
           <main>
             <Routes>
@@ -589,6 +588,7 @@ export default function App() {
           <Footer />
           <CookieBanner />
           <FloatingActions />
+          <TerminalWidget />
           <Analytics />
           <SpeedInsights />
         </div>
