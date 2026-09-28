@@ -64,6 +64,8 @@ import { nodeCourseData } from "./data/nodecoursedata";
 import { expressCourseData } from "./data/expresscoursedata";
 import { mongodbCourseData } from "./data/mongodbcoursedata";
 
+import TerminalWidget from "./components/terminalwidget";
+
 // Security Wrapper: Checks for a valid token before rendering the admin page
 const ProtectedRoute = ({ children }) => {
   const token = localStorage.getItem("adminToken");
@@ -426,6 +428,7 @@ export default function App() {
         <RouteTracker />
         <div className="min-h-screen bg-[#030712] text-white selection:bg-blue-500 selection:text-white">
           <Navbar />
+          <TerminalWidget />
 
           <main>
             <Routes>
