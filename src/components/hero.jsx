@@ -12,7 +12,7 @@ import {
 } from "react-icons/si";
 import * as THREE from "three";
 
-// 1. THREE.JS 3D PARTICLE WAVE BACKGROUND
+// 1. ADVANCED 3D MAGNETIC WAVE (Custom Shaders + Physics)
 const ThreeBackground = () => {
   const mountRef = useRef(null);
 
@@ -21,31 +21,24 @@ const ThreeBackground = () => {
 
     // Scene Setup
     const scene = new THREE.Scene();
+    // Adding Fog to smoothly blend the edges into the dark background
+    scene.fog = new THREE.FogExp2(0x030712, 0.0035);
     
-    // Camera Setup (Wide angle, looking slightly down at the wave)
-    const camera = new THREE.PerspectiveCamera(
-      75,
-      window.innerWidth / window.innerHeight,
-      1,
-      1000
-    );
-    camera.position.y = 15;
-    camera.position.z = 45;
-    camera.rotation.x = -0.2;
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 1000);
+    camera.position.set(0, 25, 60);
+    camera.rotation.x = -0.25;
 
-    // Renderer Setup
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(window.devicePixelRatio);
     mountRef.current.appendChild(renderer.domElement);
 
-    // Wave Configuration
-    const amountX = 100;
-    const amountY = 100;
-    const separation = 2;
+    // Wave Grid Configuration
+    const amountX = 130;
+    const amountY = 130;
+    const separation = 2.2;
     const numParticles = amountX * amountY;
 
-    // Particle Geometry
     const geometry = new THREE.BufferGeometry();
     const positions = new Float32Array(numParticles * 3);
     const scales = new Float32Array(numParticles);
@@ -53,9 +46,9 @@ const ThreeBackground = () => {
     let count = 0;
     for (let ix = 0; ix < amountX; ix++) {
       for (let iy = 0; iy < amountY; iy++) {
-        positions[count * 3] = ix * separation - (amountX * separation) / 2; // x
-        positions[count * 3 + 1] = 0; // y (will be animated)
-        positions[count * 3 + 2] = iy * separation - (amountY * separation) / 2; // z
+        positions[count * 3] = ix * separation - (amountX * separation) / 2;
+        positions[count * 3 + 1] = 0; 
+        positions[count * 3 + 2] = iy * separation - (amountY * separation) / 2;
         scales[count] = 1;
         count++;
       }
@@ -64,36 +57,50 @@ const ThreeBackground = () => {
     geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
     geometry.setAttribute("scale", new THREE.BufferAttribute(scales, 1));
 
-    // Custom Shader Material for glowing dots that fade in the distance
+    // CUSTOM SHADER: Colors change based on wave height
     const material = new THREE.ShaderMaterial({
       uniforms: {
-        color: { value: new THREE.Color(0x3b82f6) }, // Premium Navy Blue
+        colorDeep: { value: new THREE.Color("#0c1838") }, // Dark Navy for valleys
+        colorHigh: { value: new THREE.Color("#22d3ee") }, // Bright Cyan for peaks
       },
       vertexShader: `
         attribute float scale;
+        varying vec3 vColor;
+        uniform vec3 colorDeep;
+        uniform vec3 colorHigh;
+        
         void main() {
+          // Calculate color based on Y height
+          float heightFactor = (position.y + 4.0) / 10.0;
+          vColor = mix(colorDeep, colorHigh, clamp(heightFactor, 0.0, 1.0));
+          
           vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
-          // Dots get smaller further away to enhance 3D depth
-          gl_PointSize = scale * ( 70.0 / - mvPosition.z );
+          gl_PointSize = scale * ( 90.0 / - mvPosition.z );
           gl_Position = projectionMatrix * mvPosition;
         }
       `,
       fragmentShader: `
-        uniform vec3 color;
+        varying vec3 vColor;
         void main() {
-          // Make dots circular with a soft glowing edge
-          if ( length( gl_PointCoord - vec2( 0.5, 0.5 ) ) > 0.47 ) discard;
-          gl_FragColor = vec4( color, 0.8 );
+          // Circular particle with soft edges
+          vec2 xy = gl_PointCoord.xy - vec2(0.5);
+          float ll = length(xy);
+          if (ll > 0.5) discard;
+          
+          // Outer glow effect
+          float opacity = (0.5 - ll) * 2.0;
+          gl_FragColor = vec4(vColor, opacity * 0.9);
         }
       `,
       transparent: true,
       blending: THREE.AdditiveBlending,
+      depthWrite: false
     });
 
     const particles = new THREE.Points(geometry, material);
     scene.add(particles);
 
-    // Mouse Interaction Math
+    // Mouse Tracking for Magnetic Lift
     let mouseX = 0;
     let mouseY = 0;
     let targetX = 0;
@@ -105,39 +112,55 @@ const ThreeBackground = () => {
       mouseX = event.clientX - windowHalfX;
       mouseY = event.clientY - windowHalfY;
     };
-
     window.addEventListener("mousemove", onPointerMove);
 
-    // Animation Loop
     let particlePhase = 0;
     let animationFrameId;
 
     const animate = () => {
       animationFrameId = requestAnimationFrame(animate);
 
-      // Smooth Camera Pan based on mouse (Parallax)
-      targetX = mouseX * 0.05;
-      targetY = mouseY * 0.05;
-      camera.position.x += (targetX - camera.position.x) * 0.02;
-      
-      // Animate the Wave
-      particlePhase += 0.04; // Speed of the ocean wave
-      const positions = particles.geometry.attributes.position.array;
-      const scales = particles.geometry.attributes.scale.array;
+      // Camera Parallax
+      targetX = mouseX * 0.03;
+      targetY = mouseY * 0.03;
+      camera.position.x += (targetX - camera.position.x) * 0.05;
+      camera.position.y += (-targetY + 25 - camera.position.y) * 0.05;
+      camera.lookAt(scene.position);
+
+      particlePhase += 0.03;
+      const positionsArray = particles.geometry.attributes.position.array;
+      const scalesArray = particles.geometry.attributes.scale.array;
+
+      // Map screen mouse position roughly to 3D space for interaction
+      let worldMouseX = (mouseX / windowHalfX) * 100;
+      let worldMouseZ = (mouseY / windowHalfY) * 100 - 30;
 
       let i = 0;
       let j = 0;
 
       for (let ix = 0; ix < amountX; ix++) {
         for (let iy = 0; iy < amountY; iy++) {
-          // Complex Sine Wave Math for fluid 3D motion
-          positions[i + 1] =
-            Math.sin((ix + particlePhase) * 0.3) * 3 +
-            Math.sin((iy + particlePhase) * 0.5) * 3;
-            
-          // Scale pulses based on height
-          scales[j] = (Math.sin((ix + particlePhase) * 0.3) + 1) * 1.5 +
-                      (Math.sin((iy + particlePhase) * 0.5) + 1) * 1.5;
+          let x = positionsArray[i];
+          let z = positionsArray[i + 2];
+
+          // Complex intersecting ocean wave math
+          let y = Math.sin((ix + particlePhase) * 0.3) * 3.5 +
+                  Math.sin((iy + particlePhase) * 0.5) * 3.5;
+
+          // MAGNETIC LIFT PHYSICS: Wave rises up towards the mouse
+          let dx = x - worldMouseX;
+          let dz = z - worldMouseZ;
+          let distance = Math.sqrt(dx * dx + dz * dz);
+          
+          if (distance < 40) {
+            let lift = (40 - distance) * 0.35; // Lifts the wave
+            y += lift;
+          }
+
+          positionsArray[i + 1] = y;
+
+          // Scale based on height (peaks are larger)
+          scalesArray[j] = (y + 5) * 0.6;
 
           i += 3;
           j++;
@@ -146,36 +169,30 @@ const ThreeBackground = () => {
 
       particles.geometry.attributes.position.needsUpdate = true;
       particles.geometry.attributes.scale.needsUpdate = true;
-
       renderer.render(scene, camera);
     };
 
     animate();
 
-    // Handle Resize
     const onWindowResize = () => {
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
       renderer.setSize(window.innerWidth, window.innerHeight);
     };
-
     window.addEventListener("resize", onWindowResize);
 
-    // Cleanup to prevent memory leaks
     return () => {
       window.removeEventListener("resize", onWindowResize);
       window.removeEventListener("mousemove", onPointerMove);
       cancelAnimationFrame(animationFrameId);
-      if (mountRef.current) {
-        mountRef.current.removeChild(renderer.domElement);
-      }
+      if (mountRef.current) mountRef.current.removeChild(renderer.domElement);
       geometry.dispose();
       material.dispose();
       renderer.dispose();
     };
   }, []);
 
-  return <div ref={mountRef} className="absolute inset-0 z-0 pointer-events-none opacity-80" />;
+  return <div ref={mountRef} className="absolute inset-0 z-0 pointer-events-none opacity-90" />;
 };
 
 
@@ -205,60 +222,69 @@ export default function HeroSection() {
           @keyframes marquee { 0% { transform: translate3d(0,0,0); } 100% { transform: translate3d(-50%,0,0); } }
           .animate-marquee { animation: marquee 35s linear infinite; will-change: transform; }
           
-          /* The 'Khatarnak' Liquid Navy Text Animation */
-          @keyframes liquidSweep {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+          /* The Scanner Laser Animation for the Navy Block */
+          @keyframes scanLaser {
+            0% { transform: translateX(-200%); }
+            100% { transform: translateX(200%); }
+          }
+          .animate-scan {
+            animation: scanLaser 3s cubic-bezier(0.4, 0, 0.2, 1) infinite;
           }
           
-          .text-liquid-navy {
-            background: linear-gradient(
-              to right,
-              #1e3a8a 10%,   /* Deep Navy */
-              #3b82f6 30%,   /* Bright Blue */
-              #22d3ee 50%,   /* Hot Cyan Core */
-              #3b82f6 70%,   /* Bright Blue */
-              #1e3a8a 90%    /* Deep Navy */
-            );
-            background-size: 200% auto;
-            color: transparent;
-            -webkit-background-clip: text;
-            background-clip: text;
-            animation: liquidSweep 3.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-            position: relative;
+          /* Breathing Glow for the Box Edge */
+          @keyframes boxBreathing {
+            0%, 100% { box-shadow: 0 0 15px rgba(34, 211, 238, 0.2), inset 0 0 10px rgba(15, 23, 42, 0.8); }
+            50% { box-shadow: 0 0 35px rgba(34, 211, 238, 0.5), inset 0 0 20px rgba(15, 23, 42, 0.9); }
           }
-
-          /* Optional secondary outer glow for the text */
-          .text-glow-wrapper {
-            filter: drop-shadow(0 0 25px rgba(59, 130, 246, 0.4));
+          .animate-box-breathing {
+            animation: boxBreathing 4s ease-in-out infinite;
           }
         `}
       </style>
 
-      {/* The 3D Three.js Ocean Wave Background */}
+      {/* Advanced 3D Magnetic Ocean Wave */}
       <ThreeBackground />
 
-      {/* Ambient Lighting to blend the 3D scene with the background */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[300px] bg-gradient-to-b from-blue-600/10 via-indigo-500/5 to-transparent blur-[110px] pointer-events-none rounded-full transform-gpu" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] bg-cyan-500/5 blur-[140px] pointer-events-none rounded-full transform-gpu" />
+      {/* Ambient Deep Sea Glow Overlays */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[300px] bg-gradient-to-b from-blue-700/10 via-indigo-600/5 to-transparent blur-[120px] pointer-events-none rounded-full transform-gpu" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] bg-cyan-500/5 blur-[150px] pointer-events-none rounded-full transform-gpu" />
+
+      {/* Technical Grid Overlay */}
+      <div
+        className="absolute inset-0 z-0 opacity-[0.08] pointer-events-none transform-gpu"
+        style={{
+          backgroundImage: `radial-gradient(rgba(255, 255, 255, 0.3) 1px, transparent 1px)`,
+          backgroundSize: "40px 40px",
+          maskImage: "radial-gradient(ellipse 60% 60% at 50% 50%, #000 40%, transparent 100%)",
+          WebkitMaskImage: "radial-gradient(ellipse 60% 60% at 50% 50%, #000 40%, transparent 100%)",
+        }}
+      />
 
       <div className="flex-1 flex flex-col justify-center items-center w-full relative z-10 px-4 sm:px-6 lg:px-8 pt-16 sm:pt-20 pb-4 my-auto">
         <div className="max-w-6xl mx-auto text-center flex flex-col items-center">
           
-          <h2 className="text-[2.4rem] sm:text-5xl lg:text-[4.5rem] font-extrabold tracking-tight leading-[1.12] mb-6 select-none cursor-default">
-            <span className="text-white block mb-2">
+          <h2 className="text-[2.4rem] sm:text-5xl lg:text-[4.5rem] font-extrabold tracking-tight leading-[1.12] mb-6 select-none cursor-default flex flex-col items-center">
+            
+            <span className="text-white block mb-4">
               Lead Your Industry With
             </span>
             
-            {/* The Animated Liquid Navy Text */}
-            <span className="block py-2 text-glow-wrapper">
-              <span className="text-liquid-navy font-black tracking-tight">
+            {/* THE NEW NAVY BLUE HIGHLIGHT BOX */}
+            <span className="relative inline-flex items-center justify-center px-8 py-1 sm:py-3 my-2 overflow-hidden rounded-2xl group animate-box-breathing border border-blue-500/20 bg-[#06102b] backdrop-blur-md">
+              
+              {/* Internal Shadow for Depth */}
+              <span className="absolute inset-0 bg-gradient-to-r from-[#020617] via-transparent to-[#020617] opacity-80"></span>
+              
+              {/* Cyan Laser Scanning Line */}
+              <span className="absolute inset-0 w-[150%] h-full bg-[linear-gradient(90deg,transparent,rgba(34,211,238,0.4),transparent)] animate-scan skew-x-[-20deg]"></span>
+              
+              {/* Text Inside the Block */}
+              <span className="relative z-10 text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-blue-200 to-cyan-400 font-black tracking-wide drop-shadow-[0_0_12px_rgba(34,211,238,0.6)]">
                 Next-Generation
               </span>
             </span>
             
-            <span className="text-white block mt-2">
+            <span className="text-white block mt-4">
               Optimised Web Solutions.
             </span>
           </h2>
