@@ -69,7 +69,7 @@ export default function TerminalWidget() {
     return (
       <button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 right-6 w-14 h-14 bg-[#071d16] border border-[#2fe43b]/30 rounded-full flex items-center justify-center text-[#2fe43b] hover:bg-[#2fe43b] hover:text-black transition-all shadow-[0_0_15px_rgba(47,228,59,0.3)] z-50 transform-gpu hover:scale-110"
+        className="fixed bottom-6 left-6 w-14 h-14 bg-[#071d16] border border-[#2fe43b]/30 rounded-full flex items-center justify-center text-[#2fe43b] hover:bg-[#2fe43b] hover:text-black transition-all shadow-[0_0_15px_rgba(47,228,59,0.3)] z-[999] transform-gpu hover:scale-110"
       >
         <TerminalIcon className="w-6 h-6" />
       </button>
@@ -77,7 +77,7 @@ export default function TerminalWidget() {
   }
 
   return (
-    <div className="fixed bottom-6 right-6 w-[350px] sm:w-[450px] h-[300px] bg-[#050505] border border-slate-800 rounded-xl shadow-2xl flex flex-col overflow-hidden z-50 font-mono">
+    <div className="fixed bottom-6 left-6 w-[350px] sm:w-[450px] h-[300px] bg-[#050505] border border-slate-800 rounded-xl shadow-2xl flex flex-col overflow-hidden z-[999] font-mono">
       <div className="bg-[#111] px-4 py-3 flex items-center justify-between border-b border-slate-800">
         <div className="flex items-center gap-2">
           <TerminalIcon className="w-4 h-4 text-slate-400" />
