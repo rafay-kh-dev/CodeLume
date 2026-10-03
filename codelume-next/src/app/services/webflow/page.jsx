@@ -1,5 +1,6 @@
+"use client";
 import React, { useEffect, useState, useRef } from "react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import { Check, X, ArrowRight, Layout } from "lucide-react";
 
 export default function WebflowService() {

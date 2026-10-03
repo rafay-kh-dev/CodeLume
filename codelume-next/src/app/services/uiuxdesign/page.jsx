@@ -1,8 +1,9 @@
+"use client";
 import React, { useEffect, useState, useRef } from "react";
-import { Link } from "react-router-dom";
-import { Check, X, ArrowRight, Store } from "lucide-react";
+import Link from "next/link";
+import { Check, X, ArrowRight, PenTool } from "lucide-react";
 
-export default function WordPressService() {
+export default function UiUxDesignService() {
   const [activeSlide, setActiveSlide] = useState(0);
   const sliderRef = useRef(null);
   
@@ -29,60 +30,60 @@ export default function WordPressService() {
 
   const packages = [
     {
-      name: "Basic Blog/Portfolio",
-      price: "$100",
-      description: "Perfect for freelancers and small businesses needing a professional web presence.",
+      name: "Wireframing Plan",
+      price: "$199",
+      description: "Perfect for validating ideas with user flows and low-fidelity prototypes.",
       popular: false,
-      buttonText: "Order Basic",
+      buttonText: "Order Wireframes",
       features: [
-        { name: "Up to 5 Custom Pages", included: true },
-        { name: "Responsive Mobile UI", included: true },
-        { name: "Contact Form Setup", included: true },
-        { name: "Basic Speed Optimization", included: true },
-        { name: "WooCommerce Setup", included: false },
-        { name: "Payment Gateway Setup", included: false },
-        { name: "Custom Post Types", included: false },
-        { name: "Advanced On-Page SEO", included: false },
-        { name: "Premium Plugin Licenses", included: false },
-        { name: "30 Days Free Support", included: false },
+        { name: "UX Research & Strategy", included: true },
+        { name: "User Flow Mapping", included: true },
+        { name: "Low-Fidelity Wireframes", included: true },
+        { name: "Basic Clickable Prototype", included: true },
+        { name: "High-Fidelity UI Design", included: false },
+        { name: "Responsive Mobile Views", included: false },
+        { name: "Custom Iconography", included: false },
+        { name: "Interactive Animations", included: false },
+        { name: "Developer Handoff Files", included: false },
+        { name: "3 Rounds of Revisions", included: false },
       ]
     },
     {
-      name: "Standard Business",
-      price: "$125",
-      description: "The ideal package for growing agencies and corporate service providers.",
+      name: "Web UI/UX Design",
+      price: "$399",
+      description: "The ideal package for stunning, modern websites and landing pages.",
       popular: true,
-      buttonText: "Order Standard",
+      buttonText: "Order Web Design",
       features: [
-        { name: "Up to 10 Custom Pages", included: true },
-        { name: "Responsive Mobile UI", included: true },
-        { name: "Advanced Form Setup", included: true },
-        { name: "Speed & Security Setup", included: true },
-        { name: "WooCommerce Setup", included: false },
-        { name: "Payment Gateway Setup", included: false },
-        { name: "Custom Post Types", included: true },
-        { name: "Advanced On-Page SEO", included: true },
-        { name: "Premium Plugin Licenses", included: false },
-        { name: "30 Days Free Support", included: false },
+        { name: "UX Research & Strategy", included: true },
+        { name: "User Flow Mapping", included: true },
+        { name: "Low-Fidelity Wireframes", included: true },
+        { name: "High-Fidelity UI Design", included: true },
+        { name: "Responsive Mobile Views", included: true },
+        { name: "Custom Iconography", included: true },
+        { name: "Basic Clickable Prototype", included: true },
+        { name: "Interactive Animations", included: false },
+        { name: "Developer Handoff Files", included: true },
+        { name: "3 Rounds of Revisions", included: true },
       ]
     },
     {
-      name: "WooCommerce Store",
-      price: "$149",
-      description: "A fully functional, high-converting online store ready for sales.",
+      name: "SaaS/App Platform",
+      price: "$699",
+      description: "A fully bespoke, complex design system engineered for large scale apps.",
       popular: false,
       buttonText: "Go Premium",
       features: [
-        { name: "Unlimited Pages & Products", included: true },
-        { name: "Responsive E-commerce UI", included: true },
-        { name: "Advanced Form Setup", included: true },
-        { name: "Speed & Security Setup", included: true },
-        { name: "WooCommerce Setup", included: true },
-        { name: "Payment Gateway Setup", included: true },
-        { name: "Custom Post Types", included: true },
-        { name: "Advanced On-Page SEO", included: true },
-        { name: "Premium Plugin Licenses", included: true },
-        { name: "30 Days Free Support", included: true },
+        { name: "Comprehensive UX Research", included: true },
+        { name: "Advanced User Flow Mapping", included: true },
+        { name: "Low-Fidelity Wireframes", included: true },
+        { name: "High-Fidelity UI Design", included: true },
+        { name: "Responsive Mobile Views", included: true },
+        { name: "Custom Iconography", included: true },
+        { name: "Advanced Interactive Prototype", included: true },
+        { name: "Micro-interactions Setup", included: true },
+        { name: "Full Design System Handoff", included: true },
+        { name: "Unlimited Revisions", included: true },
       ]
     }
   ];
@@ -97,18 +98,18 @@ export default function WordPressService() {
         <div className="flex flex-col items-center text-center mb-12 md:mb-24 max-w-4xl mx-auto">
           
           <h2 className="text-[12px] md:text-[13px] font-black text-blue-500 uppercase tracking-[0.3em] mb-4 m-0 flex items-center justify-center gap-2">
-            <Store className="w-4 h-4" /> CMS & E-Commerce
+            <PenTool className="w-4 h-4" /> Creative & Strategy
           </h2>
           
-          <h1 className="text-4xl sm:text-5xl lg:text-7xl font-black text-white tracking-tighter leading-[1.05] m-0 mb-4 md:mb-6 drop-shadow-2xl">
-            Custom WordPress & <br className="hidden sm:block" />
+          <h2 className="text-4xl sm:text-5xl lg:text-7xl font-black text-white tracking-tighter leading-[1.05] m-0 mb-4 md:mb-6 drop-shadow-2xl">
+            Bespoke UI/UX <br className="hidden sm:block" />
             <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-400 via-blue-500 to-indigo-400">
-              WooCommerce
+              Product Design
             </span>
-          </h1>
+          </h2>
           
           <p className="text-slate-400 text-[15px] sm:text-lg lg:text-xl leading-relaxed max-w-2xl mx-auto font-medium">
-            Custom themes, premium plugins, and high-converting e-commerce experiences tailored to your brand. Choose a package below to kickstart your project.
+            Data-driven, user-centric interfaces crafted in Figma. We design stunning digital experiences optimised for maximum engagement and conversion.
           </p>
         </div>
 
@@ -165,7 +166,7 @@ export default function WordPressService() {
                 </div>
 
                 <a
-                  href={`https://wa.me/923347835980?text=Hi%20Rafay!%20I%20am%20interested%20in%20the%20${encodeURIComponent(pkg.name)}%20WordPress%20package%20for%20${pkg.price}.`}
+                  href={`https://wa.me/923347835980?text=Hi%20Rafay!%20I%20am%20interested%20in%20the%20${encodeURIComponent(pkg.name)}%20UI%20UX%20Design%20package%20for%20${pkg.price}.`}
                   target="_blank"
                   rel="noreferrer"
                   className={`w-full mt-auto flex items-center justify-center gap-2 py-3.5 md:py-4 rounded-xl text-[14px] md:text-[15px] font-bold transition-all duration-300 ${

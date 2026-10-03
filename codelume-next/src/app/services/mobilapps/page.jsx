@@ -1,8 +1,9 @@
+"use client";
 import React, { useEffect, useState, useRef } from "react";
-import { Link } from "react-router-dom";
-import { Check, X, ArrowRight, Zap } from "lucide-react";
+import Link from "next/link";
+import { Check, X, ArrowRight, Smartphone } from "lucide-react";
 
-export default function MernStackService() {
+export default function MobileAppsService() {
   const [activeSlide, setActiveSlide] = useState(0);
   const sliderRef = useRef(null);
   
@@ -10,7 +11,6 @@ export default function MernStackService() {
     window.scrollTo(0, 0);
   }, []);
 
-  // Update active dot when user swipes on mobile
   const handleScroll = () => {
     if (!sliderRef.current) return;
     const scrollPosition = sliderRef.current.scrollLeft;
@@ -19,7 +19,6 @@ export default function MernStackService() {
     setActiveSlide(currentIndex);
   };
 
-  // Scroll to specific package when a dot is clicked
   const scrollToSlide = (index) => {
     if (sliderRef.current) {
       sliderRef.current.scrollTo({
@@ -31,60 +30,60 @@ export default function MernStackService() {
 
   const packages = [
     {
-      name: "Basic Prototype",
-      price: "$149",
-      description: "Perfect for startups needing a quick MVP to test their idea.",
+      name: "MVP App Build",
+      price: "$399",
+      description: "Perfect for startups needing a minimum viable product to test their app idea.",
       popular: false,
-      buttonText: "Order Basic",
+      buttonText: "Order MVP",
       features: [
-        { name: "Up to 3 Custom Pages", included: true },
-        { name: "Responsive React UI", included: true },
-        { name: "Basic Form Integration", included: true },
-        { name: "7 Days Delivery", included: true },
-        { name: "Node.js & MongoDB Backend", included: false },
-        { name: "User Authentication", included: false },
-        { name: "Custom Admin Dashboard", included: false },
+        { name: "Cross-Platform (iOS & Android)", included: true },
+        { name: "Up to 5 Core Screens", included: true },
+        { name: "Standard UI/UX Design", included: true },
+        { name: "Basic API Integration", included: true },
+        { name: "Push Notifications", included: false },
+        { name: "Complex Animations", included: false },
         { name: "Payment Gateway Setup", included: false },
-        { name: "Advanced Technical SEO", included: false },
+        { name: "Custom Admin Dashboard", included: false },
+        { name: "App Store Deployment", included: false },
         { name: "30 Days Free Support", included: false },
       ]
     },
     {
       name: "Standard Business",
-      price: "$349",
-      description: "The ideal package for growing businesses needing a robust platform.",
+      price: "$699",
+      description: "The ideal package for growing businesses needing a robust mobile experience.",
       popular: true,
       buttonText: "Order Standard",
       features: [
-        { name: "Up to 8 Custom Pages", included: true },
-        { name: "Responsive React UI", included: true },
-        { name: "Advanced Form Integration", included: true },
-        { name: "14 Days Delivery", included: true },
-        { name: "Node.js & MongoDB Backend", included: true },
-        { name: "User Authentication", included: true },
+        { name: "Cross-Platform (iOS & Android)", included: true },
+        { name: "Up to 15 Core Screens", included: true },
+        { name: "Premium UI/UX Design", included: true },
+        { name: "Advanced API Integration", included: true },
+        { name: "Push Notifications", included: true },
+        { name: "Complex Animations", included: false },
+        { name: "Payment Gateway Setup", included: true },
         { name: "Custom Admin Dashboard", included: true },
-        { name: "Payment Gateway Setup", included: false },
-        { name: "Advanced Technical SEO", included: false },
+        { name: "App Store Deployment", included: true },
         { name: "30 Days Free Support", included: false },
       ]
     },
     {
-      name: "Premium Enterprise",
-      price: "$599",
-      description: "A fully bespoke, high-performance web application ready to scale.",
+      name: "Enterprise Native",
+      price: "$999",
+      description: "A fully bespoke, high-performance mobile application engineered for scale.",
       popular: false,
       buttonText: "Go Premium",
       features: [
-        { name: "Unlimited Pages", included: true },
-        { name: "Responsive React UI", included: true },
-        { name: "Complex Custom Logic", included: true },
-        { name: "Priority Delivery", included: true },
-        { name: "Node.js & MongoDB Backend", included: true },
-        { name: "User Authentication & Roles", included: true },
-        { name: "Custom Admin Dashboard", included: true },
+        { name: "Cross-Platform (iOS & Android)", included: true },
+        { name: "Unlimited Screens & Logic", included: true },
+        { name: "Bespoke UI/UX Design", included: true },
+        { name: "Advanced API Integration", included: true },
+        { name: "Push Notifications", included: true },
+        { name: "Complex Animations", included: true },
         { name: "Payment Gateway Setup", included: true },
-        { name: "Advanced Technical SEO", included: true },
-        { name: "30 Days Free Support", included: true },
+        { name: "Custom Admin Dashboard", included: true },
+        { name: "App Store Deployment", included: true },
+        { name: "60 Days Priority Support", included: true },
       ]
     }
   ];
@@ -92,31 +91,28 @@ export default function MernStackService() {
   return (
     <div className="min-h-dvh bg-[#030712] text-white font-jakarta pt-24 md:pt-28 pb-20 md:pb-24 overflow-hidden relative">
       
-      {/* Deep Glow Background */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-[700px] bg-[radial-gradient(ellipse_at_top,rgba(37,99,235,0.15)_0%,transparent_70%)] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
         
-        {/* Enhanced Hero Section */}
         <div className="flex flex-col items-center text-center mb-12 md:mb-24 max-w-4xl mx-auto">
           
           <h2 className="text-[12px] md:text-[13px] font-black text-blue-500 uppercase tracking-[0.3em] mb-4 m-0 flex items-center justify-center gap-2">
-            <Zap className="w-4 h-4" /> Full-Stack Engineering
+            <Smartphone className="w-4 h-4" /> Application Engineering
           </h2>
           
-          <h1 className="text-4xl sm:text-5xl lg:text-7xl font-black text-white tracking-tighter leading-[1.05] m-0 mb-4 md:mb-6 drop-shadow-2xl">
-            Custom MERN Stack <br className="hidden sm:block" />
+          <h2 className="text-4xl sm:text-5xl lg:text-7xl font-black text-white tracking-tighter leading-[1.05] m-0 mb-4 md:mb-6 drop-shadow-2xl">
+            Custom Mobile <br className="hidden sm:block" />
             <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-400 via-blue-500 to-indigo-400">
-              Web Applications
+              App Development
             </span>
-          </h1>
+          </h2>
           
           <p className="text-slate-400 text-[15px] sm:text-lg lg:text-xl leading-relaxed max-w-2xl mx-auto font-medium">
-            Fast, secure, and highly scalable JavaScript solutions tailored to your unique business logic. Choose a package below to kickstart your project immediately.
+            High-performance, bespoke iOS and Android applications engineered to deliver seamless user experiences and scale your business.
           </p>
         </div>
 
-        {/* Pricing Slider (Mobile) & Grid (Desktop) */}
         <div className="relative max-w-7xl mx-auto">
           
           <div 
@@ -147,7 +143,6 @@ export default function MernStackService() {
                   <span className="text-slate-500 font-bold text-[12px] md:text-sm mb-1">/project</span>
                 </div>
 
-                {/* Features Section */}
                 <div className="flex flex-col gap-3 md:gap-4 mb-8 md:mb-10 flex-grow">
                   <h2 className="text-[10px] md:text-[11px] font-black text-slate-500 uppercase tracking-widest m-0 mb-1 md:mb-2">
                     Top Features Included
@@ -170,9 +165,8 @@ export default function MernStackService() {
                   ))}
                 </div>
 
-                {/* Button Section */}
                 <a
-                  href={`https://wa.me/923347835980?text=Hi%20Rafay!%20I%20am%20interested%20in%20the%20${encodeURIComponent(pkg.name)}%20MERN%20Stack%20package%20for%20${pkg.price}.`}
+                  href={`https://wa.me/923347835980?text=Hi%20Rafay!%20I%20am%20interested%20in%20the%20${encodeURIComponent(pkg.name)}%20Mobile%20App%20package%20for%20${pkg.price}.`}
                   target="_blank"
                   rel="noreferrer"
                   className={`w-full mt-auto flex items-center justify-center gap-2 py-3.5 md:py-4 rounded-xl text-[14px] md:text-[15px] font-bold transition-all duration-300 ${
@@ -187,7 +181,6 @@ export default function MernStackService() {
             ))}
           </div>
 
-          {/* Dots Pagination (Visible only on Mobile) */}
           <div className="flex justify-center items-center gap-2 mt-2 md:hidden">
             {packages.map((_, index) => (
               <button
@@ -204,7 +197,6 @@ export default function MernStackService() {
           </div>
 
         </div>
-
       </div>
     </div>
   );

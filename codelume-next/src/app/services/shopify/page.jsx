@@ -1,8 +1,9 @@
+"use client";
 import React, { useEffect, useState, useRef } from "react";
-import { Link } from "react-router-dom";
-import { Check, X, ArrowRight, Webhook } from "lucide-react";
+import Link from "next/link";
+import { Check, X, ArrowRight, ShoppingBag } from "lucide-react";
 
-export default function ApiIntegrationsService() {
+export default function ShopifyService() {
   const [activeSlide, setActiveSlide] = useState(0);
   const sliderRef = useRef(null);
   
@@ -29,60 +30,60 @@ export default function ApiIntegrationsService() {
 
   const packages = [
     {
-      name: "Basic Integration",
-      price: "$99",
-      description: "Perfect for connecting simple third-party tools like mailing lists or basic maps.",
+      name: "Starter Store",
+      price: "$115",
+      description: "Perfect for new merchants looking to launch their first e-commerce store quickly.",
       popular: false,
-      buttonText: "Order Basic",
+      buttonText: "Order Starter",
       features: [
-        { name: "1 Third-party API Integration", included: true },
-        { name: "Frontend Data Display", included: true },
-        { name: "Secure API Key Storage", included: true },
-        { name: "Basic Error Handling", included: true },
-        { name: "Two-way Data Synchronisation", included: false },
-        { name: "Complex Authentication (OAuth)", included: false },
-        { name: "Payment Gateway Integration", included: false },
-        { name: "Custom API Endpoint Creation", included: false },
-        { name: "Comprehensive Documentation", included: false },
+        { name: "Premium Theme Setup", included: true },
+        { name: "Responsive Mobile UI", included: true },
+        { name: "Up to 20 Products Added", included: true },
+        { name: "Basic App Integrations", included: true },
+        { name: "Custom Liquid Coding", included: false },
+        { name: "Advanced SEO Optimisation", included: false },
+        { name: "Abandoned Cart Setup", included: false },
+        { name: "Custom Checkout Styling", included: false },
+        { name: "Wholesale/B2B Features", included: false },
         { name: "30 Days Free Support", included: false },
       ]
     },
     {
-      name: "Advanced Sync",
-      price: "$249",
-      description: "The ideal package for two-way data syncs, CRMs, and payment gateways.",
+      name: "Growth Store",
+      price: "$135",
+      description: "The ideal package for growing brands needing a highly customised shopping experience.",
       popular: true,
-      buttonText: "Order Advanced",
+      buttonText: "Order Growth",
       features: [
-        { name: "Up to 3 API Integrations", included: true },
-        { name: "Frontend Data Display", included: true },
-        { name: "Secure API Key Storage", included: true },
-        { name: "Advanced Error Handling", included: true },
-        { name: "Two-way Data Synchronisation", included: true },
-        { name: "Complex Authentication (OAuth)", included: true },
-        { name: "Payment Gateway Integration", included: true },
-        { name: "Custom API Endpoint Creation", included: false },
-        { name: "Comprehensive Documentation", included: false },
+        { name: "Premium Theme Setup", included: true },
+        { name: "Responsive Mobile UI", included: true },
+        { name: "Up to 50 Products Added", included: true },
+        { name: "Advanced App Integrations", included: true },
+        { name: "Custom Liquid Coding", included: true },
+        { name: "Advanced SEO Optimisation", included: true },
+        { name: "Abandoned Cart Setup", included: true },
+        { name: "Custom Checkout Styling", included: false },
+        { name: "Wholesale/B2B Features", included: false },
         { name: "30 Days Free Support", included: false },
       ]
     },
     {
-      name: "Custom API Build",
-      price: "$499",
-      description: "A fully bespoke REST or GraphQL API engineered from scratch for your ecosystem.",
+      name: "Custom Liquid Store",
+      price: "$150",
+      description: "A fully bespoke, high-converting Shopify storefront engineered for maximum sales.",
       popular: false,
       buttonText: "Go Premium",
       features: [
-        { name: "Unlimited API Integrations", included: true },
-        { name: "Frontend Data Display", included: true },
-        { name: "Bank-grade Security Protocols", included: true },
-        { name: "Advanced Error Handling", included: true },
-        { name: "Real-time Data Synchronisation", included: true },
-        { name: "Complex Authentication (OAuth)", included: true },
-        { name: "Payment Gateway Integration", included: true },
-        { name: "Custom REST/GraphQL Endpoints", included: true },
-        { name: "Comprehensive Documentation", included: true },
-        { name: "60 Days Priority Support", included: true },
+        { name: "Fully Custom Theme Build", included: true },
+        { name: "Responsive Mobile UI", included: true },
+        { name: "Unlimited Products Setup", included: true },
+        { name: "Advanced App Integrations", included: true },
+        { name: "Complex Liquid Coding", included: true },
+        { name: "Advanced SEO Optimisation", included: true },
+        { name: "Abandoned Cart Setup", included: true },
+        { name: "Custom Checkout Styling", included: true },
+        { name: "Wholesale/B2B Features", included: true },
+        { name: "30 Days Free Support", included: true },
       ]
     }
   ];
@@ -97,18 +98,18 @@ export default function ApiIntegrationsService() {
         <div className="flex flex-col items-center text-center mb-12 md:mb-24 max-w-4xl mx-auto">
           
           <h2 className="text-[12px] md:text-[13px] font-black text-blue-500 uppercase tracking-[0.3em] mb-4 m-0 flex items-center justify-center gap-2">
-            <Webhook className="w-4 h-4" /> Connectivity & Data
+            <ShoppingBag className="w-4 h-4" /> E-Commerce Solutions
           </h2>
           
-          <h1 className="text-4xl sm:text-5xl lg:text-7xl font-black text-white tracking-tighter leading-[1.05] m-0 mb-4 md:mb-6 drop-shadow-2xl">
-            Seamless API <br className="hidden sm:block" />
+          <h2 className="text-4xl sm:text-5xl lg:text-7xl font-black text-white tracking-tighter leading-[1.05] m-0 mb-4 md:mb-6 drop-shadow-2xl">
+            High-Converting <br className="hidden sm:block" />
             <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-400 via-blue-500 to-indigo-400">
-              Integrations
+              Shopify Stores
             </span>
-          </h1>
+          </h2>
           
           <p className="text-slate-400 text-[15px] sm:text-lg lg:text-xl leading-relaxed max-w-2xl mx-auto font-medium">
-            Connect your digital ecosystem effortlessly. We engineer secure, high-performance data bridges between your web apps and third-party services.
+            Bespoke storefronts, custom Liquid coding, and powerful app integrations designed to scale your e-commerce brand.
           </p>
         </div>
 
@@ -165,7 +166,7 @@ export default function ApiIntegrationsService() {
                 </div>
 
                 <a
-                  href={`https://wa.me/923347835980?text=Hi%20Rafay!%20I%20am%20interested%20in%20the%20${encodeURIComponent(pkg.name)}%20API%20Integrations%20package%20for%20${pkg.price}.`}
+                  href={`https://wa.me/923347835980?text=Hi%20Rafay!%20I%20am%20interested%20in%20the%20${encodeURIComponent(pkg.name)}%20Shopify%20package%20for%20${pkg.price}.`}
                   target="_blank"
                   rel="noreferrer"
                   className={`w-full mt-auto flex items-center justify-center gap-2 py-3.5 md:py-4 rounded-xl text-[14px] md:text-[15px] font-bold transition-all duration-300 ${

@@ -1,8 +1,9 @@
+"use client";
 import React, { useEffect, useState, useRef } from "react";
-import { Link } from "react-router-dom";
-import { Check, X, ArrowRight, Smartphone } from "lucide-react";
+import Link from "next/link";
+import { Check, X, ArrowRight, AppWindow } from "lucide-react";
 
-export default function MobileAppsService() {
+export default function AngularAppsService() {
   const [activeSlide, setActiveSlide] = useState(0);
   const sliderRef = useRef(null);
   
@@ -29,60 +30,60 @@ export default function MobileAppsService() {
 
   const packages = [
     {
-      name: "MVP App Build",
-      price: "$399",
-      description: "Perfect for startups needing a minimum viable product to test their app idea.",
+      name: "Basic SPA",
+      price: "$135",
+      description: "Perfect for fast, simple Single Page Applications with dynamic routing.",
       popular: false,
-      buttonText: "Order MVP",
+      buttonText: "Order Basic",
       features: [
-        { name: "Cross-Platform (iOS & Android)", included: true },
-        { name: "Up to 5 Core Screens", included: true },
-        { name: "Standard UI/UX Design", included: true },
+        { name: "Up to 5 Custom Components", included: true },
+        { name: "Responsive Angular UI", included: true },
         { name: "Basic API Integration", included: true },
-        { name: "Push Notifications", included: false },
-        { name: "Complex Animations", included: false },
-        { name: "Payment Gateway Setup", included: false },
+        { name: "Form Validations", included: true },
+        { name: "RxJS State Management", included: false },
+        { name: "Advanced User Auth", included: false },
         { name: "Custom Admin Dashboard", included: false },
-        { name: "App Store Deployment", included: false },
+        { name: "PWA (Offline Support)", included: false },
+        { name: "Payment Gateway Setup", included: false },
         { name: "30 Days Free Support", included: false },
       ]
     },
     {
       name: "Standard Business",
-      price: "$699",
-      description: "The ideal package for growing businesses needing a robust mobile experience.",
+      price: "$345",
+      description: "The ideal package for enterprise-grade, interactive frontend dashboards.",
       popular: true,
       buttonText: "Order Standard",
       features: [
-        { name: "Cross-Platform (iOS & Android)", included: true },
-        { name: "Up to 15 Core Screens", included: true },
-        { name: "Premium UI/UX Design", included: true },
-        { name: "Advanced API Integration", included: true },
-        { name: "Push Notifications", included: true },
-        { name: "Complex Animations", included: false },
-        { name: "Payment Gateway Setup", included: true },
+        { name: "Up to 15 Custom Components", included: true },
+        { name: "Responsive Angular UI", included: true },
+        { name: "REST/GraphQL Integration", included: true },
+        { name: "Form Validations", included: true },
+        { name: "RxJS & NgRx State Mgmt", included: true },
+        { name: "Advanced User Auth", included: true },
         { name: "Custom Admin Dashboard", included: true },
-        { name: "App Store Deployment", included: true },
+        { name: "PWA (Offline Support)", included: false },
+        { name: "Payment Gateway Setup", included: false },
         { name: "30 Days Free Support", included: false },
       ]
     },
     {
-      name: "Enterprise Native",
-      price: "$999",
-      description: "A fully bespoke, high-performance mobile application engineered for scale.",
+      name: "Premium Enterprise",
+      price: "$595",
+      description: "A fully bespoke, complex frontend application engineered for scale.",
       popular: false,
       buttonText: "Go Premium",
       features: [
-        { name: "Cross-Platform (iOS & Android)", included: true },
-        { name: "Unlimited Screens & Logic", included: true },
-        { name: "Bespoke UI/UX Design", included: true },
-        { name: "Advanced API Integration", included: true },
-        { name: "Push Notifications", included: true },
-        { name: "Complex Animations", included: true },
-        { name: "Payment Gateway Setup", included: true },
+        { name: "Unlimited Components", included: true },
+        { name: "Responsive Angular UI", included: true },
+        { name: "REST/GraphQL Integration", included: true },
+        { name: "Form Validations", included: true },
+        { name: "RxJS & NgRx State Mgmt", included: true },
+        { name: "Advanced User Auth & Roles", included: true },
         { name: "Custom Admin Dashboard", included: true },
-        { name: "App Store Deployment", included: true },
-        { name: "60 Days Priority Support", included: true },
+        { name: "PWA (Offline Support)", included: true },
+        { name: "Payment Gateway Setup", included: true },
+        { name: "30 Days Free Support", included: true },
       ]
     }
   ];
@@ -97,18 +98,18 @@ export default function MobileAppsService() {
         <div className="flex flex-col items-center text-center mb-12 md:mb-24 max-w-4xl mx-auto">
           
           <h2 className="text-[12px] md:text-[13px] font-black text-blue-500 uppercase tracking-[0.3em] mb-4 m-0 flex items-center justify-center gap-2">
-            <Smartphone className="w-4 h-4" /> Application Engineering
+            <AppWindow className="w-4 h-4" /> Enterprise Frontend
           </h2>
           
-          <h2 className="text-4xl sm:text-5xl lg:text-7xl font-black text-white tracking-tighter leading-[1.05] m-0 mb-4 md:mb-6 drop-shadow-2xl">
-            Custom Mobile <br className="hidden sm:block" />
+          <h1 className="text-4xl sm:text-5xl lg:text-7xl font-black text-white tracking-tighter leading-[1.05] m-0 mb-4 md:mb-6 drop-shadow-2xl">
+            Custom Angular <br className="hidden sm:block" />
             <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-400 via-blue-500 to-indigo-400">
-              App Development
+              Web Applications
             </span>
-          </h2>
+          </h1>
           
           <p className="text-slate-400 text-[15px] sm:text-lg lg:text-xl leading-relaxed max-w-2xl mx-auto font-medium">
-            High-performance, bespoke iOS and Android applications engineered to deliver seamless user experiences and scale your business.
+            Enterprise-grade frontend frameworks for complex, high-speed single-page applications. Choose a package below to kickstart your project immediately.
           </p>
         </div>
 
@@ -165,7 +166,7 @@ export default function MobileAppsService() {
                 </div>
 
                 <a
-                  href={`https://wa.me/923347835980?text=Hi%20Rafay!%20I%20am%20interested%20in%20the%20${encodeURIComponent(pkg.name)}%20Mobile%20App%20package%20for%20${pkg.price}.`}
+                  href={`https://wa.me/923347835980?text=Hi%20Rafay!%20I%20am%20interested%20in%20the%20${encodeURIComponent(pkg.name)}%20Angular%20package%20for%20${pkg.price}.`}
                   target="_blank"
                   rel="noreferrer"
                   className={`w-full mt-auto flex items-center justify-center gap-2 py-3.5 md:py-4 rounded-xl text-[14px] md:text-[15px] font-bold transition-all duration-300 ${
@@ -196,6 +197,7 @@ export default function MobileAppsService() {
           </div>
 
         </div>
+
       </div>
     </div>
   );

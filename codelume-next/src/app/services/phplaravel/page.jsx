@@ -1,8 +1,9 @@
+"use client";
 import React, { useEffect, useState, useRef } from "react";
-import { Link } from "react-router-dom";
-import { Check, X, ArrowRight, AppWindow } from "lucide-react";
+import Link from "next/link";
+import { Check, X, ArrowRight, Server } from "lucide-react";
 
-export default function AngularAppsService() {
+export default function PhpLaravelService() {
   const [activeSlide, setActiveSlide] = useState(0);
   const sliderRef = useRef(null);
   
@@ -29,59 +30,59 @@ export default function AngularAppsService() {
 
   const packages = [
     {
-      name: "Basic SPA",
-      price: "$135",
-      description: "Perfect for fast, simple Single Page Applications with dynamic routing.",
+      name: "Basic Backend",
+      price: "$139",
+      description: "Perfect for small businesses needing a secure and fast web presence.",
       popular: false,
       buttonText: "Order Basic",
       features: [
-        { name: "Up to 5 Custom Components", included: true },
-        { name: "Responsive Angular UI", included: true },
-        { name: "Basic API Integration", included: true },
-        { name: "Form Validations", included: true },
-        { name: "RxJS State Management", included: false },
-        { name: "Advanced User Auth", included: false },
-        { name: "Custom Admin Dashboard", included: false },
-        { name: "PWA (Offline Support)", included: false },
+        { name: "Up to 5 Custom Pages", included: true },
+        { name: "Responsive Frontend UI", included: true },
+        { name: "Secure Laravel Backend", included: true },
+        { name: "Basic Database Setup", included: true },
+        { name: "User Authentication", included: false },
+        { name: "Custom Admin Panel", included: false },
         { name: "Payment Gateway Setup", included: false },
+        { name: "Third-party API Integration", included: false },
+        { name: "Advanced Technical SEO", included: false },
         { name: "30 Days Free Support", included: false },
       ]
     },
     {
       name: "Standard Business",
-      price: "$345",
-      description: "The ideal package for enterprise-grade, interactive frontend dashboards.",
+      price: "$349",
+      description: "The ideal package for growing businesses needing a dynamic web app.",
       popular: true,
       buttonText: "Order Standard",
       features: [
-        { name: "Up to 15 Custom Components", included: true },
-        { name: "Responsive Angular UI", included: true },
-        { name: "REST/GraphQL Integration", included: true },
-        { name: "Form Validations", included: true },
-        { name: "RxJS & NgRx State Mgmt", included: true },
-        { name: "Advanced User Auth", included: true },
-        { name: "Custom Admin Dashboard", included: true },
-        { name: "PWA (Offline Support)", included: false },
+        { name: "Up to 10 Custom Pages", included: true },
+        { name: "Responsive Frontend UI", included: true },
+        { name: "Secure Laravel Backend", included: true },
+        { name: "Advanced Database Architecture", included: true },
+        { name: "User Authentication", included: true },
+        { name: "Custom Admin Panel", included: true },
         { name: "Payment Gateway Setup", included: false },
+        { name: "Third-party API Integration", included: false },
+        { name: "Advanced Technical SEO", included: false },
         { name: "30 Days Free Support", included: false },
       ]
     },
     {
       name: "Premium Enterprise",
-      price: "$595",
-      description: "A fully bespoke, complex frontend application engineered for scale.",
+      price: "$599",
+      description: "A fully bespoke, robust backend platform ready to scale globally.",
       popular: false,
       buttonText: "Go Premium",
       features: [
-        { name: "Unlimited Components", included: true },
-        { name: "Responsive Angular UI", included: true },
-        { name: "REST/GraphQL Integration", included: true },
-        { name: "Form Validations", included: true },
-        { name: "RxJS & NgRx State Mgmt", included: true },
-        { name: "Advanced User Auth & Roles", included: true },
-        { name: "Custom Admin Dashboard", included: true },
-        { name: "PWA (Offline Support)", included: true },
+        { name: "Unlimited Pages", included: true },
+        { name: "Responsive Frontend UI", included: true },
+        { name: "Secure Laravel Backend", included: true },
+        { name: "Complex Business Logic", included: true },
+        { name: "User Auth & Roles", included: true },
+        { name: "Custom Admin Panel", included: true },
         { name: "Payment Gateway Setup", included: true },
+        { name: "Third-party API Integration", included: true },
+        { name: "Advanced Technical SEO", included: true },
         { name: "30 Days Free Support", included: true },
       ]
     }
@@ -97,18 +98,18 @@ export default function AngularAppsService() {
         <div className="flex flex-col items-center text-center mb-12 md:mb-24 max-w-4xl mx-auto">
           
           <h2 className="text-[12px] md:text-[13px] font-black text-blue-500 uppercase tracking-[0.3em] mb-4 m-0 flex items-center justify-center gap-2">
-            <AppWindow className="w-4 h-4" /> Enterprise Frontend
+            <Server className="w-4 h-4" /> Backend Architecture
           </h2>
           
-          <h1 className="text-4xl sm:text-5xl lg:text-7xl font-black text-white tracking-tighter leading-[1.05] m-0 mb-4 md:mb-6 drop-shadow-2xl">
-            Custom Angular <br className="hidden sm:block" />
+          <h2 className="text-4xl sm:text-5xl lg:text-7xl font-black text-white tracking-tighter leading-[1.05] m-0 mb-4 md:mb-6 drop-shadow-2xl">
+            Custom PHP & Laravel <br className="hidden sm:block" />
             <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-400 via-blue-500 to-indigo-400">
               Web Applications
             </span>
-          </h1>
+          </h2>
           
           <p className="text-slate-400 text-[15px] sm:text-lg lg:text-xl leading-relaxed max-w-2xl mx-auto font-medium">
-            Enterprise-grade frontend frameworks for complex, high-speed single-page applications. Choose a package below to kickstart your project immediately.
+            Robust, secure, and highly scalable backend architectures engineered exactly to your business logic. Choose a package below to kickstart your development.
           </p>
         </div>
 
@@ -165,7 +166,7 @@ export default function AngularAppsService() {
                 </div>
 
                 <a
-                  href={`https://wa.me/923347835980?text=Hi%20Rafay!%20I%20am%20interested%20in%20the%20${encodeURIComponent(pkg.name)}%20Angular%20package%20for%20${pkg.price}.`}
+                  href={`https://wa.me/923347835980?text=Hi%20Rafay!%20I%20am%20interested%20in%20the%20${encodeURIComponent(pkg.name)}%20PHP%20Laravel%20package%20for%20${pkg.price}.`}
                   target="_blank"
                   rel="noreferrer"
                   className={`w-full mt-auto flex items-center justify-center gap-2 py-3.5 md:py-4 rounded-xl text-[14px] md:text-[15px] font-bold transition-all duration-300 ${
@@ -196,7 +197,6 @@ export default function AngularAppsService() {
           </div>
 
         </div>
-
       </div>
     </div>
   );

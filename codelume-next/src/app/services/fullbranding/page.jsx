@@ -1,8 +1,9 @@
+"use client";
 import React, { useEffect, useState, useRef } from "react";
-import { Link } from "react-router-dom";
-import { Check, X, ArrowRight, Server } from "lucide-react";
+import Link from "next/link";
+import { Check, X, ArrowRight, Rocket } from "lucide-react";
 
-export default function PhpLaravelService() {
+export default function FullBrandingService() {
   const [activeSlide, setActiveSlide] = useState(0);
   const sliderRef = useRef(null);
   
@@ -29,60 +30,60 @@ export default function PhpLaravelService() {
 
   const packages = [
     {
-      name: "Basic Backend",
-      price: "$139",
-      description: "Perfect for small businesses needing a secure and fast web presence.",
+      name: "Startup Launch",
+      price: "$1,499",
+      description: "From 0 to 1. The perfect launchpad with core branding, web design, and social setup.",
       popular: false,
-      buttonText: "Order Basic",
+      buttonText: "Order Startup Build",
       features: [
-        { name: "Up to 5 Custom Pages", included: true },
-        { name: "Responsive Frontend UI", included: true },
-        { name: "Secure Laravel Backend", included: true },
-        { name: "Basic Database Setup", included: true },
-        { name: "User Authentication", included: false },
-        { name: "Custom Admin Panel", included: false },
-        { name: "Payment Gateway Setup", included: false },
-        { name: "Third-party API Integration", included: false },
-        { name: "Advanced Technical SEO", included: false },
-        { name: "30 Days Free Support", included: false },
+        { name: "Custom Logo Design", included: true },
+        { name: "Basic Brand Guidelines", included: true },
+        { name: "5-Page Custom Website", included: true },
+        { name: "Social Media Profiles Setup", included: true },
+        { name: "UI/UX Prototyping", included: false },
+        { name: "E-Commerce Functionality", included: false },
+        { name: "Advanced SEO Setup", included: false },
+        { name: "1 Month Social Media Mgmt", included: false },
+        { name: "Paid Ads Campaign Setup", included: false },
+        { name: "Dedicated Account Manager", included: false },
       ]
     },
     {
-      name: "Standard Business",
-      price: "$349",
-      description: "The ideal package for growing businesses needing a dynamic web app.",
+      name: "Business Growth",
+      price: "$2,999",
+      description: "From 1 to 10. A comprehensive digital identity, robust web platform, and marketing strategy.",
       popular: true,
-      buttonText: "Order Standard",
+      buttonText: "Order Growth Build",
       features: [
-        { name: "Up to 10 Custom Pages", included: true },
-        { name: "Responsive Frontend UI", included: true },
-        { name: "Secure Laravel Backend", included: true },
-        { name: "Advanced Database Architecture", included: true },
-        { name: "User Authentication", included: true },
-        { name: "Custom Admin Panel", included: true },
-        { name: "Payment Gateway Setup", included: false },
-        { name: "Third-party API Integration", included: false },
-        { name: "Advanced Technical SEO", included: false },
-        { name: "30 Days Free Support", included: false },
+        { name: "Premium Custom Logo Design", included: true },
+        { name: "Comprehensive Brand Book", included: true },
+        { name: "10-Page Website / E-Commerce", included: true },
+        { name: "UI/UX Prototyping (Figma)", included: true },
+        { name: "Social Media Profiles Setup", included: true },
+        { name: "Advanced On-Page SEO", included: true },
+        { name: "1 Month Social Media Mgmt", included: true },
+        { name: "Paid Ads Campaign Setup", included: false },
+        { name: "Custom Content Creation", included: false },
+        { name: "Dedicated Account Manager", included: false },
       ]
     },
     {
-      name: "Premium Enterprise",
-      price: "$599",
-      description: "A fully bespoke, robust backend platform ready to scale globally.",
+      name: "The 0-to-100 Ecosystem",
+      price: "$4,999",
+      description: "We handle everything. Full bespoke branding, enterprise web engineering, and aggressive marketing.",
       popular: false,
       buttonText: "Go Premium",
       features: [
-        { name: "Unlimited Pages", included: true },
-        { name: "Responsive Frontend UI", included: true },
-        { name: "Secure Laravel Backend", included: true },
-        { name: "Complex Business Logic", included: true },
-        { name: "User Auth & Roles", included: true },
-        { name: "Custom Admin Panel", included: true },
-        { name: "Payment Gateway Setup", included: true },
-        { name: "Third-party API Integration", included: true },
-        { name: "Advanced Technical SEO", included: true },
-        { name: "30 Days Free Support", included: true },
+        { name: "Complete Brand Identity", included: true },
+        { name: "Bespoke Web App / Complex Store", included: true },
+        { name: "Advanced UI/UX Design System", included: true },
+        { name: "Social Media & Marketing Strategy", included: true },
+        { name: "Advanced Technical & Local SEO", included: true },
+        { name: "2 Months Social Media Mgmt", included: true },
+        { name: "Paid Ads Setup & Management", included: true },
+        { name: "Custom Content & Copywriting", included: true },
+        { name: "Performance Analytics & Tracking", included: true },
+        { name: "Dedicated Account Manager", included: true },
       ]
     }
   ];
@@ -97,18 +98,18 @@ export default function PhpLaravelService() {
         <div className="flex flex-col items-center text-center mb-12 md:mb-24 max-w-4xl mx-auto">
           
           <h2 className="text-[12px] md:text-[13px] font-black text-blue-500 uppercase tracking-[0.3em] mb-4 m-0 flex items-center justify-center gap-2">
-            <Server className="w-4 h-4" /> Backend Architecture
+            <Rocket className="w-4 h-4" /> The Complete Agency Experience
           </h2>
           
-          <h1 className="text-4xl sm:text-5xl lg:text-7xl font-black text-white tracking-tighter leading-[1.05] m-0 mb-4 md:mb-6 drop-shadow-2xl">
-            Custom PHP & Laravel <br className="hidden sm:block" />
+          <h2 className="text-4xl sm:text-5xl lg:text-7xl font-black text-white tracking-tighter leading-[1.05] m-0 mb-4 md:mb-6 drop-shadow-2xl">
+            From 0 to 100: <br className="hidden sm:block" />
             <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-400 via-blue-500 to-indigo-400">
-              Web Applications
+              Full Branding Solutions
             </span>
-          </h1>
+          </h2>
           
           <p className="text-slate-400 text-[15px] sm:text-lg lg:text-xl leading-relaxed max-w-2xl mx-auto font-medium">
-            Robust, secure, and highly scalable backend architectures engineered exactly to your business logic. Choose a package below to kickstart your development.
+            We handle everything. From bespoke logo design and complex web engineering, to aggressive social media marketing and SEO strategies.
           </p>
         </div>
 
@@ -165,7 +166,7 @@ export default function PhpLaravelService() {
                 </div>
 
                 <a
-                  href={`https://wa.me/923347835980?text=Hi%20Rafay!%20I%20am%20interested%20in%20the%20${encodeURIComponent(pkg.name)}%20PHP%20Laravel%20package%20for%20${pkg.price}.`}
+                  href={`https://wa.me/923347835980?text=Hi%20Rafay!%20I%20am%20interested%20in%20the%20${encodeURIComponent(pkg.name)}%20Full%20Branding%20package%20for%20${pkg.price}.`}
                   target="_blank"
                   rel="noreferrer"
                   className={`w-full mt-auto flex items-center justify-center gap-2 py-3.5 md:py-4 rounded-xl text-[14px] md:text-[15px] font-bold transition-all duration-300 ${
@@ -196,7 +197,6 @@ export default function PhpLaravelService() {
           </div>
 
         </div>
-
       </div>
     </div>
   );

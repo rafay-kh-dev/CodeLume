@@ -1,8 +1,9 @@
+"use client";
 import React, { useEffect, useState, useRef } from "react";
-import { Link } from "react-router-dom";
-import { Check, X, ArrowRight, Rocket } from "lucide-react";
+import Link from "next/link";
+import { Check, X, ArrowRight, Zap } from "lucide-react";
 
-export default function FullBrandingService() {
+export default function MernStackService() {
   const [activeSlide, setActiveSlide] = useState(0);
   const sliderRef = useRef(null);
   
@@ -10,6 +11,7 @@ export default function FullBrandingService() {
     window.scrollTo(0, 0);
   }, []);
 
+  // Update active dot when user swipes on mobile
   const handleScroll = () => {
     if (!sliderRef.current) return;
     const scrollPosition = sliderRef.current.scrollLeft;
@@ -18,6 +20,7 @@ export default function FullBrandingService() {
     setActiveSlide(currentIndex);
   };
 
+  // Scroll to specific package when a dot is clicked
   const scrollToSlide = (index) => {
     if (sliderRef.current) {
       sliderRef.current.scrollTo({
@@ -29,60 +32,60 @@ export default function FullBrandingService() {
 
   const packages = [
     {
-      name: "Startup Launch",
-      price: "$1,499",
-      description: "From 0 to 1. The perfect launchpad with core branding, web design, and social setup.",
+      name: "Basic Prototype",
+      price: "$149",
+      description: "Perfect for startups needing a quick MVP to test their idea.",
       popular: false,
-      buttonText: "Order Startup Build",
+      buttonText: "Order Basic",
       features: [
-        { name: "Custom Logo Design", included: true },
-        { name: "Basic Brand Guidelines", included: true },
-        { name: "5-Page Custom Website", included: true },
-        { name: "Social Media Profiles Setup", included: true },
-        { name: "UI/UX Prototyping", included: false },
-        { name: "E-Commerce Functionality", included: false },
-        { name: "Advanced SEO Setup", included: false },
-        { name: "1 Month Social Media Mgmt", included: false },
-        { name: "Paid Ads Campaign Setup", included: false },
-        { name: "Dedicated Account Manager", included: false },
+        { name: "Up to 3 Custom Pages", included: true },
+        { name: "Responsive React UI", included: true },
+        { name: "Basic Form Integration", included: true },
+        { name: "7 Days Delivery", included: true },
+        { name: "Node.js & MongoDB Backend", included: false },
+        { name: "User Authentication", included: false },
+        { name: "Custom Admin Dashboard", included: false },
+        { name: "Payment Gateway Setup", included: false },
+        { name: "Advanced Technical SEO", included: false },
+        { name: "30 Days Free Support", included: false },
       ]
     },
     {
-      name: "Business Growth",
-      price: "$2,999",
-      description: "From 1 to 10. A comprehensive digital identity, robust web platform, and marketing strategy.",
+      name: "Standard Business",
+      price: "$349",
+      description: "The ideal package for growing businesses needing a robust platform.",
       popular: true,
-      buttonText: "Order Growth Build",
+      buttonText: "Order Standard",
       features: [
-        { name: "Premium Custom Logo Design", included: true },
-        { name: "Comprehensive Brand Book", included: true },
-        { name: "10-Page Website / E-Commerce", included: true },
-        { name: "UI/UX Prototyping (Figma)", included: true },
-        { name: "Social Media Profiles Setup", included: true },
-        { name: "Advanced On-Page SEO", included: true },
-        { name: "1 Month Social Media Mgmt", included: true },
-        { name: "Paid Ads Campaign Setup", included: false },
-        { name: "Custom Content Creation", included: false },
-        { name: "Dedicated Account Manager", included: false },
+        { name: "Up to 8 Custom Pages", included: true },
+        { name: "Responsive React UI", included: true },
+        { name: "Advanced Form Integration", included: true },
+        { name: "14 Days Delivery", included: true },
+        { name: "Node.js & MongoDB Backend", included: true },
+        { name: "User Authentication", included: true },
+        { name: "Custom Admin Dashboard", included: true },
+        { name: "Payment Gateway Setup", included: false },
+        { name: "Advanced Technical SEO", included: false },
+        { name: "30 Days Free Support", included: false },
       ]
     },
     {
-      name: "The 0-to-100 Ecosystem",
-      price: "$4,999",
-      description: "We handle everything. Full bespoke branding, enterprise web engineering, and aggressive marketing.",
+      name: "Premium Enterprise",
+      price: "$599",
+      description: "A fully bespoke, high-performance web application ready to scale.",
       popular: false,
       buttonText: "Go Premium",
       features: [
-        { name: "Complete Brand Identity", included: true },
-        { name: "Bespoke Web App / Complex Store", included: true },
-        { name: "Advanced UI/UX Design System", included: true },
-        { name: "Social Media & Marketing Strategy", included: true },
-        { name: "Advanced Technical & Local SEO", included: true },
-        { name: "2 Months Social Media Mgmt", included: true },
-        { name: "Paid Ads Setup & Management", included: true },
-        { name: "Custom Content & Copywriting", included: true },
-        { name: "Performance Analytics & Tracking", included: true },
-        { name: "Dedicated Account Manager", included: true },
+        { name: "Unlimited Pages", included: true },
+        { name: "Responsive React UI", included: true },
+        { name: "Complex Custom Logic", included: true },
+        { name: "Priority Delivery", included: true },
+        { name: "Node.js & MongoDB Backend", included: true },
+        { name: "User Authentication & Roles", included: true },
+        { name: "Custom Admin Dashboard", included: true },
+        { name: "Payment Gateway Setup", included: true },
+        { name: "Advanced Technical SEO", included: true },
+        { name: "30 Days Free Support", included: true },
       ]
     }
   ];
@@ -90,28 +93,31 @@ export default function FullBrandingService() {
   return (
     <div className="min-h-dvh bg-[#030712] text-white font-jakarta pt-24 md:pt-28 pb-20 md:pb-24 overflow-hidden relative">
       
+      {/* Deep Glow Background */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-[700px] bg-[radial-gradient(ellipse_at_top,rgba(37,99,235,0.15)_0%,transparent_70%)] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
         
+        {/* Enhanced Hero Section */}
         <div className="flex flex-col items-center text-center mb-12 md:mb-24 max-w-4xl mx-auto">
           
           <h2 className="text-[12px] md:text-[13px] font-black text-blue-500 uppercase tracking-[0.3em] mb-4 m-0 flex items-center justify-center gap-2">
-            <Rocket className="w-4 h-4" /> The Complete Agency Experience
+            <Zap className="w-4 h-4" /> Full-Stack Engineering
           </h2>
           
-          <h2 className="text-4xl sm:text-5xl lg:text-7xl font-black text-white tracking-tighter leading-[1.05] m-0 mb-4 md:mb-6 drop-shadow-2xl">
-            From 0 to 100: <br className="hidden sm:block" />
+          <h1 className="text-4xl sm:text-5xl lg:text-7xl font-black text-white tracking-tighter leading-[1.05] m-0 mb-4 md:mb-6 drop-shadow-2xl">
+            Custom MERN Stack <br className="hidden sm:block" />
             <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-400 via-blue-500 to-indigo-400">
-              Full Branding Solutions
+              Web Applications
             </span>
-          </h2>
+          </h1>
           
           <p className="text-slate-400 text-[15px] sm:text-lg lg:text-xl leading-relaxed max-w-2xl mx-auto font-medium">
-            We handle everything. From bespoke logo design and complex web engineering, to aggressive social media marketing and SEO strategies.
+            Fast, secure, and highly scalable JavaScript solutions tailored to your unique business logic. Choose a package below to kickstart your project immediately.
           </p>
         </div>
 
+        {/* Pricing Slider (Mobile) & Grid (Desktop) */}
         <div className="relative max-w-7xl mx-auto">
           
           <div 
@@ -142,6 +148,7 @@ export default function FullBrandingService() {
                   <span className="text-slate-500 font-bold text-[12px] md:text-sm mb-1">/project</span>
                 </div>
 
+                {/* Features Section */}
                 <div className="flex flex-col gap-3 md:gap-4 mb-8 md:mb-10 flex-grow">
                   <h2 className="text-[10px] md:text-[11px] font-black text-slate-500 uppercase tracking-widest m-0 mb-1 md:mb-2">
                     Top Features Included
@@ -164,8 +171,9 @@ export default function FullBrandingService() {
                   ))}
                 </div>
 
+                {/* Button Section */}
                 <a
-                  href={`https://wa.me/923347835980?text=Hi%20Rafay!%20I%20am%20interested%20in%20the%20${encodeURIComponent(pkg.name)}%20Full%20Branding%20package%20for%20${pkg.price}.`}
+                  href={`https://wa.me/923347835980?text=Hi%20Rafay!%20I%20am%20interested%20in%20the%20${encodeURIComponent(pkg.name)}%20MERN%20Stack%20package%20for%20${pkg.price}.`}
                   target="_blank"
                   rel="noreferrer"
                   className={`w-full mt-auto flex items-center justify-center gap-2 py-3.5 md:py-4 rounded-xl text-[14px] md:text-[15px] font-bold transition-all duration-300 ${
@@ -180,6 +188,7 @@ export default function FullBrandingService() {
             ))}
           </div>
 
+          {/* Dots Pagination (Visible only on Mobile) */}
           <div className="flex justify-center items-center gap-2 mt-2 md:hidden">
             {packages.map((_, index) => (
               <button
@@ -196,6 +205,7 @@ export default function FullBrandingService() {
           </div>
 
         </div>
+
       </div>
     </div>
   );
