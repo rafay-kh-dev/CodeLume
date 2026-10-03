@@ -12,7 +12,7 @@ import {
 } from "react-icons/si";
 import * as THREE from "three";
 
-// 1. BULLETPROOF GLOWING DUST (Guaranteed to render on all devices)
+// 1. HOLOGRAPHIC DATA CORE (Infinity Knot)
 const ThreeBackground = () => {
   const mountRef = useRef(null);
 
@@ -20,69 +20,80 @@ const ThreeBackground = () => {
     if (!mountRef.current) return;
 
     const scene = new THREE.Scene();
+    scene.fog = new THREE.FogExp2(0x030712, 0.015);
 
+    // Camera positioned to make the core look massive
     const camera = new THREE.PerspectiveCamera(
-      70,
+      60,
       window.innerWidth / window.innerHeight,
       0.1,
       1000,
     );
-    camera.position.z = 30; // Camera ko thora qareeb kiya hai
+    camera.position.z = 50;
 
-    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+    const renderer = new THREE.WebGLRenderer({
+      alpha: true,
+      antialias: true,
+      powerPreference: "high-performance",
+    });
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     mountRef.current.appendChild(renderer.domElement);
 
-    // Glowing Circle Texture (Programmatically generated, no external image needed)
+    const coreGroup = new THREE.Group();
+    scene.add(coreGroup);
+
+    // Glowing Dot Texture for premium look
     const canvas = document.createElement("canvas");
     canvas.width = 32;
     canvas.height = 32;
     const context = canvas.getContext("2d");
     const gradient = context.createRadialGradient(16, 16, 0, 16, 16, 16);
     gradient.addColorStop(0, "rgba(255, 255, 255, 1)");
-    gradient.addColorStop(0.2, "rgba(59, 130, 246, 0.8)"); // Blue glow
+    gradient.addColorStop(0.3, "rgba(14, 165, 233, 0.8)"); // Cyan glow
     gradient.addColorStop(1, "rgba(0, 0, 0, 0)");
     context.fillStyle = gradient;
     context.fillRect(0, 0, 32, 32);
-    const texture = new THREE.CanvasTexture(canvas);
+    const dotTexture = new THREE.CanvasTexture(canvas);
 
-    // Create Particles
-    const particleCount = 1000;
-    const geometry = new THREE.BufferGeometry();
-    const positions = new Float32Array(particleCount * 3);
-
-    for (let i = 0; i < particleCount; i++) {
-      positions[i * 3] = (Math.random() - 0.5) * 120; // x
-      positions[i * 3 + 1] = (Math.random() - 0.5) * 120; // y
-      positions[i * 3 + 2] = (Math.random() - 0.5) * 60; // z
-    }
-
-    geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
-
-    // Standard Material (Bulletproof)
-    const material = new THREE.PointsMaterial({
-      size: 1.2, // Size thora bara rakha hai taake clearly nazar aaye
-      map: texture,
+    // Layer 1: The Outer Cyan Infinity Mesh
+    const outerGeometry = new THREE.TorusKnotGeometry(14, 4, 300, 40);
+    const outerMaterial = new THREE.PointsMaterial({
+      size: 0.6,
+      map: dotTexture,
       transparent: true,
-      opacity: 0.8,
+      opacity: 0.7,
       blending: THREE.AdditiveBlending,
       depthWrite: false,
-      color: "#60a5fa", // Bright blue color
+      color: "#0ea5e9",
     });
+    const outerKnot = new THREE.Points(outerGeometry, outerMaterial);
+    coreGroup.add(outerKnot);
 
-    const particles = new THREE.Points(geometry, material);
-    scene.add(particles);
+    // Layer 2: The Inner Blue Core Mesh
+    const innerGeometry = new THREE.TorusKnotGeometry(14, 4, 150, 20);
+    const innerMaterial = new THREE.PointsMaterial({
+      size: 0.9,
+      map: dotTexture,
+      transparent: true,
+      opacity: 0.5,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+      color: "#3b82f6",
+    });
+    const innerKnot = new THREE.Points(innerGeometry, innerMaterial);
+    innerKnot.scale.set(0.98, 0.98, 0.98); // Slightly smaller to sit inside
+    coreGroup.add(innerKnot);
 
     // Mouse Interaction
-    let mouseX = 0;
-    let mouseY = 0;
+    let targetX = 0;
+    let targetY = 0;
     const windowHalfX = window.innerWidth / 2;
     const windowHalfY = window.innerHeight / 2;
 
     const onPointerMove = (event) => {
-      mouseX = (event.clientX - windowHalfX) * 0.05;
-      mouseY = (event.clientY - windowHalfY) * 0.05;
+      targetX = (event.clientX - windowHalfX) * 0.02;
+      targetY = (event.clientY - windowHalfY) * 0.02;
     };
     window.addEventListener("mousemove", onPointerMove);
 
@@ -91,23 +102,20 @@ const ThreeBackground = () => {
     const animate = () => {
       animationFrameId = requestAnimationFrame(animate);
 
-      // Mouse Parallax Camera Pan
-      camera.position.x += (mouseX - camera.position.x) * 0.02;
-      camera.position.y += (-mouseY - camera.position.y) * 0.02;
+      // Smooth Parallax Camera
+      camera.position.x += (targetX - camera.position.x) * 0.05;
+      camera.position.y += (-targetY - camera.position.y) * 0.05;
       camera.lookAt(scene.position);
 
-      // Slow upward float
-      const positionsArray = particles.geometry.attributes.position.array;
-      for (let i = 0; i < particleCount; i++) {
-        positionsArray[i * 3 + 1] += 0.05; // Y-axis upward speed
+      // Complex Core Rotation
+      outerKnot.rotation.x += 0.001;
+      outerKnot.rotation.y += 0.002;
 
-        // Loop back to bottom
-        if (positionsArray[i * 3 + 1] > 60) {
-          positionsArray[i * 3 + 1] = -60;
-        }
-      }
-      particles.geometry.attributes.position.needsUpdate = true;
-      particles.rotation.y += 0.001; // Gentle global rotation
+      innerKnot.rotation.x -= 0.0015;
+      innerKnot.rotation.y -= 0.0025;
+
+      // Gentle floating effect
+      coreGroup.position.y = Math.sin(Date.now() * 0.001) * 2;
 
       renderer.render(scene, camera);
     };
@@ -126,10 +134,12 @@ const ThreeBackground = () => {
       window.removeEventListener("mousemove", onPointerMove);
       cancelAnimationFrame(animationFrameId);
       if (mountRef.current) mountRef.current.removeChild(renderer.domElement);
-      geometry.dispose();
-      material.dispose();
+      outerGeometry.dispose();
+      innerGeometry.dispose();
+      outerMaterial.dispose();
+      innerMaterial.dispose();
+      dotTexture.dispose();
       renderer.dispose();
-      texture.dispose();
     };
   }, []);
 
@@ -164,21 +174,18 @@ export default function HeroSection() {
           @keyframes marquee { 0% { transform: translate3d(0,0,0); } 100% { transform: translate3d(-50%,0,0); } }
           .animate-marquee { animation: marquee 35s linear infinite; will-change: transform; }
           
-          /* PREMIUM GLOW TEXT */
           .text-glow {
             text-shadow: 0 0 40px rgba(59, 130, 246, 0.4), 0 0 80px rgba(59, 130, 246, 0.2);
           }
         `}
       </style>
 
-      {/* The Bulletproof ThreeJS Layer */}
+      {/* Holographic Data Core Background */}
       <ThreeBackground />
 
-      {/* Vignette Overlay placed PROPERLY over the background */}
+      {/* Heavy Vignette to make text ultra readable */}
       <div className="absolute inset-0 z-[1] pointer-events-none bg-[radial-gradient(circle_at_center,transparent_0%,#030712_85%)]" />
-
-      {/* Ambient Blue Glow Overlays */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-blue-600/15 blur-[120px] pointer-events-none rounded-full transform-gpu z-[2]" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] bg-[#030712]/60 blur-[60px] pointer-events-none z-[1]" />
 
       <div className="flex-1 flex flex-col justify-center items-center w-full relative z-10 px-4 sm:px-6 lg:px-8 pt-20 sm:pt-24 pb-4 my-auto">
         <div className="max-w-5xl mx-auto text-center flex flex-col items-center">
