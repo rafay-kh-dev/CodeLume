@@ -281,13 +281,11 @@ export default function Header() {
             <nav className="hidden lg:flex items-center gap-2 h-full static z-50">
               {/* SERVICES MEGA MENU */}
               {/* Wrapper ko bhi static rakha hai */}
-              <div
-                className="h-full flex items-center static py-2"
-                onMouseEnter={handleServicesEnter}
-                onMouseLeave={handleServicesLeave}
-              >
+              <div className="h-full flex items-center static py-2">
                 <Link
                   to="/services"
+                  onMouseEnter={handleServicesEnter}
+                  onMouseLeave={handleServicesLeave}
                   onClick={() => setServicesOpen(false)}
                   className="flex items-center gap-1.5 px-4 py-2 rounded-full outline-none hover:bg-white/5 transition-colors duration-300 relative z-10"
                 >
@@ -301,6 +299,8 @@ export default function Header() {
 
                 {/* Dropdown relative to <header> */}
                 <div
+                  onMouseEnter={handleServicesEnter}
+                  onMouseLeave={handleServicesLeave}
                   className={`absolute top-full left-1/2 -translate-x-1/2 w-[980px] pt-4 transition-all duration-300 ease-out origin-top transform-gpu will-change-transform mega-menu-content ${servicesOpen ? "opacity-100 translate-y-0 visible scale-100" : "opacity-0 -translate-y-3 invisible scale-95"}`}
                 >
                   <div className="bg-[#050b14]/95 backdrop-blur-xl rounded-3xl shadow-[0_30px_60px_-15px_rgba(0,0,0,0.8),inset_0_0_20px_rgba(255,255,255,0.02)] p-4 relative overflow-hidden">
@@ -360,13 +360,11 @@ export default function Header() {
 
               {/* FREE TOOLS MEGA MENU */}
               {/* Wrapper ko bhi static rakha hai */}
-              <div
-                className="h-full flex items-center static py-2"
-                onMouseEnter={handleToolsEnter}
-                onMouseLeave={handleToolsLeave}
-              >
+              <div className="h-full flex items-center static py-2">
                 <Link
                   to="/tools"
+                  onMouseEnter={handleToolsEnter}
+                  onMouseLeave={handleToolsLeave}
                   onClick={() => setToolsOpen(false)}
                   className="flex items-center gap-1.5 px-4 py-2 rounded-full outline-none hover:bg-white/5 transition-colors duration-300 relative z-10"
                 >
@@ -380,6 +378,8 @@ export default function Header() {
 
                 {/* Dropdown relative to <header> */}
                 <div
+                  onMouseEnter={handleToolsEnter}
+                  onMouseLeave={handleToolsLeave}
                   className={`absolute top-full left-1/2 -translate-x-1/2 w-[800px] pt-4 transition-all duration-300 ease-out origin-top transform-gpu will-change-transform mega-menu-content ${toolsOpen ? "opacity-100 translate-y-0 visible scale-100" : "opacity-0 -translate-y-3 invisible scale-95"}`}
                 >
                   <div className="bg-[#050b14]/95 backdrop-blur-xl rounded-3xl shadow-[0_30px_60px_-15px_rgba(0,0,0,0.8),inset_0_0_20px_rgba(255,255,255,0.02)] p-4 relative overflow-hidden">
