@@ -178,7 +178,7 @@ const toolsData = [
   },
 ];
 
-const standardLinks = ["Tutorials", "Case Studies", "About", "Blogs"];
+const standardLinks = ["Case Studies", "About", "Blogs"];
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -437,7 +437,7 @@ export default function Header() {
                 </div>
               </div>
 
-              {/* Standard Links With Tutorials */}
+              {/* Standard Links */}
               {standardLinks.map((item) => (
                 <Link
                   key={item}
@@ -576,7 +576,7 @@ export default function Header() {
               </div>
             </div>
 
-            {/* Standard Links including Tutorials for Mobile */}
+            {/* Standard Links for Mobile */}
             <div className="space-y-2 mb-10 px-2 flex-none">
               {standardLinks.map((item, idx) => (
                 <Link
