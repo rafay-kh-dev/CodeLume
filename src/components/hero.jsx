@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-import { ChevronRight, Sparkles, Webhook } from "lucide-react";
+import { ChevronRight, Sparkles, Webhook, Activity } from "lucide-react";
 import {
   SiReact,
   SiLaravel,
@@ -12,7 +12,7 @@ import {
 } from "react-icons/si";
 import * as THREE from "three";
 
-// 1. PURE BLUE 3D MAGNETIC WAVE (Clean & Premium)
+// 1. QUANTUM DATA TUNNEL (Draws focus directly to the centre text)
 const ThreeBackground = () => {
   const mountRef = useRef(null);
 
@@ -20,142 +20,100 @@ const ThreeBackground = () => {
     if (!mountRef.current) return;
 
     const scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0x030712, 0.0035);
-    
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 1000);
-    camera.position.set(0, 25, 60);
-    camera.rotation.x = -0.25;
+    scene.fog = new THREE.FogExp2(0x030712, 0.015);
+
+    const camera = new THREE.PerspectiveCamera(
+      85,
+      window.innerWidth / window.innerHeight,
+      0.1,
+      1000,
+    );
+    camera.position.z = 20;
 
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(window.devicePixelRatio);
     mountRef.current.appendChild(renderer.domElement);
 
-    const amountX = 130;
-    const amountY = 130;
-    const separation = 2.2;
-    const numParticles = amountX * amountY;
-
+    // Particle System
+    const particleCount = 1500;
     const geometry = new THREE.BufferGeometry();
-    const positions = new Float32Array(numParticles * 3);
-    const scales = new Float32Array(numParticles);
+    const positions = new Float32Array(particleCount * 3);
+    const colors = new Float32Array(particleCount * 3);
 
-    let count = 0;
-    for (let ix = 0; ix < amountX; ix++) {
-      for (let iy = 0; iy < amountY; iy++) {
-        positions[count * 3] = ix * separation - (amountX * separation) / 2;
-        positions[count * 3 + 1] = 0; 
-        positions[count * 3 + 2] = iy * separation - (amountY * separation) / 2;
-        scales[count] = 1;
-        count++;
-      }
+    const colorDeep = new THREE.Color("#0ea5e9"); // Bright Cyan
+    const colorHigh = new THREE.Color("#3b82f6"); // Primary Blue
+
+    for (let i = 0; i < particleCount; i++) {
+      // Create a tunnel effect (cylindrical distribution)
+      const radius = 10 + Math.random() * 40;
+      const theta = Math.random() * 2 * Math.PI;
+      const z = (Math.random() - 0.5) * 200;
+
+      positions[i * 3] = radius * Math.cos(theta);
+      positions[i * 3 + 1] = radius * Math.sin(theta);
+      positions[i * 3 + 2] = z;
+
+      // Mix colors
+      const mixedColor = colorDeep.clone().lerp(colorHigh, Math.random());
+      colors[i * 3] = mixedColor.r;
+      colors[i * 3 + 1] = mixedColor.g;
+      colors[i * 3 + 2] = mixedColor.b;
     }
 
     geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
-    geometry.setAttribute("scale", new THREE.BufferAttribute(scales, 1));
+    geometry.setAttribute("color", new THREE.BufferAttribute(colors, 3));
 
-    const material = new THREE.ShaderMaterial({
-      uniforms: {
-        colorDeep: { value: new THREE.Color("#0f172a") }, // Dark Navy
-        colorHigh: { value: new THREE.Color("#3b82f6") }, // Premium Blue
-      },
-      vertexShader: `
-        attribute float scale;
-        varying vec3 vColor;
-        uniform vec3 colorDeep;
-        uniform vec3 colorHigh;
-        
-        void main() {
-          float heightFactor = (position.y + 4.0) / 10.0;
-          vColor = mix(colorDeep, colorHigh, clamp(heightFactor, 0.0, 1.0));
-          
-          vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
-          gl_PointSize = scale * ( 90.0 / - mvPosition.z );
-          gl_Position = projectionMatrix * mvPosition;
-        }
-      `,
-      fragmentShader: `
-        varying vec3 vColor;
-        void main() {
-          vec2 xy = gl_PointCoord.xy - vec2(0.5);
-          float ll = length(xy);
-          if (ll > 0.5) discard;
-          
-          float opacity = (0.5 - ll) * 2.0;
-          gl_FragColor = vec4(vColor, opacity * 0.9);
-        }
-      `,
+    // Custom Shader for glowing particles
+    const material = new THREE.PointsMaterial({
+      size: 0.8,
+      vertexColors: true,
       transparent: true,
+      opacity: 0.8,
       blending: THREE.AdditiveBlending,
-      depthWrite: false
+      sizeAttenuation: true,
     });
 
     const particles = new THREE.Points(geometry, material);
     scene.add(particles);
 
+    // Mouse Interaction Variables
     let mouseX = 0;
     let mouseY = 0;
-    let targetX = 0;
-    let targetY = 0;
     const windowHalfX = window.innerWidth / 2;
     const windowHalfY = window.innerHeight / 2;
 
     const onPointerMove = (event) => {
-      mouseX = event.clientX - windowHalfX;
-      mouseY = event.clientY - windowHalfY;
+      mouseX = (event.clientX - windowHalfX) * 0.05;
+      mouseY = (event.clientY - windowHalfY) * 0.05;
     };
     window.addEventListener("mousemove", onPointerMove);
 
-    let particlePhase = 0;
     let animationFrameId;
 
     const animate = () => {
       animationFrameId = requestAnimationFrame(animate);
 
-      targetX = mouseX * 0.03;
-      targetY = mouseY * 0.03;
-      camera.position.x += (targetX - camera.position.x) * 0.05;
-      camera.position.y += (-targetY + 25 - camera.position.y) * 0.05;
+      // Smooth camera pan based on mouse
+      camera.position.x += (mouseX - camera.position.x) * 0.05;
+      camera.position.y += (-mouseY - camera.position.y) * 0.05;
       camera.lookAt(scene.position);
 
-      particlePhase += 0.03;
+      // Move particles towards the camera (Data Stream effect)
       const positionsArray = particles.geometry.attributes.position.array;
-      const scalesArray = particles.geometry.attributes.scale.array;
+      for (let i = 0; i < particleCount; i++) {
+        positionsArray[i * 3 + 2] += 0.4; // Speed of forward movement
 
-      let worldMouseX = (mouseX / windowHalfX) * 100;
-      let worldMouseZ = (mouseY / windowHalfY) * 100 - 30;
-
-      let i = 0;
-      let j = 0;
-
-      for (let ix = 0; ix < amountX; ix++) {
-        for (let iy = 0; iy < amountY; iy++) {
-          let x = positionsArray[i];
-          let z = positionsArray[i + 2];
-
-          let y = Math.sin((ix + particlePhase) * 0.3) * 3.5 +
-                  Math.sin((iy + particlePhase) * 0.5) * 3.5;
-
-          // Magnetic Mouse Lift Physics
-          let dx = x - worldMouseX;
-          let dz = z - worldMouseZ;
-          let distance = Math.sqrt(dx * dx + dz * dz);
-          
-          if (distance < 40) {
-            let lift = (40 - distance) * 0.35; 
-            y += lift;
-          }
-
-          positionsArray[i + 1] = y;
-          scalesArray[j] = (y + 5) * 0.6;
-
-          i += 3;
-          j++;
+        // Reset particle to the back of the tunnel if it passes the camera
+        if (positionsArray[i * 3 + 2] > 30) {
+          positionsArray[i * 3 + 2] = -150;
         }
       }
-
       particles.geometry.attributes.position.needsUpdate = true;
-      particles.geometry.attributes.scale.needsUpdate = true;
+
+      // Slowly rotate the entire tunnel
+      particles.rotation.z -= 0.001;
+
       renderer.render(scene, camera);
     };
 
@@ -179,9 +137,13 @@ const ThreeBackground = () => {
     };
   }, []);
 
-  return <div ref={mountRef} className="absolute inset-0 z-0 pointer-events-none opacity-90" />;
+  return (
+    <div
+      ref={mountRef}
+      className="absolute inset-0 z-0 pointer-events-none opacity-80"
+    />
+  );
 };
-
 
 // 2. MAIN HERO SECTION
 export default function HeroSection() {
@@ -200,7 +162,7 @@ export default function HeroSection() {
     <section className="relative w-full h-dvh max-h-dvh flex flex-col justify-between overflow-hidden bg-[#030712] font-jakarta">
       <style>
         {`
-          @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+          @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap');
           .font-jakarta { font-family: 'Plus Jakarta Sans', sans-serif; }
           ::-webkit-scrollbar { width: 8px; height: 8px; }
           ::-webkit-scrollbar-track { background: #030712; }
@@ -209,113 +171,79 @@ export default function HeroSection() {
           @keyframes marquee { 0% { transform: translate3d(0,0,0); } 100% { transform: translate3d(-50%,0,0); } }
           .animate-marquee { animation: marquee 35s linear infinite; will-change: transform; }
           
-          /* HIGH CONTRAST FOCUS EFFECT FOR TEXT */
-          @keyframes extremeFocus {
-            0%, 100% { 
-              filter: drop-shadow(0 0 12px rgba(59, 130, 246, 0.4)) drop-shadow(0 0 20px rgba(59, 130, 246, 0.2)); 
-            }
-            50% { 
-              filter: drop-shadow(0 0 25px rgba(59, 130, 246, 0.9)) drop-shadow(0 0 60px rgba(59, 130, 246, 0.7)); 
-            }
-          }
-          .animate-extreme-focus {
-            display: inline-block;
-            animation: extremeFocus 3s ease-in-out infinite;
+          /* PREMIUM GLOW TEXT */
+          .text-glow {
+            text-shadow: 0 0 40px rgba(59, 130, 246, 0.4), 0 0 80px rgba(59, 130, 246, 0.2);
           }
 
-          /* BRILLIANT METALLIC SHIMMER */
-          @keyframes textShimmer {
-            0% { background-position: 0% 50%; }
-            100% { background-position: 200% 50%; }
+          /* PULSING DOT */
+          @keyframes ping-slow {
+            75%, 100% { transform: scale(2); opacity: 0; }
           }
-          .text-focus-shimmer {
-            background: linear-gradient(
-              to right, 
-              #ffffff 0%,       /* Pure White */
-              #dbeafe 25%,      /* Very Light Ice Blue */
-              #ffffff 50%,      /* Pure White */
-              #bfdbfe 75%,      /* Light Blue */
-              #ffffff 100%      /* Pure White */
-            );
-            background-size: 200% auto;
-            color: transparent;
-            -webkit-background-clip: text;
-            background-clip: text;
-            animation: textShimmer 4s linear infinite;
-          }
+          .animate-ping-slow { animation: ping-slow 2s cubic-bezier(0, 0, 0.2, 1) infinite; }
         `}
       </style>
 
-      {/* Advanced 3D Magnetic Ocean Wave */}
+      {/* Advanced 3D Tunnel */}
       <ThreeBackground />
 
+      {/* Deep Central Vignette to make text pop instantly */}
+      <div className="absolute inset-0 z-0 pointer-events-none bg-[radial-gradient(circle_at_center,transparent_0%,#030712_80%)]" />
+
       {/* Ambient Blue Glow Overlays */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[300px] bg-blue-600/15 blur-[120px] pointer-events-none rounded-full transform-gpu" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] bg-blue-500/10 blur-[150px] pointer-events-none rounded-full transform-gpu" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-blue-600/20 blur-[120px] pointer-events-none rounded-full transform-gpu" />
 
-      {/* Technical Grid Overlay */}
-      <div
-        className="absolute inset-0 z-0 opacity-[0.08] pointer-events-none transform-gpu"
-        style={{
-          backgroundImage: `radial-gradient(rgba(255, 255, 255, 0.3) 1px, transparent 1px)`,
-          backgroundSize: "40px 40px",
-          maskImage: "radial-gradient(ellipse 60% 60% at 50% 50%, #000 40%, transparent 100%)",
-          WebkitMaskImage: "radial-gradient(ellipse 60% 60% at 50% 50%, #000 40%, transparent 100%)",
-        }}
-      />
+      <div className="flex-1 flex flex-col justify-center items-center w-full relative z-10 px-4 sm:px-6 lg:px-8 pt-20 sm:pt-24 pb-4 my-auto">
+        <div className="max-w-5xl mx-auto text-center flex flex-col items-center">
+          {/* Availability Badge - Screams Professional Agency */}
+          <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-[#1e293b]/60 border border-white/10 backdrop-blur-md mb-8 shadow-lg">
+            <span className="relative flex h-3 w-3">
+              <span className="animate-ping-slow absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+            </span>
+            <span className="text-slate-300 text-xs sm:text-sm font-semibold tracking-wide uppercase">
+              Accepting New Projects
+            </span>
+          </div>
 
-      <div className="flex-1 flex flex-col justify-center items-center w-full relative z-10 px-4 sm:px-6 lg:px-8 pt-16 sm:pt-20 pb-4 my-auto">
-        <div className="max-w-6xl mx-auto text-center flex flex-col items-center">
-          
-          <h2 className="text-[2.4rem] sm:text-5xl lg:text-[4.5rem] font-extrabold tracking-tight leading-[1.12] mb-6 select-none cursor-default flex flex-col items-center">
-            
-            <span className="text-white block mb-2 sm:mb-4">
-              Lead Your Industry With
+          {/* Tighter, Punchier Heading */}
+          <h1 className="text-[2.8rem] sm:text-6xl lg:text-[5.5rem] font-black tracking-tight leading-[1.05] mb-6 select-none cursor-default">
+            <span className="text-white block mb-1">Architecting Bespoke</span>
+            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-blue-500 to-cyan-400 text-glow py-2">
+              Digital Ecosystems.
             </span>
-            
-            {/* The Perfected Focus Element */}
-            <span className="block py-2 animate-extreme-focus">
-              <span className="text-focus-shimmer font-black tracking-wide">
-                Next-Generation
-              </span>
-            </span>
-            
-            <span className="text-white block mt-2 sm:mt-4">
-              Optimised Web Solutions.
-            </span>
-          </h2>
+          </h1>
 
-          <p className="text-base sm:text-lg lg:text-xl text-slate-400 mb-10 leading-relaxed max-w-3xl font-medium tracking-wide pointer-events-none">
-            We engineer lightning-fast digital experiences designed to boost conversion rates, scale customer acquisition, and maximise revenue.
+          <p className="text-base sm:text-lg lg:text-xl text-slate-400 mb-10 leading-relaxed max-w-2xl font-medium tracking-wide pointer-events-none">
+            Stop settling for templates. We engineer high-performance MERN stack
+            platforms and scalable backends designed to dominate your market.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-5 w-full sm:w-auto relative z-20">
             <Link
               to="/start-project"
-              className="group relative flex items-center justify-center gap-2 w-full sm:w-auto px-10 py-4 rounded-xl bg-gradient-to-b from-blue-500 to-blue-700 text-white shadow-[0_0_35px_-8px_rgba(37,99,235,0.6)] hover:shadow-[0_0_50px_-10px_rgba(37,99,235,0.8)] border border-blue-400/30 transition-all duration-300 active:scale-[0.98] outline-none overflow-hidden transform-gpu"
+              className="group relative flex items-center justify-center gap-2 w-full sm:w-auto px-10 py-4 rounded-xl bg-gradient-to-b from-blue-500 to-blue-700 text-white shadow-[0_0_40px_-8px_rgba(37,99,235,0.7)] hover:shadow-[0_0_60px_-10px_rgba(37,99,235,0.9)] border border-blue-400/40 transition-all duration-300 active:scale-[0.98] outline-none overflow-hidden transform-gpu font-bold tracking-wide"
             >
               <Sparkles className="w-5 h-5 text-blue-100 relative z-10" />
-              <span className="text-[16px] font-bold relative z-10 tracking-wide text-white">
-                Initialise Project
+              <span className="text-[16px] relative z-10">
+                Deploy Your Vision
               </span>
             </Link>
-            
+
             <Link
               to="/services"
-              className="group flex items-center justify-center gap-2 w-full sm:w-auto px-10 py-4 rounded-xl bg-[#ffffff08] hover:bg-[#ffffff12] text-slate-300 hover:text-white shadow-lg border border-white/10 transition-all duration-300 active:scale-[0.98] backdrop-blur-xl outline-none transform-gpu"
+              className="group flex items-center justify-center gap-2 w-full sm:w-auto px-10 py-4 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white border border-white/10 transition-all duration-300 active:scale-[0.98] backdrop-blur-md outline-none font-semibold tracking-wide"
             >
-              <span className="text-[16px] font-semibold tracking-wide">
-                View All Services
-              </span>
-              <ChevronRight className="w-5 h-5 transition-transform group-hover:translate-x-1 text-slate-400 group-hover:text-white transform-gpu" />
+              <span>Explore Services</span>
+              <ChevronRight className="w-5 h-5 transition-transform group-hover:translate-x-1 text-slate-400 group-hover:text-white" />
             </Link>
           </div>
-
         </div>
       </div>
 
+      {/* Marquee Footer (Unchanged logic, just cleaner styling) */}
       <div
-        className="w-full h-14 bg-[#030712]/90 backdrop-blur-xl overflow-hidden flex items-center z-30 border-t border-white/[0.04] shrink-0 transform-gpu relative z-30"
+        className="w-full h-14 bg-black/40 backdrop-blur-xl overflow-hidden flex items-center z-30 border-t border-white/[0.04] shrink-0 relative z-30"
         style={{
           maskImage:
             "linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%)",
@@ -325,16 +253,13 @@ export default function HeroSection() {
       >
         <div className="flex whitespace-nowrap animate-marquee items-center h-full">
           {[...Array(2)].map((_, i) => (
-            <div
-              key={i}
-              className="flex items-center gap-12 sm:gap-16 px-8"
-            >
+            <div key={i} className="flex items-center gap-12 sm:gap-16 px-8">
               {techStack.map((tech, index) => {
                 const IconComponent = tech.Icon;
                 return (
                   <div
                     key={index}
-                    className="flex items-center gap-2.5 text-slate-400 hover:text-blue-400 transition-colors duration-300"
+                    className="flex items-center gap-2.5 text-slate-500 hover:text-blue-400 transition-colors duration-300"
                   >
                     <IconComponent className="w-4 h-4 fill-current" />
                     <span className="text-[11px] font-bold tracking-[0.18em] uppercase">
