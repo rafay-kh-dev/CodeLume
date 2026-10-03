@@ -1,5 +1,7 @@
 # CodeLume
 
+CodeLume is a premium, high-performance digital agency platform engineered for high-ticket corporate clients. The architecture focuses on delivering a luxury user experience, combining zero-latency routing with advanced WebGL graphics and buttery-smooth page transitions.
+
 ## Deploying the frontend and backend
 
 The Vercel project deploys the React frontend only. Deploy `codelume-backend`
@@ -12,19 +14,16 @@ For local development, copy `.env.example` to `.env` and use:
 
 ```text
 VITE_API_URL=http://localhost:5000
-```
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-Currently, two official plugins are available:
+# Clone the repository
+git clone [https://github.com/rafay-kh-dev/CodeLume.git](https://github.com/rafay-kh-dev/CodeLume.git)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+# Navigate to the project directory
+cd CodeLume
 
-## React Compiler
+# Install dependencies
+npm install
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+# Start the development server
+npm run dev
