@@ -178,7 +178,7 @@ const toolsData = [
   },
 ];
 
-const standardLinks = ["Tutorials", "Case Studies", "About", "Blogs"];
+const standardLinks = ["Case Studies", "About", "Blogs"];
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -436,19 +436,6 @@ export default function Header() {
                   </div>
                 </div>
               </div>
-
-              {/* Standard Links With Tutorials */}
-              {standardLinks.map((item) => (
-                <Link
-                  key={item}
-                  to={`/${item.toLowerCase().replace(/ /g, "-")}`}
-                  className="px-4 py-2 rounded-full outline-none hover:bg-white/5 transition-colors duration-300"
-                >
-                  <h2 className="m-0 text-slate-300 hover:text-white text-[15px] font-semibold transition-colors whitespace-nowrap">
-                    {item}
-                  </h2>
-                </Link>
-              ))}
             </nav>
 
             <div className="flex items-center gap-4 relative z-50 shrink-0">
@@ -575,58 +562,30 @@ export default function Header() {
                 })}
               </div>
             </div>
-
-            {/* Standard Links including Tutorials for Mobile */}
-            <div className="space-y-2 mb-10 px-2 flex-none">
-              {standardLinks.map((item, idx) => (
-                <Link
-                  key={item}
-                  to={`/${item.toLowerCase().replace(/ /g, "-")}`}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="block py-2 outline-none group transform-gpu will-change-transform"
-                  style={{
-                    transitionDelay: mobileMenuOpen
-                      ? `${(idx + servicesData.length + toolsData.length) * 40}ms`
-                      : "0ms",
-                    transform: mobileMenuOpen
-                      ? "translateY(0)"
-                      : "translateY(15px)",
-                    opacity: mobileMenuOpen ? 1 : 0,
-                    transition: "all 0.4s ease-out",
-                  }}
-                >
-                  <h2 className="m-0 text-[28px] font-bold text-slate-300 group-hover:text-white transition-colors tracking-tight">
-                    {item}
-                  </h2>
-                </Link>
-              ))}
-            </div>
-
-            <div
-              className="mt-auto pt-4 flex-none transform-gpu will-change-transform"
-              style={{
-                transitionDelay: mobileMenuOpen ? "500ms" : "0ms",
-                opacity: mobileMenuOpen ? 1 : 0,
-                transform: mobileMenuOpen
-                  ? "translateY(0)"
-                  : "translateY(15px)",
-                transition: "all 0.4s ease-out",
-              }}
-            >
-              <Link
-                to="/start-project"
-                onClick={() => setMobileMenuOpen(false)}
-                className="relative flex items-center justify-center gap-2 w-full px-6 py-5 rounded-2xl bg-linear-to-r from-blue-600 to-indigo-600 text-white shadow-[0_15px_30px_rgba(37,99,235,0.3)] transition-all active:scale-[0.98] overflow-hidden outline-none transform-gpu"
-              >
-                <div className="absolute top-0 left-0 w-full h-full bg-linear-to-r from-transparent via-white/20 to-transparent animate-shimmer pointer-events-none" />
-                <Sparkles className="w-5 h-5 text-blue-200 relative z-10" />
-                <h2 className="m-0 text-inherit text-[18px] font-bold relative z-10 tracking-wide">
-                  Start a Project
-                </h2>
-              </Link>
-            </div>
-            <div className="h-8 flex-none" />
           </div>
+
+          <div
+            className="mt-auto pt-4 flex-none transform-gpu will-change-transform"
+            style={{
+              transitionDelay: mobileMenuOpen ? "500ms" : "0ms",
+              opacity: mobileMenuOpen ? 1 : 0,
+              transform: mobileMenuOpen ? "translateY(0)" : "translateY(15px)",
+              transition: "all 0.4s ease-out",
+            }}
+          >
+            <Link
+              to="/start-project"
+              onClick={() => setMobileMenuOpen(false)}
+              className="relative flex items-center justify-center gap-2 w-full px-6 py-5 rounded-2xl bg-linear-to-r from-blue-600 to-indigo-600 text-white shadow-[0_15px_30px_rgba(37,99,235,0.3)] transition-all active:scale-[0.98] overflow-hidden outline-none transform-gpu"
+            >
+              <div className="absolute top-0 left-0 w-full h-full bg-linear-to-r from-transparent via-white/20 to-transparent animate-shimmer pointer-events-none" />
+              <Sparkles className="w-5 h-5 text-blue-200 relative z-10" />
+              <h2 className="m-0 text-inherit text-[18px] font-bold relative z-10 tracking-wide">
+                Start a Project
+              </h2>
+            </Link>
+          </div>
+          <div className="h-8 flex-none" />
         </div>
       </div>
     </>
