@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { ChevronRight, Sparkles, Webhook } from "lucide-react";
 import {
@@ -10,63 +10,141 @@ import {
   SiWebflow,
   SiNodedotjs,
 } from "react-icons/si";
+import * as THREE from "three";
 
-// 1. PREMIUM SILICON VALLEY GRID & INTERACTIVE SPOTLIGHT (No Three.js needed)
-const PremiumBackground = () => {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+// 1. HOLOGRAPHIC DATA CORE (Infinity Knot)
+const ThreeBackground = () => {
+  const mountRef = useRef(null);
 
   useEffect(() => {
-    const handleMouseMove = (e) => {
-      setMousePosition({
-        x: e.clientX,
-        y: e.clientY,
-      });
+    if (!mountRef.current) return;
+
+    const scene = new THREE.Scene();
+    scene.fog = new THREE.FogExp2(0x030712, 0.015);
+
+    // Camera positioned to make the core look massive
+    const camera = new THREE.PerspectiveCamera(
+      60,
+      window.innerWidth / window.innerHeight,
+      0.1,
+      1000,
+    );
+    camera.position.z = 50;
+
+    const renderer = new THREE.WebGLRenderer({
+      alpha: true,
+      antialias: true,
+      powerPreference: "high-performance",
+    });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    mountRef.current.appendChild(renderer.domElement);
+
+    const coreGroup = new THREE.Group();
+    scene.add(coreGroup);
+
+    // Glowing Dot Texture for premium look
+    const canvas = document.createElement("canvas");
+    canvas.width = 32;
+    canvas.height = 32;
+    const context = canvas.getContext("2d");
+    const gradient = context.createRadialGradient(16, 16, 0, 16, 16, 16);
+    gradient.addColorStop(0, "rgba(255, 255, 255, 1)");
+    gradient.addColorStop(0.3, "rgba(14, 165, 233, 0.8)"); // Cyan glow
+    gradient.addColorStop(1, "rgba(0, 0, 0, 0)");
+    context.fillStyle = gradient;
+    context.fillRect(0, 0, 32, 32);
+    const dotTexture = new THREE.CanvasTexture(canvas);
+
+    // Layer 1: The Outer Cyan Infinity Mesh
+    const outerGeometry = new THREE.TorusKnotGeometry(14, 4, 300, 40);
+    const outerMaterial = new THREE.PointsMaterial({
+      size: 0.6,
+      map: dotTexture,
+      transparent: true,
+      opacity: 0.7,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+      color: "#0ea5e9",
+    });
+    const outerKnot = new THREE.Points(outerGeometry, outerMaterial);
+    coreGroup.add(outerKnot);
+
+    // Layer 2: The Inner Blue Core Mesh
+    const innerGeometry = new THREE.TorusKnotGeometry(14, 4, 150, 20);
+    const innerMaterial = new THREE.PointsMaterial({
+      size: 0.9,
+      map: dotTexture,
+      transparent: true,
+      opacity: 0.5,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+      color: "#3b82f6",
+    });
+    const innerKnot = new THREE.Points(innerGeometry, innerMaterial);
+    innerKnot.scale.set(0.98, 0.98, 0.98); // Slightly smaller to sit inside
+    coreGroup.add(innerKnot);
+
+    // Mouse Interaction
+    let targetX = 0;
+    let targetY = 0;
+    const windowHalfX = window.innerWidth / 2;
+    const windowHalfY = window.innerHeight / 2;
+
+    const onPointerMove = (event) => {
+      targetX = (event.clientX - windowHalfX) * 0.02;
+      targetY = (event.clientY - windowHalfY) * 0.02;
+    };
+    window.addEventListener("mousemove", onPointerMove);
+
+    let animationFrameId;
+
+    const animate = () => {
+      animationFrameId = requestAnimationFrame(animate);
+
+      // Smooth Parallax Camera
+      camera.position.x += (targetX - camera.position.x) * 0.05;
+      camera.position.y += (-targetY - camera.position.y) * 0.05;
+      camera.lookAt(scene.position);
+
+      // Complex Core Rotation
+      outerKnot.rotation.x += 0.001;
+      outerKnot.rotation.y += 0.002;
+
+      innerKnot.rotation.x -= 0.0015;
+      innerKnot.rotation.y -= 0.0025;
+
+      // Gentle floating effect
+      coreGroup.position.y = Math.sin(Date.now() * 0.001) * 2;
+
+      renderer.render(scene, camera);
     };
 
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
+    animate();
+
+    const onWindowResize = () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    };
+    window.addEventListener("resize", onWindowResize);
+
+    return () => {
+      window.removeEventListener("resize", onWindowResize);
+      window.removeEventListener("mousemove", onPointerMove);
+      cancelAnimationFrame(animationFrameId);
+      if (mountRef.current) mountRef.current.removeChild(renderer.domElement);
+      outerGeometry.dispose();
+      innerGeometry.dispose();
+      outerMaterial.dispose();
+      innerMaterial.dispose();
+      dotTexture.dispose();
+      renderer.dispose();
+    };
   }, []);
 
   return (
-    <div className="absolute inset-0 z-0 overflow-hidden bg-[#030712]">
-      {/* Abstract Aurora Glows */}
-      <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] rounded-full bg-blue-600/20 blur-[120px] animate-pulse pointer-events-none" />
-      <div
-        className="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] rounded-full bg-cyan-600/15 blur-[120px] animate-pulse pointer-events-none"
-        style={{ animationDelay: "2s" }}
-      />
-
-      {/* Architectural Tech Grid */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          backgroundImage: `
-            linear-gradient(to right, rgba(255,255,255,0.04) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(255,255,255,0.04) 1px, transparent 1px)
-          `,
-          backgroundSize: "48px 48px",
-          maskImage:
-            "radial-gradient(ellipse 90% 90% at 50% 50%, black 15%, transparent 80%)",
-          WebkitMaskImage:
-            "radial-gradient(ellipse 90% 90% at 50% 50%, black 15%, transparent 80%)",
-        }}
-      />
-
-      {/* Dynamic Mouse Spotlight */}
-      <div
-        className="absolute pointer-events-none transition-transform duration-75 ease-out will-change-transform"
-        style={{
-          top: 0,
-          left: 0,
-          transform: `translate(${mousePosition.x - 400}px, ${mousePosition.y - 400}px)`,
-          width: 800,
-          height: 800,
-          background:
-            "radial-gradient(circle, rgba(59,130,246,0.12) 0%, transparent 60%)",
-          borderRadius: "50%",
-        }}
-      />
-    </div>
+    <div ref={mountRef} className="absolute inset-0 z-0 pointer-events-none" />
   );
 };
 
@@ -102,12 +180,15 @@ export default function HeroSection() {
         `}
       </style>
 
-      {/* New Interactive Background */}
-      <PremiumBackground />
+      {/* Holographic Data Core Background */}
+      <ThreeBackground />
 
-      {/* Main Content Area */}
-      <div className="flex-1 flex flex-col justify-center items-center w-full relative z-10 px-4 sm:px-6 lg:px-8 pt-20 sm:pt-24 pb-4 my-auto pointer-events-none">
-        <div className="max-w-5xl mx-auto text-center flex flex-col items-center pointer-events-auto">
+      {/* Heavy Vignette to make text ultra readable */}
+      <div className="absolute inset-0 z-[1] pointer-events-none bg-[radial-gradient(circle_at_center,transparent_0%,#030712_85%)]" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] bg-[#030712]/60 blur-[60px] pointer-events-none z-[1]" />
+
+      <div className="flex-1 flex flex-col justify-center items-center w-full relative z-10 px-4 sm:px-6 lg:px-8 pt-20 sm:pt-24 pb-4 my-auto">
+        <div className="max-w-5xl mx-auto text-center flex flex-col items-center">
           <h1 className="text-[2.8rem] sm:text-6xl lg:text-[5.5rem] font-black tracking-tight leading-[1.05] mb-6 select-none cursor-default">
             <span className="text-white block mb-1">Architecting Bespoke</span>
             <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-blue-500 to-cyan-400 text-glow py-2">
@@ -115,7 +196,7 @@ export default function HeroSection() {
             </span>
           </h1>
 
-          <p className="text-base sm:text-lg lg:text-xl text-slate-400 mb-10 leading-relaxed max-w-2xl font-medium tracking-wide">
+          <p className="text-base sm:text-lg lg:text-xl text-slate-400 mb-10 leading-relaxed max-w-2xl font-medium tracking-wide pointer-events-none">
             Stop settling for templates. We engineer high-performance MERN stack
             platforms and scalable backends designed to dominate your market.
           </p>
@@ -142,9 +223,8 @@ export default function HeroSection() {
         </div>
       </div>
 
-      {/* Infinite Scrolling Tech Stack Marquee */}
       <div
-        className="w-full h-14 bg-black/40 backdrop-blur-xl overflow-hidden flex items-center z-30 border-t border-white/[0.04] shrink-0 relative"
+        className="w-full h-14 bg-black/40 backdrop-blur-xl overflow-hidden flex items-center z-30 border-t border-white/[0.04] shrink-0 relative z-30"
         style={{
           maskImage:
             "linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%)",
