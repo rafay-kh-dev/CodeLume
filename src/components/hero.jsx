@@ -12,7 +12,7 @@ import {
 } from "react-icons/si";
 import * as THREE from "three";
 
-// 1. ULTRA-STABLE TECH DUST (Zero Glitch, High-End Agency Feel)
+// 1. BULLETPROOF GLOWING DUST (Guaranteed to render on all devices)
 const ThreeBackground = () => {
   const mountRef = useRef(null);
 
@@ -20,7 +20,6 @@ const ThreeBackground = () => {
     if (!mountRef.current) return;
 
     const scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0x030712, 0.012);
 
     const camera = new THREE.PerspectiveCamera(
       70,
@@ -28,112 +27,87 @@ const ThreeBackground = () => {
       0.1,
       1000,
     );
-    camera.position.z = 40;
+    camera.position.z = 30; // Camera ko thora qareeb kiya hai
 
-    const renderer = new THREE.WebGLRenderer({
-      alpha: true,
-      antialias: true,
-      powerPreference: "high-performance",
-    });
+    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setPixelRatio(window.devicePixelRatio);
     mountRef.current.appendChild(renderer.domElement);
 
-    // Particle Setup (Clean, glowing data points)
-    const particleCount = 1200;
+    // Glowing Circle Texture (Programmatically generated, no external image needed)
+    const canvas = document.createElement("canvas");
+    canvas.width = 32;
+    canvas.height = 32;
+    const context = canvas.getContext("2d");
+    const gradient = context.createRadialGradient(16, 16, 0, 16, 16, 16);
+    gradient.addColorStop(0, "rgba(255, 255, 255, 1)");
+    gradient.addColorStop(0.2, "rgba(59, 130, 246, 0.8)"); // Blue glow
+    gradient.addColorStop(1, "rgba(0, 0, 0, 0)");
+    context.fillStyle = gradient;
+    context.fillRect(0, 0, 32, 32);
+    const texture = new THREE.CanvasTexture(canvas);
+
+    // Create Particles
+    const particleCount = 1000;
     const geometry = new THREE.BufferGeometry();
     const positions = new Float32Array(particleCount * 3);
-    const opacities = new Float32Array(particleCount);
 
     for (let i = 0; i < particleCount; i++) {
-      positions[i * 3] = (Math.random() - 0.5) * 150; // x
-      positions[i * 3 + 1] = (Math.random() - 0.5) * 150; // y
-      positions[i * 3 + 2] = (Math.random() - 0.5) * 100; // z
-
-      // Random starting opacity for twinkling effect
-      opacities[i] = Math.random();
+      positions[i * 3] = (Math.random() - 0.5) * 120; // x
+      positions[i * 3 + 1] = (Math.random() - 0.5) * 120; // y
+      positions[i * 3 + 2] = (Math.random() - 0.5) * 60; // z
     }
 
     geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
-    geometry.setAttribute("aOpacity", new THREE.BufferAttribute(opacities, 1));
 
-    // Custom Shader for Twinkling Premium Stars/Data
-    const material = new THREE.ShaderMaterial({
-      uniforms: {
-        time: { value: 0 },
-        colorBase: { value: new THREE.Color("#3b82f6") },
-      },
-      vertexShader: `
-        attribute float aOpacity;
-        varying float vOpacity;
-        void main() {
-          vOpacity = aOpacity;
-          vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
-          gl_PointSize = (12.0 / -mvPosition.z);
-          gl_Position = projectionMatrix * mvPosition;
-        }
-      `,
-      fragmentShader: `
-        uniform vec3 colorBase;
-        uniform float time;
-        varying float vOpacity;
-        void main() {
-          // Circular particle shape
-          float dist = length(gl_PointCoord - vec2(0.5));
-          if (dist > 0.5) discard;
-          
-          // Twinkle math
-          float twinkle = sin(time * 2.0 + vOpacity * 10.0) * 0.5 + 0.5;
-          float finalOpacity = mix(0.1, 0.8, twinkle) * (1.0 - (dist * 2.0));
-          
-          gl_FragColor = vec4(colorBase, finalOpacity);
-        }
-      `,
+    // Standard Material (Bulletproof)
+    const material = new THREE.PointsMaterial({
+      size: 1.2, // Size thora bara rakha hai taake clearly nazar aaye
+      map: texture,
       transparent: true,
+      opacity: 0.8,
       blending: THREE.AdditiveBlending,
       depthWrite: false,
+      color: "#60a5fa", // Bright blue color
     });
 
     const particles = new THREE.Points(geometry, material);
     scene.add(particles);
 
-    // Smooth Mouse Interaction
-    let targetX = 0;
-    let targetY = 0;
+    // Mouse Interaction
+    let mouseX = 0;
+    let mouseY = 0;
     const windowHalfX = window.innerWidth / 2;
     const windowHalfY = window.innerHeight / 2;
 
     const onPointerMove = (event) => {
-      targetX = (event.clientX - windowHalfX) * 0.05;
-      targetY = (event.clientY - windowHalfY) * 0.05;
+      mouseX = (event.clientX - windowHalfX) * 0.05;
+      mouseY = (event.clientY - windowHalfY) * 0.05;
     };
     window.addEventListener("mousemove", onPointerMove);
 
     let animationFrameId;
-    let clock = new THREE.Clock();
 
     const animate = () => {
       animationFrameId = requestAnimationFrame(animate);
 
-      material.uniforms.time.value = clock.getElapsedTime();
-
       // Mouse Parallax Camera Pan
-      camera.position.x += (targetX - camera.position.x) * 0.02;
-      camera.position.y += (-targetY - camera.position.y) * 0.02;
+      camera.position.x += (mouseX - camera.position.x) * 0.02;
+      camera.position.y += (-mouseY - camera.position.y) * 0.02;
       camera.lookAt(scene.position);
 
       // Slow upward float
       const positionsArray = particles.geometry.attributes.position.array;
       for (let i = 0; i < particleCount; i++) {
-        positionsArray[i * 3 + 1] += 0.03;
+        positionsArray[i * 3 + 1] += 0.05; // Y-axis upward speed
 
-        // Loop particles back to bottom
-        if (positionsArray[i * 3 + 1] > 75) {
-          positionsArray[i * 3 + 1] = -75;
+        // Loop back to bottom
+        if (positionsArray[i * 3 + 1] > 60) {
+          positionsArray[i * 3 + 1] = -60;
         }
       }
       particles.geometry.attributes.position.needsUpdate = true;
-      particles.rotation.y += 0.0005; // Gentle global rotation
+      particles.rotation.y += 0.001; // Gentle global rotation
 
       renderer.render(scene, camera);
     };
@@ -155,14 +129,12 @@ const ThreeBackground = () => {
       geometry.dispose();
       material.dispose();
       renderer.dispose();
+      texture.dispose();
     };
   }, []);
 
   return (
-    <div
-      ref={mountRef}
-      className="absolute inset-0 z-0 pointer-events-none opacity-80"
-    />
+    <div ref={mountRef} className="absolute inset-0 z-0 pointer-events-none" />
   );
 };
 
@@ -199,14 +171,14 @@ export default function HeroSection() {
         `}
       </style>
 
-      {/* Ultra-Stable Tech Dust */}
+      {/* The Bulletproof ThreeJS Layer */}
       <ThreeBackground />
 
-      {/* Deep Central Vignette to ensure text readability */}
-      <div className="absolute inset-0 z-0 pointer-events-none bg-[radial-gradient(circle_at_center,transparent_0%,#030712_85%)]" />
+      {/* Vignette Overlay placed PROPERLY over the background */}
+      <div className="absolute inset-0 z-[1] pointer-events-none bg-[radial-gradient(circle_at_center,transparent_0%,#030712_85%)]" />
 
-      {/* Subtle Ambient Blue Glow Overlays */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-blue-600/15 blur-[120px] pointer-events-none rounded-full transform-gpu" />
+      {/* Ambient Blue Glow Overlays */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-blue-600/15 blur-[120px] pointer-events-none rounded-full transform-gpu z-[2]" />
 
       <div className="flex-1 flex flex-col justify-center items-center w-full relative z-10 px-4 sm:px-6 lg:px-8 pt-20 sm:pt-24 pb-4 my-auto">
         <div className="max-w-5xl mx-auto text-center flex flex-col items-center">
