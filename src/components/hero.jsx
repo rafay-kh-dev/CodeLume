@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-import { ChevronRight, Sparkles, Webhook } from "lucide-react";
+import { ChevronRight, Sparkles, Webhook, Activity } from "lucide-react";
 import {
   SiReact,
   SiLaravel,
@@ -12,7 +12,7 @@ import {
 } from "react-icons/si";
 import * as THREE from "three";
 
-// 1. BULLETPROOF GLOWING DUST (Guaranteed to render on all devices)
+// 1. QUANTUM DATA TUNNEL (Draws focus directly to the centre text)
 const ThreeBackground = () => {
   const mountRef = useRef(null);
 
@@ -20,61 +20,64 @@ const ThreeBackground = () => {
     if (!mountRef.current) return;
 
     const scene = new THREE.Scene();
+    scene.fog = new THREE.FogExp2(0x030712, 0.015);
 
     const camera = new THREE.PerspectiveCamera(
-      70,
+      85,
       window.innerWidth / window.innerHeight,
       0.1,
       1000,
     );
-    camera.position.z = 30; // Camera ko thora qareeb kiya hai
+    camera.position.z = 20;
 
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(window.devicePixelRatio);
     mountRef.current.appendChild(renderer.domElement);
 
-    // Glowing Circle Texture (Programmatically generated, no external image needed)
-    const canvas = document.createElement("canvas");
-    canvas.width = 32;
-    canvas.height = 32;
-    const context = canvas.getContext("2d");
-    const gradient = context.createRadialGradient(16, 16, 0, 16, 16, 16);
-    gradient.addColorStop(0, "rgba(255, 255, 255, 1)");
-    gradient.addColorStop(0.2, "rgba(59, 130, 246, 0.8)"); // Blue glow
-    gradient.addColorStop(1, "rgba(0, 0, 0, 0)");
-    context.fillStyle = gradient;
-    context.fillRect(0, 0, 32, 32);
-    const texture = new THREE.CanvasTexture(canvas);
-
-    // Create Particles
-    const particleCount = 1000;
+    // Particle System
+    const particleCount = 1500;
     const geometry = new THREE.BufferGeometry();
     const positions = new Float32Array(particleCount * 3);
+    const colors = new Float32Array(particleCount * 3);
+
+    const colorDeep = new THREE.Color("#0ea5e9"); // Bright Cyan
+    const colorHigh = new THREE.Color("#3b82f6"); // Primary Blue
 
     for (let i = 0; i < particleCount; i++) {
-      positions[i * 3] = (Math.random() - 0.5) * 120; // x
-      positions[i * 3 + 1] = (Math.random() - 0.5) * 120; // y
-      positions[i * 3 + 2] = (Math.random() - 0.5) * 60; // z
+      // Create a tunnel effect (cylindrical distribution)
+      const radius = 10 + Math.random() * 40;
+      const theta = Math.random() * 2 * Math.PI;
+      const z = (Math.random() - 0.5) * 200;
+
+      positions[i * 3] = radius * Math.cos(theta);
+      positions[i * 3 + 1] = radius * Math.sin(theta);
+      positions[i * 3 + 2] = z;
+
+      // Mix colors
+      const mixedColor = colorDeep.clone().lerp(colorHigh, Math.random());
+      colors[i * 3] = mixedColor.r;
+      colors[i * 3 + 1] = mixedColor.g;
+      colors[i * 3 + 2] = mixedColor.b;
     }
 
     geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+    geometry.setAttribute("color", new THREE.BufferAttribute(colors, 3));
 
-    // Standard Material (Bulletproof)
+    // Custom Shader for glowing particles
     const material = new THREE.PointsMaterial({
-      size: 1.2, // Size thora bara rakha hai taake clearly nazar aaye
-      map: texture,
+      size: 0.8,
+      vertexColors: true,
       transparent: true,
       opacity: 0.8,
       blending: THREE.AdditiveBlending,
-      depthWrite: false,
-      color: "#60a5fa", // Bright blue color
+      sizeAttenuation: true,
     });
 
     const particles = new THREE.Points(geometry, material);
     scene.add(particles);
 
-    // Mouse Interaction
+    // Mouse Interaction Variables
     let mouseX = 0;
     let mouseY = 0;
     const windowHalfX = window.innerWidth / 2;
@@ -91,23 +94,25 @@ const ThreeBackground = () => {
     const animate = () => {
       animationFrameId = requestAnimationFrame(animate);
 
-      // Mouse Parallax Camera Pan
-      camera.position.x += (mouseX - camera.position.x) * 0.02;
-      camera.position.y += (-mouseY - camera.position.y) * 0.02;
+      // Smooth camera pan based on mouse
+      camera.position.x += (mouseX - camera.position.x) * 0.05;
+      camera.position.y += (-mouseY - camera.position.y) * 0.05;
       camera.lookAt(scene.position);
 
-      // Slow upward float
+      // Move particles towards the camera (Data Stream effect)
       const positionsArray = particles.geometry.attributes.position.array;
       for (let i = 0; i < particleCount; i++) {
-        positionsArray[i * 3 + 1] += 0.05; // Y-axis upward speed
+        positionsArray[i * 3 + 2] += 0.4; // Speed of forward movement
 
-        // Loop back to bottom
-        if (positionsArray[i * 3 + 1] > 60) {
-          positionsArray[i * 3 + 1] = -60;
+        // Reset particle to the back of the tunnel if it passes the camera
+        if (positionsArray[i * 3 + 2] > 30) {
+          positionsArray[i * 3 + 2] = -150;
         }
       }
       particles.geometry.attributes.position.needsUpdate = true;
-      particles.rotation.y += 0.001; // Gentle global rotation
+
+      // Slowly rotate the entire tunnel
+      particles.rotation.z -= 0.001;
 
       renderer.render(scene, camera);
     };
@@ -129,12 +134,14 @@ const ThreeBackground = () => {
       geometry.dispose();
       material.dispose();
       renderer.dispose();
-      texture.dispose();
     };
   }, []);
 
   return (
-    <div ref={mountRef} className="absolute inset-0 z-0 pointer-events-none" />
+    <div
+      ref={mountRef}
+      className="absolute inset-0 z-0 pointer-events-none opacity-80"
+    />
   );
 };
 
@@ -171,17 +178,18 @@ export default function HeroSection() {
         `}
       </style>
 
-      {/* The Bulletproof ThreeJS Layer */}
+      {/* Advanced 3D Tunnel */}
       <ThreeBackground />
 
-      {/* Vignette Overlay placed PROPERLY over the background */}
-      <div className="absolute inset-0 z-[1] pointer-events-none bg-[radial-gradient(circle_at_center,transparent_0%,#030712_85%)]" />
+      {/* Deep Central Vignette to make text pop instantly */}
+      <div className="absolute inset-0 z-0 pointer-events-none bg-[radial-gradient(circle_at_center,transparent_0%,#030712_80%)]" />
 
       {/* Ambient Blue Glow Overlays */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-blue-600/15 blur-[120px] pointer-events-none rounded-full transform-gpu z-[2]" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-blue-600/20 blur-[120px] pointer-events-none rounded-full transform-gpu" />
 
       <div className="flex-1 flex flex-col justify-center items-center w-full relative z-10 px-4 sm:px-6 lg:px-8 pt-20 sm:pt-24 pb-4 my-auto">
         <div className="max-w-5xl mx-auto text-center flex flex-col items-center">
+          {/* Tighter, Punchier Heading */}
           <h1 className="text-[2.8rem] sm:text-6xl lg:text-[5.5rem] font-black tracking-tight leading-[1.05] mb-6 select-none cursor-default">
             <span className="text-white block mb-1">Architecting Bespoke</span>
             <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-blue-500 to-cyan-400 text-glow py-2">
@@ -216,6 +224,7 @@ export default function HeroSection() {
         </div>
       </div>
 
+      {/* Marquee Footer (Unchanged logic, just cleaner styling) */}
       <div
         className="w-full h-14 bg-black/40 backdrop-blur-xl overflow-hidden flex items-center z-30 border-t border-white/[0.04] shrink-0 relative z-30"
         style={{
