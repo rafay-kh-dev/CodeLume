@@ -175,12 +175,6 @@ export default function HeroSection() {
           .text-glow {
             text-shadow: 0 0 40px rgba(59, 130, 246, 0.4), 0 0 80px rgba(59, 130, 246, 0.2);
           }
-
-          /* PULSING DOT */
-          @keyframes ping-slow {
-            75%, 100% { transform: scale(2); opacity: 0; }
-          }
-          .animate-ping-slow { animation: ping-slow 2s cubic-bezier(0, 0, 0.2, 1) infinite; }
         `}
       </style>
 
@@ -195,17 +189,6 @@ export default function HeroSection() {
 
       <div className="flex-1 flex flex-col justify-center items-center w-full relative z-10 px-4 sm:px-6 lg:px-8 pt-20 sm:pt-24 pb-4 my-auto">
         <div className="max-w-5xl mx-auto text-center flex flex-col items-center">
-          {/* Availability Badge - Screams Professional Agency */}
-          <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-[#1e293b]/60 border border-white/10 backdrop-blur-md mb-8 shadow-lg">
-            <span className="relative flex h-3 w-3">
-              <span className="animate-ping-slow absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
-            </span>
-            <span className="text-slate-300 text-xs sm:text-sm font-semibold tracking-wide uppercase">
-              Accepting New Projects
-            </span>
-          </div>
-
           {/* Tighter, Punchier Heading */}
           <h1 className="text-[2.8rem] sm:text-6xl lg:text-[5.5rem] font-black tracking-tight leading-[1.05] mb-6 select-none cursor-default">
             <span className="text-white block mb-1">Architecting Bespoke</span>
