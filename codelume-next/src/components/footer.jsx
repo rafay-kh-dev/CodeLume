@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import Link from "next/link";
-import { Code2, ArrowRight, Sparkles, Terminal, BookOpen } from "lucide-react";
+import { Code2, ArrowRight, Sparkles, Terminal } from "lucide-react";
 import {
   Telegram,
   Whatsapp,
@@ -23,13 +23,6 @@ export default function Footer() {
     { name: "JSON to TypeScript", path: "/tools/json-to-ts" },
     { name: "JWT Decoder", path: "/tools/jwt-decoder" },
     { name: "Meta Tag Extractor", path: "/tools/meta-extractor" },
-  ];
-
-  const tutorials = [
-    { name: "React Course", path: "/tutorials/react" },
-    { name: "Node.js Course", path: "/tutorials/node" },
-    { name: "Express.js Course", path: "/tutorials/express" },
-    { name: "MongoDB Course", path: "/tutorials/mongodb" },
   ];
 
   const resources = [
@@ -186,7 +179,7 @@ export default function Footer() {
             </div>
           </div>
 
-          <div className="lg:col-span-2 flex flex-col">
+          <div className="lg:col-span-3 flex flex-col">
             <h2 className="text-[13px] font-extrabold text-white uppercase tracking-[0.15em] mb-6 m-0">
               Popular Services
             </h2>
@@ -205,7 +198,7 @@ export default function Footer() {
             </div>
           </div>
 
-          <div className="lg:col-span-2 flex flex-col">
+          <div className="lg:col-span-3 flex flex-col">
             <div className="flex items-center gap-2 mb-6">
               <Terminal className="w-4 h-4 text-blue-500" />
               <h2 className="text-[13px] font-extrabold text-white uppercase tracking-[0.15em] m-0">
@@ -221,28 +214,6 @@ export default function Footer() {
                 >
                   <h2 className="text-[15px] font-medium text-slate-400 group-hover:text-white transition-all duration-300 transform-gpu group-hover:translate-x-1 m-0">
                     {tool.name}
-                  </h2>
-                </Link>
-              ))}
-            </div>
-          </div>
-
-          <div className="lg:col-span-2 flex flex-col">
-            <div className="flex items-center gap-2 mb-6">
-              <BookOpen className="w-4 h-4 text-blue-500" />
-              <h2 className="text-[13px] font-extrabold text-white uppercase tracking-[0.15em] m-0">
-                Tutorials
-              </h2>
-            </div>
-            <div className="flex flex-col gap-4">
-              {tutorials.map((tutorial, idx) => (
-                <Link
-                  key={idx}
-                  href={tutorial.path}
-                  className="group outline-none w-fit"
-                >
-                  <h2 className="text-[15px] font-medium text-slate-400 group-hover:text-white transition-all duration-300 transform-gpu group-hover:translate-x-1 m-0">
-                    {tutorial.name}
                   </h2>
                 </Link>
               ))}
