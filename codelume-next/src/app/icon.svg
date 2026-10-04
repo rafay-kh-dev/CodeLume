@@ -9,10 +9,10 @@
   <rect width="512" height="512" rx="112" fill="#0a0f1c" />
   
   <!-- Left Bracket < -->
-  <path d="M176 160 L64 256 L176 352" fill="none" stroke="url(#lumeGlow)" stroke-width="48" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M156 130 L64 156 L176 252" fill="none" stroke="url(#lumeGlow)" stroke-width="48" stroke-linecap="round" stroke-linejoin="round" />
   
   <!-- Right Bracket > -->
-  <path d="M336 160 L448 256 L336 352" fill="none" stroke="url(#lumeGlow)" stroke-width="48" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M156 130 L448 156 L136 252" fill="none" stroke="url(#lumeGlow)" stroke-width="48" stroke-linecap="round" stroke-linejoin="round" />
   
   <!-- Center Slash / -->
   <path d="M288 120 L224 392" fill="none" stroke="#60a5fa" stroke-width="44" stroke-linecap="round" stroke-linejoin="round" />
