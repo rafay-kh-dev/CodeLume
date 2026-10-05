@@ -17,6 +17,8 @@ export default function About() {
       icon: Palette,
       accent: "text-blue-400",
       bg: "bg-blue-500/10",
+      hoverBorder: "hover:border-blue-500/30",
+      hoverShadow: "hover:shadow-[0_0_30px_rgba(59,130,246,0.15)]",
     },
     {
       title: "Custom Engineering",
@@ -24,6 +26,8 @@ export default function About() {
       icon: Terminal,
       accent: "text-indigo-400",
       bg: "bg-indigo-500/10",
+      hoverBorder: "hover:border-indigo-500/30",
+      hoverShadow: "hover:shadow-[0_0_30px_rgba(99,102,241,0.15)]",
     },
     {
       title: "Growth & SEO",
@@ -31,13 +35,14 @@ export default function About() {
       icon: TrendingUp,
       accent: "text-cyan-400",
       bg: "bg-cyan-500/10",
+      hoverBorder: "hover:border-cyan-500/30",
+      hoverShadow: "hover:shadow-[0_0_30px_rgba(34,211,238,0.15)]",
     },
   ];
 
   return (
     <section
-      // CHANGED: Replaced bg-[#030712] with bg-transparent so the global glow shines through!
-      className="w-full py-16 sm:py-24 lg:py-32 bg-transparent font-jakarta"
+      className="relative w-full py-20 sm:py-28 lg:py-36 bg-transparent font-jakarta overflow-hidden"
       id="about"
     >
       <style>
@@ -45,78 +50,83 @@ export default function About() {
           .font-jakarta { font-family: 'Plus Jakarta Sans', sans-serif; }`}
       </style>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-          {/* Left Side: Mobile-Optimised Personal Info */}
+      {/* Subtle Ambient Glow for Depth */}
+      <div className="absolute top-1/2 left-0 -translate-y-1/2 w-[500px] h-[500px] bg-blue-600/5 rounded-full blur-[120px] pointer-events-none -z-10" />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+          
+          {/* Left Side: Personal Profile */}
           <div className="lg:col-span-5 flex flex-col items-start text-left">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#070b14] border border-white/5 mb-6 sm:mb-8">
-              <UserCircle className="w-4 h-4 text-blue-500" />
-              <h2 className="text-[12px] font-black text-blue-500 uppercase tracking-[0.2em] m-0">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#070b14]/80 backdrop-blur-md border border-blue-500/20 mb-8 shadow-[0_0_15px_rgba(59,130,246,0.1)]">
+              <UserCircle className="w-4 h-4 text-blue-400" />
+              <h2 className="text-xs font-black text-blue-400 uppercase tracking-[0.2em] m-0">
                 The Architect
               </h2>
             </div>
 
-            <h2 className="text-5xl sm:text-6xl font-black text-white tracking-tighter leading-[1.05] mb-4 m-0">
+            <h2 className="text-5xl sm:text-6xl lg:text-7xl font-black text-white tracking-tighter leading-[1.05] mb-6 m-0">
               Hi, I'm <br className="hidden sm:block lg:hidden" />
-              <span className="text-blue-500">Rafay.</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-500">
+                Rafay.
+              </span>
             </h2>
 
-            <h2 className="text-xl sm:text-2xl font-black text-slate-300 mb-6 sm:mb-8 m-0 tracking-tight">
+            <h2 className="text-xl sm:text-2xl font-bold text-slate-300 mb-6 m-0 tracking-tight">
               Full-Stack Developer & UI/UX Designer.
             </h2>
 
-            <h2 className="text-[15px] sm:text-base text-slate-400 font-medium leading-relaxed max-w-lg mb-8 sm:mb-10 m-0">
+            <p className="text-[15px] sm:text-base text-slate-400 font-medium leading-relaxed max-w-lg mb-10 m-0">
               As the driving force behind CodeLume, I bridge the gap between
               stunning aesthetic design and robust server architectures. I don't
               rely on pre-built templates. Every pixel is optimised, every line
               of code is customised, and every platform is engineered for global
               scale.
-            </h2>
+            </p>
 
-            {/* Mobile-First Sharp CTA Button */}
             <Link
               href="/start-project"
-              className="flex items-center justify-center gap-3 w-full sm:w-auto px-6 py-4 rounded-xl bg-blue-600 text-white hover:bg-blue-700 active:bg-blue-800 transition-colors duration-200 outline-none group/btn active:scale-[0.98] transform-gpu"
+              className="group relative flex items-center justify-center gap-3 w-full sm:w-auto px-8 py-4 rounded-xl bg-blue-600 text-white overflow-hidden outline-none active:scale-[0.98] transition-transform duration-300"
             >
-              <h2 className="text-[15px] font-black m-0 text-inherit tracking-wide">
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-indigo-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <h2 className="relative z-10 text-[15px] font-black m-0 text-inherit tracking-wide">
                 Let's engineer your vision
               </h2>
-              <ArrowRight className="w-4 h-4 transform group-hover/btn:translate-x-1 transition-transform" />
+              <ArrowRight className="relative z-10 w-4 h-4 transform group-hover:translate-x-1 transition-transform duration-300" />
             </Link>
           </div>
 
-          {/* Right Side: Sharp Mobile-First Skills Grid */}
-          <div className="lg:col-span-7 flex flex-col gap-4 sm:gap-6">
+          {/* Right Side: Interactive Skills Grid */}
+          <div className="lg:col-span-7 flex flex-col gap-5 sm:gap-6">
             {skills.map((skill, index) => {
               const Icon = skill.icon;
               return (
                 <div
                   key={index}
-                  className="group w-full flex flex-col sm:flex-row items-start sm:items-center gap-5 sm:gap-6 p-6 sm:p-8 rounded-2xl bg-[#070b14] border border-white/5 hover:border-white/10 hover:bg-[#0a0f1c] active:bg-[#05080f] active:scale-[0.98] sm:active:scale-100 transition-all duration-200 cursor-pointer outline-none"
+                  className={`group w-full flex flex-col sm:flex-row items-start sm:items-center gap-5 sm:gap-6 p-6 sm:p-8 rounded-2xl bg-[#0a0f1c]/50 backdrop-blur-sm border border-white/5 ${skill.hoverBorder} ${skill.hoverShadow} hover:bg-[#0c1222] hover:-translate-y-1 transition-all duration-300 cursor-default`}
                 >
-                  {/* Crisp Icon Box */}
                   <div
-                    className={`w-12 h-12 sm:w-14 sm:h-14 rounded-xl ${skill.bg} border border-white/5 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform duration-300`}
+                    className={`w-14 h-14 sm:w-16 sm:h-16 rounded-2xl ${skill.bg} border border-white/5 flex items-center justify-center shrink-0 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500`}
                   >
                     <Icon
-                      className={`w-5 h-5 sm:w-6 sm:h-6 ${skill.accent}`}
+                      className={`w-6 h-6 sm:w-7 sm:h-7 ${skill.accent}`}
                       strokeWidth={2}
                     />
                   </div>
 
-                  {/* Punchy Content */}
                   <div className="flex flex-col">
-                    <h2 className="text-xl sm:text-2xl font-black text-white mb-2 sm:mb-1.5 m-0 tracking-tight group-hover:text-blue-100 transition-colors">
+                    <h2 className={`text-xl sm:text-2xl font-black text-white mb-2 sm:mb-1.5 m-0 tracking-tight group-hover:${skill.accent} transition-colors duration-300`}>
                       {skill.title}
                     </h2>
-                    <h2 className="text-[14px] sm:text-[15px] text-slate-400 font-medium leading-relaxed m-0">
+                    <p className="text-[14px] sm:text-[15px] text-slate-400 font-medium leading-relaxed m-0">
                       {skill.desc}
-                    </h2>
+                    </p>
                   </div>
                 </div>
               );
             })}
           </div>
+
         </div>
       </div>
     </section>
