@@ -1,6 +1,4 @@
-"use client";
-import React, { useState, useEffect } from "react";
-import { useParams } from "next/navigation";
+import React from "react";
 import Link from "next/link";
 import { ArrowLeft, Calendar, Clock, User, Share2, Code2 } from "lucide-react";
 
@@ -23,54 +21,74 @@ const FacebookIcon = ({ className }) => (
   </svg>
 );
 
-export default function Article() {
-  const { slug } = useParams();
-  const [post, setPost] = useState(null);
+// 1. Native Next.js SEO Meta Tags Generation (Replaces Helmet)
+export async function generateMetadata({ params }) {
+  const { slug } = params;
+  const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://codelume-backend.onrender.com";
 
-  useEffect(() => {
-    if (slug) {
-      // Convert URL slug to a formatted readable title
-      const formattedTitle = slug
-        .split("-")
-        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-        .join(" ");
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/blogs/${slug}`, { next: { revalidate: 3600 } });
+    if (!response.ok) throw new Error("Not Found");
+    const post = await response.json();
 
-      // Generate instant local data to bypass the backend API
-      setPost({
-        title: formattedTitle,
-        category: "Web Engineering",
-        author: "Rafay",
-        createdAt: new Date().toISOString(),
-        readTime: "5 min read",
-        coverImage: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=2070&auto=format&fit=crop",
-        content: `
-          <p>Welcome to our comprehensive guide on <strong>${formattedTitle}</strong>. As digital landscapes evolve, engineering high-performance platforms and crafting engaging UI/UX is critical to standing out.</p>
-          
-          <h2>Why ${formattedTitle} Matters</h2>
-          <p>When building bespoke digital solutions, we always prioritise lightning-fast load times and targeted SEO strategies. Integrating modern frameworks ensures your web applications scale efficiently without bottlenecking your business logic.</p>
-          
-          <ul>
-            <li>Optimised server performance and clean React architecture.</li>
-            <li>Seamless, accessible user experiences across all mobile and desktop devices.</li>
-            <li>Robust backend configurations tailored for enterprise growth.</li>
-          </ul>
+    return {
+      title: `${post.title} | CodeLume`,
+      description: post.excerpt || "Read this insightful article on CodeLume.",
+      openGraph: {
+        title: post.title,
+        description: post.excerpt,
+        url: `https://www.codelume.online/blogs/${slug}`,
+        images: post.coverImage ? [post.coverImage] : [],
+      },
+      alternates: {
+        canonical: `https://www.codelume.online/blogs/${slug}`,
+      },
+    };
+  } catch (error) {
+    return { title: "Article Not Found | CodeLume" };
+  }
+}
 
-          <blockquote>"Stop losing clients to slow, outdated websites. Modern web engineering requires a proactive approach to both interface design and backend architecture."</blockquote>
-          
-          <p>Stay tuned for more insights into crafting exceptional, highly specialised digital experiences that drive real traffic and conversions.</p>
-        `,
-      });
-      
-      window.scrollTo(0, 0);
+// 2. Server-Side Article Component (Replaces useEffect/useState)
+export default async function Article({ params }) {
+  const { slug } = params;
+  const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://codelume-backend.onrender.com";
+  
+  let post = null;
+  let error = false;
+
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/blogs/${slug}`, { 
+      cache: 'no-store' // Fetches fresh data on server load
+    });
+
+    if (!response.ok) {
+      error = true;
+    } else {
+      post = await response.json();
     }
-  }, [slug]);
-
-  // Prevent hydration mismatch by returning a blank dark canvas for a split second
-  if (!post) {
-    return <div className="min-h-dvh bg-[#030712]"></div>;
+  } catch (err) {
+    error = true;
   }
 
-  const shareUrl = typeof window !== "undefined" ? window.location.href : "";
+  // Handle 404 / Error State
+  if (error || !post) {
+    return (
+      <div className="min-h-dvh bg-[#030712] flex flex-col items-center justify-center pt-28 font-jakarta">
+        <div className="bg-[#0a0f1c] border border-white/10 rounded-3xl p-12 text-center max-w-lg shadow-2xl">
+          <h2 className="text-3xl font-black text-white mb-4 m-0">Article Not Found</h2>
+          <p className="text-slate-400 mb-8 leading-relaxed">
+            We couldn't find the article you're looking for. It may have been moved, deleted, or the URL might be incorrect.
+          </p>
+          <Link href="/blogs" className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold transition-colors">
+            <ArrowLeft className="w-4 h-4" /> Back to Blogs
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  const shareUrl = `https://www.codelume.online/blogs/${slug}`;
 
   return (
     <article className="min-h-dvh bg-[#030712] text-white font-jakarta pt-28 sm:pt-36 pb-24 relative">
@@ -86,7 +104,7 @@ export default function Article() {
           <div className="w-full lg:w-2/3">
             <header className="mb-10">
               <div className="inline-block px-4 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-black uppercase tracking-widest mb-6">
-                {post.category}
+                {post.category || "Uncategorized"}
               </div>
 
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-[1.1] mb-8 m-0">
@@ -96,21 +114,19 @@ export default function Article() {
               <div className="flex flex-wrap items-center gap-6 text-slate-400 text-sm font-medium border-y border-white/10 py-5">
                 <div className="flex items-center gap-2">
                   <User className="w-4 h-4 text-slate-500" />
-                  <span>{post.author}</span>
+                  <span>{post.author || "Rafay"}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Calendar className="w-4 h-4 text-slate-500" />
                   <span>
                     {new Date(post.createdAt).toLocaleDateString("en-AU", {
-                      day: "numeric",
-                      month: "long",
-                      year: "numeric",
+                      day: "numeric", month: "long", year: "numeric",
                     })}
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Clock className="w-4 h-4 text-slate-500" />
-                  <span>{post.readTime}</span>
+                  <span>{post.readTime || "5 min read"}</span>
                 </div>
               </div>
             </header>
@@ -130,10 +146,7 @@ export default function Article() {
                 [&>ul]:list-disc [&>ul]:pl-6 [&>ul]:mb-8 [&>ul>li]:mb-3
                 [&>ol]:list-decimal [&>ol]:pl-6 [&>ol]:mb-8 [&>ol>li]:mb-3
                 [&_a]:text-blue-400 [&_a:hover]:text-blue-300 [&_a]:underline
-                [&_strong]:text-white [&_strong]:font-black
-                [&_b]:text-white [&_b]:font-black
-                [&>blockquote]:border-l-4 [&>blockquote]:border-blue-500 [&>blockquote]:pl-6 [&>blockquote]:italic [&>blockquote]:my-8 [&>blockquote]:text-slate-400
-                [&>img]:rounded-3xl [&>img]:my-10 [&>img]:shadow-2xl [&>img]:w-full [&>img]:object-cover"
+                [&_strong]:text-white [&_strong]:font-black"
               dangerouslySetInnerHTML={{ __html: post.content }}
             />
           </div>
@@ -164,20 +177,7 @@ export default function Article() {
                 <a href={`https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(shareUrl)}&title=${encodeURIComponent(post.title)}`} target="_blank" rel="noreferrer" className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-[#0A66C2] hover:border-[#0A66C2] hover:text-white text-slate-400 transition-all duration-300">
                   <LinkedinIcon className="w-5 h-5" />
                 </a>
-                <a href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`} target="_blank" rel="noreferrer" className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-[#1877F2] hover:border-[#1877F2] hover:text-white text-slate-400 transition-all duration-300">
-                  <FacebookIcon className="w-5 h-5" />
-                </a>
               </div>
-            </div>
-
-            <div className="bg-linear-to-br from-blue-900/40 to-[#0a0f1c] border border-blue-500/20 rounded-3xl p-8 shadow-[0_0_30px_rgba(37,99,235,0.1)]">
-              <h2 className="text-xl font-black text-white mb-3 m-0">Need a Website?</h2>
-              <p className="text-slate-300 text-sm leading-relaxed mb-6">
-                Stop losing clients to slow, outdated websites. Let's build a bespoke digital solution tailored exactly to your business logic.
-              </p>
-              <Link href="/start-project" className="flex items-center justify-center w-full py-3.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold transition-colors shadow-lg text-[15px]">
-                Start a Project
-              </Link>
             </div>
           </aside>
         </div>
