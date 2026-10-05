@@ -2,7 +2,7 @@ import React from "react";
 
 // Helper function to convert slug into a clean title instantly
 const formatTitle = (slug) => {
-  if (!slug) return "Blog Article";
+  if (!slug) return "Blogs";
   return slug
     .split("-")
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
@@ -17,7 +17,7 @@ export async function generateMetadata({ params }) {
   const articleTitle = formatTitle(slug);
 
   return {
-    title: `${articleTitle} | CodeLume Blogs`,
+    title: `${articleTitle} | CodeLume`,
     description: `Read our comprehensive guide and latest insights on ${articleTitle} by CodeLume engineers.`,
     openGraph: {
       title: `${articleTitle} | CodeLume`,
