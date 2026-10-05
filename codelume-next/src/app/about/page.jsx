@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { Link } from "react-router-dom";
+import Link from "next/link"; // Changed from react-router-dom
 import { Code, Users, Globe, Zap, CheckCircle2, Rocket } from "lucide-react";
 import { Whatsapp, Gmail2026 } from '@thesvg/react';
 
@@ -120,7 +120,7 @@ export default function AboutCodeLume() {
             </a>
 
             <Link
-              to="/start-project"
+              href="/start-project" // Changed from to=""
               className="order-1 md:order-2 flex-1 flex items-center justify-center gap-3 px-6 py-4 md:py-5 rounded-xl bg-linear-to-r from-[#3b82f6] to-[#2563eb] text-white text-lg font-black transition-all shadow-[0_0_20px_rgba(59,130,246,0.3)] hover:shadow-[0_0_30px_rgba(59,130,246,0.5)] hover:-translate-y-1 w-full"
             >
               <Rocket size={20} /> Hire Me Now
