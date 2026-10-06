@@ -13,7 +13,7 @@ export function generateMetadata({ params }) {
   const articleTitle = formatTitle(slug);
 
   return {
-    title: `${articleTitle} | CodeLume Blogs`,
+    title: `${articleTitle} | CodeLume`,
     description: `Read our comprehensive guide and latest insights on ${articleTitle} by CodeLume engineers.`,
     openGraph: {
       title: `${articleTitle} | CodeLume`,
