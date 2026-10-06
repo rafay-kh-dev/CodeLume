@@ -189,7 +189,6 @@ export default function ProjectCalculator() {
           </p>
         </div>
 
-        {/* Grid Container */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 relative">
           {/* Left Column (Content) */}
           <div className="lg:col-span-2 space-y-12">
@@ -225,11 +224,7 @@ export default function ProjectCalculator() {
                       </div>
                     )}
                     <div
-                      className={`mb-4 p-3 rounded-xl transition-colors duration-300 ${
-                        selectedService === service.id
-                          ? "bg-blue-500/20"
-                          : "bg-white/5 group-hover:bg-white/10"
-                      }`}
+                      className={`mb-4 p-3 rounded-xl transition-colors duration-300 ${selectedService === service.id ? "bg-blue-500/20" : "bg-white/5 group-hover:bg-white/10"}`}
                     >
                       {service.icon}
                     </div>
@@ -315,11 +310,7 @@ export default function ProjectCalculator() {
                       <div className="flex items-center justify-between w-full mb-2">
                         <div className="flex items-center gap-3">
                           <div
-                            className={`flex items-center justify-center w-5 h-5 rounded-md border ${
-                              isSelected
-                                ? "bg-blue-500 border-blue-500"
-                                : "bg-[#030712] border-white/20"
-                            }`}
+                            className={`flex items-center justify-center w-5 h-5 rounded-md border ${isSelected ? "bg-blue-500 border-blue-500" : "bg-[#030712] border-white/20"}`}
                           >
                             {isSelected && (
                               <Check className="w-3.5 h-3.5 text-white" />
@@ -343,10 +334,10 @@ export default function ProjectCalculator() {
             </div>
           </div>
 
-          {/* Right Column Wrapper */}
+          {/* Right Column Wrapper (Removed h-full) */}
           <div className="lg:col-span-1 relative">
-            {/* STICKY SIDEBAR BLOCK */}
-            <div className="sticky top-28 bg-linear-to-b from-[#0a0f1c] to-[#050b14] border border-blue-500/30 rounded-3xl p-6 sm:p-8 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.8),inset_0_0_20px_rgba(59,130,246,0.05)] z-20">
+            {/* STICKY BLOCK (Added h-fit) */}
+            <div className="sticky top-28 h-fit bg-linear-to-b from-[#0a0f1c] to-[#050b14] border border-blue-500/30 rounded-3xl p-6 sm:p-8 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.8),inset_0_0_20px_rgba(59,130,246,0.05)] transition-all duration-500 z-20">
               <h2 className="text-[12px] font-black text-blue-500 uppercase tracking-[0.2em] mb-6 m-0 flex items-center gap-2">
                 <Calculator className="w-4 h-4" /> Live Estimate
               </h2>
