@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
 import { Star, Quote, Sparkles, BadgeCheck } from "lucide-react";
-import Link from "next/link";
 import {
   Trustpilot,
   Upwork,
@@ -182,21 +181,15 @@ export default function PremiumReviewsSlider() {
   };
 
   const ReviewCard = ({ review }) => (
-    <div className="group w-75 sm:w-95 shrink-0 flex flex-col p-6 sm:p-7 bg-linear-to-b from-[#0a0f1c] to-[#030712] border border-white/5 rounded-3xl hover:border-blue-500/40 transition-all duration-500 cursor-default relative hover:-translate-y-2 shadow-[0_8px_30px_rgba(0,0,0,0.4)] hover:shadow-[0_15px_40px_-10px_rgba(37,99,235,0.25)] overflow-hidden">
-      {/* Subtle top inner glow on hover */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-0.5 bg-linear-to-r from-transparent via-blue-400/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-[1px]" />
-
+    <div className="group w-75 sm:w-95 shrink-0 flex flex-col p-6 sm:p-7 bg-gradient-to-b from-[#0a0f1c] to-[#030712] border border-white/10 rounded-3xl transition-all duration-300 cursor-default relative overflow-hidden shadow-lg transform-gpu hover:-translate-y-1 hover:border-blue-500/40 will-change-transform">
       <div className="flex items-center justify-between gap-3 mb-5 relative z-10">
         {getPlatformLogo(review.platform)}
-        <Quote className="w-5 h-5 sm:w-6 sm:h-6 text-slate-700 transform -scale-x-100 group-hover:text-blue-400/50 transition-colors duration-500" />
+        <Quote className="w-5 h-5 sm:w-6 sm:h-6 text-slate-700 transform -scale-x-100 group-hover:text-blue-400/50 transition-colors duration-300" />
       </div>
 
       <div className="flex gap-1 mb-4 relative z-10">
         {[...Array(review.rating)].map((_, i) => (
-          <Star
-            key={i}
-            className="w-4 h-4 fill-amber-400 text-amber-400 drop-shadow-[0_0_4px_rgba(251,191,36,0.4)]"
-          />
+          <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
         ))}
       </div>
 
@@ -204,13 +197,13 @@ export default function PremiumReviewsSlider() {
         "{review.content}"
       </h2>
 
-      <div className="mt-auto pt-5 border-t border-white/5 flex items-center justify-between group-hover:border-blue-500/20 transition-colors duration-500 relative z-10">
+      <div className="mt-auto pt-5 border-t border-white/5 flex items-center justify-between group-hover:border-blue-500/20 transition-colors duration-300 relative z-10">
         <div className="flex items-center gap-3.5">
           <div className="relative">
             <img
               src={review.avatar}
               alt={review.name}
-              className="w-10 h-10 sm:w-11 sm:h-11 rounded-full object-cover shrink-0 ring-2 ring-white/10 group-hover:ring-blue-400/40 transition-all duration-500"
+              className="w-10 h-10 sm:w-11 sm:h-11 rounded-full object-cover shrink-0 ring-2 ring-white/10 group-hover:ring-blue-400/40 transition-all duration-300"
             />
             <div className="absolute -bottom-0.5 -right-0.5 w-4 h-4 bg-[#030712] rounded-full flex items-center justify-center border border-white/5">
               <BadgeCheck
@@ -234,42 +227,37 @@ export default function PremiumReviewsSlider() {
 
   return (
     <section
-      className="w-full py-16 lg:py-28 bg-[#030712] font-jakarta overflow-hidden"
+      className="w-full py-16 lg:py-28 bg-[#030712] font-sans overflow-hidden"
       id="reviews-section"
     >
       <style>
-        {`@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap');
-          .font-jakarta { font-family: 'Plus Jakarta Sans', sans-serif; }
-          
-          /* Added rotate(0.001deg) to force 3D anti-aliasing and prevent pixel snapping */
-          @keyframes marquee {
-            0% { transform: translate3d(0, 0, 0) rotate(0.001deg); }
-            100% { transform: translate3d(-50%, 0, 0) rotate(0.001deg); }
+        {`
+          @keyframes marquee-smooth {
+            0% { transform: translate3d(0, 0, 0); }
+            100% { transform: translate3d(-50%, 0, 0); }
           }
           
-          @keyframes marquee-reverse {
-            0% { transform: translate3d(-50%, 0, 0) rotate(0.001deg); }
-            100% { transform: translate3d(0, 0, 0) rotate(0.001deg); }
+          @keyframes marquee-smooth-reverse {
+            0% { transform: translate3d(-50%, 0, 0); }
+            100% { transform: translate3d(0, 0, 0); }
           }
           
-          .animate-marquee {
-            animation: marquee 100s linear infinite;
+          .animate-marquee-smooth {
+            animation: marquee-smooth 70s linear infinite;
             will-change: transform;
-            backface-visibility: hidden;
-            transform-style: preserve-3d;
-            -webkit-font-smoothing: antialiased;
+            contain: layout paint style;
+            isolation: isolate;
           }
           
-          .animate-marquee-reverse {
-            animation: marquee-reverse 100s linear infinite;
+          .animate-marquee-smooth-reverse {
+            animation: marquee-smooth-reverse 70s linear infinite;
             will-change: transform;
-            backface-visibility: hidden;
-            transform-style: preserve-3d;
-            -webkit-font-smoothing: antialiased;
+            contain: layout paint style;
+            isolation: isolate;
           }
 
-          .marquee-row:hover .animate-marquee,
-          .marquee-row:hover .animate-marquee-reverse {
+          .marquee-row:hover .animate-marquee-smooth,
+          .marquee-row:hover .animate-marquee-smooth-reverse {
             animation-play-state: paused;
           }
         `}
@@ -294,10 +282,10 @@ export default function PremiumReviewsSlider() {
             </h2>
           </div>
 
-          <div className="flex items-center gap-4 sm:gap-5 p-4 sm:p-6 rounded-2xl bg-linear-to-br from-blue-900/30 to-blue-600/10 border border-blue-500/20 backdrop-blur-md shadow-[0_0_40px_rgba(37,99,235,0.15)] relative overflow-hidden group shrink-0 lg:min-w-85">
+          <div className="flex items-center gap-4 sm:gap-5 p-4 sm:p-6 rounded-2xl bg-gradient-to-br from-blue-900/30 to-blue-600/10 border border-blue-500/20 backdrop-blur-md shadow-[0_0_40px_rgba(37,99,235,0.15)] relative overflow-hidden group shrink-0 lg:min-w-85">
             <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/20 rounded-full blur-3xl -mr-10 -mt-10 transition-transform duration-700 group-hover:scale-150 pointer-events-none" />
 
-            <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-linear-to-br from-blue-500 to-indigo-600 flex items-center justify-center shrink-0 shadow-lg shadow-blue-500/30 relative z-10">
+            <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shrink-0 shadow-lg shadow-blue-500/30 relative z-10">
               <BadgeCheck
                 className="w-6 h-6 sm:w-7 sm:h-7 text-white"
                 strokeWidth={2}
@@ -316,7 +304,7 @@ export default function PremiumReviewsSlider() {
                   {[...Array(5)].map((_, i) => (
                     <Star
                       key={i}
-                      className="w-4 h-4 fill-amber-400 text-amber-400 drop-shadow-[0_0_2px_rgba(251,191,36,0.5)]"
+                      className="w-4 h-4 fill-amber-400 text-amber-400"
                     />
                   ))}
                 </div>
@@ -330,13 +318,13 @@ export default function PremiumReviewsSlider() {
       </div>
 
       {/* Double Infinite Scroll Marquee Container */}
-      <div className="relative w-full flex flex-col gap-6 sm:gap-8">
-        <div className="absolute top-0 left-0 h-full w-16 sm:w-32 bg-linear-to-r from-[#030712] via-[#030712]/80 to-transparent z-10 pointer-events-none" />
-        <div className="absolute top-0 right-0 h-full w-16 sm:w-32 bg-linear-to-l from-[#030712] via-[#030712]/80 to-transparent z-10 pointer-events-none" />
+      <div className="relative w-full flex flex-col gap-6 sm:gap-8 transform-gpu">
+        <div className="absolute top-0 left-0 h-full w-16 sm:w-32 bg-gradient-to-r from-[#030712] via-[#030712]/80 to-transparent z-10 pointer-events-none" />
+        <div className="absolute top-0 right-0 h-full w-16 sm:w-32 bg-gradient-to-l from-[#030712] via-[#030712]/80 to-transparent z-10 pointer-events-none" />
 
         {/* Row 1 - Forward */}
         <div className="marquee-row overflow-hidden w-full py-4 -my-4 flex">
-          <div className="animate-marquee flex w-max">
+          <div className="animate-marquee-smooth flex w-max transform-gpu">
             {/* Set 1 */}
             <div className="flex gap-5 sm:gap-6 pr-5 sm:pr-6">
               {reviews.map((review) => (
@@ -357,7 +345,7 @@ export default function PremiumReviewsSlider() {
 
         {/* Row 2 - Reverse */}
         <div className="marquee-row overflow-hidden w-full py-4 -my-4 flex">
-          <div className="animate-marquee-reverse flex w-max">
+          <div className="animate-marquee-smooth-reverse flex w-max transform-gpu">
             {/* Set 1 */}
             <div className="flex gap-5 sm:gap-6 pr-5 sm:pr-6">
               {row2Reviews.map((review) => (
