@@ -241,26 +241,31 @@ export default function PremiumReviewsSlider() {
         {`@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap');
           .font-jakarta { font-family: 'Plus Jakarta Sans', sans-serif; }
           
+          /* Added rotate(0.001deg) to force 3D anti-aliasing and prevent pixel snapping */
           @keyframes marquee {
-            0% { transform: translate3d(0, 0, 0); }
-            100% { transform: translate3d(-50%, 0, 0); }
+            0% { transform: translate3d(0, 0, 0) rotate(0.001deg); }
+            100% { transform: translate3d(-50%, 0, 0) rotate(0.001deg); }
           }
           
           @keyframes marquee-reverse {
-            0% { transform: translate3d(-50%, 0, 0); }
-            100% { transform: translate3d(0, 0, 0); }
+            0% { transform: translate3d(-50%, 0, 0) rotate(0.001deg); }
+            100% { transform: translate3d(0, 0, 0) rotate(0.001deg); }
           }
           
           .animate-marquee {
             animation: marquee 100s linear infinite;
             will-change: transform;
             backface-visibility: hidden;
+            transform-style: preserve-3d;
+            -webkit-font-smoothing: antialiased;
           }
           
           .animate-marquee-reverse {
             animation: marquee-reverse 100s linear infinite;
             will-change: transform;
             backface-visibility: hidden;
+            transform-style: preserve-3d;
+            -webkit-font-smoothing: antialiased;
           }
 
           .marquee-row:hover .animate-marquee,
