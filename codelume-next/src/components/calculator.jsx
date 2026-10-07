@@ -179,7 +179,7 @@ export default function ProjectCalculator() {
           </div>
           <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-[1.1] m-0 drop-shadow-lg mb-6">
             Interactive Cost <br className="hidden sm:block" />
-            <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-400 via-blue-500 to-indigo-400">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-blue-500 to-indigo-400">
               Estimator
             </span>
           </h2>
@@ -189,7 +189,8 @@ export default function ProjectCalculator() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 relative">
+        {/* Grid Container */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 relative items-start">
           {/* Left Column (Content) */}
           <div className="lg:col-span-2 space-y-12">
             {/* Section 1 */}
@@ -334,10 +335,10 @@ export default function ProjectCalculator() {
             </div>
           </div>
 
-          {/* Right Column Wrapper (Removed h-full) */}
-          <div className="lg:col-span-1 relative">
-            {/* STICKY BLOCK (Added h-fit) */}
-            <div className="sticky top-28 h-fit bg-linear-to-b from-[#0a0f1c] to-[#050b14] border border-blue-500/30 rounded-3xl p-6 sm:p-8 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.8),inset_0_0_20px_rgba(59,130,246,0.05)] transition-all duration-500 z-20">
+          {/* Right Column Wrapper */}
+          <div className="lg:col-span-1 h-full relative">
+            {/* STICKY SIDEBAR BLOCK */}
+            <div className="sticky top-28 h-fit bg-gradient-to-b from-[#0a0f1c] to-[#050b14] border border-blue-500/30 rounded-3xl p-6 sm:p-8 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.8),inset_0_0_20px_rgba(59,130,246,0.05)] transform-gpu z-20">
               <h2 className="text-[12px] font-black text-blue-500 uppercase tracking-[0.2em] mb-6 m-0 flex items-center gap-2">
                 <Calculator className="w-4 h-4" /> Live Estimate
               </h2>
@@ -408,9 +409,9 @@ export default function ProjectCalculator() {
                   href={waLink}
                   target="_blank"
                   rel="noreferrer"
-                  className="relative flex items-center justify-center w-full px-6 py-4 rounded-xl bg-linear-to-r from-[#1EBE5D] to-[#128C7E] shadow-[0_10px_20px_rgba(37,211,102,0.3)] hover:shadow-[0_15px_30px_rgba(37,211,102,0.4)] transition-all duration-300 hover:-translate-y-1 outline-none overflow-hidden group"
+                  className="relative flex items-center justify-center w-full px-6 py-4 rounded-xl bg-gradient-to-r from-[#1EBE5D] to-[#128C7E] shadow-[0_10px_20px_rgba(37,211,102,0.3)] hover:shadow-[0_15px_30px_rgba(37,211,102,0.4)] transition-all duration-300 hover:-translate-y-1 outline-none overflow-hidden group"
                 >
-                  <div className="absolute top-0 left-0 w-full h-full bg-linear-to-r from-transparent via-white/20 to-transparent translate-x-[-150%] group-hover:translate-x-[150%] transition-transform duration-700 pointer-events-none" />
+                  <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-150%] group-hover:translate-x-[150%] transition-transform duration-700 pointer-events-none" />
                   <Whatsapp
                     variant="wordmark"
                     className="h-6 w-auto brightness-0 invert"
