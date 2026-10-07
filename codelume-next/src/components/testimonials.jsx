@@ -181,7 +181,7 @@ export default function PremiumReviewsSlider() {
   };
 
   const ReviewCard = ({ review }) => (
-    <div className="group w-75 sm:w-95 shrink-0 flex flex-col p-6 sm:p-7 bg-gradient-to-b from-[#0a0f1c] to-[#030712] border border-white/10 rounded-3xl transition-all duration-300 cursor-default relative overflow-hidden shadow-lg transform-gpu hover:-translate-y-1 hover:border-blue-500/40 will-change-transform">
+    <div className="group w-75 sm:w-95 shrink-0 flex flex-col p-6 sm:p-7 bg-gradient-to-b from-[#0a0f1c] to-[#030712] border border-white/10 rounded-3xl transition-transform duration-300 cursor-default relative overflow-hidden shadow-md transform-gpu hover:-translate-y-1 hover:border-blue-500/40">
       <div className="flex items-center justify-between gap-3 mb-5 relative z-10">
         {getPlatformLogo(review.platform)}
         <Quote className="w-5 h-5 sm:w-6 sm:h-6 text-slate-700 transform -scale-x-100 group-hover:text-blue-400/50 transition-colors duration-300" />
@@ -203,6 +203,10 @@ export default function PremiumReviewsSlider() {
             <img
               src={review.avatar}
               alt={review.name}
+              width={44}
+              height={44}
+              decoding="async"
+              loading="eager"
               className="w-10 h-10 sm:w-11 sm:h-11 rounded-full object-cover shrink-0 ring-2 ring-white/10 group-hover:ring-blue-400/40 transition-all duration-300"
             />
             <div className="absolute -bottom-0.5 -right-0.5 w-4 h-4 bg-[#030712] rounded-full flex items-center justify-center border border-white/5">
@@ -232,32 +236,32 @@ export default function PremiumReviewsSlider() {
     >
       <style>
         {`
-          @keyframes marquee-smooth {
+          @keyframes marquee-forward {
             0% { transform: translate3d(0, 0, 0); }
             100% { transform: translate3d(-50%, 0, 0); }
           }
           
-          @keyframes marquee-smooth-reverse {
+          @keyframes marquee-backward {
             0% { transform: translate3d(-50%, 0, 0); }
             100% { transform: translate3d(0, 0, 0); }
           }
           
-          .animate-marquee-smooth {
-            animation: marquee-smooth 70s linear infinite;
+          .animate-marquee-forward {
+            animation: marquee-forward 65s linear infinite;
             will-change: transform;
-            contain: layout paint style;
-            isolation: isolate;
+            backface-visibility: hidden;
+            transform-style: preserve-3d;
           }
           
-          .animate-marquee-smooth-reverse {
-            animation: marquee-smooth-reverse 70s linear infinite;
+          .animate-marquee-backward {
+            animation: marquee-backward 65s linear infinite;
             will-change: transform;
-            contain: layout paint style;
-            isolation: isolate;
+            backface-visibility: hidden;
+            transform-style: preserve-3d;
           }
 
-          .marquee-row:hover .animate-marquee-smooth,
-          .marquee-row:hover .animate-marquee-smooth-reverse {
+          .marquee-row:hover .animate-marquee-forward,
+          .marquee-row:hover .animate-marquee-backward {
             animation-play-state: paused;
           }
         `}
@@ -282,7 +286,7 @@ export default function PremiumReviewsSlider() {
             </h2>
           </div>
 
-          <div className="flex items-center gap-4 sm:gap-5 p-4 sm:p-6 rounded-2xl bg-gradient-to-br from-blue-900/30 to-blue-600/10 border border-blue-500/20 backdrop-blur-md shadow-[0_0_40px_rgba(37,99,235,0.15)] relative overflow-hidden group shrink-0 lg:min-w-85">
+          <div className="flex items-center gap-4 sm:gap-5 p-4 sm:p-6 rounded-2xl bg-gradient-to-br from-blue-900/30 to-blue-600/10 border border-blue-500/20 shadow-[0_0_40px_rgba(37,99,235,0.15)] relative overflow-hidden group shrink-0 lg:min-w-85 z-10">
             <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/20 rounded-full blur-3xl -mr-10 -mt-10 transition-transform duration-700 group-hover:scale-150 pointer-events-none" />
 
             <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shrink-0 shadow-lg shadow-blue-500/30 relative z-10">
@@ -318,22 +322,22 @@ export default function PremiumReviewsSlider() {
       </div>
 
       {/* Double Infinite Scroll Marquee Container */}
-      <div className="relative w-full flex flex-col gap-6 sm:gap-8 transform-gpu">
+      <div className="relative w-full flex flex-col gap-6 sm:gap-8 transform-gpu z-0">
         <div className="absolute top-0 left-0 h-full w-16 sm:w-32 bg-gradient-to-r from-[#030712] via-[#030712]/80 to-transparent z-10 pointer-events-none" />
         <div className="absolute top-0 right-0 h-full w-16 sm:w-32 bg-gradient-to-l from-[#030712] via-[#030712]/80 to-transparent z-10 pointer-events-none" />
 
         {/* Row 1 - Forward */}
-        <div className="marquee-row overflow-hidden w-full py-4 -my-4 flex">
-          <div className="animate-marquee-smooth flex w-max transform-gpu">
+        <div className="marquee-row overflow-hidden w-full py-4 -my-4 flex relative z-0">
+          <div className="animate-marquee-forward flex w-max transform-gpu">
             {/* Set 1 */}
-            <div className="flex gap-5 sm:gap-6 pr-5 sm:pr-6">
+            <div className="flex gap-5 sm:gap-6 pr-5 sm:pr-6 shrink-0">
               {reviews.map((review) => (
                 <ReviewCard key={`row1-1-${review.id}`} review={review} />
               ))}
             </div>
-            {/* Set 2 - exact duplicate for seamless looping */}
+            {/* Set 2 - duplicate */}
             <div
-              className="flex gap-5 sm:gap-6 pr-5 sm:pr-6"
+              className="flex gap-5 sm:gap-6 pr-5 sm:pr-6 shrink-0"
               aria-hidden="true"
             >
               {reviews.map((review) => (
@@ -343,18 +347,18 @@ export default function PremiumReviewsSlider() {
           </div>
         </div>
 
-        {/* Row 2 - Reverse */}
-        <div className="marquee-row overflow-hidden w-full py-4 -my-4 flex">
-          <div className="animate-marquee-smooth-reverse flex w-max transform-gpu">
+        {/* Row 2 - Backward */}
+        <div className="marquee-row overflow-hidden w-full py-4 -my-4 flex relative z-0">
+          <div className="animate-marquee-backward flex w-max transform-gpu">
             {/* Set 1 */}
-            <div className="flex gap-5 sm:gap-6 pr-5 sm:pr-6">
+            <div className="flex gap-5 sm:gap-6 pr-5 sm:pr-6 shrink-0">
               {row2Reviews.map((review) => (
                 <ReviewCard key={`row2-1-${review.id}`} review={review} />
               ))}
             </div>
-            {/* Set 2 - exact duplicate for seamless looping */}
+            {/* Set 2 - duplicate */}
             <div
-              className="flex gap-5 sm:gap-6 pr-5 sm:pr-6"
+              className="flex gap-5 sm:gap-6 pr-5 sm:pr-6 shrink-0"
               aria-hidden="true"
             >
               {row2Reviews.map((review) => (
