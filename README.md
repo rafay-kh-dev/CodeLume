@@ -2,6 +2,8 @@
 
 Trusted Digital Partner & High-Performance Web Architecture
 
+![CodeLume Hero Section](codelume-next/public/screenshot.png)
+
 * Live Website: https://codelume.online
 * Tech Stack: Next.js App Router, Tailwind CSS, Vercel
 * Contact: mrafaykh@outlook.com | WhatsApp: +92 334 7835980
