@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import emailjs from "@emailjs/browser";
 import { ArrowRight, Mail, User, Building, Loader2 } from "lucide-react";
@@ -18,6 +18,94 @@ import {
   Figma,
   Adobe,
 } from "@thesvg/react";
+
+const TypewriterHeading = ({ text }) => {
+  const [displayedText, setDisplayedText] = useState("");
+  const [hasStarted, setHasStarted] = useState(false);
+  const headingRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setHasStarted(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.2 }
+    );
+
+    if (headingRef.current) {
+      observer.observe(headingRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!hasStarted) return;
+
+    let i = 0;
+    setDisplayedText("");
+
+    const startTimeout = setTimeout(() => {
+      const typingInterval = setInterval(() => {
+        if (i < text.length) {
+          setDisplayedText(text.substring(0, i + 1));
+          i++;
+        } else {
+          clearInterval(typingInterval);
+        }
+      }, 45);
+
+      return () => clearInterval(typingInterval);
+    }, 200);
+
+    return () => clearTimeout(startTimeout);
+  }, [hasStarted, text]);
+
+  const lines = displayedText.split("\n");
+  const fullLines = text.split("\n");
+
+  const headingClasses =
+    "text-5xl sm:text-6xl lg:text-[4.5rem] font-medium tracking-tighter text-black leading-[1.05] select-none cursor-default w-full m-0";
+
+  return (
+    <div
+      ref={headingRef}
+      className="min-h-[110px] sm:min-h-[140px] lg:min-h-[160px] flex items-start justify-start mb-8 w-full relative"
+    >
+      {/* INVISIBLE PLACEHOLDER */}
+      <h2 className={`${headingClasses} opacity-0 pointer-events-none`}>
+        {fullLines.map((line, idx) => (
+          <React.Fragment key={idx}>
+            {line}
+            {idx !== fullLines.length - 1 && <br />}
+          </React.Fragment>
+        ))}
+      </h2>
+
+      {/* VISIBLE TYPING TEXT */}
+      <h2 className={`${headingClasses} absolute top-0 left-0 h-full`}>
+        {lines.map((line, idx) => (
+          <React.Fragment key={idx}>
+            <span className={idx === 1 ? "text-gray-400" : "text-black"}>
+              {line}
+            </span>
+            {idx !== lines.length - 1 && <br />}
+          </React.Fragment>
+        ))}
+        <span
+          className="inline-block w-[3.5px] sm:w-[4px] h-[0.8em] ml-1.5 sm:ml-2 animate-[pulse_1s_ease-in-out_infinite] align-middle translate-y-[-4px] sm:translate-y-[-6px] rounded-full"
+          style={{
+            background:
+              "linear-gradient(to bottom, #4285F4, #34A853, #FBBC05, #EA4335)",
+          }}
+        ></span>
+      </h2>
+    </div>
+  );
+};
 
 export default function StartProject() {
   const [formData, setFormData] = useState({
@@ -111,27 +199,26 @@ export default function StartProject() {
 
   if (isSubmitted) {
     return (
-      <section className="w-full min-h-dvh pt-32 sm:pt-40 pb-24 bg-[#030712] font-jakarta flex items-center justify-center relative overflow-hidden">
+      <section className="w-full min-h-dvh pt-32 sm:pt-40 pb-24 bg-white font-jakarta flex items-center justify-center relative overflow-hidden">
         <style>
           {`
             ::-webkit-scrollbar { width: 8px; height: 8px; }
-            ::-webkit-scrollbar-track { background: #030712; }
-            ::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 10px; box-shadow: 0 0 10px rgba(59, 130, 246, 0.5); }
-            ::-webkit-scrollbar-thumb:hover { background: #2563eb; }
+            ::-webkit-scrollbar-track { background: transparent; }
+            ::-webkit-scrollbar-thumb { background: #e5e7eb; border-radius: 10px; }
           `}
         </style>
 
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-150 h-150 bg-[#3b82f6]/10 rounded-full blur-[140px] pointer-events-none" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-50 rounded-full blur-[140px] pointer-events-none" />
 
         <div className="max-w-2xl w-full px-4 flex flex-col items-center text-center relative z-10">
-          <h2 className="text-5xl md:text-7xl font-black text-[#3b82f6] mb-8 m-0 tracking-tighter leading-tight drop-shadow-sm">
+          <h2 className="text-5xl md:text-7xl font-medium text-black mb-8 m-0 tracking-tight leading-tight">
             Thank You!
           </h2>
 
-          <h2 className="text-[16px] sm:text-[18px] text-slate-300 font-medium leading-relaxed mb-12 m-0 px-4 max-w-lg mx-auto">
+          <h2 className="text-[16px] sm:text-[18px] text-gray-600 font-medium leading-relaxed mb-12 m-0 px-4 max-w-lg mx-auto">
             Thank you for contacting me. I am Rafay. I will contact you as soon
             as possible from this email{" "}
-            <span className="text-[#3b82f6] font-bold tracking-wide">
+            <span className="text-[#4285F4] font-bold tracking-wide">
               mrafaykh@outlook.com
             </span>
             .
@@ -139,10 +226,10 @@ export default function StartProject() {
 
           <Link
             href="/"
-            className="flex items-center justify-center gap-4 px-10 py-5 rounded-2xl bg-linear-to-r from-[#3b82f6] to-[#2563eb] text-white hover:from-[#2563eb] hover:to-[#1d4ed8] transition-all duration-300 outline-none active:scale-[0.98] group shadow-[0_0_30px_rgba(59,130,246,0.25)] hover:shadow-[0_0_40px_rgba(59,130,246,0.4)] border border-blue-400/20"
+            className="flex items-center justify-center gap-3 px-10 py-5 rounded-full bg-[#111827] text-white hover:bg-black transition-all duration-300 outline-none active:scale-[0.98] group shadow-sm"
           >
             <ArrowRight className="w-5 h-5 transform group-hover:-translate-x-1 transition-transform rotate-180" />
-            <h2 className="text-[15px] font-black m-0 tracking-wide text-white uppercase">
+            <h2 className="text-[15px] font-bold m-0 tracking-wide text-white">
               Return to Homepage
             </h2>
           </Link>
@@ -153,7 +240,7 @@ export default function StartProject() {
 
   return (
     <section
-      className="w-full pt-32 sm:pt-40 pb-24 lg:pb-32 bg-[#030712] font-jakarta relative overflow-hidden"
+      className="w-full pt-32 sm:pt-40 pb-24 lg:pb-32 bg-white font-jakarta relative overflow-hidden"
       id="start-project"
     >
       <style>
@@ -161,52 +248,37 @@ export default function StartProject() {
           .font-jakarta { font-family: 'Plus Jakarta Sans', sans-serif; }
           
           ::-webkit-scrollbar { width: 8px; height: 8px; }
-          ::-webkit-scrollbar-track { background: #030712; }
-          ::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 10px; box-shadow: 0 0 10px rgba(59, 130, 246, 0.5); }
-          ::-webkit-scrollbar-thumb:hover { background: #2563eb; }
+          ::-webkit-scrollbar-track { background: transparent; }
+          ::-webkit-scrollbar-thumb { background: #e5e7eb; border-radius: 10px; }
         `}
       </style>
 
-      <div className="absolute top-0 right-0 w-200 h-200 bg-[#3b82f6]/5 rounded-full blur-[150px] pointer-events-none -translate-y-1/2 translate-x-1/3" />
+      {/* Subtle top gradient instead of dark blur */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-[600px] bg-[radial-gradient(ellipse_at_top,rgba(0,0,0,0.02)_0%,transparent_70%)] pointer-events-none" />
 
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="max-w-[1000px] mx-auto px-5 sm:px-10 relative z-10 w-full">
         <div className="flex flex-col items-start text-left mb-16 sm:mb-20">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/10 border border-blue-500/20 mb-6">
-            <div className="w-2 h-2 rounded-full bg-[#3b82f6] animate-pulse" />
-            <h2 className="text-[12px] sm:text-[13px] font-black text-[#3b82f6] uppercase tracking-[0.2em] m-0">
-              Initiate Strategy
-            </h2>
-          </div>
+          <TypewriterHeading text={"Let's engineer\nyour next project."} />
 
-          <h2 className="text-5xl sm:text-6xl lg:text-7xl font-black text-white tracking-tighter leading-[1.05] m-0 mb-8">
-            Let's engineer <br className="hidden sm:block" />
-            <span className="text-transparent bg-clip-text bg-linear-to-r from-white to-slate-500">
-              your next project.
-            </span>
-          </h2>
-
-          <h2 className="text-[16px] sm:text-lg text-slate-400 font-medium leading-relaxed m-0 max-w-2xl">
+          <p className="text-[16px] sm:text-[17px] text-gray-500 font-medium leading-relaxed m-0 max-w-2xl">
             Fill out the technical requirements below. The more details you
             provide, the better we can customise our architectural proposal for
             your business.
-          </h2>
+          </p>
         </div>
 
-        <form
-          onSubmit={handleSubmit}
-          className="flex flex-col gap-14 sm:gap-20"
-        >
-          <div className="flex flex-col gap-6 p-6 sm:p-10 rounded-3xl bg-[#070b14] border border-white/5 shadow-2xl relative overflow-hidden group">
-            <div className="absolute inset-0 bg-linear-to-br from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-
-            <h2 className="text-xl sm:text-2xl font-black text-white m-0 tracking-tight flex items-center gap-4 relative z-10">
-              <span className="flex items-center justify-center w-8 h-8 rounded-full bg-blue-500/20 text-[#3b82f6] text-sm">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-10 sm:gap-14">
+          
+          {/* Section 1: Services */}
+          <div className="flex flex-col gap-6 sm:gap-8 p-6 sm:p-10 lg:p-12 rounded-[32px] bg-white border border-gray-200 shadow-sm relative overflow-hidden">
+            <h2 className="text-[22px] sm:text-[24px] font-semibold text-black m-0 tracking-tight flex items-center gap-4">
+              <span className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-50 border border-gray-200 text-black text-[13px] font-bold">
                 1
               </span>
               What do you need help with?
             </h2>
-            {/* Grid updated to 3 columns on medium screens to fit 11 services nicely */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 relative z-10">
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
               {serviceOptions.map((service) => {
                 const isSelected = formData.services.includes(service.id);
                 const Icon = service.icon;
@@ -215,24 +287,24 @@ export default function StartProject() {
                     key={service.id}
                     type="button"
                     onClick={() => toggleService(service.id)}
-                    className={`flex items-center gap-4 p-4 rounded-2xl border transition-all duration-300 outline-none text-left active:scale-[0.98] ${
+                    className={`flex items-center gap-4 p-4 sm:p-5 rounded-[20px] border transition-all duration-300 outline-none text-left active:scale-[0.98] ${
                       isSelected
-                        ? "bg-[#3b82f6]/10 border-[#3b82f6] shadow-[0_0_20px_rgba(59,130,246,0.15)] transform -translate-y-1"
-                        : "bg-[#0a0f1c] border-white/5 hover:border-white/20 hover:bg-[#0d1324]"
+                        ? "bg-white border-[#4285F4] shadow-[0_8px_20px_rgba(66,133,244,0.12)] sm:-translate-y-1"
+                        : "bg-gray-50 border-transparent hover:bg-white hover:border-gray-200 hover:shadow-sm"
                     }`}
                   >
                     <div
-                      className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 transition-all duration-300 ${
+                      className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 transition-all duration-300 border ${
                         isSelected
-                          ? "bg-[#3b82f6] text-white shadow-lg"
-                          : "bg-[#030712] border border-white/5 text-slate-400 group-hover:text-slate-300"
+                          ? "bg-[#4285F4] border-[#4285F4] text-white shadow-md"
+                          : "bg-white border-gray-200 text-black"
                       }`}
                     >
-                      <Icon className="w-5 h-5" strokeWidth={2.5} />
+                      <Icon className="w-6 h-6" strokeWidth={2} />
                     </div>
                     <h2
-                      className={`text-[14px] font-black m-0 tracking-wide transition-colors ${
-                        isSelected ? "text-white" : "text-slate-300"
+                      className={`text-[14px] sm:text-[15px] font-semibold m-0 tracking-tight transition-colors ${
+                        isSelected ? "text-[#4285F4]" : "text-black"
                       }`}
                     >
                       {service.title}
@@ -244,24 +316,25 @@ export default function StartProject() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="flex flex-col gap-6 p-6 sm:p-10 rounded-3xl bg-[#070b14] border border-white/5 shadow-2xl relative overflow-hidden group">
-              <div className="absolute inset-0 bg-linear-to-br from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-              <h2 className="text-xl sm:text-2xl font-black text-white m-0 tracking-tight flex items-center gap-4 relative z-10">
-                <span className="flex items-center justify-center w-8 h-8 rounded-full bg-blue-500/20 text-[#3b82f6] text-sm">
+            
+            {/* Section 2: Budget */}
+            <div className="flex flex-col gap-6 sm:gap-8 p-6 sm:p-10 lg:p-12 rounded-[32px] bg-white border border-gray-200 shadow-sm relative overflow-hidden">
+              <h2 className="text-[22px] sm:text-[24px] font-semibold text-black m-0 tracking-tight flex items-center gap-4">
+                <span className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-50 border border-gray-200 text-black text-[13px] font-bold">
                   2
                 </span>
                 Allocated Budget
               </h2>
-              <div className="flex flex-col gap-3 relative z-10">
+              <div className="flex flex-col gap-3">
                 {budgetOptions.map((budget, i) => (
                   <button
                     key={i}
                     type="button"
                     onClick={() => handleSelect("budget", budget)}
-                    className={`px-6 py-5 rounded-2xl border text-left font-black tracking-wide text-[14px] transition-all duration-300 outline-none active:scale-[0.98] ${
+                    className={`px-6 py-5 rounded-[20px] border text-left font-semibold tracking-tight text-[15px] transition-all duration-300 outline-none active:scale-[0.98] ${
                       formData.budget === budget
-                        ? "bg-[#3b82f6]/10 border-[#3b82f6] text-white shadow-[0_0_15px_rgba(59,130,246,0.1)] pl-8"
-                        : "bg-[#0a0f1c] border-white/5 text-slate-400 hover:border-white/20 hover:text-slate-200"
+                        ? "bg-white border-[#4285F4] text-[#4285F4] shadow-[0_8px_20px_rgba(66,133,244,0.12)] sm:-translate-y-1"
+                        : "bg-gray-50 border-transparent text-gray-700 hover:bg-white hover:border-gray-200 hover:shadow-sm"
                     }`}
                   >
                     {budget}
@@ -270,24 +343,24 @@ export default function StartProject() {
               </div>
             </div>
 
-            <div className="flex flex-col gap-6 p-6 sm:p-10 rounded-3xl bg-[#070b14] border border-white/5 shadow-2xl relative overflow-hidden group">
-              <div className="absolute inset-0 bg-linear-to-t from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-              <h2 className="text-xl sm:text-2xl font-black text-white m-0 tracking-tight flex items-center gap-4 relative z-10 mb-2">
-                <span className="flex items-center justify-center w-8 h-8 rounded-full bg-blue-500/20 text-[#3b82f6] text-sm">
+            {/* Section 3: Timeline */}
+            <div className="flex flex-col gap-6 sm:gap-8 p-6 sm:p-10 lg:p-12 rounded-[32px] bg-white border border-gray-200 shadow-sm relative overflow-hidden">
+              <h2 className="text-[22px] sm:text-[24px] font-semibold text-black m-0 tracking-tight flex items-center gap-4">
+                <span className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-50 border border-gray-200 text-black text-[13px] font-bold">
                   3
                 </span>
                 Estimated Timeline
               </h2>
-              <div className="flex flex-col gap-3 relative z-10">
+              <div className="flex flex-col gap-3">
                 {timelineOptions.map((time, i) => (
                   <button
                     key={i}
                     type="button"
                     onClick={() => handleSelect("timeline", time)}
-                    className={`px-6 py-5 rounded-2xl border text-left font-black tracking-wide text-[14px] transition-all duration-300 outline-none active:scale-[0.98] ${
+                    className={`px-6 py-5 rounded-[20px] border text-left font-semibold tracking-tight text-[15px] transition-all duration-300 outline-none active:scale-[0.98] ${
                       formData.timeline === time
-                        ? "bg-[#3b82f6]/10 border-[#3b82f6] text-white shadow-[0_0_15px_rgba(59,130,246,0.1)] pl-8"
-                        : "bg-[#0a0f1c] border-white/5 text-slate-400 hover:border-white/20 hover:text-slate-200"
+                        ? "bg-white border-[#4285F4] text-[#4285F4] shadow-[0_8px_20px_rgba(66,133,244,0.12)] sm:-translate-y-1"
+                        : "bg-gray-50 border-transparent text-gray-700 hover:bg-white hover:border-gray-200 hover:shadow-sm"
                     }`}
                   >
                     {time}
@@ -297,48 +370,48 @@ export default function StartProject() {
             </div>
           </div>
 
-          <div className="flex flex-col gap-6 p-6 sm:p-10 rounded-3xl bg-[#070b14] border border-white/5 shadow-2xl relative overflow-hidden group">
-            <div className="absolute inset-0 bg-linear-to-t from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-            <h2 className="text-xl sm:text-2xl font-black text-white m-0 tracking-tight flex items-center gap-4 relative z-10 mb-2">
-              <span className="flex items-center justify-center w-8 h-8 rounded-full bg-blue-500/20 text-[#3b82f6] text-sm">
+          {/* Section 4: Details */}
+          <div className="flex flex-col gap-6 sm:gap-8 p-6 sm:p-10 lg:p-12 rounded-[32px] bg-white border border-gray-200 shadow-sm relative overflow-hidden">
+            <h2 className="text-[22px] sm:text-[24px] font-semibold text-black m-0 tracking-tight flex items-center gap-4 mb-2">
+              <span className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-50 border border-gray-200 text-black text-[13px] font-bold">
                 4
               </span>
               Project & Contact Details
             </h2>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 relative z-10">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
               <div className="relative group/input">
-                <User className="absolute top-5 left-5 w-5 h-5 text-slate-500 group-focus-within/input:text-[#3b82f6] transition-colors pointer-events-none" />
+                <User className="absolute top-4 sm:top-5 left-5 w-5 h-5 text-gray-400 group-focus-within/input:text-[#4285F4] transition-colors pointer-events-none" />
                 <input
                   type="text"
                   placeholder="Your Name"
                   required
                   value={formData.name}
                   onChange={(e) => handleSelect("name", e.target.value)}
-                  className="w-full bg-[#0a0f1c] border border-white/5 rounded-2xl py-5 pl-14 pr-5 text-[15px] font-medium text-white placeholder-slate-600 focus:outline-none focus:border-[#3b82f6] focus:bg-[#3b82f6]/5 transition-all shadow-inner"
+                  className="w-full bg-gray-50 border border-gray-200 rounded-[20px] py-4 sm:py-5 pl-14 pr-5 text-[15px] font-medium text-black placeholder-gray-400 focus:outline-none focus:border-[#4285F4] focus:bg-[#F0F7FF] transition-all"
                 />
               </div>
 
               <div className="relative group/input">
-                <Mail className="absolute top-5 left-5 w-5 h-5 text-slate-500 group-focus-within/input:text-[#3b82f6] transition-colors pointer-events-none" />
+                <Mail className="absolute top-4 sm:top-5 left-5 w-5 h-5 text-gray-400 group-focus-within/input:text-[#4285F4] transition-colors pointer-events-none" />
                 <input
                   type="email"
                   placeholder="Email Address"
                   required
                   value={formData.email}
                   onChange={(e) => handleSelect("email", e.target.value)}
-                  className="w-full bg-[#0a0f1c] border border-white/5 rounded-2xl py-5 pl-14 pr-5 text-[15px] font-medium text-white placeholder-slate-600 focus:outline-none focus:border-[#3b82f6] focus:bg-[#3b82f6]/5 transition-all shadow-inner"
+                  className="w-full bg-gray-50 border border-gray-200 rounded-[20px] py-4 sm:py-5 pl-14 pr-5 text-[15px] font-medium text-black placeholder-gray-400 focus:outline-none focus:border-[#4285F4] focus:bg-[#F0F7FF] transition-all"
                 />
               </div>
 
               <div className="relative md:col-span-2 group/input">
-                <Building className="absolute top-5 left-5 w-5 h-5 text-slate-500 group-focus-within/input:text-[#3b82f6] transition-colors pointer-events-none" />
+                <Building className="absolute top-4 sm:top-5 left-5 w-5 h-5 text-gray-400 group-focus-within/input:text-[#4285F4] transition-colors pointer-events-none" />
                 <input
                   type="text"
                   placeholder="Company Name (Optional)"
                   value={formData.company}
                   onChange={(e) => handleSelect("company", e.target.value)}
-                  className="w-full bg-[#0a0f1c] border border-white/5 rounded-2xl py-5 pl-14 pr-5 text-[15px] font-medium text-white placeholder-slate-600 focus:outline-none focus:border-[#3b82f6] focus:bg-[#3b82f6]/5 transition-all shadow-inner"
+                  className="w-full bg-gray-50 border border-gray-200 rounded-[20px] py-4 sm:py-5 pl-14 pr-5 text-[15px] font-medium text-black placeholder-gray-400 focus:outline-none focus:border-[#4285F4] focus:bg-[#F0F7FF] transition-all"
                 />
               </div>
 
@@ -349,7 +422,7 @@ export default function StartProject() {
                   rows="6"
                   value={formData.details}
                   onChange={(e) => handleSelect("details", e.target.value)}
-                  className="w-full bg-[#0a0f1c] border border-white/5 rounded-2xl p-5 text-[15px] font-medium leading-relaxed text-white placeholder-slate-600 focus:outline-none focus:border-[#3b82f6] focus:bg-[#3b82f6]/5 transition-all resize-none shadow-inner"
+                  className="w-full bg-gray-50 border border-gray-200 rounded-[24px] p-5 sm:p-6 text-[15px] font-medium leading-relaxed text-black placeholder-gray-400 focus:outline-none focus:border-[#4285F4] focus:bg-[#F0F7FF] transition-all resize-none"
                 />
               </div>
             </div>
@@ -358,21 +431,21 @@ export default function StartProject() {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="flex items-center justify-center gap-3 w-full px-8 py-6 rounded-2xl bg-linear-to-r from-[#3b82f6] to-[#2563eb] text-white hover:from-[#2563eb] hover:to-[#1d4ed8] transition-all duration-300 outline-none group/btn active:scale-[0.98] disabled:opacity-70 disabled:active:scale-100 transform-gpu mt-2 shadow-[0_0_30px_rgba(59,130,246,0.25)] hover:shadow-[0_0_40px_rgba(59,130,246,0.4)] border border-blue-400/20"
+            className="flex items-center justify-center gap-3 w-full px-8 py-5 sm:py-6 rounded-[24px] bg-[#111827] text-white hover:bg-black transition-all duration-300 outline-none group/btn active:scale-[0.98] disabled:opacity-70 disabled:active:scale-100 mt-2 shadow-sm"
           >
             {isSubmitting ? (
               <>
-                <Loader2 className="w-6 h-6 animate-spin" />
-                <h2 className="text-[17px] font-black m-0 text-inherit tracking-wide uppercase">
+                <Loader2 className="w-5 h-5 sm:w-6 sm:h-6 animate-spin" />
+                <h2 className="text-[16px] sm:text-[17px] font-bold m-0 text-inherit tracking-wide">
                   Processing...
                 </h2>
               </>
             ) : (
               <>
-                <h2 className="text-[17px] font-black m-0 text-inherit tracking-wide uppercase">
+                <h2 className="text-[16px] sm:text-[17px] font-bold m-0 text-inherit tracking-wide">
                   Submit Request
                 </h2>
-                <ArrowRight className="w-6 h-6 transform group-hover/btn:translate-x-1 transition-transform" />
+                <ArrowRight className="w-5 h-5 sm:w-6 sm:h-6 transform group-hover/btn:translate-x-1 transition-transform" />
               </>
             )}
           </button>

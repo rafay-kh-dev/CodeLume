@@ -142,7 +142,7 @@ export default function Footer() {
             <span className="text-[13px] font-medium text-gray-500 hidden sm:block">
               © 2026 CodeLume
             </span>
-            <Link href="/about-codelume" className="text-[13px] font-medium text-gray-500 hover:text-black transition-colors outline-none">
+            <Link href="/about" className="text-[13px] font-medium text-gray-500 hover:text-black transition-colors outline-none">
               About CodeLume
             </Link>
             <Link href="/privacy-policy" className="text-[13px] font-medium text-gray-500 hover:text-black transition-colors outline-none">

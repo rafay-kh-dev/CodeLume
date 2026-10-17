@@ -40,7 +40,7 @@ const toolsData = [
   { title: "Meta Tag Extractor", link: "/tools/meta-extractor", icon: GoogleSearchConsole },
 ];
 
-const standardLinks = ["Pricing", "Enterprise", "Resources"];
+const standardLinks = ["About", "Blogs", "Case Studies"];
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);

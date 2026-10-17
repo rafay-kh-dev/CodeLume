@@ -5,7 +5,7 @@ export const metadata = {
   description:
     "By accessing or using our platform, you agree to be bound by these Terms of Service. Please read them carefully before using our website or accessing our educational materials.",
   alternates: {
-    canonical: "https://www.codelume.online/terms-of-service",
+    canonical: "https://www.codelume.online/terms",
   },
 };
 
@@ -17,7 +17,7 @@ export default function TermsOfServiceLayout({ children }) {
     name: "Terms of Service | CodeLume",
     description:
       "By accessing or using our platform, you agree to be bound by these Terms of Service. Please read them carefully before using our website or accessing our educational materials.",
-    url: "https://www.codelume.online/terms-of-service",
+    url: "https://www.codelume.online/terms",
     inLanguage: "en-AU",
     publisher: {
       "@type": "Organization",

@@ -5,7 +5,7 @@ export const metadata = {
   description:
     "Our commitment to protecting your privacy and ensuring your personal information is handled in a safe and responsible manner in accordance with the Australian Privacy Principles (APPs).",
   alternates: {
-    canonical: "https://www.codelume.online/privacy-policy",
+    canonical: "https://www.codelume.online/privacy",
   },
 };
 
@@ -17,7 +17,7 @@ export default function PrivacyPolicyLayout({ children }) {
     name: "Privacy Policy | CodeLume",
     description:
       "Our commitment to protecting your privacy and ensuring your personal information is handled in a safe and responsible manner in accordance with the Australian Privacy Principles (APPs).",
-    url: "https://www.codelume.online/privacy-policy",
+    url: "https://www.codelume.online/privacy",
     inLanguage: "en-AU",
     publisher: {
       "@type": "Organization",
