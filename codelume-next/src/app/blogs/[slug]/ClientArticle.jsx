@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import DOMPurify from "dompurify";
 import { ArrowLeft, Calendar, Clock, Loader2, User, Share2, Code2 } from "lucide-react";
 
 // Custom SVG Icons
@@ -64,6 +65,28 @@ export default function ClientArticle({ slug }) {
     );
   }
 
+  const sanitizedContent = DOMPurify.sanitize(post.content || "", {
+    ALLOWED_TAGS: [
+      "p",
+      "h1",
+      "h2",
+      "h3",
+      "h4",
+      "strong",
+      "em",
+      "ul",
+      "ol",
+      "li",
+      "a",
+      "img",
+      "blockquote",
+      "code",
+      "pre",
+      "br",
+    ],
+    ALLOWED_ATTR: ["href", "src", "alt"],
+  });
+
   const shareUrl = typeof window !== "undefined" ? window.location.href : "";
 
   return (
@@ -91,7 +114,7 @@ export default function ClientArticle({ slug }) {
                 <img src={post.coverImage} alt={post.title} className="w-full h-auto max-h-[600px] object-cover" />
               </div>
             )}
-            <div className="text-lg text-slate-300 leading-[1.8] tracking-wide [&>p]:mb-8 [&>h2]:text-3xl [&>h2]:font-black [&>h2]:text-white [&>h2]:mt-12 [&>h2]:mb-6 [&_a]:text-blue-400 [&_a:hover]:text-blue-300 [&_a]:underline [&_strong]:text-white [&_strong]:font-black" dangerouslySetInnerHTML={{ __html: post.content }} />
+            <div className="text-lg text-slate-300 leading-[1.8] tracking-wide [&>p]:mb-8 [&>h2]:text-3xl [&>h2]:font-black [&>h2]:text-white [&>h2]:mt-12 [&>h2]:mb-6 [&_a]:text-blue-400 [&_a:hover]:text-blue-300 [&_a]:underline [&_strong]:text-white [&_strong]:font-black" dangerouslySetInnerHTML={{ __html: sanitizedContent }} />
           </div>
           <aside className="w-full lg:w-1/3 lg:sticky lg:top-32 self-start space-y-8">
             <div className="bg-[#0a0f1c] border border-white/5 rounded-3xl p-8 shadow-xl relative overflow-hidden">

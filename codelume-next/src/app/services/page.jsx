@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { ArrowRight, Sparkles } from "lucide-react";
 // Naye premium SVG Icons
@@ -17,6 +17,100 @@ import {
   Adobe,
 } from "@thesvg/react";
 
+// Scroll-Triggered Typewriter Effect for Heading (Zero Layout Shift)
+const TypewriterHeading = ({ text }) => {
+  const [displayedText, setDisplayedText] = useState("");
+  const [hasStarted, setHasStarted] = useState(false);
+  const headingRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setHasStarted(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.2 },
+    );
+
+    if (headingRef.current) {
+      observer.observe(headingRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!hasStarted) return;
+
+    let typingInterval;
+    let i = 0;
+
+    const startTimeout = setTimeout(() => {
+      // FIX: Moved inside setTimeout to avoid synchronous state update ESLint warning
+      setDisplayedText("");
+
+      typingInterval = setInterval(() => {
+        if (i < text.length) {
+          setDisplayedText(text.substring(0, i + 1));
+          i++;
+        } else {
+          clearInterval(typingInterval);
+        }
+      }, 45);
+    }, 200);
+
+    // FIX: Properly clearing both timeout and interval to prevent memory leaks
+    return () => {
+      clearTimeout(startTimeout);
+      if (typingInterval) clearInterval(typingInterval);
+    };
+  }, [hasStarted, text]);
+
+  const lines = displayedText.split("\n");
+  const fullLines = text.split("\n");
+
+  const headingClasses =
+    "text-4xl sm:text-6xl lg:text-[4rem] font-medium tracking-tight text-black leading-[1.05] select-none cursor-default w-full m-0 text-center";
+
+  return (
+    <div
+      ref={headingRef}
+      className="min-h-[100px] sm:min-h-[140px] lg:min-h-[150px] flex items-center justify-center mb-6 w-full relative"
+    >
+      {/* INVISIBLE PLACEHOLDER */}
+      <h2 className={`${headingClasses} opacity-0 pointer-events-none`}>
+        {fullLines.map((line, idx) => (
+          <React.Fragment key={idx}>
+            {line}
+            {idx !== fullLines.length - 1 && <br />}
+          </React.Fragment>
+        ))}
+      </h2>
+
+      {/* VISIBLE TYPING TEXT */}
+      <h2 className={`${headingClasses} absolute top-0 left-0 h-full`}>
+        {lines.map((line, idx) => (
+          <React.Fragment key={idx}>
+            <span className={idx === 1 ? "text-gray-400" : "text-black"}>
+              {line}
+            </span>
+            {idx !== lines.length - 1 && <br />}
+          </React.Fragment>
+        ))}
+        <span
+          className="inline-block w-[3.5px] sm:w-[4px] h-[0.8em] ml-1.5 sm:ml-2 animate-[pulse_1s_ease-in-out_infinite] align-middle translate-y-[-4px] sm:translate-y-[-6px] rounded-full"
+          style={{
+            background:
+              "linear-gradient(to bottom, #4285F4, #34A853, #FBBC05, #EA4335)",
+          }}
+        ></span>
+      </h2>
+    </div>
+  );
+};
+
 export default function Service() {
   const services = [
     {
@@ -25,24 +119,26 @@ export default function Service() {
       description:
         "Full-stack JavaScript solutions using MongoDB, Express, React, & Node.js.",
       badge: "Most Demanding",
-      badgeColor: "text-blue-400 bg-blue-500/10 border-blue-500/30",
-      icon: <ReactIcon className="w-7 h-7" />,
-      bg: "bg-blue-500/10",
-      hoverBorder: "group-hover:border-blue-500/50",
+      badgeColor: "text-[#4285F4] bg-[#4285F4]/10 border-[#4285F4]/20",
+      icon: <ReactIcon className="w-7 h-7 text-[#4285F4]" />,
+      bg: "bg-[#4285F4]/5 border-[#4285F4]/20",
+      hoverBorder:
+        "hover:border-[#4285F4]/40 hover:shadow-[0_12px_30px_rgba(66,133,244,0.1)]",
       price: "$149",
-      link: "/services/mern-stack",
+      link: "/start-project",
     },
     {
       id: 2,
       title: "PHP & Laravel",
       description: "Robust, secure, and highly scalable backend architectures.",
       badge: "Most Demanding",
-      badgeColor: "text-rose-400 bg-rose-500/10 border-rose-500/30",
-      icon: <Laravel className="w-7 h-7" />,
-      bg: "bg-rose-500/10",
-      hoverBorder: "group-hover:border-rose-500/50",
+      badgeColor: "text-[#EA4335] bg-[#EA4335]/10 border-[#EA4335]/20",
+      icon: <Laravel className="w-7 h-7 text-[#EA4335]" />,
+      bg: "bg-[#EA4335]/5 border-[#EA4335]/20",
+      hoverBorder:
+        "hover:border-[#EA4335]/40 hover:shadow-[0_12px_30px_rgba(234,67,53,0.1)]",
       price: "$139",
-      link: "/services/php-laravel",
+      link: "/start-project",
     },
     {
       id: 3,
@@ -50,12 +146,13 @@ export default function Service() {
       description:
         "Enterprise-grade frontend frameworks for complex web applications.",
       badge: "Enterprise",
-      badgeColor: "text-red-400 bg-red-500/10 border-red-500/30",
-      icon: <Angular className="w-7 h-7" />,
-      bg: "bg-red-500/10",
-      hoverBorder: "group-hover:border-red-500/50",
+      badgeColor: "text-[#FBBC05] bg-[#FBBC05]/10 border-[#FBBC05]/20",
+      icon: <Angular className="w-7 h-7 text-[#FBBC05]" />,
+      bg: "bg-[#FBBC05]/5 border-[#FBBC05]/20",
+      hoverBorder:
+        "hover:border-[#FBBC05]/40 hover:shadow-[0_12px_30px_rgba(251,188,5,0.1)]",
       price: "$135",
-      link: "/services/angular-apps",
+      link: "/start-project",
     },
     {
       id: 4,
@@ -63,12 +160,13 @@ export default function Service() {
       description:
         "Bespoke digital solutions tailored exactly to your business logic.",
       badge: "Top Rated",
-      badgeColor: "text-indigo-400 bg-indigo-500/10 border-indigo-500/30",
-      icon: <GcpCloudMonitoring className="w-7 h-7" />,
-      bg: "bg-indigo-500/10",
-      hoverBorder: "group-hover:border-indigo-500/50",
+      badgeColor: "text-[#34A853] bg-[#34A853]/10 border-[#34A853]/20",
+      icon: <GcpCloudMonitoring className="w-7 h-7 text-[#34A853]" />,
+      bg: "bg-[#34A853]/5 border-[#34A853]/20",
+      hoverBorder:
+        "hover:border-[#34A853]/40 hover:shadow-[0_12px_30px_rgba(52,168,83,0.1)]",
       price: "$299",
-      link: "/services/custom-platforms",
+      link: "/start-project",
     },
     {
       id: 5,
@@ -76,12 +174,13 @@ export default function Service() {
       description:
         "Custom themes, plugins, and powerful e-commerce experiences.",
       badge: "Most Popular",
-      badgeColor: "text-cyan-400 bg-cyan-500/10 border-cyan-500/30",
-      icon: <Wordpress className="w-7 h-7" />,
-      bg: "bg-cyan-500/10",
-      hoverBorder: "group-hover:border-cyan-500/50",
+      badgeColor: "text-[#4285F4] bg-[#4285F4]/10 border-[#4285F4]/20",
+      icon: <Wordpress className="w-7 h-7 text-[#4285F4]" />,
+      bg: "bg-[#4285F4]/5 border-[#4285F4]/20",
+      hoverBorder:
+        "hover:border-[#4285F4]/40 hover:shadow-[0_12px_30px_rgba(66,133,244,0.1)]",
       price: "$100",
-      link: "/services/wordpress",
+      link: "/start-project",
     },
     {
       id: 6,
@@ -89,12 +188,13 @@ export default function Service() {
       description:
         "High-converting storefronts and highly customised Shopify apps.",
       badge: "High Converting",
-      badgeColor: "text-emerald-400 bg-emerald-500/10 border-emerald-500/30",
-      icon: <Shopify className="w-7 h-7" />,
-      bg: "bg-emerald-500/10",
-      hoverBorder: "group-hover:border-emerald-500/50",
+      badgeColor: "text-[#34A853] bg-[#34A853]/10 border-[#34A853]/20",
+      icon: <Shopify className="w-7 h-7 text-[#34A853]" />,
+      bg: "bg-[#34A853]/5 border-[#34A853]/20",
+      hoverBorder:
+        "hover:border-[#34A853]/40 hover:shadow-[0_12px_30px_rgba(52,168,83,0.1)]",
       price: "$115",
-      link: "/services/shopify",
+      link: "/start-project",
     },
     {
       id: 7,
@@ -102,12 +202,13 @@ export default function Service() {
       description:
         "Pixel-perfect, lightning-fast, and visually stunning responsive sites.",
       badge: "Trending",
-      badgeColor: "text-purple-400 bg-purple-500/10 border-purple-500/30",
-      icon: <Webflow className="w-7 h-7" />,
-      bg: "bg-purple-500/10",
-      hoverBorder: "group-hover:border-purple-500/50",
+      badgeColor: "text-[#EA4335] bg-[#EA4335]/10 border-[#EA4335]/20",
+      icon: <Webflow className="w-7 h-7 text-[#EA4335]" />,
+      bg: "bg-[#EA4335]/5 border-[#EA4335]/20",
+      hoverBorder:
+        "hover:border-[#EA4335]/40 hover:shadow-[0_12px_30px_rgba(234,67,53,0.1)]",
       price: "$149",
-      link: "/services/webflow",
+      link: "/start-project",
     },
     {
       id: 8,
@@ -115,12 +216,13 @@ export default function Service() {
       description:
         "Connecting your web apps with third-party services seamlessly.",
       badge: "High Speed",
-      badgeColor: "text-orange-400 bg-orange-500/10 border-orange-500/30",
-      icon: <GcpApiMonetization className="w-7 h-7" />,
-      bg: "bg-orange-500/10",
-      hoverBorder: "group-hover:border-orange-500/50",
+      badgeColor: "text-[#FBBC05] bg-[#FBBC05]/10 border-[#FBBC05]/20",
+      icon: <GcpApiMonetization className="w-7 h-7 text-[#FBBC05]" />,
+      bg: "bg-[#FBBC05]/5 border-[#FBBC05]/20",
+      hoverBorder:
+        "hover:border-[#FBBC05]/40 hover:shadow-[0_12px_30px_rgba(251,188,5,0.1)]",
       price: "$99",
-      link: "/services/api-integrations",
+      link: "/start-project",
     },
     {
       id: 9,
@@ -128,12 +230,13 @@ export default function Service() {
       description:
         "High-performance iOS and Android applications engineered for scale.",
       badge: "Native Build",
-      badgeColor: "text-teal-400 bg-teal-500/10 border-teal-500/30",
-      icon: <Flutter className="w-7 h-7 text-teal-400" />,
-      bg: "bg-teal-500/10",
-      hoverBorder: "group-hover:border-teal-500/50",
+      badgeColor: "text-[#34A853] bg-[#34A853]/10 border-[#34A853]/20",
+      icon: <Flutter className="w-7 h-7 text-[#34A853]" />,
+      bg: "bg-[#34A853]/5 border-[#34A853]/20",
+      hoverBorder:
+        "hover:border-[#34A853]/40 hover:shadow-[0_12px_30px_rgba(52,168,83,0.1)]",
       price: "$399",
-      link: "/services/mobile-apps",
+      link: "/start-project",
     },
     {
       id: 10,
@@ -141,12 +244,13 @@ export default function Service() {
       description:
         "User-centric interfaces crafted in Figma for maximum conversion.",
       badge: "Creative",
-      badgeColor: "text-pink-400 bg-pink-500/10 border-pink-500/30",
-      icon: <Figma className="w-7 h-7 text-pink-400" />,
-      bg: "bg-pink-500/10",
-      hoverBorder: "group-hover:border-pink-500/50",
+      badgeColor: "text-[#4285F4] bg-[#4285F4]/10 border-[#4285F4]/20",
+      icon: <Figma className="w-7 h-7 text-[#4285F4]" />,
+      bg: "bg-[#4285F4]/5 border-[#4285F4]/20",
+      hoverBorder:
+        "hover:border-[#4285F4]/40 hover:shadow-[0_12px_30px_rgba(66,133,244,0.1)]",
       price: "$199",
-      link: "/services/ui-ux-design",
+      link: "/start-project",
     },
     {
       id: 11,
@@ -154,57 +258,56 @@ export default function Service() {
       description:
         "From 0 to 100. Complete brand identity, web engineering, and marketing.",
       badge: "Agency Premium",
-      badgeColor: "text-amber-400 bg-amber-500/10 border-amber-500/30",
-      icon: <Adobe className="w-7 h-7 text-amber-400" />,
-      bg: "bg-amber-500/10",
-      hoverBorder: "group-hover:border-amber-500/50",
+      badgeColor: "text-[#EA4335] bg-[#EA4335]/10 border-[#EA4335]/20",
+      icon: <Adobe className="w-7 h-7 text-[#EA4335]" />,
+      bg: "bg-[#EA4335]/5 border-[#EA4335]/20",
+      hoverBorder:
+        "hover:border-[#EA4335]/40 hover:shadow-[0_12px_30px_rgba(234,67,53,0.1)]",
       price: "$1,499",
-      link: "/services/full-branding",
+      link: "/start-project",
     },
   ];
 
   return (
-    <section className="bg-[#030712] text-white font-jakarta py-24 overflow-hidden relative">
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-[500px] bg-[radial-gradient(ellipse_at_top,rgba(37,99,235,0.08)_0%,transparent_70%)] pointer-events-none" />
+    <section className="bg-white text-black font-jakarta py-24 sm:py-32 overflow-hidden relative">
+      <style>
+        {`@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap');
+          .font-jakarta { font-family: 'Plus Jakarta Sans', sans-serif; }`}
+      </style>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
-        <div className="flex flex-col items-center text-center mb-16 max-w-3xl mx-auto">
-          <div className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 shadow-[inset_0_0_10px_rgba(255,255,255,0.02)] mb-6 backdrop-blur-md">
-            <Sparkles className="w-4 h-4 text-[#3b82f6]" />
-            <h2 className="text-[11px] sm:text-[12px] font-extrabold text-slate-300 uppercase tracking-[0.2em] m-0">
-              My Expertise
-            </h2>
-          </div>
-          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-[1.1] m-0 drop-shadow-lg mb-6">
-            Bespoke digital solutions <br className="hidden sm:block" />
-            <span className="text-transparent bg-clip-text bg-linear-to-r from-[#3b82f6] via-indigo-400 to-cyan-400">
-              to scale your business.
-            </span>
-          </h2>
-          <p className="text-slate-400 text-lg leading-relaxed">
+      {/* Subtle Top Gradient */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-[600px] bg-[radial-gradient(ellipse_at_top,rgba(0,0,0,0.02)_0%,transparent_70%)] pointer-events-none" />
+
+      <div className="max-w-[1300px] mx-auto px-5 sm:px-10 lg:px-12 relative z-10 w-full">
+        <div className="flex flex-col items-center text-center mb-16 sm:mb-24 max-w-3xl mx-auto">
+          <TypewriterHeading
+            text={"Bespoke digital solutions\nto scale your business."}
+          />
+
+          <p className="text-gray-500 text-[15px] sm:text-[17px] font-medium leading-relaxed max-w-2xl m-0">
             As an independent professional, I provide end-to-end digital
-            services. From writing clean code to crafting beautiful designs,
-            find a package that fits your needs perfectly.
+            services. From writing clean architecture to crafting beautiful
+            designs, find a package that fits your needs perfectly.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-[1300px] mx-auto">
           {services.map((service) => (
             <Link
               key={service.id}
               href={service.link}
-              className={`flex flex-col bg-[#0a0f1c] border border-white/5 rounded-3xl p-6 group transition-all duration-500 hover:-translate-y-2 hover:bg-[#0f1629] hover:shadow-2xl relative ${service.hoverBorder}`}
+              className={`flex flex-col bg-white border border-gray-200 rounded-[32px] p-7 sm:p-8 group transition-all duration-500 hover:-translate-y-1.5 relative outline-none active:scale-[0.98] ${service.hoverBorder}`}
             >
-              <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center justify-between mb-8">
                 <div
-                  className={`w-14 h-14 shrink-0 rounded-2xl ${service.bg} flex items-center justify-center transition-transform duration-500 group-hover:scale-110`}
+                  className={`w-14 h-14 shrink-0 rounded-[20px] border flex items-center justify-center transition-transform duration-500 group-hover:scale-110 ${service.bg}`}
                 >
                   {service.icon}
                 </div>
 
                 {service.badge && (
                   <span
-                    className={`text-[10px] font-extrabold uppercase tracking-wider px-3 py-1 rounded-full border backdrop-blur-xs ${service.badgeColor}`}
+                    className={`text-[10px] font-extrabold uppercase tracking-wider px-3.5 py-1.5 rounded-full border ${service.badgeColor}`}
                   >
                     {service.badge}
                   </span>
@@ -212,26 +315,26 @@ export default function Service() {
               </div>
 
               <div className="flex flex-col flex-grow mb-8">
-                <h2 className="text-xl font-bold text-white mb-3 m-0 group-hover:text-[#3b82f6] transition-colors">
+                <h2 className="text-[20px] font-bold text-black mb-3 m-0 transition-colors">
                   {service.title}
                 </h2>
-                <p className="text-slate-400 leading-relaxed text-[14px] m-0">
+                <p className="text-gray-500 font-medium leading-relaxed text-[14px] m-0 line-clamp-3">
                   {service.description}
                 </p>
               </div>
 
-              <div className="pt-5 border-t border-white/10 flex items-center justify-between mt-auto">
+              <div className="pt-6 border-t border-gray-100 flex items-center justify-between mt-auto">
                 <div className="flex flex-col">
-                  <span className="text-[10px] text-slate-500 uppercase tracking-[0.2em] font-black mb-1">
+                  <span className="text-[10px] text-gray-400 uppercase tracking-[0.2em] font-bold mb-1">
                     Starting From
                   </span>
-                  <span className="text-2xl font-black text-white m-0 tracking-tight">
+                  <span className="text-[22px] font-black text-black m-0 tracking-tight">
                     {service.price}
                   </span>
                 </div>
 
-                <div className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center group-hover:bg-[#3b82f6] group-hover:border-[#3b82f6] transition-all duration-300">
-                  <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-white transform group-hover:translate-x-0.5 transition-transform" />
+                <div className="w-10 h-10 rounded-[14px] bg-gray-50 border border-gray-200 flex items-center justify-center group-hover:bg-gray-100 transition-all duration-300">
+                  <ArrowRight className="w-4 h-4 text-gray-500 group-hover:text-black transform group-hover:translate-x-0.5 transition-transform" />
                 </div>
               </div>
             </Link>

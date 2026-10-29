@@ -102,12 +102,16 @@ export default async function Page({ params }) {
       "@id": `https://www.codelume.online/blogs/${slug}`,
     },
   };
+  const serializedSchemaMarkup = JSON.stringify(schemaMarkup)
+    .replace(/</g, "\\u003c")
+    .replace(/>/g, "\\u003e")
+    .replace(/&/g, "\\u0026");
 
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaMarkup) }}
+        dangerouslySetInnerHTML={{ __html: serializedSchemaMarkup }}
       />
       <ClientArticle slug={slug} />
     </>

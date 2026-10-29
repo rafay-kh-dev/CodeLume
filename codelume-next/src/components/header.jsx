@@ -24,11 +24,19 @@ const servicesData = [
   { title: "MERN Stack", link: "/services/mern-stack", icon: ReactIcon },
   { title: "PHP & Laravel", link: "/services/php-laravel", icon: Laravel },
   { title: "Angular Apps", link: "/services/angular-apps", icon: Angular },
-  { title: "Custom Platforms", link: "/services/custom-platforms", icon: GcpCloudMonitoring },
+  {
+    title: "Custom Platforms",
+    link: "/services/custom-platforms",
+    icon: GcpCloudMonitoring,
+  },
   { title: "WordPress Sites", link: "/services/wordpress", icon: Wordpress },
   { title: "Shopify Dev", link: "/services/shopify", icon: Shopify },
   { title: "Webflow Sites", link: "/services/webflow", icon: Webflow },
-  { title: "API & Integrations", link: "/services/api-integrations", icon: GcpApiMonetization },
+  {
+    title: "API & Integrations",
+    link: "/services/api-integrations",
+    icon: GcpApiMonetization,
+  },
   { title: "Mobile Apps", link: "/services/mobile-apps", icon: Flutter },
   { title: "UI/UX Design", link: "/services/ui-ux-design", icon: Figma },
 ];
@@ -37,7 +45,11 @@ const toolsData = [
   { title: "SVG to React JSX", link: "/tools/svg-to-react", icon: ReactIcon },
   { title: "JSON to TypeScript", link: "/tools/json-to-ts", icon: Typescript },
   { title: "JWT Decoder", link: "/tools/jwt-decoder", icon: Jwt },
-  { title: "Meta Tag Extractor", link: "/tools/meta-extractor", icon: GoogleSearchConsole },
+  {
+    title: "Meta Tag Extractor",
+    link: "/tools/meta-extractor",
+    icon: GoogleSearchConsole,
+  },
 ];
 
 const standardLinks = ["About", "Blogs", "Case Studies"];
@@ -46,7 +58,7 @@ export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
   const [mobileToolsOpen, setMobileToolsOpen] = useState(false);
-  
+
   const [activeMenu, setActiveMenu] = useState(null);
   const timeoutRef = useRef(null);
 
@@ -113,7 +125,13 @@ export default function Header() {
       {/* CORRECTED GRADIENT: Diagonal layout makes colors pop evenly on the icon */}
       <svg width="0" height="0" className="absolute pointer-events-none">
         <defs>
-          <linearGradient id="antigravity-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <linearGradient
+            id="antigravity-gradient"
+            x1="0%"
+            y1="0%"
+            x2="100%"
+            y2="100%"
+          >
             <stop stopColor="#4285F4" offset="0%" />
             <stop stopColor="#34A853" offset="33%" />
             <stop stopColor="#FBBC05" offset="66%" />
@@ -139,7 +157,6 @@ export default function Header() {
         onMouseLeave={handleMouseLeave}
       >
         <div className="w-full px-8 md:px-12 lg:px-16 flex items-center justify-between">
-          
           <div className="flex items-center">
             {/* Logo */}
             <Link
@@ -150,7 +167,11 @@ export default function Header() {
                 setMobileMenuOpen(false);
               }}
             >
-              <Code2 className="w-[24px] h-[24px]" stroke="url(#antigravity-gradient)" strokeWidth={2.5} />
+              <Code2
+                className="w-[24px] h-[24px]"
+                stroke="url(#antigravity-gradient)"
+                strokeWidth={2.5}
+              />
               <h2 className="text-[16px] font-semibold tracking-tight text-black m-0">
                 CodeLume
               </h2>
@@ -165,11 +186,15 @@ export default function Header() {
                   href="/services"
                   onClick={() => setActiveMenu(null)}
                   className={`flex items-center gap-1.5 outline-none transition-colors duration-200 text-[14px] font-medium ${
-                    activeMenu === "services" ? "text-black" : "text-[#45474d] hover:text-black"
+                    activeMenu === "services"
+                      ? "text-black"
+                      : "text-[#45474d] hover:text-black"
                   }`}
                 >
-                  Products
-                  <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${activeMenu === "services" ? "rotate-180 text-black" : "text-gray-400"}`} />
+                  Services
+                  <ChevronDown
+                    className={`w-3.5 h-3.5 transition-transform duration-200 ${activeMenu === "services" ? "rotate-180 text-black" : "text-gray-400"}`}
+                  />
                 </Link>
               </div>
 
@@ -181,11 +206,15 @@ export default function Header() {
                   href="/tools"
                   onClick={() => setActiveMenu(null)}
                   className={`flex items-center gap-1.5 outline-none transition-colors duration-200 text-[14px] font-medium ${
-                    activeMenu === "tools" ? "text-black" : "text-[#45474d] hover:text-black"
+                    activeMenu === "tools"
+                      ? "text-black"
+                      : "text-[#45474d] hover:text-black"
                   }`}
                 >
                   Free Tools
-                  <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${activeMenu === "tools" ? "rotate-180 text-black" : "text-gray-400"}`} />
+                  <ChevronDown
+                    className={`w-3.5 h-3.5 transition-transform duration-200 ${activeMenu === "tools" ? "rotate-180 text-black" : "text-gray-400"}`}
+                  />
                 </Link>
               </div>
 
@@ -212,10 +241,16 @@ export default function Header() {
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className={`lg:hidden relative w-[36px] h-[36px] rounded-full flex items-center justify-center transition-colors outline-none ${
-                mobileMenuOpen ? "bg-[#2b2b2b] text-white" : "bg-transparent text-black"
+                mobileMenuOpen
+                  ? "bg-[#2b2b2b] text-white"
+                  : "bg-transparent text-black"
               }`}
             >
-              {mobileMenuOpen ? <X className="w-5 h-5" strokeWidth={1.5} /> : <Menu className="w-6 h-6" strokeWidth={1.5} />}
+              {mobileMenuOpen ? (
+                <X className="w-5 h-5" strokeWidth={1.5} />
+              ) : (
+                <Menu className="w-6 h-6" strokeWidth={1.5} />
+              )}
             </button>
           </div>
         </div>
@@ -223,25 +258,30 @@ export default function Header() {
         {/* --- Mega Menu Dropdowns --- */}
         <div
           className={`hidden lg:block absolute top-[54px] left-0 w-full bg-white border-b border-gray-200 shadow-sm transition-all duration-200 origin-top overflow-hidden font-jakarta ${
-            activeMenu === "services" ? "opacity-100 visible scale-y-100" : "opacity-0 invisible scale-y-95 pointer-events-none"
+            activeMenu === "services"
+              ? "opacity-100 visible scale-y-100"
+              : "opacity-0 invisible scale-y-95 pointer-events-none"
           }`}
           onMouseEnter={() => handleMouseEnter("services")}
         >
           <div className="max-w-[1200px] mx-auto px-10 py-10 flex">
             <div className="w-[35%] pr-10 border-r border-gray-100">
               <h2 className="text-[28px] font-medium tracking-tight text-black mb-5 leading-[1.15]">
-                <span className="font-bold">Explore our</span> custom engineered <span className="font-bold">platforms</span>
+                <span className="font-bold">Explore our</span> custom engineered{" "}
+                <span className="font-bold">platforms</span>
               </h2>
               <Link
                 href="/services"
                 onClick={() => setActiveMenu(null)}
                 className="inline-block px-6 py-2.5 rounded-full bg-[#f8f9fa] hover:bg-gray-100 text-black text-[14px] font-medium transition-colors"
               >
-                View all products
+                View all Services
               </Link>
             </div>
             <div className="w-[65%] pl-12">
-              <h2 className="text-[13px] text-gray-500 mb-5 font-medium">Web Capabilities</h2>
+              <h2 className="text-[13px] text-gray-500 mb-5 font-medium">
+                Web Capabilities
+              </h2>
               <div className="grid grid-cols-2 gap-y-5 gap-x-8">
                 {servicesData.map((service) => {
                   const Icon = service.icon;
@@ -266,14 +306,17 @@ export default function Header() {
 
         <div
           className={`hidden lg:block absolute top-[54px] left-0 w-full bg-white border-b border-gray-200 shadow-sm transition-all duration-200 origin-top overflow-hidden font-jakarta ${
-            activeMenu === "tools" ? "opacity-100 visible scale-y-100" : "opacity-0 invisible scale-y-95 pointer-events-none"
+            activeMenu === "tools"
+              ? "opacity-100 visible scale-y-100"
+              : "opacity-0 invisible scale-y-95 pointer-events-none"
           }`}
           onMouseEnter={() => handleMouseEnter("tools")}
         >
           <div className="max-w-[1200px] mx-auto px-10 py-10 flex">
             <div className="w-[35%] pr-10 border-r border-gray-100">
               <h2 className="text-[28px] font-medium tracking-tight text-black mb-5 leading-[1.15]">
-                <span className="font-bold">Accelerate with</span> our free developer <span className="font-bold">tools</span>
+                <span className="font-bold">Accelerate with</span> our free
+                developer <span className="font-bold">tools</span>
               </h2>
               <Link
                 href="/tools"
@@ -284,7 +327,9 @@ export default function Header() {
               </Link>
             </div>
             <div className="w-[65%] pl-12">
-              <h2 className="text-[13px] text-gray-500 mb-5 font-medium">Developer Tools</h2>
+              <h2 className="text-[13px] text-gray-500 mb-5 font-medium">
+                Developer Tools
+              </h2>
               <div className="grid grid-cols-2 gap-y-5 gap-x-8">
                 {toolsData.map((tool) => {
                   const Icon = tool.icon;
@@ -311,19 +356,27 @@ export default function Header() {
       {/* --- Mobile Menu Canvas --- */}
       <div
         className={`lg:hidden fixed inset-0 z-[50] bg-white transition-opacity duration-300 font-jakarta pt-[54px] ${
-          mobileMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+          mobileMenuOpen
+            ? "opacity-100 pointer-events-auto"
+            : "opacity-0 pointer-events-none"
         }`}
       >
         <div className="h-full overflow-y-auto w-full no-scrollbar pb-24">
           <div className="border-b border-gray-100">
-            <button 
+            <button
               onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
               className="w-full flex items-center justify-between px-6 py-5 bg-white outline-none"
             >
-              <span className="text-[16px] font-medium text-black">Products</span>
-              <ChevronDown className={`w-4 h-4 text-black transition-transform duration-300 ${mobileServicesOpen ? "rotate-180" : ""}`} />
+              <span className="text-[16px] font-medium text-black">
+                Products
+              </span>
+              <ChevronDown
+                className={`w-4 h-4 text-black transition-transform duration-300 ${mobileServicesOpen ? "rotate-180" : ""}`}
+              />
             </button>
-            <div className={`overflow-hidden transition-all duration-300 ease-in-out ${mobileServicesOpen ? "max-h-[800px]" : "max-h-0"}`}>
+            <div
+              className={`overflow-hidden transition-all duration-300 ease-in-out ${mobileServicesOpen ? "max-h-[800px]" : "max-h-0"}`}
+            >
               <div className="px-6 pb-6 flex flex-col gap-6 pt-2">
                 {servicesData.map((service) => {
                   const Icon = service.icon;
@@ -344,14 +397,20 @@ export default function Header() {
           </div>
 
           <div className="border-b border-gray-100">
-            <button 
+            <button
               onClick={() => setMobileToolsOpen(!mobileToolsOpen)}
               className="w-full flex items-center justify-between px-6 py-5 bg-white outline-none"
             >
-              <span className="text-[16px] font-medium text-black">Free Tools</span>
-              <ChevronDown className={`w-4 h-4 text-black transition-transform duration-300 ${mobileToolsOpen ? "rotate-180" : ""}`} />
+              <span className="text-[16px] font-medium text-black">
+                Free Tools
+              </span>
+              <ChevronDown
+                className={`w-4 h-4 text-black transition-transform duration-300 ${mobileToolsOpen ? "rotate-180" : ""}`}
+              />
             </button>
-            <div className={`overflow-hidden transition-all duration-300 ease-in-out ${mobileToolsOpen ? "max-h-[500px]" : "max-h-0"}`}>
+            <div
+              className={`overflow-hidden transition-all duration-300 ease-in-out ${mobileToolsOpen ? "max-h-[500px]" : "max-h-0"}`}
+            >
               <div className="px-6 pb-6 flex flex-col gap-6 pt-2">
                 {toolsData.map((tool) => {
                   const Icon = tool.icon;
@@ -389,7 +448,6 @@ export default function Header() {
           >
             Start Project
           </Link>
-          
         </div>
       </div>
     </>
