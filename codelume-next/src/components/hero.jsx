@@ -13,6 +13,7 @@ import {
 } from "react-icons/si";
 import * as THREE from "three";
 
+// 1. DYNAMIC TYPEWRITER WITH PREMIUM SOFT ZOOM-IN
 const TypewriterText = ({ text }) => {
   const [displayedText, setDisplayedText] = useState("");
   const [hasStarted, setHasStarted] = useState(false);
@@ -40,11 +41,11 @@ const TypewriterText = ({ text }) => {
     if (!hasStarted) return;
 
     let typingInterval;
-
     const startTimeout = setTimeout(() => {
       setDisplayedText("");
       let i = 0;
 
+      // Soft typing speed
       typingInterval = setInterval(() => {
         if (i < text.length) {
           setDisplayedText(text.substring(0, i + 1));
@@ -52,8 +53,8 @@ const TypewriterText = ({ text }) => {
         } else {
           clearInterval(typingInterval);
         }
-      }, 45);
-    }, 500);
+      }, 45); 
+    }, 400);
 
     return () => {
       clearTimeout(startTimeout);
@@ -64,39 +65,89 @@ const TypewriterText = ({ text }) => {
   const lines = displayedText.split("\n");
   const fullLines = text.split("\n");
 
+  // Helper: Renders text character by character. 
+  // Flat index mapping prevents any re-rendering of older characters.
+  const renderLine = (lineStr, isVisible) => {
+    return lineStr.split("").map((char, charIdx) => (
+      <span
+        key={charIdx}
+        className={`inline-block ${isVisible ? "animate-soft-zoom" : ""}`}
+        style={{ whiteSpace: char === " " ? "pre" : "normal" }}
+      >
+        {char}
+      </span>
+    ));
+  };
+
   return (
     <div
       ref={headingRef}
       className="min-h-[120px] sm:min-h-[140px] lg:min-h-[160px] w-full flex justify-center items-start mb-4 sm:mb-6 relative"
     >
-      {/* Invisible Placeholder to prevent Layout Shift */}
-      <h1 className="text-[2.2rem] xs:text-[2.5rem] sm:text-5xl lg:text-[3.2rem] xl:text-[3.5rem] font-medium tracking-tight text-black leading-[1.12] sm:leading-[1.15] select-none cursor-default w-full mx-auto m-0 px-2 sm:px-4 opacity-0 pointer-events-none">
+      {/* Invisible Placeholder: Reserves exact space to prevent Jitter */}
+      <h1 className="opacity-0 pointer-events-none text-[2.2rem] xs:text-[2.5rem] sm:text-5xl lg:text-[3.2rem] xl:text-[3.5rem] font-medium tracking-tight text-black leading-[1.12] sm:leading-[1.15] select-none cursor-default w-full mx-auto m-0 px-2 sm:px-4 text-center">
         {fullLines.map((line, idx) => (
           <React.Fragment key={idx}>
-            {line}
+            {renderLine(line, false)}
             {idx !== fullLines.length - 1 && <br />}
           </React.Fragment>
         ))}
       </h1>
 
       {/* Visible Typing Heading */}
-      <h1 className="absolute top-0 left-0 text-[2.2rem] xs:text-[2.5rem] sm:text-5xl lg:text-[3.2rem] xl:text-[3.5rem] font-medium tracking-tight text-black leading-[1.12] sm:leading-[1.15] select-none cursor-default w-full mx-auto m-0 px-2 sm:px-4">
+      <h1 className="absolute top-0 left-0 text-[2.2rem] xs:text-[2.5rem] sm:text-5xl lg:text-[3.2rem] xl:text-[3.5rem] font-medium tracking-tight text-black leading-[1.12] sm:leading-[1.15] select-none cursor-default w-full mx-auto m-0 px-2 sm:px-4 text-center">
         {lines.map((line, idx) => (
           <React.Fragment key={idx}>
-            {line}
+            <span className={idx === 1 ? "text-gray-400" : "text-black"}>
+              {renderLine(line, true)}
+            </span>
             {idx !== lines.length - 1 && <br />}
           </React.Fragment>
         ))}
-        {displayedText.length < text.length && (
-          <span
-            className="inline-block w-[3px] sm:w-[4px] h-[0.8em] ml-1 sm:ml-1.5 animate-[pulse_1s_ease-in-out_infinite] align-middle translate-y-[-3px] sm:translate-y-[-4px] rounded-full"
-            style={{
-              background:
-                "linear-gradient(to bottom, #4285F4, #34A853, #FBBC05, #EA4335)",
-            }}
-          ></span>
-        )}
+        
+        {/* Blinking Cursor - Moving naturally with the text */}
+        <span
+          className="inline-block w-[3px] sm:w-[4px] h-[0.8em] ml-1 sm:ml-1.5 animate-[pulse_1s_ease-in-out_infinite] align-middle translate-y-[-3px] sm:translate-y-[-4px] rounded-full"
+          style={{
+            background:
+              "linear-gradient(to bottom, #4285F4, #34A853, #FBBC05, #EA4335)",
+          }}
+        ></span>
       </h1>
+    </div>
+  );
+};
+
+// 2. MAGNETIC BUTTON
+const MagneticButton = ({ children }) => {
+  const ref = useRef(null);
+
+  const onMove = (e) => {
+    if (!ref.current) return;
+    const r = ref.current.getBoundingClientRect();
+    const x = e.clientX - r.left - r.width / 2;
+    const y = e.clientY - r.top - r.height / 2;
+    ref.current.style.transform = `translate(${x * 0.35}px, ${y * 0.35}px)`;
+  };
+
+  const onLeave = () => {
+    if (!ref.current) return;
+    ref.current.style.transform = "translate(0,0)";
+  };
+
+  return (
+    <div
+      onMouseMove={onMove}
+      onMouseLeave={onLeave}
+      className="p-4 -m-4 sm:p-8 sm:-m-8 w-full sm:w-auto flex justify-center"
+    >
+      <div
+        ref={ref}
+        style={{ transition: "transform 0.15s ease-out" }}
+        className="w-[80%] max-w-sm sm:w-auto sm:max-w-none"
+      >
+        {children}
+      </div>
     </div>
   );
 };
@@ -104,14 +155,12 @@ const TypewriterText = ({ text }) => {
 export const ThreeBackground = () => {
   const mountRef = useRef(null);
 
-  // FIX: Removed the unnecessary isMounted state and combined everything into one useEffect
   useEffect(() => {
     if (!mountRef.current) return;
     mountRef.current.innerHTML = "";
 
     const width = mountRef.current.clientWidth;
     const height = mountRef.current.clientHeight;
-    // Adjust particle count for mobile performance
     const isMobile = window.innerWidth < 768;
     const particleCount = isMobile ? 600 : 1200;
 
@@ -187,7 +236,6 @@ export const ThreeBackground = () => {
     let windowHalfY = window.innerHeight / 2;
 
     const onPointerMove = (event) => {
-      // Touch support for mobile interaction
       const clientX = event.touches ? event.touches[0].clientX : event.clientX;
       const clientY = event.touches ? event.touches[0].clientY : event.clientY;
 
@@ -304,7 +352,7 @@ export const ThreeBackground = () => {
       material.dispose();
       renderer.dispose();
     };
-  }, []); // Fix: Empty dependency array ensures this only runs once, no isMounted state needed!
+  }, []);
 
   return (
     <div
@@ -334,8 +382,8 @@ export default function Hero() {
   const [showButton, setShowButton] = useState(false);
 
   useEffect(() => {
-    // Delay slightly reduced for mobile snappiness
-    const timer = setTimeout(() => setShowButton(true), 2800);
+    // Shows the button perfectly as the text finishes typing
+    const timer = setTimeout(() => setShowButton(true), 3800);
     return () => clearTimeout(timer);
   }, []);
 
@@ -351,6 +399,25 @@ export default function Hero() {
           
           @keyframes marquee { 0% { transform: translate3d(0,0,0); } 100% { transform: translate3d(-50%,0,0); } }
           .animate-marquee { animation: marquee 40s linear infinite; will-change: transform; }
+
+          /* 🔥 SOFT ZOOM-IN (POP) WITHOUT OVERLAP 🔥 */
+          @keyframes softZoom {
+            0% { 
+              opacity: 0; 
+              transform: scale(0.6); 
+              filter: blur(2px);
+            }
+            100% { 
+              opacity: 1; 
+              transform: scale(1); 
+              filter: blur(0px);
+            }
+          }
+          
+          .animate-soft-zoom {
+            opacity: 0;
+            animation: softZoom 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+          }
         `}
       </style>
 
@@ -374,7 +441,6 @@ export default function Hero() {
       <ThreeBackground />
 
       <div className="flex-1 flex flex-col justify-center items-center w-full relative z-10 px-4 sm:px-10 lg:px-12 pb-4 my-auto">
-        {/* WIDTH INCREASED TO 1300px TO PREVENT 3-LINE WRAP ON DESKTOP */}
         <div className="w-full max-w-[1300px] mx-auto text-center flex flex-col items-center">
           <div className="flex items-center gap-1.5 sm:gap-2 mb-6 sm:mb-8 select-none opacity-0 animate-[fadeIn_1s_ease-out_forwards_0.5s]">
             <style>{`@keyframes fadeIn { to { opacity: 1; } }`}</style>
@@ -389,7 +455,6 @@ export default function Hero() {
             </span>
           </div>
 
-          {/* PERFECT TEXT SIZING: Mobile breaks naturally, Desktop stays in 2 lines */}
           <TypewriterText
             text={
               "Architecting bespoke digital experiences\nwith the next-gen platform"
@@ -399,12 +464,14 @@ export default function Hero() {
           <div
             className={`flex justify-center w-full relative z-20 transition-all duration-1000 mt-4 sm:mt-2 ${showButton ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
           >
-            <Link
-              href="/start-project"
-              className="px-8 sm:px-9 py-3.5 sm:py-4 rounded-[14px] sm:rounded-full bg-[#111827] text-white font-semibold hover:bg-black transition-all duration-200 active:scale-[0.96] sm:active:scale-[0.98] outline-none shadow-sm text-[14.5px] sm:text-[15px] w-[80%] max-w-sm sm:w-auto sm:max-w-none"
-            >
-              Start Project
-            </Link>
+            <MagneticButton>
+              <Link
+                href="/start-project"
+                className="flex items-center justify-center px-8 sm:px-9 py-3.5 sm:py-4 rounded-[14px] sm:rounded-full bg-[#111827] text-white font-semibold hover:bg-black transition-all duration-200 active:scale-[0.96] sm:active:scale-[0.98] outline-none shadow-sm text-[14.5px] sm:text-[15px] w-full"
+              >
+                Start Project
+              </Link>
+            </MagneticButton>
           </div>
         </div>
       </div>

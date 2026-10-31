@@ -1,4 +1,5 @@
 import Hero from "../components/hero";
+import MeetRafay from "../components/MeetRafay";
 import About from "../components/about";
 import Service from "../components/service";
 import OurProcess from "../components/ourprocess";
@@ -11,6 +12,7 @@ export default function Home() {
   return (
     <main className="flex min-h-screen flex-col w-full overflow-hidden">
       <Hero />
+      <MeetRafay />
       <About />
       <Service />
       <OurProcess />

@@ -14,6 +14,8 @@ import {
   MessageSquare,
   PackageCheck,
   UserCheck,
+  Play,
+  Volume2
 } from "lucide-react";
 import { Whatsapp, Gmail } from "@thesvg/react";
 
@@ -67,11 +69,9 @@ const TypewriterHeading = ({ text }) => {
     if (!hasStarted) return;
 
     let typingInterval;
-    let i = 0;
-
     const startTimeout = setTimeout(() => {
       setDisplayedText("");
-
+      let i = 0;
       typingInterval = setInterval(() => {
         if (i < text.length) {
           setDisplayedText(text.substring(0, i + 1));
@@ -97,7 +97,7 @@ const TypewriterHeading = ({ text }) => {
   return (
     <div
       ref={headingRef}
-      className="min-h-[82px] sm:min-h-[140px] md:min-h-[160px] flex items-center justify-center mb-4 sm:mb-6 w-full relative"
+      className="min-h-20 sm:min-h-35 flex items-center justify-center mb-4 sm:mb-6 w-full relative"
     >
       <h2 className={`${headingClasses} opacity-0 pointer-events-none`}>
         {fullLines.map((line, idx) => (
@@ -117,17 +117,93 @@ const TypewriterHeading = ({ text }) => {
             {idx !== lines.length - 1 && <br />}
           </React.Fragment>
         ))}
-        <span
-          className="inline-block w-[3px] sm:w-[4px] h-[0.8em] ml-1 sm:ml-2 animate-[pulse_1s_ease-in-out_infinite] align-middle translate-y-[-3px] sm:translate-y-[-6px] rounded-full"
-          style={{
-            background:
-              "linear-gradient(to bottom, #4285F4, #34A853, #FBBC05, #EA4335)",
-          }}
-        ></span>
+        {displayedText.length < text.length && (
+          <span
+            className="inline-block w-0.5 sm:w-1 h-[0.8em] ml-1 sm:ml-2 animate-[pulse_1s_ease-in-out_infinite] align-middle -translate-y-1 sm:-translate-y-1.5 rounded-full"
+            style={{
+              background:
+                "linear-gradient(to bottom, #4285F4, #34A853, #FBBC05, #EA4335)",
+            }}
+          ></span>
+        )}
       </h2>
     </div>
   );
 };
+
+// ==========================================
+// NEW INLINE VOICE PROFILE COMPONENT
+// ==========================================
+const InlineVoiceProfile = () => {
+  const [isPlaying, setIsPlaying] = useState(false);
+  const audioRef = useRef(null);
+
+  const toggleAudio = () => {
+    if (!audioRef.current) return;
+    if (isPlaying) {
+      audioRef.current.pause();
+    } else {
+      audioRef.current.play();
+    }
+    setIsPlaying(!isPlaying);
+  };
+
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    const handleEnded = () => setIsPlaying(false);
+    audio.addEventListener("ended", handleEnded);
+    return () => audio.removeEventListener("ended", handleEnded);
+  }, []);
+
+  return (
+    <div className="flex-1 w-full flex flex-col items-center justify-center relative z-10 py-6 sm:py-0">
+      <audio ref={audioRef} src="/rafay-intro.mp3" preload="auto" />
+      
+      <div className="relative group/btn cursor-pointer" onClick={toggleAudio}>
+        {/* Pulsing rings when playing */}
+        {isPlaying && (
+          <>
+            <div className="absolute inset-0 rounded-full bg-[#4285F4] animate-ping opacity-20 scale-125 sm:scale-150"></div>
+            <div className="absolute inset-[-6px] sm:inset-[-8px] rounded-full border-[3px] border-[#4285F4] animate-[spin_3s_linear_infinite] border-t-transparent z-20"></div>
+          </>
+        )}
+        
+        {/* The Image */}
+        <div className="relative w-44 h-44 sm:w-56 sm:h-56 rounded-full border-4 border-white shadow-xl overflow-hidden bg-gray-50 flex items-center justify-center z-10 transition-transform duration-300 group-hover/btn:scale-[1.02] active:scale-95">
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-green-50 z-0"></div>
+          
+          {/* Replace with your actual picture in public folder */}
+          <img 
+             src="/rafay-profile.webp" 
+             alt="Rafay Profile" 
+             className="w-full h-full object-cover relative z-10"
+             onError={(e) => { e.currentTarget.style.display = 'none'; }}
+          />
+          
+          {/* Play/Pause Overlay */}
+          <div className={`absolute inset-0 bg-black/40 flex items-center justify-center z-30 transition-opacity duration-300 ${isPlaying ? 'opacity-100' : 'opacity-0 group-hover/btn:opacity-100'}`}>
+            {isPlaying ? (
+              <div className="flex items-center gap-1.5 h-6">
+                <span className="w-1.5 h-full bg-white rounded-full animate-[bounce_1s_infinite_0ms]"></span>
+                <span className="w-1.5 h-3/4 bg-white rounded-full animate-[bounce_1s_infinite_200ms]"></span>
+                <span className="w-1.5 h-full bg-white rounded-full animate-[bounce_1s_infinite_400ms]"></span>
+              </div>
+            ) : (
+              <Play className="w-10 h-10 text-white fill-white ml-2" />
+            )}
+          </div>
+        </div>
+      </div>
+      
+      <div className={`mt-8 sm:mt-10 flex items-center justify-center gap-2.5 text-[12.5px] sm:text-[13.5px] font-bold uppercase tracking-widest px-5 py-2.5 rounded-full border transition-colors duration-300 ${isPlaying ? 'bg-blue-50 text-[#4285F4] border-blue-100' : 'bg-gray-50 text-gray-500 border-gray-200 group-hover/btn:bg-gray-100'}`}>
+        <Volume2 className="w-4 h-4" />
+        {isPlaying ? "Playing Intro..." : "Click to hear my intro"}
+      </div>
+    </div>
+  );
+};
+
 
 export default function AboutCodeLume() {
   const whatIDo = [
@@ -259,56 +335,7 @@ export default function AboutCodeLume() {
             </ul>
           </div>
 
-          {/* Light Theme Mac Terminal Mockup - Responsive Height on Mobile */}
-          <div className="flex-1 w-full flex justify-center lg:justify-end relative z-10">
-            <div className="relative w-full max-w-md sm:aspect-[4/3] rounded-[20px] sm:rounded-3xl bg-gray-50 border border-gray-200 flex items-center justify-center overflow-hidden shadow-md p-2.5 sm:p-4 group">
-              <div className="w-full sm:absolute sm:inset-4 bg-white rounded-[14px] sm:rounded-2xl border border-gray-200 flex flex-col shadow-sm overflow-hidden z-20 group-hover:scale-[1.02] transition-transform duration-500">
-                <div className="h-9 sm:h-10 border-b border-gray-100 flex items-center px-3.5 sm:px-4 gap-2 bg-gray-50/50 shrink-0">
-                  <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-[#EA4335]"></div>
-                  <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-[#FBBC05]"></div>
-                  <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-[#34A853]"></div>
-                  <div className="ml-1.5 sm:ml-2 text-[9px] sm:text-[10px] text-gray-400 font-mono tracking-widest uppercase font-bold">
-                    rafay.js
-                  </div>
-                </div>
-                <div className="p-4 sm:p-6 font-mono text-[11.5px] xs:text-[12.5px] sm:text-[14px] text-gray-700 flex flex-col gap-2 sm:gap-2.5 overflow-x-auto font-medium leading-relaxed">
-                  <p className="m-0">
-                    <span className="text-[#a626a4]">const</span>{" "}
-                    <span className="text-[#4078f2]">rafay</span>{" "}
-                    <span className="text-[#0184bc]">=</span>{" "}
-                    <span className="text-black">{"{"}</span>
-                  </p>
-                  <p className="pl-3 sm:pl-4 m-0">
-                    mode: <span className="text-[#50a14f]">&apos;Solo Web Developer&apos;</span>,
-                  </p>
-                  <p className="pl-3 sm:pl-4 m-0">
-                    website: <span className="text-[#50a14f]">&apos;codelume.online&apos;</span>,
-                  </p>
-                  <p className="pl-3 sm:pl-4 m-0">
-                    stack: <span className="text-[#0184bc]">[</span>
-                    <span className="text-[#50a14f]">&apos;HTML&apos;</span>,{" "}
-                    <span className="text-[#50a14f]">&apos;Tailwind&apos;</span>,{" "}
-                    <span className="text-[#50a14f]">&apos;Next.js&apos;</span>,{" "}
-                    <span className="text-[#50a14f]">&apos;MERN&apos;</span>
-                    <span className="text-[#0184bc]">]</span>,
-                  </p>
-                  <p className="pl-3 sm:pl-4 m-0">
-                    alsoDoes: <span className="text-[#0184bc]">[</span>
-                    <span className="text-[#50a14f]">&apos;SEO&apos;</span>,{" "}
-                    <span className="text-[#50a14f]">&apos;Marketing&apos;</span>,{" "}
-                    <span className="text-[#50a14f]">&apos;Graphics & UX&apos;</span>
-                    <span className="text-[#0184bc]">]</span>,
-                  </p>
-                  <p className="pl-3 sm:pl-4 m-0">
-                    agencyTeam: <span className="text-[#EA4335]">false</span>
-                  </p>
-                  <p className="m-0">
-                    <span className="text-black">{"}"}</span>;
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
+          <InlineVoiceProfile />
         </div>
 
         {/* 3. What I Do Section */}
@@ -469,9 +496,10 @@ export default function AboutCodeLume() {
               <Gmail className="h-5 w-5 shrink-0" /> Email Directly
             </a>
 
+            {/* 🔥 UPDATED SELECT A SERVICE BUTTON: CodeLume Google Blue theme to match exactly! */}
             <Link
               href="/services"
-              className="order-1 md:order-2 flex-1 flex items-center justify-center gap-2.5 px-6 py-3.5 sm:py-4 rounded-xl bg-[#111827] text-white hover:bg-black font-bold text-[14px] sm:text-[15px] transition-all duration-300 w-full shadow-sm hover:-translate-y-0.5 outline-none active:scale-[0.98]"
+              className="order-1 md:order-2 flex-1 flex items-center justify-center gap-2.5 px-6 py-3.5 sm:py-4 rounded-xl bg-[#4285F4] hover:bg-[#3367D6] text-white font-bold text-[14px] sm:text-[15px] transition-all duration-300 w-full shadow-[0_4px_15px_rgba(66,133,244,0.25)] hover:shadow-[0_8px_20px_rgba(66,133,244,0.35)] hover:-translate-y-0.5 outline-none active:scale-[0.98]"
             >
               <Rocket size={18} className="shrink-0" /> Select a Service
             </Link>
