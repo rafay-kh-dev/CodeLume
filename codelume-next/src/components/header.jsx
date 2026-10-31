@@ -1,7 +1,6 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-// Fix: Removed missing 'Linkedin' and used 'Briefcase' for LinkedIn B2B Ads
 import {
   Code2,
   Menu,
@@ -480,7 +479,7 @@ export default function Header() {
         }`}
         onMouseLeave={handleMouseLeave}
       >
-        <div className="w-full px-8 md:px-12 lg:px-16 flex items-center justify-between">
+        <div className="w-full px-4 sm:px-8 md:px-12 lg:px-16 flex items-center justify-between">
           <div className="flex items-center">
             {/* Logo */}
             <Link
@@ -492,11 +491,11 @@ export default function Header() {
               }}
             >
               <Code2
-                className="w-[24px] h-[24px]"
+                className="w-[20px] h-[20px] sm:w-[24px] sm:h-[24px]"
                 stroke="url(#antigravity-gradient)"
                 strokeWidth={2.5}
               />
-              <h2 className="text-[16px] font-semibold tracking-tight text-black m-0">
+              <h2 className="text-[15px] sm:text-[16px] font-semibold tracking-tight text-black m-0">
                 CodeLume
               </h2>
             </Link>
@@ -594,7 +593,8 @@ export default function Header() {
             {/* Left Promo Section */}
             <div className="w-[30%] pr-10 border-r border-gray-100 shrink-0">
               <h2 className="text-[28px] font-medium tracking-tight text-black mb-5 leading-[1.15]">
-                <span className="font-bold">Explore our</span> custom engineered{" "}
+                {/* FIX 1: Agency words replaced with Solo concepts */}
+                <span className="font-bold">Explore my</span> custom engineered{" "}
                 <span className="font-bold">platforms</span>
               </h2>
               <Link
@@ -673,7 +673,8 @@ export default function Header() {
           <div className="max-w-[1200px] mx-auto px-10 py-10 flex">
             <div className="w-[35%] pr-10 border-r border-gray-100">
               <h2 className="text-[28px] font-medium tracking-tight text-black mb-5 leading-[1.15]">
-                <span className="font-bold">Accelerate with</span> our free
+                {/* FIX 1: Agency words replaced with Solo concepts */}
+                <span className="font-bold">Accelerate with</span> my free
                 developer <span className="font-bold">tools</span>
               </h2>
               <Link
@@ -719,11 +720,12 @@ export default function Header() {
             : "opacity-0 pointer-events-none"
         }`}
       >
-        <div className="h-full overflow-y-auto w-full no-scrollbar pb-24">
+        {/* FIX 3: Ensures perfect touch scrolling without glitching */}
+        <div className="h-full w-full overflow-y-auto overflow-x-hidden no-scrollbar pb-[100px]">
           <div className="border-b border-gray-100">
             <button
               onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
-              className="w-full flex items-center justify-between px-6 py-5 bg-white outline-none"
+              className="w-full flex items-center justify-between px-6 py-5 bg-white outline-none active:bg-gray-50"
             >
               <span className="text-[16px] font-medium text-black">
                 Services
@@ -784,7 +786,7 @@ export default function Header() {
           <div className="border-b border-gray-100">
             <button
               onClick={() => setMobileToolsOpen(!mobileToolsOpen)}
-              className="w-full flex items-center justify-between px-6 py-5 bg-white outline-none"
+              className="w-full flex items-center justify-between px-6 py-5 bg-white outline-none active:bg-gray-50"
             >
               <span className="text-[16px] font-medium text-black">
                 Free Tools
@@ -820,19 +822,21 @@ export default function Header() {
               key={item}
               href={`/${item.toLowerCase().replace(/ /g, "-")}`}
               onClick={() => setMobileMenuOpen(false)}
-              className="flex items-center px-6 py-5 border-b border-gray-100 text-[16px] font-medium text-black bg-white"
+              className="flex items-center px-6 py-5 border-b border-gray-100 text-[16px] font-medium text-black bg-white active:bg-gray-50"
             >
               {item}
             </Link>
           ))}
 
-          <Link
-            href="/start-project"
-            onClick={() => setMobileMenuOpen(false)}
-            className="flex items-center px-6 py-5 border-b border-gray-100 text-[16px] font-medium text-black bg-white"
-          >
-            Start Project
-          </Link>
+          <div className="p-6 mt-4">
+            <Link
+              href="/start-project"
+              onClick={() => setMobileMenuOpen(false)}
+              className="flex items-center justify-center w-full py-4 rounded-xl bg-[#111827] text-white text-[15px] font-medium active:scale-[0.98] transition-transform"
+            >
+              Start Project
+            </Link>
+          </div>
         </div>
       </div>
     </>

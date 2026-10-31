@@ -15,41 +15,87 @@ import * as THREE from "three";
 
 const TypewriterText = ({ text }) => {
   const [displayedText, setDisplayedText] = useState("");
+  const [hasStarted, setHasStarted] = useState(false);
+  const headingRef = useRef(null);
 
   useEffect(() => {
-    let i = 0;
-    setDisplayedText("");
-    
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setHasStarted(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.2 },
+    );
+
+    if (headingRef.current) {
+      observer.observe(headingRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!hasStarted) return;
+
+    let typingInterval;
+
     const startTimeout = setTimeout(() => {
-      const typingInterval = setInterval(() => {
+      setDisplayedText("");
+      let i = 0;
+
+      typingInterval = setInterval(() => {
         if (i < text.length) {
           setDisplayedText(text.substring(0, i + 1));
           i++;
         } else {
           clearInterval(typingInterval);
         }
-      }, 45); 
-
-      return () => clearInterval(typingInterval);
+      }, 45);
     }, 500);
 
-    return () => clearTimeout(startTimeout);
-  }, [text]);
+    return () => {
+      clearTimeout(startTimeout);
+      if (typingInterval) clearInterval(typingInterval);
+    };
+  }, [text, hasStarted]);
+
+  const lines = displayedText.split("\n");
+  const fullLines = text.split("\n");
 
   return (
-    <div className="min-h-[120px] sm:min-h-[140px] lg:min-h-[160px] w-full flex justify-center items-start mb-6">
-      {/* Font size optimized so it doesn't wrap into 3 lines on laptops */}
-      <h1 className="text-4xl sm:text-5xl lg:text-[3.2rem] xl:text-[3.5rem] font-medium tracking-tight text-black leading-[1.15] select-none cursor-default w-full mx-auto m-0 px-4">
-        {displayedText.split('\n').map((line, idx) => (
+    <div
+      ref={headingRef}
+      className="min-h-[120px] sm:min-h-[140px] lg:min-h-[160px] w-full flex justify-center items-start mb-4 sm:mb-6 relative"
+    >
+      {/* Invisible Placeholder to prevent Layout Shift */}
+      <h1 className="text-[2.2rem] xs:text-[2.5rem] sm:text-5xl lg:text-[3.2rem] xl:text-[3.5rem] font-medium tracking-tight text-black leading-[1.12] sm:leading-[1.15] select-none cursor-default w-full mx-auto m-0 px-2 sm:px-4 opacity-0 pointer-events-none">
+        {fullLines.map((line, idx) => (
           <React.Fragment key={idx}>
             {line}
-            {idx !== displayedText.split('\n').length - 1 && <br />}
+            {idx !== fullLines.length - 1 && <br />}
           </React.Fragment>
         ))}
-        <span 
-          className="inline-block w-[3px] h-[0.8em] ml-1.5 animate-[pulse_1s_ease-in-out_infinite] align-middle translate-y-[-4px] rounded-full"
-          style={{ background: 'linear-gradient(to bottom, #4285F4, #34A853, #FBBC05, #EA4335)' }}
-        ></span>
+      </h1>
+
+      {/* Visible Typing Heading */}
+      <h1 className="absolute top-0 left-0 text-[2.2rem] xs:text-[2.5rem] sm:text-5xl lg:text-[3.2rem] xl:text-[3.5rem] font-medium tracking-tight text-black leading-[1.12] sm:leading-[1.15] select-none cursor-default w-full mx-auto m-0 px-2 sm:px-4">
+        {lines.map((line, idx) => (
+          <React.Fragment key={idx}>
+            {line}
+            {idx !== lines.length - 1 && <br />}
+          </React.Fragment>
+        ))}
+        {displayedText.length < text.length && (
+          <span
+            className="inline-block w-[3px] sm:w-[4px] h-[0.8em] ml-1 sm:ml-1.5 animate-[pulse_1s_ease-in-out_infinite] align-middle translate-y-[-3px] sm:translate-y-[-4px] rounded-full"
+            style={{
+              background:
+                "linear-gradient(to bottom, #4285F4, #34A853, #FBBC05, #EA4335)",
+            }}
+          ></span>
+        )}
       </h1>
     </div>
   );
@@ -57,22 +103,21 @@ const TypewriterText = ({ text }) => {
 
 export const ThreeBackground = () => {
   const mountRef = useRef(null);
-  const [isMounted, setIsMounted] = useState(false);
 
+  // FIX: Removed the unnecessary isMounted state and combined everything into one useEffect
   useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  useEffect(() => {
-    if (!isMounted || !mountRef.current) return;
+    if (!mountRef.current) return;
     mountRef.current.innerHTML = "";
 
     const width = mountRef.current.clientWidth;
     const height = mountRef.current.clientHeight;
+    // Adjust particle count for mobile performance
+    const isMobile = window.innerWidth < 768;
+    const particleCount = isMobile ? 600 : 1200;
 
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(0xffffff);
-    scene.fog = new THREE.Fog(0xffffff, 100, 260); 
+    scene.fog = new THREE.Fog(0xffffff, 100, 260);
 
     const camera = new THREE.PerspectiveCamera(70, width / height, 0.1, 1000);
     camera.position.z = 180;
@@ -82,38 +127,31 @@ export const ThreeBackground = () => {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     mountRef.current.appendChild(renderer.domElement);
 
-    const particleCount = 1200; 
-
     const geometry = new THREE.CapsuleGeometry(0.2, 1.2, 4, 8);
     geometry.rotateZ(Math.PI / 2);
     geometry.rotateX(Math.PI / 2);
 
     const material = new THREE.MeshBasicMaterial({
       transparent: true,
-      opacity: 0.85, 
+      opacity: 0.85,
     });
 
     const mesh = new THREE.InstancedMesh(geometry, material, particleCount);
     const dummy = new THREE.Object3D();
     const color = new THREE.Color();
 
-    const colorPalette = [
-      "#4285F4", 
-      "#34A853", 
-      "#FBBC05", 
-      "#EA4335", 
-    ];
+    const colorPalette = ["#4285F4", "#34A853", "#FBBC05", "#EA4335"];
 
     const originalPositions = new Float32Array(particleCount * 3);
     const currentPositions = new Float32Array(particleCount * 3);
 
-    const radius = 120; 
+    const radius = 120;
 
     for (let i = 0; i < particleCount; i++) {
       const phi = Math.acos(-1 + (2 * i) / particleCount);
       const theta = Math.sqrt(particleCount * Math.PI) * phi;
 
-      const r = radius + (Math.random() * 10 - 5); 
+      const r = radius + (Math.random() * 10 - 5);
 
       const x = r * Math.cos(theta) * Math.sin(phi);
       const y = r * Math.sin(theta) * Math.sin(phi);
@@ -128,13 +166,14 @@ export const ThreeBackground = () => {
       currentPositions[i * 3 + 2] = z;
 
       dummy.position.set(x, y, z);
-      dummy.lookAt(0, 0, 0); 
-      dummy.rotateZ((Math.random() - 0.5) * 0.5); 
-      
+      dummy.lookAt(0, 0, 0);
+      dummy.rotateZ((Math.random() - 0.5) * 0.5);
+
       dummy.updateMatrix();
       mesh.setMatrixAt(i, dummy.matrix);
 
-      const randomColor = colorPalette[Math.floor(Math.random() * colorPalette.length)];
+      const randomColor =
+        colorPalette[Math.floor(Math.random() * colorPalette.length)];
       mesh.setColorAt(i, color.set(randomColor));
     }
 
@@ -148,10 +187,14 @@ export const ThreeBackground = () => {
     let windowHalfY = window.innerHeight / 2;
 
     const onPointerMove = (event) => {
-      mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-      mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-      targetMouse.x = (event.clientX - windowHalfX) * 0.04; 
-      targetMouse.y = (event.clientY - windowHalfY) * 0.04;
+      // Touch support for mobile interaction
+      const clientX = event.touches ? event.touches[0].clientX : event.clientX;
+      const clientY = event.touches ? event.touches[0].clientY : event.clientY;
+
+      mouse.x = (clientX / window.innerWidth) * 2 - 1;
+      mouse.y = -(clientY / window.innerHeight) * 2 + 1;
+      targetMouse.x = (clientX - windowHalfX) * 0.04;
+      targetMouse.y = (clientY - windowHalfY) * 0.04;
     };
 
     const onPointerLeave = () => {
@@ -160,7 +203,9 @@ export const ThreeBackground = () => {
     };
 
     window.addEventListener("mousemove", onPointerMove);
+    window.addEventListener("touchmove", onPointerMove, { passive: true });
     window.addEventListener("mouseleave", onPointerLeave);
+    window.addEventListener("touchend", onPointerLeave);
 
     const raycaster = new THREE.Raycaster();
     const plane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0);
@@ -199,11 +244,14 @@ export const ThreeBackground = () => {
         const dz = localMouse.z - cz;
         const dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
 
-        const interactionRadius = 55;
-        const pushForce = 20;
+        const interactionRadius = isMobile ? 35 : 55;
+        const pushForce = isMobile ? 15 : 20;
 
         if (dist < interactionRadius && mouse.x !== 9999) {
-          const force = Math.pow((interactionRadius - dist) / interactionRadius, 2);
+          const force = Math.pow(
+            (interactionRadius - dist) / interactionRadius,
+            2,
+          );
           cx -= (dx / dist) * force * pushForce;
           cy -= (dy / dist) * force * pushForce;
           cz -= (dz / dist) * force * pushForce;
@@ -218,8 +266,8 @@ export const ThreeBackground = () => {
         currentPositions[i3 + 2] = cz;
 
         dummy.position.set(cx, cy, cz);
-        dummy.lookAt(0, 0, 0); 
-        dummy.rotateZ((Math.random() - 0.5) * 0.5); 
+        dummy.lookAt(0, 0, 0);
+        dummy.rotateZ((Math.random() - 0.5) * 0.5);
         dummy.updateMatrix();
         mesh.setMatrixAt(i, dummy.matrix);
       }
@@ -245,7 +293,9 @@ export const ThreeBackground = () => {
     return () => {
       window.removeEventListener("resize", onWindowResize);
       window.removeEventListener("mousemove", onPointerMove);
+      window.removeEventListener("touchmove", onPointerMove);
       window.removeEventListener("mouseleave", onPointerLeave);
+      window.removeEventListener("touchend", onPointerLeave);
       cancelAnimationFrame(animationFrameId);
       if (mountRef.current && renderer.domElement) {
         mountRef.current.innerHTML = "";
@@ -254,15 +304,17 @@ export const ThreeBackground = () => {
       material.dispose();
       renderer.dispose();
     };
-  }, [isMounted]);
+  }, []); // Fix: Empty dependency array ensures this only runs once, no isMounted state needed!
 
   return (
-    <div 
-      ref={mountRef} 
-      className="absolute inset-0 z-0 pointer-events-none" 
+    <div
+      ref={mountRef}
+      className="absolute inset-0 z-0 pointer-events-none"
       style={{
-        maskImage: 'radial-gradient(ellipse at center, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 80%)',
-        WebkitMaskImage: 'radial-gradient(ellipse at center, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 80%)'
+        maskImage:
+          "radial-gradient(ellipse at center, rgba(0,0,0,1) 30%, rgba(0,0,0,0) 85%)",
+        WebkitMaskImage:
+          "radial-gradient(ellipse at center, rgba(0,0,0,1) 30%, rgba(0,0,0,0) 85%)",
       }}
     />
   );
@@ -282,12 +334,13 @@ export default function Hero() {
   const [showButton, setShowButton] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => setShowButton(true), 3200);
+    // Delay slightly reduced for mobile snappiness
+    const timer = setTimeout(() => setShowButton(true), 2800);
     return () => clearTimeout(timer);
   }, []);
 
   return (
-    <section className="relative w-full h-dvh max-h-dvh flex flex-col justify-between overflow-hidden bg-white text-black font-jakarta">
+    <section className="relative w-full h-dvh max-h-dvh flex flex-col justify-between overflow-hidden bg-white text-black font-jakarta pt-[54px] sm:pt-0">
       <style>
         {`
           @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
@@ -303,7 +356,13 @@ export default function Hero() {
 
       <svg width="0" height="0" className="absolute pointer-events-none">
         <defs>
-          <linearGradient id="hero-antigravity-gradient" x1="0%" y1="100%" x2="100%" y2="0%">
+          <linearGradient
+            id="hero-antigravity-gradient"
+            x1="0%"
+            y1="100%"
+            x2="100%"
+            y2="0%"
+          >
             <stop stopColor="#4285F4" offset="0%" />
             <stop stopColor="#34A853" offset="35%" />
             <stop stopColor="#FBBC05" offset="70%" />
@@ -314,27 +373,35 @@ export default function Hero() {
 
       <ThreeBackground />
 
-      <div className="flex-1 flex flex-col justify-center items-center w-full relative z-10 px-6 sm:px-10 lg:px-12 pt-12 pb-4 my-auto">
-        
-        {/* WIDTH INCREASED TO 1300px TO PREVENT 3-LINE WRAP */}
+      <div className="flex-1 flex flex-col justify-center items-center w-full relative z-10 px-4 sm:px-10 lg:px-12 pb-4 my-auto">
+        {/* WIDTH INCREASED TO 1300px TO PREVENT 3-LINE WRAP ON DESKTOP */}
         <div className="w-full max-w-[1300px] mx-auto text-center flex flex-col items-center">
-          
-          <div className="flex items-center gap-1.5 mb-8 select-none opacity-0 animate-[fadeIn_1s_ease-out_forwards_0.5s]">
+          <div className="flex items-center gap-1.5 sm:gap-2 mb-6 sm:mb-8 select-none opacity-0 animate-[fadeIn_1s_ease-out_forwards_0.5s]">
             <style>{`@keyframes fadeIn { to { opacity: 1; } }`}</style>
-            
-            <Code2 className="w-[24px] h-[24px]" stroke="url(#hero-antigravity-gradient)" strokeWidth={2.5} />
-            <span className="font-semibold text-[18px] tracking-tight text-black">
+
+            <Code2
+              className="w-[20px] h-[20px] sm:w-[24px] sm:h-[24px]"
+              stroke="url(#hero-antigravity-gradient)"
+              strokeWidth={2.5}
+            />
+            <span className="font-semibold text-[16px] sm:text-[18px] tracking-tight text-black">
               CodeLume
             </span>
           </div>
 
-          {/* PERFECT 2-LINE TEXT (Long line first, short line second) */}
-          <TypewriterText text={"Architecting bespoke digital experiences\nwith the next-gen platform"} />
+          {/* PERFECT TEXT SIZING: Mobile breaks naturally, Desktop stays in 2 lines */}
+          <TypewriterText
+            text={
+              "Architecting bespoke digital experiences\nwith the next-gen platform"
+            }
+          />
 
-          <div className={`flex justify-center w-full relative z-20 transition-all duration-1000 mt-2 ${showButton ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+          <div
+            className={`flex justify-center w-full relative z-20 transition-all duration-1000 mt-4 sm:mt-2 ${showButton ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
+          >
             <Link
               href="/start-project"
-              className="px-9 py-3.5 rounded-full bg-[#111827] text-white font-medium hover:bg-black transition-all duration-200 active:scale-[0.98] outline-none shadow-sm text-[15px]"
+              className="px-8 sm:px-9 py-3.5 sm:py-4 rounded-[14px] sm:rounded-full bg-[#111827] text-white font-semibold hover:bg-black transition-all duration-200 active:scale-[0.96] sm:active:scale-[0.98] outline-none shadow-sm text-[14.5px] sm:text-[15px] w-[80%] max-w-sm sm:w-auto sm:max-w-none"
             >
               Start Project
             </Link>
@@ -343,7 +410,7 @@ export default function Hero() {
       </div>
 
       <div
-        className="w-full h-[64px] bg-white border-t border-gray-100 overflow-hidden flex items-center z-30 relative"
+        className="w-full h-[56px] sm:h-[64px] bg-white border-t border-gray-100 overflow-hidden flex items-center z-30 relative"
         style={{
           maskImage:
             "linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%)",
@@ -353,16 +420,19 @@ export default function Hero() {
       >
         <div className="flex whitespace-nowrap animate-marquee items-center h-full">
           {[...Array(2)].map((_, i) => (
-            <div key={i} className="flex items-center gap-16 px-8">
+            <div
+              key={i}
+              className="flex items-center gap-10 sm:gap-16 px-6 sm:px-8"
+            >
               {techStack.map((tech, index) => {
                 const IconComponent = tech.Icon;
                 return (
                   <div
                     key={index}
-                    className="flex items-center gap-3 text-slate-500 hover:text-black transition-colors duration-300 group"
+                    className="flex items-center gap-2.5 sm:gap-3 text-slate-500 hover:text-black transition-colors duration-300 group"
                   >
-                    <IconComponent className="w-[18px] h-[18px] fill-current transition-colors" />
-                    <span className="text-[11px] font-bold tracking-[0.2em] uppercase transition-colors">
+                    <IconComponent className="w-[16px] h-[16px] sm:w-[18px] sm:h-[18px] fill-current transition-colors" />
+                    <span className="text-[10px] sm:text-[11px] font-bold tracking-[0.15em] sm:tracking-[0.2em] uppercase transition-colors">
                       {tech.name}
                     </span>
                   </div>

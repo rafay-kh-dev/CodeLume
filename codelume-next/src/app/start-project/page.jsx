@@ -32,7 +32,7 @@ const TypewriterHeading = ({ text }) => {
           observer.disconnect();
         }
       },
-      { threshold: 0.2 }
+      { threshold: 0.2 },
     );
 
     if (headingRef.current) {
@@ -45,11 +45,12 @@ const TypewriterHeading = ({ text }) => {
   useEffect(() => {
     if (!hasStarted) return;
 
-    let i = 0;
-    setDisplayedText("");
-
+    let typingInterval;
     const startTimeout = setTimeout(() => {
-      const typingInterval = setInterval(() => {
+      // ✅ FIX: Moved inside setTimeout to prevent React cascading renders
+      setDisplayedText("");
+      let i = 0;
+      typingInterval = setInterval(() => {
         if (i < text.length) {
           setDisplayedText(text.substring(0, i + 1));
           i++;
@@ -57,11 +58,12 @@ const TypewriterHeading = ({ text }) => {
           clearInterval(typingInterval);
         }
       }, 45);
-
-      return () => clearInterval(typingInterval);
     }, 200);
 
-    return () => clearTimeout(startTimeout);
+    return () => {
+      clearTimeout(startTimeout);
+      if (typingInterval) clearInterval(typingInterval);
+    };
   }, [hasStarted, text]);
 
   const lines = displayedText.split("\n");
@@ -73,7 +75,7 @@ const TypewriterHeading = ({ text }) => {
   return (
     <div
       ref={headingRef}
-      className="min-h-[110px] sm:min-h-[140px] lg:min-h-[160px] flex items-start justify-start mb-8 w-full relative"
+      className="min-h-[110px] sm:min-h-[140px] lg:min-h-[160px] flex items-start justify-start mb-6 sm:mb-8 w-full relative"
     >
       {/* INVISIBLE PLACEHOLDER */}
       <h2 className={`${headingClasses} opacity-0 pointer-events-none`}>
@@ -95,13 +97,15 @@ const TypewriterHeading = ({ text }) => {
             {idx !== lines.length - 1 && <br />}
           </React.Fragment>
         ))}
-        <span
-          className="inline-block w-[3.5px] sm:w-[4px] h-[0.8em] ml-1.5 sm:ml-2 animate-[pulse_1s_ease-in-out_infinite] align-middle translate-y-[-4px] sm:translate-y-[-6px] rounded-full"
-          style={{
-            background:
-              "linear-gradient(to bottom, #4285F4, #34A853, #FBBC05, #EA4335)",
-          }}
-        ></span>
+        {displayedText.length < text.length && (
+          <span
+            className="inline-block w-[3.5px] sm:w-[4px] h-[0.8em] ml-1.5 sm:ml-2 animate-[pulse_1s_ease-in-out_infinite] align-middle translate-y-[-4px] sm:translate-y-[-6px] rounded-full"
+            style={{
+              background:
+                "linear-gradient(to bottom, #4285F4, #34A853, #FBBC05, #EA4335)",
+            }}
+          ></span>
+        )}
       </h2>
     </div>
   );
@@ -211,11 +215,11 @@ export default function StartProject() {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-50 rounded-full blur-[140px] pointer-events-none" />
 
         <div className="max-w-2xl w-full px-4 flex flex-col items-center text-center relative z-10">
-          <h2 className="text-5xl md:text-7xl font-medium text-black mb-8 m-0 tracking-tight leading-tight">
+          <h2 className="text-5xl md:text-7xl font-medium text-black mb-6 sm:mb-8 m-0 tracking-tight leading-tight">
             Thank You!
           </h2>
 
-          <h2 className="text-[16px] sm:text-[18px] text-gray-600 font-medium leading-relaxed mb-12 m-0 px-4 max-w-lg mx-auto">
+          <h2 className="text-[15px] sm:text-[18px] text-gray-600 font-medium leading-relaxed mb-10 sm:mb-12 m-0 px-4 max-w-lg mx-auto">
             Thank you for contacting me. I am Rafay. I will contact you as soon
             as possible from this email{" "}
             <span className="text-[#4285F4] font-bold tracking-wide">
@@ -226,10 +230,10 @@ export default function StartProject() {
 
           <Link
             href="/"
-            className="flex items-center justify-center gap-3 px-10 py-5 rounded-full bg-[#111827] text-white hover:bg-black transition-all duration-300 outline-none active:scale-[0.98] group shadow-sm"
+            className="flex items-center justify-center gap-3 px-8 sm:px-10 py-4 sm:py-5 rounded-full bg-[#111827] text-white hover:bg-black transition-all duration-300 outline-none active:scale-[0.98] group shadow-sm"
           >
-            <ArrowRight className="w-5 h-5 transform group-hover:-translate-x-1 transition-transform rotate-180" />
-            <h2 className="text-[15px] font-bold m-0 tracking-wide text-white">
+            <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 transform group-hover:-translate-x-1 transition-transform rotate-180" />
+            <h2 className="text-[14px] sm:text-[15px] font-bold m-0 tracking-wide text-white">
               Return to Homepage
             </h2>
           </Link>
@@ -240,7 +244,7 @@ export default function StartProject() {
 
   return (
     <section
-      className="w-full pt-32 sm:pt-40 pb-24 lg:pb-32 bg-white font-jakarta relative overflow-hidden"
+      className="w-full pt-28 sm:pt-40 pb-20 sm:pb-24 lg:pb-32 bg-white font-jakarta relative overflow-hidden"
       id="start-project"
     >
       <style>
@@ -256,28 +260,28 @@ export default function StartProject() {
       {/* Subtle top gradient instead of dark blur */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-[600px] bg-[radial-gradient(ellipse_at_top,rgba(0,0,0,0.02)_0%,transparent_70%)] pointer-events-none" />
 
-      <div className="max-w-[1000px] mx-auto px-5 sm:px-10 relative z-10 w-full">
-        <div className="flex flex-col items-start text-left mb-16 sm:mb-20">
+      <div className="max-w-[1000px] mx-auto px-4 sm:px-10 relative z-10 w-full">
+        <div className="flex flex-col items-start text-left mb-12 sm:mb-20">
           <TypewriterHeading text={"Let's engineer\nyour next project."} />
 
-          <p className="text-[16px] sm:text-[17px] text-gray-500 font-medium leading-relaxed m-0 max-w-2xl">
+          {/* ✅ SOLO DEVELOPER COPY APPLIED HERE */}
+          <p className="text-[15px] sm:text-[17px] text-gray-500 font-medium leading-relaxed m-0 max-w-2xl px-1 sm:px-0">
             Fill out the technical requirements below. The more details you
-            provide, the better we can customise our architectural proposal for
+            provide, the better I can customise my architectural proposal for
             your business.
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="flex flex-col gap-10 sm:gap-14">
-          
+        <form onSubmit={handleSubmit} className="flex flex-col gap-8 sm:gap-14">
           {/* Section 1: Services */}
-          <div className="flex flex-col gap-6 sm:gap-8 p-6 sm:p-10 lg:p-12 rounded-[32px] bg-white border border-gray-200 shadow-sm relative overflow-hidden">
-            <h2 className="text-[22px] sm:text-[24px] font-semibold text-black m-0 tracking-tight flex items-center gap-4">
-              <span className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-50 border border-gray-200 text-black text-[13px] font-bold">
+          <div className="flex flex-col gap-5 sm:gap-8 p-6 sm:p-10 lg:p-12 rounded-[24px] sm:rounded-[32px] bg-white border border-gray-200 shadow-sm relative overflow-hidden">
+            <h2 className="text-[20px] sm:text-[24px] font-semibold text-black m-0 tracking-tight flex items-center gap-3 sm:gap-4">
+              <span className="flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gray-50 border border-gray-200 text-black text-[12px] sm:text-[13px] font-bold shrink-0">
                 1
               </span>
               What do you need help with?
             </h2>
-            
+
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
               {serviceOptions.map((service) => {
                 const isSelected = formData.services.includes(service.id);
@@ -287,23 +291,23 @@ export default function StartProject() {
                     key={service.id}
                     type="button"
                     onClick={() => toggleService(service.id)}
-                    className={`flex items-center gap-4 p-4 sm:p-5 rounded-[20px] border transition-all duration-300 outline-none text-left active:scale-[0.98] ${
+                    className={`flex items-center gap-3 sm:gap-4 p-4 sm:p-5 rounded-[16px] sm:rounded-[20px] border transition-all duration-300 outline-none text-left active:scale-[0.98] ${
                       isSelected
                         ? "bg-white border-[#4285F4] shadow-[0_8px_20px_rgba(66,133,244,0.12)] sm:-translate-y-1"
                         : "bg-gray-50 border-transparent hover:bg-white hover:border-gray-200 hover:shadow-sm"
                     }`}
                   >
                     <div
-                      className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 transition-all duration-300 border ${
+                      className={`w-10 h-10 sm:w-12 sm:h-12 rounded-[10px] sm:rounded-xl flex items-center justify-center shrink-0 transition-all duration-300 border ${
                         isSelected
                           ? "bg-[#4285F4] border-[#4285F4] text-white shadow-md"
                           : "bg-white border-gray-200 text-black"
                       }`}
                     >
-                      <Icon className="w-6 h-6" strokeWidth={2} />
+                      <Icon className="w-5 h-5 sm:w-6 sm:h-6" strokeWidth={2} />
                     </div>
                     <h2
-                      className={`text-[14px] sm:text-[15px] font-semibold m-0 tracking-tight transition-colors ${
+                      className={`text-[13.5px] sm:text-[15px] font-semibold m-0 tracking-tight transition-colors ${
                         isSelected ? "text-[#4285F4]" : "text-black"
                       }`}
                     >
@@ -316,11 +320,10 @@ export default function StartProject() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            
             {/* Section 2: Budget */}
-            <div className="flex flex-col gap-6 sm:gap-8 p-6 sm:p-10 lg:p-12 rounded-[32px] bg-white border border-gray-200 shadow-sm relative overflow-hidden">
-              <h2 className="text-[22px] sm:text-[24px] font-semibold text-black m-0 tracking-tight flex items-center gap-4">
-                <span className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-50 border border-gray-200 text-black text-[13px] font-bold">
+            <div className="flex flex-col gap-5 sm:gap-8 p-6 sm:p-10 lg:p-12 rounded-[24px] sm:rounded-[32px] bg-white border border-gray-200 shadow-sm relative overflow-hidden">
+              <h2 className="text-[20px] sm:text-[24px] font-semibold text-black m-0 tracking-tight flex items-center gap-3 sm:gap-4">
+                <span className="flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gray-50 border border-gray-200 text-black text-[12px] sm:text-[13px] font-bold shrink-0">
                   2
                 </span>
                 Allocated Budget
@@ -331,7 +334,7 @@ export default function StartProject() {
                     key={i}
                     type="button"
                     onClick={() => handleSelect("budget", budget)}
-                    className={`px-6 py-5 rounded-[20px] border text-left font-semibold tracking-tight text-[15px] transition-all duration-300 outline-none active:scale-[0.98] ${
+                    className={`px-5 sm:px-6 py-4 sm:py-5 rounded-[16px] sm:rounded-[20px] border text-left font-semibold tracking-tight text-[14px] sm:text-[15px] transition-all duration-300 outline-none active:scale-[0.98] ${
                       formData.budget === budget
                         ? "bg-white border-[#4285F4] text-[#4285F4] shadow-[0_8px_20px_rgba(66,133,244,0.12)] sm:-translate-y-1"
                         : "bg-gray-50 border-transparent text-gray-700 hover:bg-white hover:border-gray-200 hover:shadow-sm"
@@ -344,9 +347,9 @@ export default function StartProject() {
             </div>
 
             {/* Section 3: Timeline */}
-            <div className="flex flex-col gap-6 sm:gap-8 p-6 sm:p-10 lg:p-12 rounded-[32px] bg-white border border-gray-200 shadow-sm relative overflow-hidden">
-              <h2 className="text-[22px] sm:text-[24px] font-semibold text-black m-0 tracking-tight flex items-center gap-4">
-                <span className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-50 border border-gray-200 text-black text-[13px] font-bold">
+            <div className="flex flex-col gap-5 sm:gap-8 p-6 sm:p-10 lg:p-12 rounded-[24px] sm:rounded-[32px] bg-white border border-gray-200 shadow-sm relative overflow-hidden">
+              <h2 className="text-[20px] sm:text-[24px] font-semibold text-black m-0 tracking-tight flex items-center gap-3 sm:gap-4">
+                <span className="flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gray-50 border border-gray-200 text-black text-[12px] sm:text-[13px] font-bold shrink-0">
                   3
                 </span>
                 Estimated Timeline
@@ -357,7 +360,7 @@ export default function StartProject() {
                     key={i}
                     type="button"
                     onClick={() => handleSelect("timeline", time)}
-                    className={`px-6 py-5 rounded-[20px] border text-left font-semibold tracking-tight text-[15px] transition-all duration-300 outline-none active:scale-[0.98] ${
+                    className={`px-5 sm:px-6 py-4 sm:py-5 rounded-[16px] sm:rounded-[20px] border text-left font-semibold tracking-tight text-[14px] sm:text-[15px] transition-all duration-300 outline-none active:scale-[0.98] ${
                       formData.timeline === time
                         ? "bg-white border-[#4285F4] text-[#4285F4] shadow-[0_8px_20px_rgba(66,133,244,0.12)] sm:-translate-y-1"
                         : "bg-gray-50 border-transparent text-gray-700 hover:bg-white hover:border-gray-200 hover:shadow-sm"
@@ -371,58 +374,58 @@ export default function StartProject() {
           </div>
 
           {/* Section 4: Details */}
-          <div className="flex flex-col gap-6 sm:gap-8 p-6 sm:p-10 lg:p-12 rounded-[32px] bg-white border border-gray-200 shadow-sm relative overflow-hidden">
-            <h2 className="text-[22px] sm:text-[24px] font-semibold text-black m-0 tracking-tight flex items-center gap-4 mb-2">
-              <span className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-50 border border-gray-200 text-black text-[13px] font-bold">
+          <div className="flex flex-col gap-5 sm:gap-8 p-6 sm:p-10 lg:p-12 rounded-[24px] sm:rounded-[32px] bg-white border border-gray-200 shadow-sm relative overflow-hidden">
+            <h2 className="text-[20px] sm:text-[24px] font-semibold text-black m-0 tracking-tight flex items-center gap-3 sm:gap-4 mb-1 sm:mb-2">
+              <span className="flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gray-50 border border-gray-200 text-black text-[12px] sm:text-[13px] font-bold shrink-0">
                 4
               </span>
               Project & Contact Details
             </h2>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
               <div className="relative group/input">
-                <User className="absolute top-4 sm:top-5 left-5 w-5 h-5 text-gray-400 group-focus-within/input:text-[#4285F4] transition-colors pointer-events-none" />
+                <User className="absolute top-4 sm:top-5 left-4 sm:left-5 w-5 h-5 text-gray-400 group-focus-within/input:text-[#4285F4] transition-colors pointer-events-none" />
                 <input
                   type="text"
                   placeholder="Your Name"
                   required
                   value={formData.name}
                   onChange={(e) => handleSelect("name", e.target.value)}
-                  className="w-full bg-gray-50 border border-gray-200 rounded-[20px] py-4 sm:py-5 pl-14 pr-5 text-[15px] font-medium text-black placeholder-gray-400 focus:outline-none focus:border-[#4285F4] focus:bg-[#F0F7FF] transition-all"
+                  className="w-full bg-gray-50 border border-gray-200 rounded-[16px] sm:rounded-[20px] py-4 sm:py-5 pl-12 sm:pl-14 pr-4 sm:pr-5 text-[14px] sm:text-[15px] font-medium text-black placeholder-gray-400 focus:outline-none focus:border-[#4285F4] focus:bg-[#F0F7FF] transition-all"
                 />
               </div>
 
               <div className="relative group/input">
-                <Mail className="absolute top-4 sm:top-5 left-5 w-5 h-5 text-gray-400 group-focus-within/input:text-[#4285F4] transition-colors pointer-events-none" />
+                <Mail className="absolute top-4 sm:top-5 left-4 sm:left-5 w-5 h-5 text-gray-400 group-focus-within/input:text-[#4285F4] transition-colors pointer-events-none" />
                 <input
                   type="email"
                   placeholder="Email Address"
                   required
                   value={formData.email}
                   onChange={(e) => handleSelect("email", e.target.value)}
-                  className="w-full bg-gray-50 border border-gray-200 rounded-[20px] py-4 sm:py-5 pl-14 pr-5 text-[15px] font-medium text-black placeholder-gray-400 focus:outline-none focus:border-[#4285F4] focus:bg-[#F0F7FF] transition-all"
+                  className="w-full bg-gray-50 border border-gray-200 rounded-[16px] sm:rounded-[20px] py-4 sm:py-5 pl-12 sm:pl-14 pr-4 sm:pr-5 text-[14px] sm:text-[15px] font-medium text-black placeholder-gray-400 focus:outline-none focus:border-[#4285F4] focus:bg-[#F0F7FF] transition-all"
                 />
               </div>
 
               <div className="relative md:col-span-2 group/input">
-                <Building className="absolute top-4 sm:top-5 left-5 w-5 h-5 text-gray-400 group-focus-within/input:text-[#4285F4] transition-colors pointer-events-none" />
+                <Building className="absolute top-4 sm:top-5 left-4 sm:left-5 w-5 h-5 text-gray-400 group-focus-within/input:text-[#4285F4] transition-colors pointer-events-none" />
                 <input
                   type="text"
                   placeholder="Company Name (Optional)"
                   value={formData.company}
                   onChange={(e) => handleSelect("company", e.target.value)}
-                  className="w-full bg-gray-50 border border-gray-200 rounded-[20px] py-4 sm:py-5 pl-14 pr-5 text-[15px] font-medium text-black placeholder-gray-400 focus:outline-none focus:border-[#4285F4] focus:bg-[#F0F7FF] transition-all"
+                  className="w-full bg-gray-50 border border-gray-200 rounded-[16px] sm:rounded-[20px] py-4 sm:py-5 pl-12 sm:pl-14 pr-4 sm:pr-5 text-[14px] sm:text-[15px] font-medium text-black placeholder-gray-400 focus:outline-none focus:border-[#4285F4] focus:bg-[#F0F7FF] transition-all"
                 />
               </div>
 
               <div className="relative md:col-span-2 group/input">
                 <textarea
-                  placeholder="Tell us about your project requirements..."
+                  placeholder="Tell me about your project requirements..."
                   required
-                  rows="6"
+                  rows="5"
                   value={formData.details}
                   onChange={(e) => handleSelect("details", e.target.value)}
-                  className="w-full bg-gray-50 border border-gray-200 rounded-[24px] p-5 sm:p-6 text-[15px] font-medium leading-relaxed text-black placeholder-gray-400 focus:outline-none focus:border-[#4285F4] focus:bg-[#F0F7FF] transition-all resize-none"
+                  className="w-full bg-gray-50 border border-gray-200 rounded-[20px] sm:rounded-[24px] p-5 sm:p-6 text-[14px] sm:text-[15px] font-medium leading-relaxed text-black placeholder-gray-400 focus:outline-none focus:border-[#4285F4] focus:bg-[#F0F7FF] transition-all resize-none"
                 />
               </div>
             </div>
@@ -431,18 +434,18 @@ export default function StartProject() {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="flex items-center justify-center gap-3 w-full px-8 py-5 sm:py-6 rounded-[24px] bg-[#111827] text-white hover:bg-black transition-all duration-300 outline-none group/btn active:scale-[0.98] disabled:opacity-70 disabled:active:scale-100 mt-2 shadow-sm"
+            className="flex items-center justify-center gap-3 w-full px-6 sm:px-8 py-5 sm:py-6 rounded-[20px] sm:rounded-[24px] bg-[#111827] text-white hover:bg-black transition-all duration-300 outline-none group/btn active:scale-[0.98] disabled:opacity-70 disabled:active:scale-100 sm:mt-2 shadow-sm"
           >
             {isSubmitting ? (
               <>
                 <Loader2 className="w-5 h-5 sm:w-6 sm:h-6 animate-spin" />
-                <h2 className="text-[16px] sm:text-[17px] font-bold m-0 text-inherit tracking-wide">
+                <h2 className="text-[15px] sm:text-[17px] font-bold m-0 text-inherit tracking-wide">
                   Processing...
                 </h2>
               </>
             ) : (
               <>
-                <h2 className="text-[16px] sm:text-[17px] font-bold m-0 text-inherit tracking-wide">
+                <h2 className="text-[15px] sm:text-[17px] font-bold m-0 text-inherit tracking-wide">
                   Submit Request
                 </h2>
                 <ArrowRight className="w-5 h-5 sm:w-6 sm:h-6 transform group-hover/btn:translate-x-1 transition-transform" />

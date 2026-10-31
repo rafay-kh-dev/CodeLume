@@ -35,7 +35,7 @@ const TypewriterHeading = ({ text }) => {
           observer.disconnect();
         }
       },
-      { threshold: 0.2 }
+      { threshold: 0.2 },
     );
 
     if (headingRef.current) {
@@ -48,29 +48,35 @@ const TypewriterHeading = ({ text }) => {
   useEffect(() => {
     if (!hasStarted) return;
 
-    let i = 0;
-    setDisplayedText("");
-    
+    let typingInterval;
+
     const startTimeout = setTimeout(() => {
-      const typingInterval = setInterval(() => {
+      setDisplayedText("");
+      let i = 0;
+
+      typingInterval = setInterval(() => {
         if (i < text.length) {
           setDisplayedText(text.substring(0, i + 1));
           i++;
         } else {
           clearInterval(typingInterval);
         }
-      }, 45); 
-
-      return () => clearInterval(typingInterval);
+      }, 45);
     }, 200);
 
-    return () => clearTimeout(startTimeout);
+    return () => {
+      clearTimeout(startTimeout);
+      if (typingInterval) clearInterval(typingInterval);
+    };
   }, [text, hasStarted]);
 
-  const lines = displayedText.split('\n');
+  const lines = displayedText.split("\n");
 
   return (
-    <div ref={headingRef} className="min-h-[100px] sm:min-h-[120px] lg:min-h-[130px] flex items-start justify-center mb-6 w-full">
+    <div
+      ref={headingRef}
+      className="min-h-[100px] sm:min-h-[120px] lg:min-h-[130px] flex items-start justify-center mb-6 w-full"
+    >
       <h2 className="text-4xl sm:text-5xl lg:text-[3.2rem] font-medium text-black tracking-tight leading-[1.1] m-0 w-full text-center">
         {lines.map((line, idx) => (
           <React.Fragment key={idx}>
@@ -78,9 +84,12 @@ const TypewriterHeading = ({ text }) => {
             {idx !== lines.length - 1 && <br className="hidden sm:block" />}
           </React.Fragment>
         ))}
-        <span 
+        <span
           className="inline-block w-[3px] h-[0.8em] ml-1.5 animate-[pulse_1s_ease-in-out_infinite] align-middle translate-y-[-4px] rounded-full"
-          style={{ background: 'linear-gradient(to bottom, #4285F4, #34A853, #FBBC05, #EA4335)' }}
+          style={{
+            background:
+              "linear-gradient(to bottom, #4285F4, #34A853, #FBBC05, #EA4335)",
+          }}
         ></span>
       </h2>
     </div>
@@ -91,7 +100,6 @@ export default function ProjectCalculator() {
   const [selectedService, setSelectedService] = useState(0);
   const [selectedScope, setSelectedScope] = useState(0);
   const [selectedAddons, setSelectedAddons] = useState([]);
-  const [totalPrice, setTotalPrice] = useState(0);
 
   const services = [
     {
@@ -199,15 +207,15 @@ export default function ProjectCalculator() {
     },
   ];
 
-  useEffect(() => {
-    let total =
-      services[selectedService].basePrice + scopes[selectedScope].price;
-    selectedAddons.forEach((addonId) => {
-      const addon = addons.find((a) => a.id === addonId);
-      if (addon) total += addon.price;
-    });
-    setTotalPrice(total);
-  }, [selectedService, selectedScope, selectedAddons]);
+  // ✅ FIX: Removed useEffect & useState for totalPrice.
+  // Calculating derived state directly during render (Best Practice in React).
+  const totalPrice =
+    services[selectedService].basePrice +
+    scopes[selectedScope].price +
+    selectedAddons.reduce((sum, id) => {
+      const addon = addons.find((a) => a.id === id);
+      return sum + (addon ? addon.price : 0);
+    }, 0);
 
   const handleAddonToggle = (id) => {
     if (selectedAddons.includes(id)) {
@@ -244,7 +252,6 @@ export default function ProjectCalculator() {
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-[600px] bg-[radial-gradient(ellipse_at_top,rgba(0,0,0,0.02)_0%,transparent_70%)] pointer-events-none" />
 
       <div className="max-w-[1300px] mx-auto px-6 sm:px-10 lg:px-12 relative z-10 w-full">
-        
         <div className="flex flex-col items-center text-center mb-16 max-w-3xl mx-auto">
           <div className="inline-flex items-center justify-center gap-2 px-3 py-1.5 rounded-full bg-white border border-gray-200 shadow-sm mb-6">
             <Calculator className="w-3.5 h-3.5 text-gray-500" />
@@ -252,21 +259,18 @@ export default function ProjectCalculator() {
               Transparent Pricing
             </h2>
           </div>
-          
+
           <TypewriterHeading text={"Interactive Cost\nEstimator."} />
-          
+
           <p className="text-[#4B5563] font-medium text-[15px] sm:text-[16px] leading-relaxed max-w-2xl m-0">
             Get an instant, no-obligation estimate for your next bespoke digital
             project. Customized exactly to your business logic.
           </p>
         </div>
 
-        {/* CSS GRID FIX: items-start allows columns to have their own height, unlocking sticky behavior */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 relative max-w-[1300px] mx-auto items-start">
-          
           {/* Left Column (Forms) */}
           <div className="lg:col-span-8 space-y-12">
-            
             <div className="bg-white rounded-[32px] border border-gray-200 p-8 sm:p-10 shadow-sm">
               <div className="flex items-center gap-4 mb-8">
                 <span className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-50 text-black text-sm font-bold border border-gray-200">
@@ -296,16 +300,18 @@ export default function ProjectCalculator() {
                       }`}
                     >
                       {isSelected && (
-                        <div 
+                        <div
                           className="absolute inset-0 opacity-10 pointer-events-none"
-                          style={{ background: `radial-gradient(circle at top right, ${service.hex}, transparent 70%)` }}
+                          style={{
+                            background: `radial-gradient(circle at top right, ${service.hex}, transparent 70%)`,
+                          }}
                         />
                       )}
-                      
+
                       <div className="mb-6 bg-white p-3 rounded-xl border border-gray-100 shadow-sm">
                         {service.icon}
                       </div>
-                      
+
                       <h2 className="text-[16px] font-semibold text-black tracking-tight mb-1 relative z-10">
                         {service.name}
                       </h2>
@@ -346,15 +352,21 @@ export default function ProjectCalculator() {
                           : "bg-gray-50 border-transparent hover:bg-white hover:border-gray-200 hover:shadow-sm"
                       }`}
                     >
-                      <h2 className={`text-[17px] font-semibold tracking-tight mb-2 ${isSelected ? "text-[#4285F4]" : "text-black"}`}>
+                      <h2
+                        className={`text-[17px] font-semibold tracking-tight mb-2 ${isSelected ? "text-[#4285F4]" : "text-black"}`}
+                      >
                         {scope.name}
                       </h2>
                       <p className="text-[13px] text-gray-500 font-medium leading-relaxed mb-6">
                         {scope.desc}
                       </p>
-                      <div className={`mt-auto inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md border text-[11px] font-bold transition-colors ${
-                        isSelected ? "bg-[#F0F7FF] border-[#4285F4]/30 text-[#4285F4]" : "bg-white border-gray-200 text-gray-500"
-                      }`}>
+                      <div
+                        className={`mt-auto inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md border text-[11px] font-bold transition-colors ${
+                          isSelected
+                            ? "bg-[#F0F7FF] border-[#4285F4]/30 text-[#4285F4]"
+                            : "bg-white border-gray-200 text-gray-500"
+                        }`}
+                      >
                         <Clock className="w-3 h-3" /> {scope.time}
                       </div>
                     </button>
@@ -395,12 +407,18 @@ export default function ProjectCalculator() {
                         <div className="flex items-center gap-3">
                           <div
                             className={`flex items-center justify-center w-5 h-5 rounded-md border transition-colors ${
-                              isSelected ? "bg-[#4285F4] border-[#4285F4]" : "bg-white border-gray-300"
+                              isSelected
+                                ? "bg-[#4285F4] border-[#4285F4]"
+                                : "bg-white border-gray-300"
                             }`}
                           >
-                            {isSelected && <Check className="w-3.5 h-3.5 text-white" />}
+                            {isSelected && (
+                              <Check className="w-3.5 h-3.5 text-white" />
+                            )}
                           </div>
-                          <h2 className={`text-[15px] font-semibold flex items-center gap-2 m-0 ${isSelected ? "text-[#4285F4]" : "text-black"}`}>
+                          <h2
+                            className={`text-[15px] font-semibold flex items-center gap-2 m-0 ${isSelected ? "text-[#4285F4]" : "text-black"}`}
+                          >
                             {addon.icon} {addon.name}
                           </h2>
                         </div>
@@ -416,12 +434,10 @@ export default function ProjectCalculator() {
                 })}
               </div>
             </div>
-
           </div>
 
           {/* Right Column (Sticky Sidebar) */}
-          {/* FIX: Removed extra divs, 'sticky top-[120px]' is directly on the grid column now */}
-          <div className="lg:col-span-4 sticky top-[120px] bg-gray-50 border border-gray-200 rounded-[32px] p-8 shadow-sm transform-gpu z-20">
+          <div className="lg:col-span-4 sticky top-[100px] lg:top-[120px] h-fit self-start bg-gray-50 border border-gray-200 rounded-[32px] p-8 shadow-sm z-20">
             <div className="flex items-center gap-2 mb-8">
               <Calculator className="w-4 h-4 text-gray-500" />
               <h2 className="text-[11px] font-bold text-gray-500 uppercase tracking-[0.2em] m-0">
@@ -497,7 +513,10 @@ export default function ProjectCalculator() {
                 rel="noreferrer"
                 className="relative flex items-center justify-center w-full px-6 py-4 rounded-xl bg-[#25D366] text-white font-bold hover:bg-[#128C7E] transition-all duration-300 hover:-translate-y-1 outline-none shadow-[0_4px_15px_rgba(37,211,102,0.2)] hover:shadow-[0_8px_20px_rgba(37,211,102,0.3)]"
               >
-                <Whatsapp variant="wordmark" className="h-6 w-auto brightness-0 invert" />
+                <Whatsapp
+                  variant="wordmark"
+                  className="h-6 w-auto brightness-0 invert"
+                />
               </a>
 
               <a
@@ -512,11 +531,10 @@ export default function ProjectCalculator() {
             </div>
 
             <p className="text-[11.5px] font-medium text-gray-500 text-center mt-5 leading-relaxed px-2">
-              No commitment required. We will review your selections and
-              confirm the final timeline and scope before starting.
+              No commitment required. I will review your selections and confirm
+              the final timeline and scope before starting.
             </p>
           </div>
-
         </div>
       </div>
     </section>

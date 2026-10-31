@@ -3,11 +3,11 @@ import Footer from "../components/footer";
 import "./globals.css";
 
 export const metadata = {
-  title: "CodeLume® | Bespoke Web Engineering & Digital Agency",
+  title: "CodeLume® | Bespoke Web Engineering & Digital Solutions by Rafay",
   description:
     "Ready to upgrade your digital presence? Book a consultation with Rafay and let's build something exceptional together.",
   openGraph: {
-    title: "CodeLume® | Bespoke Web Engineering & Digital Agency",
+    title: "CodeLume® | Bespoke Web Engineering & Digital Solutions by Rafay",
     description:
       "Ready to upgrade your digital presence? Book a consultation with Rafay and let's build something exceptional together.",
     url: "https://codelume.online",
