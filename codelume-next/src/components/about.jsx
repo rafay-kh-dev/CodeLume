@@ -96,10 +96,6 @@ export default function About() {
       className="relative w-full py-20 sm:py-32 bg-white font-jakarta overflow-hidden border-t border-gray-100"
       id="about"
     >
-      <style>
-        {`@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
-          .font-jakarta { font-family: 'Plus Jakarta Sans', sans-serif; }`}
-      </style>
 
       {/* GLOBAL SVG GRADIENT FOR ICONS */}
       <svg width="0" height="0" className="absolute pointer-events-none">

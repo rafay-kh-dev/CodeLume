@@ -391,8 +391,6 @@ export default function Hero() {
     <section className="relative w-full h-dvh max-h-dvh flex flex-col justify-between overflow-hidden bg-white text-black font-jakarta pt-[54px] sm:pt-0">
       <style>
         {`
-          @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
-          .font-jakarta { font-family: 'Plus Jakarta Sans', sans-serif; }
           ::-webkit-scrollbar { width: 8px; height: 8px; }
           ::-webkit-scrollbar-track { background: #ffffff; }
           ::-webkit-scrollbar-thumb { background: #e5e7eb; border-radius: 10px; }

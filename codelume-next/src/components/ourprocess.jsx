@@ -60,10 +60,6 @@ export default function OurProcess() {
       className="w-full py-16 sm:py-24 lg:py-32 bg-white font-jakarta border-t border-gray-100 overflow-hidden"
       id="process"
     >
-      <style>
-        {`@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
-          .font-jakarta { font-family: 'Plus Jakarta Sans', sans-serif; }`}
-      </style>
 
       {/* Global Gradient Definition for Icons if needed */}
       <svg width="0" height="0" className="absolute pointer-events-none">

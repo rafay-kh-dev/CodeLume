@@ -1,6 +1,14 @@
 import Header from "../components/header";
 import Footer from "../components/footer";
 import "./globals.css";
+import { Plus_Jakarta_Sans } from "next/font/google";
+
+const jakarta = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+  variable: "--font-jakarta",
+  display: "swap",
+});
 
 export const metadata = {
   title: "CodeLume® | Bespoke Web Engineering & Digital Solutions by Rafay",
@@ -14,7 +22,7 @@ export const metadata = {
     siteName: "CodeLume",
     images: [
       {
-        url: "/codelume-banner.jpg", // Ensure this image is placed inside your 'public' folder
+        url: "/codelume-banner.jpg",
         width: 1200,
         height: 630,
         alt: "CodeLume Digital Agency",
@@ -34,9 +42,8 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      {/* Updated to White Theme to match the new Antigravity design system */}
-      <body className="bg-white text-black antialiased">
+    <html lang="en" className={`${jakarta.variable} bg-white`}>
+      <body className="font-jakarta bg-white text-black antialiased selection:bg-[#4285F4]/20">
         <Header />
         {children}
         <Footer />

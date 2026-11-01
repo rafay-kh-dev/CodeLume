@@ -42,12 +42,6 @@ export default function Footer() {
 
   return (
     <footer className="w-full bg-white font-jakarta pt-20 flex flex-col overflow-hidden">
-      <style>
-        {`
-          @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
-          .font-jakarta { font-family: 'Plus Jakarta Sans', sans-serif; }
-        `}
-      </style>
 
       {/* Top Section */}
       <div className="max-w-[1300px] mx-auto px-6 sm:px-10 lg:px-12 w-full flex flex-col lg:flex-row justify-between gap-16 lg:gap-8 mb-20 relative z-10">

@@ -1,5 +1,26 @@
 @import "tailwindcss";
 
+html,
+body {
+  background-color: #ffffff !important;
+  color: #000000;
+  overscroll-behavior-y: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #ffffff !important;
+    --foreground: #000000 !important;
+  }
+}
+
+section {
+  background-color: #ffffff;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;

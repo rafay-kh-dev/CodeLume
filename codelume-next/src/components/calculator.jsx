@@ -244,10 +244,6 @@ export default function ProjectCalculator() {
 
   return (
     <section className="bg-white font-jakarta py-24 sm:py-32 relative border-t border-gray-100 overflow-visible">
-      <style>
-        {`@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
-          .font-jakarta { font-family: 'Plus Jakarta Sans', sans-serif; }`}
-      </style>
 
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-[600px] bg-[radial-gradient(ellipse_at_top,rgba(0,0,0,0.02)_0%,transparent_70%)] pointer-events-none" />
 

@@ -63,12 +63,6 @@ export default function Service() {
 
   return (
     <section className="bg-white font-jakarta py-16 sm:py-24 lg:py-32 overflow-hidden relative border-t border-gray-100">
-      <style>
-        {`
-          @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
-          .font-jakarta { font-family: 'Plus Jakarta Sans', sans-serif; }
-        `}
-      </style>
 
       <div className="max-w-[1300px] mx-auto px-4 sm:px-10 lg:px-12 relative z-10 w-full">
         {/* Header Section */}
