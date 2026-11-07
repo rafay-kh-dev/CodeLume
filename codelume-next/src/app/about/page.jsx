@@ -41,6 +41,41 @@ const FacebookIcon = (props) => (
   </svg>
 );
 
+const InstagramIcon = (props) => (
+  <svg viewBox="0 0 24 24" fill="none" {...props}>
+    <defs>
+      <linearGradient
+        id="instagram-gradient"
+        x1="0"
+        y1="0"
+        x2="1"
+        y2="1"
+      >
+        <stop offset="0%" stopColor="#F58529" />
+        <stop offset="50%" stopColor="#DD2A7B" />
+        <stop offset="100%" stopColor="#8134AF" />
+      </linearGradient>
+    </defs>
+    <rect
+      x="2"
+      y="2"
+      width="20"
+      height="20"
+      rx="5"
+      stroke="url(#instagram-gradient)"
+      strokeWidth="2"
+    />
+    <circle
+      cx="12"
+      cy="12"
+      r="4"
+      stroke="url(#instagram-gradient)"
+      strokeWidth="2"
+    />
+    <circle cx="17.5" cy="6.5" r="1.2" fill="url(#instagram-gradient)" />
+  </svg>
+);
+
 // Scroll-Triggered Typewriter Effect (Mobile-Responsive & Zero Layout Shift)
 const TypewriterHeading = ({ text }) => {
   const [displayedText, setDisplayedText] = useState("");
@@ -441,11 +476,11 @@ export default function AboutCodeLume() {
                 Connect on Socials
               </h2>
               <p className="text-gray-500 font-medium text-[14px] sm:text-[15px] leading-relaxed mb-5 sm:mb-6">
-                Verify my profile and connect with me directly on LinkedIn and Facebook.
+                Verify my profile and connect with me directly on LinkedIn, Facebook and Instagram.
               </p>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-2 sm:pt-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 pt-2 sm:pt-4">
               <a
                 href="https://www.linkedin.com/in/rafay-codelume/"
                 target="_blank"
@@ -468,6 +503,19 @@ export default function AboutCodeLume() {
                 <span className="flex items-center gap-2.5 sm:gap-3">
                   <FacebookIcon className="w-5 h-5 shrink-0" />
                   Facebook Profile
+                </span>
+                <ArrowUpRight className="w-4 h-4 text-gray-400 shrink-0" />
+              </a>
+
+              <a
+                href="https://www.instagram.com/rafay-codelume/"
+                target="_blank"
+                rel="noreferrer"
+                className="flex-1 flex items-center justify-between px-4 sm:px-5 py-3.5 sm:py-4 rounded-xl sm:rounded-2xl bg-gray-50 hover:bg-gray-100 border border-gray-200 text-black font-bold text-[13.5px] sm:text-[14px] transition-all outline-none active:scale-[0.98] sm:col-span-2"
+              >
+                <span className="flex items-center gap-2.5 sm:gap-3">
+                  <InstagramIcon className="w-5 h-5 shrink-0" />
+                  Instagram Profile
                 </span>
                 <ArrowUpRight className="w-4 h-4 text-gray-400 shrink-0" />
               </a>
