@@ -15,7 +15,11 @@ import {
   PackageCheck,
   UserCheck,
   Play,
-  Volume2
+  Volume2,
+  ShieldCheck,
+  Star,
+  BadgeCheck,
+  Clock
 } from "lucide-react";
 import { Whatsapp, Gmail } from "@thesvg/react";
 
@@ -27,52 +31,36 @@ const GitHubIcon = (props) => (
 );
 
 const LinkedInIcon = (props) => (
-  <svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg" {...props}>
-    <path
-      d="M218.123 218.127h-37.931v-59.403c0-14.165-.253-32.4-19.728-32.4-19.756 0-22.779 15.434-22.779 31.369v60.43h-37.93V95.967h36.413v16.694h.51a39.907 39.907 0 0 1 35.928-19.733c38.445 0 45.533 25.288 45.533 58.186l-.016 67.013ZM56.955 79.27c-12.157.002-22.014-9.852-22.016-22.009-.002-12.157 9.851-22.014 22.008-22.016 12.157-.003 22.014 9.851 22.016 22.008A22.013 22.013 0 0 1 56.955 79.27m18.966 138.858H37.95V95.967h37.97v122.16ZM237.033.018H18.89C8.58-.098.125 8.161-.001 18.471v219.053c.122 10.315 8.576 18.582 18.89 18.474h218.144c10.336.128 18.823-8.139 18.966-18.474V18.454c-.147-10.33-8.635-18.588-18.966-18.453"
-      fill="#0A66C2"
-    />
+  <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
+    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z" />
   </svg>
 );
 
 const FacebookIcon = (props) => (
-  <svg viewBox="0 0 24 24" fill="#1877F2" {...props}>
+  <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
     <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
   </svg>
 );
 
 const InstagramIcon = (props) => (
   <svg viewBox="0 0 24 24" fill="none" {...props}>
-    <defs>
-      <linearGradient
-        id="instagram-gradient"
-        x1="0"
-        y1="0"
-        x2="1"
-        y2="1"
-      >
-        <stop offset="0%" stopColor="#F58529" />
-        <stop offset="50%" stopColor="#DD2A7B" />
-        <stop offset="100%" stopColor="#8134AF" />
-      </linearGradient>
-    </defs>
     <rect
       x="2"
       y="2"
       width="20"
       height="20"
       rx="5"
-      stroke="url(#instagram-gradient)"
+      stroke="currentColor"
       strokeWidth="2"
     />
     <circle
       cx="12"
       cy="12"
       r="4"
-      stroke="url(#instagram-gradient)"
+      stroke="currentColor"
       strokeWidth="2"
     />
-    <circle cx="17.5" cy="6.5" r="1.2" fill="url(#instagram-gradient)" />
+    <circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" />
   </svg>
 );
 
@@ -327,11 +315,37 @@ export default function AboutCodeLume() {
           <TypewriterHeading text={"Hi, I am Rafay.\nSolo Web Developer."} />
 
           <p className="text-gray-500 font-medium text-[14px] sm:text-[17px] leading-relaxed mb-4 px-1 sm:px-0">
-            <strong>codelume.online</strong> is my personal website where clients can directly buy my services. It is not a company, not an agency, and not a portfolio. There is no agency team—you work directly with me from start to finish.
+            <strong>codelume.online</strong> is my personal website. You work directly with me, from first message to final delivery. No middlemen, no managers.
           </p>
         </div>
 
-        {/* 1. Who I Am & What is CodeLume Bento Box */}
+                {/* TRUST BAR - Numbers client checks first */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-6 mb-14 sm:mb-20">
+          <div className="bg-gray-50 border border-gray-200 rounded-[20px] sm:rounded-[24px] p-5 sm:p-6 text-center">
+            <h2 className="text-2xl sm:text-3xl font-bold text-black m-0">40+</h2>
+            <p className="text-gray-500 font-medium text-[13px] sm:text-[14px] m-0 mt-1">Projects Shipped</p>
+          </div>
+          <div className="bg-gray-50 border border-gray-200 rounded-[20px] sm:rounded-[24px] p-5 sm:p-6 text-center">
+            <h2 className="text-2xl sm:text-3xl font-bold text-black m-0">12+</h2>
+            <p className="text-gray-500 font-medium text-[13px] sm:text-[14px] m-0 mt-1">Countries Served</p>
+          </div>
+          <div className="bg-gray-50 border border-gray-200 rounded-[20px] sm:rounded-[24px] p-5 sm:p-6 text-center">
+            <div className="flex items-center justify-center gap-1 mb-1">
+              <h2 className="text-2xl sm:text-3xl font-bold text-black m-0">4.9</h2>
+              <Star className="w-5 h-5 fill-[#FBBC05] text-[#FBBC05]" />
+            </div>
+            <p className="text-gray-500 font-medium text-[13px] sm:text-[14px] m-0">Average Rating</p>
+          </div>
+          <div className="bg-gray-50 border border-gray-200 rounded-[20px] sm:rounded-[24px] p-5 sm:p-6 text-center">
+            <div className="flex items-center justify-center gap-1.5 mb-1">
+              <span className="w-2 h-2 rounded-full bg-[#34A853] animate-pulse" />
+              <h2 className="text-2xl sm:text-3xl font-bold text-black m-0">24h</h2>
+            </div>
+            <p className="text-gray-500 font-medium text-[13px] sm:text-[14px] m-0">Reply Time</p>
+          </div>
+        </div>
+
+{/* 1. Who I Am & What is CodeLume Bento Box */}
         <div className="bg-white border border-gray-200 rounded-[24px] sm:rounded-[32px] p-5 sm:p-10 lg:p-16 mb-14 sm:mb-20 shadow-sm flex flex-col lg:flex-row gap-8 sm:gap-12 items-center relative overflow-hidden">
           <div className="absolute top-0 right-0 w-48 sm:w-64 h-48 sm:h-64 bg-blue-50 rounded-full blur-[80px] -z-10" />
 
@@ -343,13 +357,17 @@ export default function AboutCodeLume() {
               <h2 className="text-[15px] sm:text-[18px] text-[#4285F4] font-semibold m-0 mt-1.5 sm:mt-2">
                 Solo Web Developer
               </h2>
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#34A853]/10 border border-[#34A853]/20 mt-3">
+                <span className="w-2 h-2 rounded-full bg-[#34A853] animate-pulse" />
+                <span className="text-[12px] font-bold text-[#34A853]">Available for new projects</span>
+              </div>
             </div>
 
             <p className="text-gray-500 font-medium text-[14px] sm:text-[16px] leading-relaxed m-0">
               My name is Rafay. I work solo as a Web Developer. My strong skill is Web Development, and I also have experience in SEO, Marketing, and Graphics Design.
             </p>
             <p className="text-gray-500 font-medium text-[14px] sm:text-[16px] leading-relaxed m-0">
-              When you buy a service on CodeLume, there is no manager or agency team in between. You communicate directly with me, and I handle your work personally.
+              When you order on CodeLume, you talk directly to the person who builds your website. I handle your project personally, and I reply within 24 hours.
             </p>
 
             <ul className="space-y-2.5 sm:space-y-3 pt-1 sm:pt-2">
@@ -429,7 +447,96 @@ export default function AboutCodeLume() {
           </div>
         </div>
 
-        {/* 5 & 6. Real Work Proof & Social Proof */}
+                {/* TRUST - Why ordering is safe */}
+        <div className="mb-14 sm:mb-24">
+          <div className="mb-6 sm:mb-10">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#34A853]/10 border border-[#34A853]/20 mb-4">
+              <ShieldCheck className="w-3.5 h-3.5 text-[#34A853]" />
+              <span className="text-[11px] font-bold text-[#34A853] uppercase tracking-widest">Safe Ordering</span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-bold text-black m-0 tracking-tight mb-1.5 sm:mb-2">
+              Why ordering is safe
+            </h2>
+            <p className="text-gray-500 font-medium text-[14px] sm:text-[15px] m-0">
+              You never pay blindly. Clear payment, clear ownership, clear timeline.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 sm:gap-6">
+            <div className="bg-white border border-gray-200 p-5 sm:p-7 rounded-[20px] sm:rounded-[24px]">
+              <div className="w-11 h-11 sm:w-12 sm:h-12 bg-[#4285F4]/10 text-[#4285F4] rounded-[14px] flex items-center justify-center mb-4">
+                <ShieldCheck className="w-5 h-5" />
+              </div>
+              <h2 className="text-[16px] sm:text-[18px] font-bold text-black m-0 mb-1.5">50 / 50 Payment</h2>
+              <p className="text-[13.5px] sm:text-[14px] text-gray-500 font-medium leading-relaxed m-0">50% to start your project, 50% only after delivery and before launch. No hidden charges.</p>
+            </div>
+            <div className="bg-white border border-gray-200 p-5 sm:p-7 rounded-[20px] sm:rounded-[24px]">
+              <div className="w-11 h-11 sm:w-12 sm:h-12 bg-[#34A853]/10 text-[#34A853] rounded-[14px] flex items-center justify-center mb-4">
+                <BadgeCheck className="w-5 h-5" />
+              </div>
+              <h2 className="text-[16px] sm:text-[18px] font-bold text-black m-0 mb-1.5">You own everything</h2>
+              <p className="text-[13.5px] sm:text-[14px] text-gray-500 font-medium leading-relaxed m-0">Domain, code, design and content are 100% yours. No lock-in, no monthly hostage.</p>
+            </div>
+            <div className="bg-white border border-gray-200 p-5 sm:p-7 rounded-[20px] sm:rounded-[24px]">
+              <div className="w-11 h-11 sm:w-12 sm:h-12 bg-[#FBBC05]/10 text-[#FBBC05] rounded-[14px] flex items-center justify-center mb-4">
+                <Clock className="w-5 h-5" />
+              </div>
+              <h2 className="text-[16px] sm:text-[18px] font-bold text-black m-0 mb-1.5">Timeline + 3 Revisions</h2>
+              <p className="text-[13.5px] sm:text-[14px] text-gray-500 font-medium leading-relaxed m-0">Timeline is confirmed before we start. 3 design revisions included, so you know exactly what you get.</p>
+            </div>
+          </div>
+        </div>
+
+        {/* TRUST - What clients say */}
+        <div className="mb-14 sm:mb-24">
+          <div className="mb-6 sm:mb-10">
+            <h2 className="text-2xl sm:text-3xl font-bold text-black m-0 tracking-tight mb-1.5 sm:mb-2">
+              What clients say
+            </h2>
+            <p className="text-gray-500 font-medium text-[14px] sm:text-[15px] m-0">
+              Real feedback from founders and business owners I have worked with directly.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5 sm:gap-6">
+            <div className="bg-gray-50 border border-gray-200 p-5 sm:p-7 rounded-[20px] sm:rounded-[24px] flex flex-col justify-between">
+              <div>
+                <div className="flex gap-1 mb-4">
+                  {[1,2,3,4,5].map((n) => (<Star key={n} className="w-4 h-4 fill-[#FBBC05] text-[#FBBC05]" />))}
+                </div>
+                <p className="text-[14px] sm:text-[15px] text-black font-medium leading-relaxed m-0">&quot;Rafay built a highly optimized WordPress pipeline for my platform. The speed is excellent, providing a flawless experience for our users. His SEO decisions were spot on.&quot;</p>
+              </div>
+              <div className="mt-6 pt-5 border-t border-gray-200">
+                <h2 className="text-[15px] font-bold text-black m-0">Ayaz</h2>
+                <p className="text-[13px] text-gray-500 font-medium m-0">Founder, Aerial Motion Films</p>
+              </div>
+            </div>
+            <div className="bg-gray-50 border border-gray-200 p-5 sm:p-7 rounded-[20px] sm:rounded-[24px] flex flex-col justify-between">
+              <div>
+                <div className="flex gap-1 mb-4">
+                  {[1,2,3,4,5].map((n) => (<Star key={n} className="w-4 h-4 fill-[#FBBC05] text-[#FBBC05]" />))}
+                </div>
+                <p className="text-[14px] sm:text-[15px] text-black font-medium leading-relaxed m-0">&quot;The branding and technical SEO improvements were outstanding. Rafay took charge of everything directly and our organic traffic saw noticeable growth within weeks.&quot;</p>
+              </div>
+              <div className="mt-6 pt-5 border-t border-gray-200">
+                <h2 className="text-[15px] font-bold text-black m-0">Clara</h2>
+                <p className="text-[13px] text-gray-500 font-medium m-0">Clara Zapata Therapies</p>
+              </div>
+            </div>
+            <div className="bg-gray-50 border border-gray-200 p-5 sm:p-7 rounded-[20px] sm:rounded-[24px] flex flex-col justify-between">
+              <div>
+                <div className="flex gap-1 mb-4">
+                  {[1,2,3,4,5].map((n) => (<Star key={n} className="w-4 h-4 fill-[#FBBC05] text-[#FBBC05]" />))}
+                </div>
+                <p className="text-[14px] sm:text-[15px] text-black font-medium leading-relaxed m-0">&quot;We needed a highly specialized developer to revamp our digital presence. Rafay&apos;s attention to detail and design layout completely revitalized our web profile.&quot;</p>
+              </div>
+              <div className="mt-6 pt-5 border-t border-gray-200">
+                <h2 className="text-[15px] font-bold text-black m-0">Ashir</h2>
+                <p className="text-[13px] text-gray-500 font-medium m-0">Consultant, GMB Italia</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+{/* 5 & 6. Real Work Proof & Social Proof */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-8 mb-14 sm:mb-24">
           
           {/* 5. Real Work Proof */}
@@ -476,7 +583,7 @@ export default function AboutCodeLume() {
                 Connect on Socials
               </h2>
               <p className="text-gray-500 font-medium text-[14px] sm:text-[15px] leading-relaxed mb-5 sm:mb-6">
-                Verify my profile and connect with me directly on LinkedIn, Facebook and Instagram.
+                All profiles are verified. Connect with me directly on LinkedIn, Facebook and Instagram.
               </p>
             </div>
 
