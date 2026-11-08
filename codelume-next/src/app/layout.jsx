@@ -1,5 +1,6 @@
 import Header from "../components/header";
 import Footer from "../components/footer";
+import SupportWidget from "../components/supportwidget";
 import "./globals.css";
 import { Plus_Jakarta_Sans } from "next/font/google";
 
@@ -46,6 +47,7 @@ export default function RootLayout({ children }) {
       <body className="font-jakarta bg-white text-black antialiased selection:bg-[#4285F4]/20">
         <Header />
         {children}
+        <SupportWidget />
         <Footer />
       </body>
     </html>
