@@ -14,13 +14,13 @@ export default function Home() {
   return (
     <main className="flex min-h-screen flex-col w-full overflow-hidden bg-white">
       <Hero />
-      <MeetRafay />
-      <About />
       <Service />
       <OurProcess />
-      <DevToolsSection />
       <Calculator />
+      <DevToolsSection />
       <Testimonials />
+      <About />
+      <MeetRafay />
       <Faq />
     </main>
   );
