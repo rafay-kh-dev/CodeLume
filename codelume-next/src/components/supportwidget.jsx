@@ -5,7 +5,7 @@ import { MessageCircle, X, Send, CheckCircle2, Headphones } from "lucide-react";
 export default function SupportWidget() {
   // Web3Forms Access Key - https://web3forms.com se apni Outlook / Gmail daal ke lo, yahan paste karo
   // Jab user form bharega, mail seedha tumhare Outlook / Gmail pe aayega, mailto nahi khulega
-  const WEB3FORMS_ACCESS_KEY = "YOUR_WEB3FORMS_ACCESS_KEY";
+  const WEB3FORMS_ACCESS_KEY = "c296afa0-659b-4345-912d-8ebba07a8b4b";
   const [isOpen, setIsOpen] = useState(false);
   const [isSending, setIsSending] = useState(false);
   const [subject, setSubject] = useState("");
@@ -40,7 +40,7 @@ export default function SupportWidget() {
         body: JSON.stringify({
           access_key: WEB3FORMS_ACCESS_KEY,
           subject: `Support: ${subject.trim()} - CodeLume`,
-          from_name: "CodeLume Support Widget",
+          from_name: "Need help?",
           name: email.trim(),
           email: email.trim(),
           message: `Subject: ${subject.trim()}\nFrom: ${email.trim()}\n\nMessage:\n${message.trim()}`,
@@ -52,12 +52,7 @@ export default function SupportWidget() {
       if (!data.success) throw new Error(data.message || "Failed to send");
 
       setIsSent(true);
-      setTimeout(() => {
-        setIsSent(false);
-        setSubject("");
-        setEmail("");
-        setMessage("");
-      }, 4000);
+      // Auto-reset hata diya - user reload kiye baghair second form nahi bhar sakta
     } catch (err) {
       // Agar Web3Forms key nahi lagi ya net fail - fallback mailto
       const mailSubject = `Support: ${subject.trim()}`;
@@ -100,16 +95,12 @@ export default function SupportWidget() {
             <div className="px-5 py-8 flex flex-col items-center text-center">
               <CheckCircle2 className="w-12 h-12 text-[#34A853] mb-3" />
               <p className="text-[16px] font-bold text-black m-0">Message ready!</p>
-              <p className="text-[13px] text-gray-500 font-medium leading-relaxed m-0 mt-1 max-w-[260px]">
-                Your message has been sent directly. We will reply within 24 hours.
+
+              <p className="text-[13px] font-bold text-black leading-relaxed m-0 mt-2 max-w-[260px]">
+                You will get the answer from <span className="text-black underline">mrafaykh@outlook.com</span> within 24 hours.
               </p>
-              <button
-                type="button"
-                onClick={() => setIsSent(false)}
-                className="mt-4 px-5 py-2.5 rounded-full bg-gray-100 hover:bg-gray-200 text-[13px] font-bold text-black outline-none cursor-pointer"
-              >
-                Send another message
-              </button>
+
+
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="px-4 py-3 flex flex-col gap-3">
@@ -170,8 +161,8 @@ export default function SupportWidget() {
                 <Send className="w-4 h-4" /> {isSending ? "Sending..." : "Send Message"}
               </button>
 
-              <p className="text-center text-[11px] text-gray-400 font-medium m-0">
-                No spam. Your email is only used to reply to you.
+              <p className="text-center text-[11px] text-gray-500 font-medium leading-relaxed m-0">
+                You will get the answer from <span className="font-bold text-black">mrafaykh@outlook.com</span> within 24 hours.
               </p>
             </form>
           )}

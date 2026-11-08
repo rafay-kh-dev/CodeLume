@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import emailjs from "@emailjs/browser";
+
 import { ArrowRight, Mail, User, Building, Loader2 } from "lucide-react";
 
 // @thesvg/react se pori 11 services ke real icons import kiye gaye hain
@@ -47,7 +47,6 @@ const TypewriterHeading = ({ text }) => {
 
     let typingInterval;
     const startTimeout = setTimeout(() => {
-      // ✅ FIX: Moved inside setTimeout to prevent React cascading renders
       setDisplayedText("");
       let i = 0;
       typingInterval = setInterval(() => {
@@ -77,7 +76,6 @@ const TypewriterHeading = ({ text }) => {
       ref={headingRef}
       className="min-h-[110px] sm:min-h-[140px] lg:min-h-[160px] flex items-start justify-start mb-6 sm:mb-8 w-full relative"
     >
-      {/* INVISIBLE PLACEHOLDER */}
       <h2 className={`${headingClasses} opacity-0 pointer-events-none`}>
         {fullLines.map((line, idx) => (
           <React.Fragment key={idx}>
@@ -86,8 +84,6 @@ const TypewriterHeading = ({ text }) => {
           </React.Fragment>
         ))}
       </h2>
-
-      {/* VISIBLE TYPING TEXT */}
       <h2 className={`${headingClasses} absolute top-0 left-0 h-full`}>
         {lines.map((line, idx) => (
           <React.Fragment key={idx}>
@@ -112,6 +108,8 @@ const TypewriterHeading = ({ text }) => {
 };
 
 export default function StartProject() {
+  // Web3Forms - same key as SupportWidget, direct mail to mrafaykh@outlook.com
+  const WEB3FORMS_ACCESS_KEY = "c296afa0-659b-4345-912d-8ebba07a8b4b";
   const [formData, setFormData] = useState({
     services: [],
     budget: "",
@@ -125,23 +123,19 @@ export default function StartProject() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // All 11 Premium Services added with Real Icons
+  // All 11 Premium Services - Real Icons + Best for line in English
   const serviceOptions = [
-    { id: "MERN Stack", title: "MERN Stack", icon: ReactIcon },
-    { id: "PHP Laravel", title: "PHP & Laravel", icon: Laravel },
-    { id: "Angular", title: "Angular Web Apps", icon: Angular },
-    {
-      id: "Custom Platforms",
-      title: "Custom Platforms",
-      icon: GcpCloudMonitoring,
-    },
-    { id: "WordPress", title: "WordPress Sites", icon: Wordpress },
-    { id: "Shopify", title: "Shopify Dev", icon: Shopify },
-    { id: "Webflow", title: "Webflow Sites", icon: Webflow },
-    { id: "API", title: "API Integrations", icon: GcpApiMonetization },
-    { id: "Mobile Apps", title: "Mobile Apps", icon: Flutter },
-    { id: "UI/UX Design", title: "UI/UX Design", icon: Figma },
-    { id: "Full Branding", title: "Full Branding", icon: Adobe },
+    { id: "MERN Stack", title: "MERN Stack", icon: ReactIcon, bestFor: "Best for: Web apps with login, dashboard, or complex features. Not a simple website." },
+    { id: "PHP Laravel", title: "PHP & Laravel", icon: Laravel, bestFor: "Best for: Businesses that need a strong backend, admin panel, or custom system." },
+    { id: "Angular", title: "Angular Web Apps", icon: Angular, bestFor: "Best for: Large companies that need a fast, structured enterprise app." },
+    { id: "Custom Platforms", title: "Custom Platforms", icon: GcpCloudMonitoring, bestFor: "Best for: Businesses with a unique process that no template can handle." },
+    { id: "WordPress", title: "WordPress Sites", icon: Wordpress, bestFor: "Best for: Small business, company website, or blog. Easy to manage yourself." },
+    { id: "Shopify", title: "Shopify Dev", icon: Shopify, bestFor: "Best for: Selling products online with cart, payment, and order management." },
+    { id: "Webflow", title: "Webflow Sites", icon: Webflow, bestFor: "Best for: Brands that need a beautiful, animated marketing website." },
+    { id: "API", title: "API Integrations", icon: GcpApiMonetization, bestFor: "Best for: Connecting Stripe, PayPal, CRM, or any third-party tool to your site." },
+    { id: "Mobile Apps", title: "Mobile Apps", icon: Flutter, bestFor: "Best for: Businesses that need an iOS and Android app for their customers." },
+    { id: "UI/UX Design", title: "UI/UX Design", icon: Figma, bestFor: "Best for: Only design in Figma, no development yet. You will build it later." },
+    { id: "Full Branding", title: "Full Branding", icon: Adobe, bestFor: "Best for: New brands that need logo, identity, and website together." },
   ];
 
   const budgetOptions = ["$1k - $2.5k", "$2.5k - $5k", "$5k - $10k", "$10k+"];
@@ -171,31 +165,27 @@ export default function StartProject() {
     setIsSubmitting(true);
 
     try {
-      await emailjs.send(
-        "service_fhmjx2e",
-        "template_xi7uxae",
-        {
-          from_name: formData.name,
-          client_email: formData.email,
-          company: formData.company,
-          services: formData.services.join(", "),
-          budget: formData.budget,
-          timeline: formData.timeline,
-          message: formData.details,
-          reply_to: formData.email,
-        },
-        "2uB67zF7wZrjpEEyD",
-      );
+      const res = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          access_key: WEB3FORMS_ACCESS_KEY,
+          subject: `New Project: ${formData.services.join(", ") || "General Inquiry"} - CodeLume`,
+          from_name: "CodeLume Start Project",
+          name: formData.name,
+          email: formData.email,
+          message: `Name: ${formData.name}\nEmail: ${formData.email}\nCompany: ${formData.company || "(not entered)"}\n\nServices: ${formData.services.join(", ") || "(not selected)"}\nBudget: ${formData.budget || "(not selected)"}\nTimeline: ${formData.timeline || "(not selected)"}\n\nProject Details:\n${formData.details}`,
+          replyto: formData.email,
+        }),
+      });
+      const data = await res.json();
+      if (!data.success) throw new Error(data.message || "Failed to send");
 
       setIsSubmitted(true);
       window.scrollTo({ top: 0, behavior: "smooth" });
     } catch (error) {
-      console.error("Email send error details:", error);
-      const errorMessage =
-        error?.text ||
-        error?.message ||
-        "Please check your EmailJS dashboard credentials.";
-      alert("EmailJS Failed: " + errorMessage);
+      console.error("Web3Forms send error:", error);
+      alert("Failed to send. Please try again or email directly at mrafaykh@outlook.com");
     } finally {
       setIsSubmitting(false);
     }
@@ -257,14 +247,12 @@ export default function StartProject() {
         `}
       </style>
 
-      {/* Subtle top gradient instead of dark blur */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-[600px] bg-[radial-gradient(ellipse_at_top,rgba(0,0,0,0.02)_0%,transparent_70%)] pointer-events-none" />
 
       <div className="max-w-[1000px] mx-auto px-4 sm:px-10 relative z-10 w-full">
         <div className="flex flex-col items-start text-left mb-12 sm:mb-20">
           <TypewriterHeading text={"Let's engineer\nyour next project."} />
 
-          {/* ✅ SOLO DEVELOPER COPY APPLIED HERE */}
           <p className="text-[15px] sm:text-[17px] text-gray-500 font-medium leading-relaxed m-0 max-w-2xl px-1 sm:px-0">
             Fill out the technical requirements below. The more details you
             provide, the better I can customise my architectural proposal for
@@ -291,7 +279,7 @@ export default function StartProject() {
                     key={service.id}
                     type="button"
                     onClick={() => toggleService(service.id)}
-                    className={`flex items-center gap-3 sm:gap-4 p-4 sm:p-5 rounded-[16px] sm:rounded-[20px] border transition-all duration-300 outline-none text-left active:scale-[0.98] ${
+                    className={`flex items-start gap-3 sm:gap-4 p-4 sm:p-5 rounded-[16px] sm:rounded-[20px] border transition-all duration-300 outline-none text-left active:scale-[0.98] ${
                       isSelected
                         ? "bg-white border-[#4285F4] shadow-[0_8px_20px_rgba(66,133,244,0.12)] sm:-translate-y-1"
                         : "bg-gray-50 border-transparent hover:bg-white hover:border-gray-200 hover:shadow-sm"
@@ -306,13 +294,18 @@ export default function StartProject() {
                     >
                       <Icon className="w-5 h-5 sm:w-6 sm:h-6" strokeWidth={2} />
                     </div>
-                    <h2
-                      className={`text-[13.5px] sm:text-[15px] font-semibold m-0 tracking-tight transition-colors ${
-                        isSelected ? "text-[#4285F4]" : "text-black"
-                      }`}
-                    >
-                      {service.title}
-                    </h2>
+                    <div className="flex flex-col min-w-0">
+                      <h2
+                        className={`text-[13.5px] sm:text-[15px] font-semibold m-0 tracking-tight transition-colors ${
+                          isSelected ? "text-[#4285F4]" : "text-black"
+                        }`}
+                      >
+                        {service.title}
+                      </h2>
+                      <p className="text-[11.5px] sm:text-[12px] text-gray-500 font-medium leading-[1.5] m-0 mt-1">
+                        {service.bestFor}
+                      </p>
+                    </div>
                   </button>
                 );
               })}
