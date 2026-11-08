@@ -41,50 +41,48 @@ export default function AdminLogin() {
   };
 
   return (
-    <div className="min-h-dvh bg-[#030712] flex items-center justify-center font-jakarta px-4 relative overflow-hidden">
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-150 h-150 bg-blue-500/10 rounded-full blur-[120px] pointer-events-none" />
-
-      <div className="w-full max-w-md bg-[#0a0f1c]/80 backdrop-blur-xl border border-white/10 rounded-4xl p-8 sm:p-10 relative z-10 shadow-2xl">
-        <div className="w-14 h-14 bg-blue-500/10 border border-blue-500/20 rounded-2xl flex items-center justify-center mb-8 mx-auto">
-          <Lock className="w-7 h-7 text-blue-500" />
+    <div className="min-h-dvh bg-[#f8f8f8] flex items-center justify-center px-4">
+      <div className="w-full max-w-md bg-white border border-gray-200 rounded-[20px] p-8 sm:p-10 shadow-sm">
+        <div className="w-14 h-14 bg-black rounded-2xl flex items-center justify-center mb-6 mx-auto">
+          <Lock className="w-7 h-7 text-white" />
         </div>
 
-        <h2 className="text-2xl sm:text-3xl font-black text-white text-center mb-2 m-0 tracking-tight">
+        <h2 className="text-2xl sm:text-3xl font-bold text-black text-center mb-2 tracking-tight">
           Admin Portal
         </h2>
-        <p className="text-slate-400 text-center text-[14px] mb-8 font-medium">
+        <p className="text-gray-500 text-center text-[14px] mb-8">
           Please login to access the dashboard.
         </p>
 
         {error && (
-          <div className="bg-red-500/10 border border-red-500/20 text-red-400 text-[13px] font-bold px-4 py-3 rounded-xl mb-6 text-center">
+          <div className="bg-red-50 border border-red-200 text-red-600 text-[13px] font-medium px-4 py-3 rounded-xl mb-6 text-center">
             {error}
           </div>
         )}
 
         <form onSubmit={handleLogin} className="flex flex-col gap-5">
           <div>
-            <label className="block text-[12px] font-bold text-slate-400 uppercase tracking-wider mb-2">
+            <label className="block text-[12px] font-medium text-gray-500 uppercase tracking-wider mb-2">
               Username
             </label>
             <input
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="w-full bg-[#030712] border border-white/10 rounded-xl py-3.5 px-4 text-[14px] text-white placeholder-slate-600 focus:outline-none focus:border-blue-500/50 transition-colors"
+              className="w-full bg-white border border-gray-200 rounded-xl py-3.5 px-4 text-[14px] text-black placeholder-gray-400 focus:outline-none focus:border-black transition-colors"
               placeholder="Enter username"
               required
             />
           </div>
           <div>
-            <label className="block text-[12px] font-bold text-slate-400 uppercase tracking-wider mb-2">
+            <label className="block text-[12px] font-medium text-gray-500 uppercase tracking-wider mb-2">
               Password
             </label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full bg-[#030712] border border-white/10 rounded-xl py-3.5 px-4 text-[14px] text-white placeholder-slate-600 focus:outline-none focus:border-blue-500/50 transition-colors"
+              className="w-full bg-white border border-gray-200 rounded-xl py-3.5 px-4 text-[14px] text-black placeholder-gray-400 focus:outline-none focus:border-black transition-colors"
               placeholder="Enter password"
               required
             />
@@ -92,7 +90,7 @@ export default function AdminLogin() {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3.5 rounded-xl mt-2 transition-all shadow-lg active:scale-95 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-70"
+            className="w-full bg-black hover:bg-gray-900 text-white font-medium py-3.5 rounded-xl mt-2 transition-all active:scale-[0.98] flex items-center justify-center gap-2 cursor-pointer disabled:opacity-70"
           >
             {isLoading ? (
               <Loader2 className="w-5 h-5 animate-spin" />
@@ -103,6 +101,9 @@ export default function AdminLogin() {
             )}
           </button>
         </form>
+        <p className="text-[12px] text-gray-400 mt-5 text-center">
+          CodeLume Admin • Only for site owner
+        </p>
       </div>
     </div>
   );
