@@ -46,6 +46,8 @@ export default function SupportWidget() {
           message: `Subject: ${subject.trim()}\nFrom: ${email.trim()}\n\nMessage:\n${message.trim()}`,
           // Reply-To user ka email taake tum Reply dabao to seedha user ko jaye
           replyto: email.trim(),
+          // Auto-reply - user ko foran tumhari taraf se thanks wala mail jayega
+          autoresponse: `Hi,\n\nThanks for contacting CodeLume!\n\nI have received your message about "${subject.trim()}" and will respond as soon as possible from mrafaykh@outlook.com within 24 hours.\n\nThanks,\nRafay - CodeLume`,
         }),
       });
       const data = await res.json();
