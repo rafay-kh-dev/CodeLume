@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight, ArrowLeft, Loader2, Mail } from "lucide-react";
 
 // Scroll-Triggered Typewriter Effect for Heading
@@ -31,10 +32,12 @@ const TypewriterHeading = ({ text }) => {
     if (!hasStarted) return;
 
     let i = 0;
-    setDisplayedText("");
+    let typingInterval = null;
 
     const startTimeout = setTimeout(() => {
-      const typingInterval = setInterval(() => {
+      // setState ab setTimeout ke andar hai, sync nahi - eslint set-state-in-effect fix
+      setDisplayedText("");
+      typingInterval = setInterval(() => {
         if (i < text.length) {
           setDisplayedText(text.substring(0, i + 1));
           i++;
@@ -42,11 +45,12 @@ const TypewriterHeading = ({ text }) => {
           clearInterval(typingInterval);
         }
       }, 45);
-
-      return () => clearInterval(typingInterval);
     }, 200);
 
-    return () => clearTimeout(startTimeout);
+    return () => {
+      clearTimeout(startTimeout);
+      if (typingInterval) clearInterval(typingInterval);
+    };
   }, [text, hasStarted]);
 
   const lines = displayedText.split("\n");
@@ -58,7 +62,7 @@ const TypewriterHeading = ({ text }) => {
   return (
     <div
       ref={headingRef}
-      className="min-h-[100px] sm:min-h-[120px] lg:min-h-[140px] flex items-center justify-center mb-6 w-full relative"
+      className="min-h-25 sm:min-h-30 lg:min-h-35 flex items-center justify-center mb-6 w-full relative"
     >
       {/* INVISIBLE PLACEHOLDER */}
       <h2 className={`${headingClasses} opacity-0 pointer-events-none`}>
@@ -79,7 +83,7 @@ const TypewriterHeading = ({ text }) => {
           </React.Fragment>
         ))}
         <span
-          className="inline-block w-[3px] h-[0.8em] ml-1.5 animate-[pulse_1s_ease-in-out_infinite] align-middle translate-y-[-4px] rounded-full"
+          className="inline-block w-0.75 h-[0.8em] ml-1.5 animate-[pulse_1s_ease-in-out_infinite] align-middle -translate-y-1 rounded-full"
           style={{
             background:
               "linear-gradient(to bottom, #4285F4, #34A853, #FBBC05, #EA4335)",
@@ -94,48 +98,99 @@ export default function Blog() {
   const [posts, setPosts] = useState([]);
   const [categories, setCategories] = useState(["All"]);
   const [isLoading, setIsLoading] = useState(true);
+  const [fetchError, setFetchError] = useState(null);
+  const [retryCount, setRetryCount] = useState(0);
   const [activeCategory, setActiveCategory] = useState("All");
 
   // Pagination State
   const [currentPage, setCurrentPage] = useState(1);
-  const postsPerPage = 8; 
+  const postsPerPage = 8;
 
   // Next.js Environment Variable
   const API_BASE_URL =
     process.env.NEXT_PUBLIC_API_URL || "https://codelume-backend.onrender.com";
 
   useEffect(() => {
+    let isCancelled = false;
+
+    // Render free tier 15 min baad sleep ho jata hai, pehla fetch 50-60s me wake hota hai
+    // Is liye retry + timeout lagaya hai, warna "Failed to fetch" aata hai
+    const fetchWithRetry = async (url, retries = 3) => {
+      for (let attempt = 0; attempt <= retries; attempt++) {
+        try {
+          const controller = new AbortController();
+          const timeout = setTimeout(() => controller.abort(), 20000); // 20s timeout
+          const res = await fetch(url, { signal: controller.signal });
+          clearTimeout(timeout);
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          return await res.json();
+        } catch (err) {
+          if (attempt === retries) throw err;
+          // Cold start ke liye wait: 2s, 4s, 8s
+          await new Promise((r) => setTimeout(r, 2000 * Math.pow(2, attempt)));
+        }
+      }
+    };
+
     const fetchDashboardData = async () => {
       try {
         setIsLoading(true);
+        setFetchError(null);
 
-        const [postsResponse, catResponse] = await Promise.all([
-          fetch(`${API_BASE_URL}/api/blogs`),
-          fetch(`${API_BASE_URL}/api/categories`),
+        // allSettled - agar categories fail bhi ho to blogs phir bhi dikhenge
+        const [postsResult, catsResult] = await Promise.allSettled([
+          fetchWithRetry(`${API_BASE_URL}/api/blogs`),
+          fetchWithRetry(`${API_BASE_URL}/api/categories`),
         ]);
 
-        if (postsResponse.ok) {
-          const postData = await postsResponse.json();
+        if (isCancelled) return;
+
+        if (postsResult.status === "fulfilled") {
+          const postData = Array.isArray(postsResult.value)
+            ? postsResult.value
+            : [];
           const publishedPosts = postData.filter(
-            (post) => post.status === "published"
+            (post) => post.status === "published",
           );
           setPosts(publishedPosts);
+
+          // Categories fail ho to posts se hi categories bana lo - page khali nahi rahega
+          if (catsResult.status !== "fulfilled") {
+            const fromPosts = [
+              "All",
+              ...new Set(publishedPosts.map((p) => p.category).filter(Boolean)),
+            ];
+            setCategories(fromPosts);
+          }
+        } else {
+          throw postsResult.reason;
         }
 
-        if (catResponse.ok) {
-          const catData = await catResponse.json();
-          const dynamicCategories = ["All", ...catData.map((c) => c.name)];
+        if (catsResult.status === "fulfilled") {
+          const catData = Array.isArray(catsResult.value)
+            ? catsResult.value
+            : [];
+          const dynamicCategories = [
+            "All",
+            ...catData.map((c) => c.name).filter(Boolean),
+          ];
           setCategories(dynamicCategories);
         }
       } catch (err) {
-        console.error("Error fetching data:", err);
+        if (!isCancelled) {
+          console.error("Error fetching data:", err);
+          setFetchError(err);
+        }
       } finally {
-        setIsLoading(false);
+        if (!isCancelled) setIsLoading(false);
       }
     };
 
     fetchDashboardData();
-  }, [API_BASE_URL]);
+    return () => {
+      isCancelled = true;
+    };
+  }, [API_BASE_URL, retryCount]);
 
   const filteredPosts = posts.filter((post) => {
     const matchesCategory =
@@ -164,7 +219,7 @@ export default function Blog() {
         `}
       </style>
 
-      <div className="max-w-[1300px] mx-auto px-5 sm:px-10 lg:px-12 relative z-10 w-full">
+      <div className="max-w-325 mx-auto px-5 sm:px-10 lg:px-12 relative z-10 w-full">
         <div className="flex flex-col items-center text-center mb-16 sm:mb-24">
           <TypewriterHeading text={"Explore our latest\ndigital articles."} />
         </div>
@@ -179,7 +234,7 @@ export default function Blog() {
                   setActiveCategory(cat);
                   setCurrentPage(1);
                 }}
-                className={`pb-4 text-[15px] transition-all duration-300 outline-none cursor-pointer whitespace-nowrap border-b-[3px] -mb-[1.5px] ${
+                className={`pb-4 text-[15px] transition-all duration-300 outline-none cursor-pointer whitespace-nowrap border-b-[3px] mb-[-1.5px] ${
                   activeCategory === cat
                     ? "text-black border-[#4285F4] font-semibold"
                     : "text-gray-500 border-transparent hover:text-black font-medium"
@@ -203,6 +258,24 @@ export default function Blog() {
             <p className="text-gray-500 text-sm font-medium">
               Loading insights...
             </p>
+            <p className="text-gray-400 text-xs font-medium">
+              Server waking up, thora wait karein...
+            </p>
+          </div>
+        ) : fetchError ? (
+          <div className="text-center py-20 bg-gray-50 rounded-4xl border border-gray-200 w-full">
+            <h2 className="text-black font-semibold m-0 text-[18px] mb-2">
+              Server is waking up...
+            </h2>
+            <p className="text-gray-500 text-[14px] m-0 mb-6 max-w-md mx-auto">
+              Backend (Render free tier) sleep pe tha, please dobara try karein.
+            </p>
+            <button
+              onClick={() => setRetryCount((c) => c + 1)}
+              className="inline-flex items-center justify-center px-6 py-3 rounded-full bg-black text-white text-[14px] font-semibold hover:bg-gray-900 transition-colors outline-none cursor-pointer"
+            >
+              Try Again
+            </button>
           </div>
         ) : (
           <div className="w-full flex flex-col gap-10">
@@ -213,28 +286,36 @@ export default function Blog() {
                     // h-full added to ensure all cards in the grid row are the same height
                     <div
                       key={post._id}
-                      className="group flex gap-5 sm:gap-6 pb-12 sm:pb-16 border-b border-gray-100 last:border-b-0 md:[&:nth-last-child(-n+2)]:border-b-0 justify-between h-full"
+                      className="group flex gap-5 sm:gap-6 pb-12 sm:pb-16 border-b border-gray-100 last:border-b-0 md:nth-last-[-n+2]:border-b-0 justify-between h-full"
                     >
                       {/* Left Side: Content - flex-col with h-full */}
                       <div className="flex flex-col flex-1 pr-2 sm:pr-4 h-full">
-                        <Link href={`/blogs/${post.slug}`} className="outline-none">
-                          <h2 className="text-[20px] sm:text-[24px] lg:text-[26px] font-semibold text-black leading-[1.25] mb-3 group-hover:text-[#4285F4] transition-colors m-0 line-clamp-3">
+                        <Link
+                          href={`/blogs/${post.slug}`}
+                          className="outline-none"
+                        >
+                          <h2 className="text-[20px] sm:text-[24px] lg:text-[26px] font-semibold text-black leading-tight mb-3 group-hover:text-[#4285F4] transition-colors m-0 line-clamp-3">
                             {post.title}
                           </h2>
                         </Link>
-                        
+
                         {/* Meta Info row - flex-wrap ensures safe wrapping on small screens without breaking layout */}
                         <div className="flex flex-wrap items-center gap-x-2 gap-y-2 text-[12.5px] sm:text-[13px] font-medium text-gray-500 mb-6">
                           <span className="whitespace-nowrap">
-                            {new Date(post.createdAt).toLocaleDateString("en-GB", {
-                              day: "numeric",
-                              month: "short",
-                              year: "numeric"
-                            })}
+                            {new Date(post.createdAt).toLocaleDateString(
+                              "en-GB",
+                              {
+                                day: "numeric",
+                                month: "short",
+                                year: "numeric",
+                              },
+                            )}
                           </span>
                           <span className="text-gray-300">•</span>
                           {/* Fixed "read read" issue by removing the hardcoded text */}
-                          <span className="whitespace-nowrap">{post.readTime}</span>
+                          <span className="whitespace-nowrap">
+                            {post.readTime}
+                          </span>
                           <span className="text-gray-300">•</span>
                           <span className="px-2.5 py-0.5 rounded-full bg-gray-50 border border-gray-200 text-gray-600 whitespace-nowrap">
                             {post.category}
@@ -251,12 +332,18 @@ export default function Blog() {
                       </div>
 
                       {/* Right Side: Image - self-start ensures image doesn't stretch vertically */}
-                      <Link href={`/blogs/${post.slug}`} className="outline-none shrink-0 block self-start">
-                        <div className="w-24 h-24 sm:w-36 sm:h-36 lg:w-[160px] lg:h-[160px] rounded-[20px] sm:rounded-[24px] bg-gray-100 relative overflow-hidden border border-gray-200">
-                          <img
+                      <Link
+                        href={`/blogs/${post.slug}`}
+                        className="outline-none shrink-0 block self-start"
+                      >
+                        <div className="w-24 h-24 sm:w-36 sm:h-36 lg:w-40 lg:h-40 rounded-[20px] sm:rounded-3xl bg-gray-100 relative overflow-hidden border border-gray-200">
+                          <Image
                             src={post.coverImage}
                             alt={post.title}
-                            className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                            fill
+                            sizes="(max-width: 640px) 96px, (max-width: 1024px) 144px, 160px"
+                            className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                            unoptimized
                           />
                         </div>
                       </Link>
@@ -291,7 +378,7 @@ export default function Blog() {
                 )}
               </>
             ) : (
-              <div className="text-center py-20 bg-gray-50 rounded-[32px] border border-gray-200 w-full">
+              <div className="text-center py-20 bg-gray-50 rounded-4xl border border-gray-200 w-full">
                 <h2 className="text-gray-500 font-semibold m-0 text-[18px]">
                   No articles found in this category.
                 </h2>
