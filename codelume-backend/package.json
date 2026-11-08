@@ -19,7 +19,7 @@
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.10.2",
     "multer": "^2.4.0",
-    "multer-storage-cloudinary": "^4.0.0",
+    "multer-storage-cloudinary": "^5.0.0",
     "slugify": "^1.6.9"
   }
 }

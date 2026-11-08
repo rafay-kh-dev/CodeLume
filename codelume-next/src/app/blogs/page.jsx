@@ -107,8 +107,8 @@ export default function Blog() {
   useEffect(() => {
     let isCancelled = false;
 
-    // Render free tier 15 min baad sleep ho jata hai, pehla fetch 50-60s me wake hota hai
-    // Is liye retry + timeout lagaya hai, warna "Failed to fetch" aata hai
+    // Render free tier sleeps after 15 min of inactivity, first fetch can take 50-60s to wake up
+    // Retry + timeout prevents "Failed to fetch"
     const fetchWithRetry = async (url, retries = 3) => {
       for (let attempt = 0; attempt <= retries; attempt++) {
         try {
@@ -265,12 +265,12 @@ export default function Blog() {
           <div className="flex flex-col justify-center items-center py-20 gap-4">
             <Loader2 className="w-10 h-10 text-[#4285F4] animate-spin" />
             <p className="text-gray-500 text-sm font-medium">Loading insights...</p>
-            <p className="text-gray-400 text-xs font-medium">Server waking up, thora wait karein...</p>
+            <p className="text-gray-400 text-xs font-medium">Server is waking up, please wait a moment...</p>
           </div>
         ) : fetchError ? (
           <div className="text-center py-20 bg-gray-50 rounded-[32px] border border-gray-200 w-full">
             <h2 className="text-black font-semibold m-0 text-[18px] mb-2">Server is waking up...</h2>
-            <p className="text-gray-500 text-[14px] m-0 mb-6 max-w-md mx-auto">Backend (Render free tier) sleep pe tha, please dobara try karein.</p>
+            <p className="text-gray-500 text-[14px] m-0 mb-6 max-w-md mx-auto">Our server was sleeping and is waking up. Please try again.</p>
             <button
               onClick={() => setRetryCount((c) => c + 1)}
               className="inline-flex items-center justify-center px-6 py-3 rounded-full bg-black text-white text-[14px] font-semibold hover:bg-gray-900 transition-colors outline-none cursor-pointer"
