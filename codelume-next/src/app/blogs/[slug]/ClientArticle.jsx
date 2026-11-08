@@ -2,139 +2,137 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import DOMPurify from "dompurify";
-import { ArrowLeft, Calendar, Clock, Loader2, User, Share2, Code2 } from "lucide-react";
+import { ArrowLeft, Clock, Share2, Code2 } from "lucide-react";
 
-// Custom SVG Icons
-const TwitterIcon = ({ className }) => (
-  <svg className={className} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z" /></svg>
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://codelume-backend.onrender.com";
+
+const FacebookIcon = (props) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" {...props}><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" /></svg>
 );
-const LinkedinIcon = ({ className }) => (
-  <svg className={className} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" /><rect x="2" y="9" width="4" height="12" /><circle cx="4" cy="4" r="2" /></svg>
+const TwitterIcon = (props) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" {...props}><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z" /></svg>
 );
-const FacebookIcon = ({ className }) => (
-  <svg className={className} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" /></svg>
+const LinkedinIcon = (props) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" {...props}><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z" /></svg>
 );
 
 export default function ClientArticle({ slug }) {
   const [post, setPost] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(false);
-  const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://codelume-backend.onrender.com";
+  const [sanitizedHTML, setSanitizedHTML] = useState("");
 
   useEffect(() => {
-    const fetchPost = async () => {
+    const fetchBlog = async () => {
+      setIsLoading(true);
       try {
-        setIsLoading(true);
-        setError(false);
-        const response = await fetch(`${API_BASE_URL}/api/blogs/${slug}`);
-        if (!response.ok) throw new Error("Failed");
-        const data = await response.json();
+        const res = await fetch(`${API_BASE_URL}/api/blogs/${slug}`);
+        if (!res.ok) throw new Error("Failed to fetch");
+        const data = await res.json();
         setPost(data);
-      } catch (err) {
-        setError(true);
+        setSanitizedHTML(DOMPurify.sanitize(data.content || ""));
+      } catch (error) {
+        console.error("Error fetching blog:", error);
       } finally {
         setIsLoading(false);
       }
     };
-    if (slug) fetchPost();
-  }, [slug, API_BASE_URL]);
+    fetchBlog();
+  }, [slug]);
 
   if (isLoading) {
     return (
-      <div className="min-h-dvh bg-[#030712] flex flex-col items-center justify-center gap-4 pt-28">
-        <Loader2 className="w-12 h-12 text-blue-500 animate-spin" />
-        <h2 className="text-slate-400 font-jakarta text-lg m-0 text-center px-4">
-          Waking up database & loading article...<br/>
-          <span className="text-sm text-slate-500 block mt-2">(Onrender free servers may take up to 50 seconds to wake up)</span>
-        </h2>
-      </div>
-    );
-  }
-
-  if (error || !post) {
-    return (
-      <div className="min-h-dvh bg-[#030712] flex flex-col items-center justify-center pt-28 font-jakarta">
-        <div className="bg-[#0a0f1c] border border-white/10 rounded-3xl p-12 text-center max-w-lg shadow-2xl">
-          <h2 className="text-3xl font-black text-white mb-4 m-0">Article Not Found</h2>
-          <p className="text-slate-400 mb-8 leading-relaxed">We couldn't fetch the article. The database server might be asleep or unreachable.</p>
-          <Link href="/blogs" className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold transition-colors">
-            <ArrowLeft className="w-4 h-4" /> Back to Blogs
-          </Link>
+      <div className="min-h-dvh bg-white flex items-center justify-center pt-32">
+        <div className="text-center">
+          <div className="w-10 h-10 border-4 border-gray-200 border-t-black rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-gray-500 font-medium">Loading article...</p>
         </div>
       </div>
     );
   }
 
-  const sanitizedContent = DOMPurify.sanitize(post.content || "", {
-    ALLOWED_TAGS: [
-      "p",
-      "h1",
-      "h2",
-      "h3",
-      "h4",
-      "strong",
-      "em",
-      "ul",
-      "ol",
-      "li",
-      "a",
-      "img",
-      "blockquote",
-      "code",
-      "pre",
-      "br",
-    ],
-    ALLOWED_ATTR: ["href", "src", "alt"],
-  });
+  if (!post) {
+    return (
+      <div className="min-h-dvh bg-white flex flex-col items-center justify-center pt-32 pb-24 px-6 text-center">
+        <h1 className="text-4xl font-medium text-black m-0">Article not found</h1>
+        <p className="text-gray-500 font-medium m-0 mt-3">This article may have been moved or deleted.</p>
+        <Link href="/blogs" className="mt-8 inline-flex items-center gap-2 px-6 py-3 rounded-full bg-black text-white text-[14px] font-bold hover:bg-gray-900 transition-colors">
+          <ArrowLeft className="w-4 h-4" /> Back to Blogs
+        </Link>
+      </div>
+    );
+  }
 
-  const shareUrl = typeof window !== "undefined" ? window.location.href : "";
+  const shareUrl = `https://www.codelume.online/blogs/${slug}`;
 
   return (
-    <article className="min-h-dvh bg-[#030712] text-white font-jakarta pt-28 sm:pt-36 pb-24 relative">
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-[500px] bg-[radial-gradient(ellipse_at_top,rgba(37,99,235,0.05)_0%,transparent_70%)] pointer-events-none -z-10" />
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
-        <Link href="/blogs" className="inline-flex items-center gap-2 text-slate-400 hover:text-blue-400 font-bold mb-8 transition-colors group">
-          <ArrowLeft className="w-4 h-4 transform group-hover:-translate-x-1 transition-transform" /> Back to all articles
-        </Link>
-        <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-start">
-          <div className="w-full lg:w-2/3">
-            <header className="mb-10">
-              <div className="inline-block px-4 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-black uppercase tracking-widest mb-6">
-                {post.category || "Uncategorized"}
-              </div>
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-[1.1] mb-8 m-0">{post.title}</h1>
-              <div className="flex flex-wrap items-center gap-6 text-slate-400 text-sm font-medium border-y border-white/10 py-5">
-                <div className="flex items-center gap-2"><User className="w-4 h-4 text-slate-500" /> <span>{post.author || "Rafay"}</span></div>
-                <div className="flex items-center gap-2"><Calendar className="w-4 h-4 text-slate-500" /> <span>{post.createdAt ? new Date(post.createdAt).toLocaleDateString("en-AU", { day: "numeric", month: "long", year: "numeric" }) : "Recently"}</span></div>
-                <div className="flex items-center gap-2"><Clock className="w-4 h-4 text-slate-500" /> <span>{post.readTime || "5 min read"}</span></div>
-              </div>
-            </header>
-            {post.coverImage && (
-              <div className="w-full rounded-3xl overflow-hidden mb-12 border border-white/10 shadow-2xl bg-[#0a0f1c]">
-                <img src={post.coverImage} alt={post.title} className="w-full h-auto max-h-[600px] object-cover" />
-              </div>
-            )}
-            <div className="text-lg text-slate-300 leading-[1.8] tracking-wide [&>p]:mb-8 [&>h2]:text-3xl [&>h2]:font-black [&>h2]:text-white [&>h2]:mt-12 [&>h2]:mb-6 [&_a]:text-blue-400 [&_a:hover]:text-blue-300 [&_a]:underline [&_strong]:text-white [&_strong]:font-black" dangerouslySetInnerHTML={{ __html: sanitizedContent }} />
+    <article className="w-full bg-white font-jakarta pt-28 sm:pt-36 pb-20">
+      <div className="max-w-[1100px] mx-auto px-5 sm:px-10">
+        {/* Back + Category */}
+        <div className="flex items-center justify-between mb-8">
+          <Link href="/blogs" className="inline-flex items-center gap-2 text-[13px] font-bold text-black hover:text-gray-600 transition-colors">
+            <ArrowLeft className="w-4 h-4" /> All Articles
+          </Link>
+          <span className="px-3 py-1.5 rounded-full bg-gray-50 border border-gray-200 text-[12px] font-bold text-gray-600">{post.category}</span>
+        </div>
+
+        {/* Title */}
+        <h1 className="text-[32px] sm:text-[44px] lg:text-[52px] font-medium text-black tracking-tight leading-[1.1] m-0 max-w-4xl">
+          {post.title}
+        </h1>
+        {post.excerpt && (
+          <p className="text-[17px] sm:text-[19px] text-gray-500 font-medium leading-relaxed m-0 mt-5 max-w-3xl">{post.excerpt}</p>
+        )}
+
+        {/* Meta - Author, Date, ReadTime */}
+        <div className="flex flex-wrap items-center gap-3 mt-7 pb-7 border-b border-gray-200">
+          <span className="w-10 h-10 rounded-full bg-black text-white flex items-center justify-center font-bold text-[15px]">R</span>
+          <div>
+            <p className="text-[14px] font-bold text-black m-0">Rafay</p>
+            <p className="text-[12px] text-gray-500 font-medium m-0">Founder, CodeLume</p>
           </div>
-          <aside className="w-full lg:w-1/3 lg:sticky lg:top-32 self-start space-y-8">
-            <div className="bg-[#0a0f1c] border border-white/5 rounded-3xl p-8 shadow-xl relative overflow-hidden">
-              <div className="w-16 h-16 rounded-2xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center mb-6"><Code2 className="w-8 h-8 text-blue-400" /></div>
-              <h2 className="text-xl font-black text-white mb-2 m-0">About the Author</h2>
-              <p className="text-slate-400 text-sm leading-relaxed mb-6">Hi, I'm Rafay. A bespoke freelance web developer and UI/UX designer. I help ambitious brands scale by engineering high-performance digital platforms and driving targeted SEO traffic.</p>
-              <Link href="/about" className="inline-flex items-center gap-2 text-[14px] font-bold text-blue-400 hover:text-blue-300 transition-colors">Read full bio <ArrowLeft className="w-4 h-4 rotate-180" /></Link>
+          <span className="text-gray-300 mx-1">•</span>
+          <span className="text-[13px] font-medium text-gray-500">
+            {new Date(post.createdAt).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })}
+          </span>
+          <span className="text-gray-300">•</span>
+          <span className="text-[13px] font-medium text-gray-500 flex items-center gap-1.5"><Clock className="w-3.5 h-3.5" /> {post.readTime}</span>
+        </div>
+
+        {/* Cover Image */}
+        {post.coverImage && (
+          <div className="aspect-[16/9] bg-gray-100 rounded-[20px] overflow-hidden border border-gray-200 mt-8">
+            <img src={post.coverImage} alt={post.imageAltText || post.title} className="w-full h-full object-cover" />
+          </div>
+        )}
+
+        {/* Content + Sidebar - Light theme, same structure as before */}
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-10 mt-10">
+          {/* Article Content - Light */}
+          <div
+            className="prose prose-lg max-w-none prose-headings:text-black prose-headings:font-semibold prose-headings:tracking-tight prose-p:text-gray-600 prose-p:leading-[1.8] prose-p:font-medium prose-a:text-[#4285F4] prose-a:font-semibold prose-strong:text-black prose-img:rounded-[16px] prose-blockquote:border-l-4 prose-blockquote:border-black prose-blockquote:bg-gray-50 prose-blockquote:rounded-r-xl prose-blockquote:px-6 prose-blockquote:py-4 prose-code:bg-gray-100 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded-md prose-code:text-black prose-pre:bg-gray-900 prose-pre:text-white"
+            dangerouslySetInnerHTML={{ __html: sanitizedHTML }}
+          />
+
+          {/* Sidebar - Light, same 3 boxes as before */}
+          <aside className="flex flex-col gap-5 lg:sticky lg:top-28 self-start">
+            <div className="bg-gray-50 border border-gray-200 rounded-[20px] p-6">
+              <div className="w-12 h-12 rounded-xl bg-black flex items-center justify-center mb-4"><Code2 className="w-6 h-6 text-white" /></div>
+              <h2 className="text-[18px] font-bold text-black mb-2 m-0">About the Author</h2>
+              <p className="text-gray-500 text-[13.5px] leading-relaxed m-0 mb-4">Hi, I&apos;m Rafay. A bespoke freelance web developer and UI/UX designer. I help ambitious brands scale by engineering high-performance digital platforms and driving targeted SEO traffic.</p>
+              <Link href="/about" className="inline-flex items-center gap-2 text-[13.5px] font-bold text-black hover:text-gray-600 transition-colors">Read full bio <ArrowLeft className="w-4 h-4 rotate-180" /></Link>
             </div>
-            <div className="bg-[#0a0f1c] border border-white/5 rounded-3xl p-8 shadow-xl">
-              <h2 className="text-[13px] font-black text-slate-500 uppercase tracking-widest mb-6 m-0 flex items-center gap-2"><Share2 className="w-4 h-4" /> Share this article</h2>
-              <div className="flex gap-4">
-                <a href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(post.title)}&url=${encodeURIComponent(shareUrl)}`} target="_blank" rel="noreferrer" className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-[#1DA1F2] hover:text-white text-slate-400 transition-all duration-300"><TwitterIcon className="w-5 h-5" /></a>
-                <a href={`https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(shareUrl)}&title=${encodeURIComponent(post.title)}`} target="_blank" rel="noreferrer" className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-[#0A66C2] hover:text-white text-slate-400 transition-all duration-300"><LinkedinIcon className="w-5 h-5" /></a>
-                <a href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`} target="_blank" rel="noreferrer" className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-[#1877F2] hover:text-white text-slate-400 transition-all duration-300"><FacebookIcon className="w-5 h-5" /></a>
+            <div className="bg-gray-50 border border-gray-200 rounded-[20px] p-6">
+              <h2 className="text-[12px] font-bold text-gray-500 uppercase tracking-widest mb-4 m-0 flex items-center gap-2"><Share2 className="w-4 h-4" /> Share this article</h2>
+              <div className="flex gap-3">
+                <a href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(post.title)}&url=${encodeURIComponent(shareUrl)}`} target="_blank" rel="noreferrer" className="w-11 h-11 rounded-full bg-white border border-gray-200 flex items-center justify-center hover:bg-black hover:text-white text-black transition-colors"><TwitterIcon className="w-4 h-4" /></a>
+                <a href={`https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(shareUrl)}&title=${encodeURIComponent(post.title)}`} target="_blank" rel="noreferrer" className="w-11 h-11 rounded-full bg-white border border-gray-200 flex items-center justify-center hover:bg-[#0A66C2] hover:text-white text-black transition-colors"><LinkedinIcon className="w-4 h-4" /></a>
+                <a href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`} target="_blank" rel="noreferrer" className="w-11 h-11 rounded-full bg-white border border-gray-200 flex items-center justify-center hover:bg-[#1877F2] hover:text-white text-black transition-colors"><FacebookIcon className="w-4 h-4" /></a>
               </div>
             </div>
-            <div className="bg-linear-to-br from-blue-900/40 to-[#0a0f1c] border border-blue-500/20 rounded-3xl p-8 shadow-[0_0_30px_rgba(37,99,235,0.1)]">
-              <h2 className="text-xl font-black text-white mb-3 m-0">Need a Website?</h2>
-              <p className="text-slate-300 text-sm leading-relaxed mb-6">Stop losing clients to slow, outdated websites. Let's build a bespoke digital solution tailored exactly to your business logic.</p>
-              <Link href="/start-project" className="flex items-center justify-center w-full py-3.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold transition-colors shadow-lg text-[15px]">Start a Project</Link>
+            <div className="bg-black rounded-[20px] p-6">
+              <h2 className="text-[18px] font-bold text-white mb-2 m-0">Need a Website?</h2>
+              <p className="text-gray-400 text-[13.5px] leading-relaxed m-0 mb-5">Stop losing clients to slow, outdated websites. Let&apos;s build a bespoke digital solution tailored exactly to your business logic.</p>
+              <Link href="/start-project" className="flex items-center justify-center w-full py-3 rounded-full bg-white hover:bg-gray-100 text-black font-bold transition-colors text-[14px]">Start a Project</Link>
             </div>
           </aside>
         </div>

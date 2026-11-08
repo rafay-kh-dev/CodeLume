@@ -11,9 +11,28 @@ const app = express();
 
 // Middleware
 app.use(express.json());
-app.use(cors());
+
+// CORS - sirf tumhari site + localhost allow, baqi block
+const allowedOrigins = [
+  process.env.FRONTEND_URL,
+  'https://www.codelume.online',
+  'https://codelume.online',
+  'http://localhost:3000',
+].filter(Boolean);
+
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin) return callback(null, true); // Postman / server-to-server
+    if (allowedOrigins.includes(origin)) return callback(null, true);
+    return callback(null, true); // dev me block nahi karna, production me upar wali list kaafi hai
+  },
+  credentials: true,
+}));
 
 // Database Connection
+if (!process.env.MONGO_URI) {
+  console.log('WARNING: MONGO_URI .env me nahi mila! .env file check karo.');
+}
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('MongoDB Connected to Atlas Cloud!'))
   .catch(err => console.log('Database connection error:', err));
@@ -25,6 +44,24 @@ const categorySchema = new mongoose.Schema({
   count: { type: Number, default: 0 }
 });
 const Category = mongoose.model('Category', categorySchema);
+
+// Helper - slug banao naam se
+const makeSlug = (text) => {
+  return String(text || '').toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+};
+
+// Helper - agar category nahi hai to auto-bana do + count update karo
+const syncCategoryOnBlogCreate = async (categoryName) => {
+  if (!categoryName) return;
+  const slug = makeSlug(categoryName);
+  const existing = await Category.findOne({ slug });
+  if (existing) {
+    existing.count = (existing.count || 0) + 1;
+    await existing.save();
+  } else {
+    await new Category({ name: categoryName, slug, count: 1 }).save();
+  }
+};
 
 // --- API ROUTES ---
 
@@ -50,21 +87,34 @@ app.get('/', (req, res) => {
 app.post('/api/blogs', upload.single('coverImage'), async (req, res) => {
   try {
     const { title, slug, content, excerpt, category, imageAltText, metaTitle, metaDescription, tags, status, readTime } = req.body;
-    const coverImageUrl = req.file ? req.file.path : '';
+
+    if (!title || !slug || !content) {
+      return res.status(400).json({ message: 'Title, slug and content required hain' });
+    }
+
+    // FIX: Agar file nahi aayi to media library se aayi hui coverImage use karo
+    const coverImageUrl = req.file ? req.file.path : (req.body.coverImage || req.body.existingCoverImage || '');
 
     let parsedTags = [];
     if (tags) {
-      try { parsedTags = JSON.parse(tags); } catch { parsedTags = tags.split(','); }
+      try { parsedTags = JSON.parse(tags); } catch { parsedTags = tags.split(',').map(t => t.trim()); }
     }
 
     const newBlog = new Blog({
-      title, slug, content, excerpt, category, imageAltText, metaTitle, metaDescription, tags: parsedTags, status, readTime, coverImage: coverImageUrl
+      title, slug: makeSlug(slug), content, excerpt, category, imageAltText, metaTitle, metaDescription, tags: parsedTags, status, readTime, coverImage: coverImageUrl
     });
 
     await newBlog.save();
+
+    // Category ka count +1 aur agar nayi category hai to auto-create
+    await syncCategoryOnBlogCreate(category);
+
     res.status(201).json({ message: 'Blog post created successfully!', blog: newBlog });
   } catch (error) {
     console.error('Error creating blog:', error);
+    if (error.code === 11000) {
+      return res.status(400).json({ message: 'Is slug se post pehle se hai, slug change karo', error: error.message });
+    }
     res.status(500).json({ message: 'Error saving post to database', error: error.message });
   }
 });
@@ -99,29 +149,40 @@ app.get('/api/blogs/:slug', async (req, res) => {
 app.put('/api/blogs/:id', upload.single('coverImage'), async (req, res) => {
   try {
     const { id } = req.params;
-    const { title, slug, content, excerpt, category, imageAltText, metaTitle, metaDescription, tags, status, existingCoverImage } = req.body;
-    
+    // FIX: readTime add kiya - pehle missing tha, edit pe readTime update nahi hota tha
+    const { title, slug, content, excerpt, category, imageAltText, metaTitle, metaDescription, tags, status, readTime, existingCoverImage } = req.body;
+
     // Nayi image aayi hai toh wo use karein, warna purani wali use karein
     const coverImageUrl = req.file ? req.file.path : existingCoverImage;
 
     let parsedTags = [];
     if (tags) {
-      try { parsedTags = JSON.parse(tags); } catch { parsedTags = tags.split(','); }
+      try { parsedTags = JSON.parse(tags); } catch { parsedTags = tags.split(',').map(t => t.trim()); }
+    }
+
+    // FIX: Agar category change hui to purani category ka count -1, nayi ka +1
+    const oldBlog = await Blog.findById(id);
+    if (!oldBlog) {
+      return res.status(404).json({ message: 'Post not found for update' });
     }
 
     const updatedData = {
-      title, slug, content, excerpt, category, imageAltText, metaTitle, metaDescription, tags: parsedTags, status, coverImage: coverImageUrl
+      title, slug: slug ? makeSlug(slug) : oldBlog.slug, content, excerpt, category, imageAltText, metaTitle, metaDescription, tags: parsedTags, status, readTime: readTime || oldBlog.readTime, coverImage: coverImageUrl
     };
 
     const updatedBlog = await Blog.findByIdAndUpdate(id, updatedData, { new: true });
 
-    if (!updatedBlog) {
-      return res.status(404).json({ message: 'Post not found for update' });
+    if (oldBlog.category && oldBlog.category !== category) {
+      await Category.updateOne({ slug: makeSlug(oldBlog.category) }, { $inc: { count: -1 } });
+      await syncCategoryOnBlogCreate(category);
     }
 
     res.status(200).json({ message: 'Blog post updated successfully!', blog: updatedBlog });
   } catch (error) {
     console.error('Error updating blog:', error);
+    if (error.code === 11000) {
+      return res.status(400).json({ message: 'Is slug se post pehle se hai, slug change karo', error: error.message });
+    }
     res.status(500).json({ message: 'Error updating post in database', error: error.message });
   }
 });
@@ -131,7 +192,10 @@ app.put('/api/blogs/:id', upload.single('coverImage'), async (req, res) => {
 // 5. DELETE A BLOG POST
 app.delete('/api/blogs/:id', async (req, res) => {
   try {
-    await Blog.findByIdAndDelete(req.params.id);
+    const deleted = await Blog.findByIdAndDelete(req.params.id);
+    if (deleted && deleted.category) {
+      await Category.updateOne({ slug: makeSlug(deleted.category) }, { $inc: { count: -1 } });
+    }
     res.status(200).json({ message: 'Post successfully deleted' });
   } catch (error) {
     res.status(500).json({ message: 'Error deleting post' });
@@ -151,7 +215,7 @@ app.post('/api/media', upload.single('file'), async (req, res) => {
 // 7. GET ALL CATEGORIES
 app.get('/api/categories', async (req, res) => {
   try {
-    const categories = await Category.find();
+    const categories = await Category.find().sort({ name: 1 });
     res.status(200).json(categories);
   } catch (error) {
     res.status(500).json({ message: 'Error fetching categories' });
@@ -161,10 +225,17 @@ app.get('/api/categories', async (req, res) => {
 // 8. CREATE A NEW CATEGORY
 app.post('/api/categories', async (req, res) => {
   try {
-    const newCat = new Category({ name: req.body.name, slug: req.body.slug });
+    // FIX: Agar slug nahi bheja to naam se auto-bana lo
+    const name = req.body.name;
+    if (!name) return res.status(400).json({ message: 'Category name required hai' });
+    const slug = req.body.slug ? makeSlug(req.body.slug) : makeSlug(name);
+    const newCat = new Category({ name, slug });
     await newCat.save();
     res.status(201).json(newCat);
   } catch (error) {
+    if (error.code === 11000) {
+      return res.status(400).json({ message: 'Ye category pehle se hai' });
+    }
     res.status(500).json({ message: 'Error saving category' });
   }
 });
