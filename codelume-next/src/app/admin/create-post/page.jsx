@@ -38,7 +38,7 @@ export default function AdminCreatePost() {
 
   // Next.js uses process.env.NEXT_PUBLIC_ instead of Vite's import.meta.env
   const API_BASE_URL =
-    process.env.NEXT_PUBLIC_API_URL || "https://codelume-backend.onrender.com";
+    process.env.NEXT_PUBLIC_API_URL || "https://codelume-rb3h.onrender.com";
 
   // Fetch categories from your backend when the page loads
   useEffect(() => {

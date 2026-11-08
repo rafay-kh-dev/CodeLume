@@ -22,7 +22,7 @@ export default function AdminEditPost() {
   const { id } = useParams();
   const router = useRouter();
   const API_BASE_URL =
-    process.env.NEXT_PUBLIC_API_URL || "https://codelume-backend.onrender.com";
+    process.env.NEXT_PUBLIC_API_URL || "https://codelume-rb3h.onrender.com";
 
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
