@@ -8,6 +8,8 @@ leads_maps.csv
 websites.txt
 indexing_report.csv
 indexing_report.html
+gmail_profile/
+gmail_profile_chrome/
 
 # Secrets
 .env
