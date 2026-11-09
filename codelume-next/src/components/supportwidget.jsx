@@ -36,7 +36,10 @@ export default function SupportWidget() {
       // Direct email - Web3Forms se seedha tumhare Outlook / Gmail pe jayega
       const res = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
         body: JSON.stringify({
           access_key: WEB3FORMS_ACCESS_KEY,
           subject: `Support: ${subject.trim()} - CodeLume`,
@@ -59,8 +62,13 @@ export default function SupportWidget() {
       // Agar Web3Forms key nahi lagi ya net fail - fallback mailto
       const mailSubject = `Support: ${subject.trim()}`;
       const mailBody = `Subject: ${subject.trim()}\nFrom: ${email.trim()}\n\nMessage:\n${message.trim()}`;
-      window.open(`mailto:hello@codelume.online?subject=${encodeURIComponent(mailSubject)}&body=${encodeURIComponent(mailBody)}`, "_blank");
-      setError("Could not send directly. Your email app is open - just press Send there.");
+      window.open(
+        `mailto:hello@codelume.online?subject=${encodeURIComponent(mailSubject)}&body=${encodeURIComponent(mailBody)}`,
+        "_blank",
+      );
+      setError(
+        "Could not send directly. Your email app is open - just press Send there.",
+      );
     } finally {
       setIsSending(false);
     }
@@ -78,8 +86,12 @@ export default function SupportWidget() {
                 <Headphones className="w-[18px] h-[18px] text-white" />
               </span>
               <div>
-                <p className="text-[14px] font-bold text-black leading-tight m-0">Need Help?</p>
-                <p className="text-[11px] text-gray-500 font-medium m-0 mt-0.5">Replies within 24h</p>
+                <p className="text-[14px] font-bold text-black leading-tight m-0">
+                  Need Help?
+                </p>
+                <p className="text-[11px] text-gray-500 font-medium m-0 mt-0.5">
+                  Replies within 24h
+                </p>
               </div>
             </div>
             <button
@@ -96,19 +108,29 @@ export default function SupportWidget() {
           {isSent ? (
             <div className="px-5 py-8 flex flex-col items-center text-center">
               <CheckCircle2 className="w-12 h-12 text-[#34A853] mb-3" />
-              <p className="text-[16px] font-bold text-black m-0">Message ready!</p>
-
-              <p className="text-[13px] font-bold text-black leading-relaxed m-0 mt-2 max-w-[260px]">
-                You will get the answer from <span className="text-black underline">mrafaykh@outlook.com</span> within 24 hours.
+              <p className="text-[16px] font-bold text-black m-0">
+                Message ready!
               </p>
 
-
+              <p className="text-[13px] font-bold text-black leading-relaxed m-0 mt-2 max-w-[260px]">
+                You will get the answer from{" "}
+                <span className="text-black underline">
+                  mrafaykh@outlook.com
+                </span>{" "}
+                within 24 hours.
+              </p>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} className="px-4 py-3 flex flex-col gap-3">
+            <form
+              onSubmit={handleSubmit}
+              className="px-4 py-3 flex flex-col gap-3"
+            >
               {/* 1. Subject */}
               <div>
-                <label htmlFor="support-subject" className="block text-[12px] font-bold text-black uppercase tracking-wider mb-1.5">
+                <label
+                  htmlFor="support-subject"
+                  className="block text-[12px] font-bold text-black uppercase tracking-wider mb-1.5"
+                >
                   Subject
                 </label>
                 <input
@@ -123,7 +145,10 @@ export default function SupportWidget() {
 
               {/* 2. Email */}
               <div>
-                <label htmlFor="support-email" className="block text-[12px] font-bold text-black uppercase tracking-wider mb-1.5">
+                <label
+                  htmlFor="support-email"
+                  className="block text-[12px] font-bold text-black uppercase tracking-wider mb-1.5"
+                >
                   Your Email
                 </label>
                 <input
@@ -138,7 +163,10 @@ export default function SupportWidget() {
 
               {/* 3. Message */}
               <div>
-                <label htmlFor="support-message" className="block text-[12px] font-bold text-black uppercase tracking-wider mb-1.5">
+                <label
+                  htmlFor="support-message"
+                  className="block text-[12px] font-bold text-black uppercase tracking-wider mb-1.5"
+                >
                   Message
                 </label>
                 <textarea
@@ -152,7 +180,9 @@ export default function SupportWidget() {
               </div>
 
               {error && (
-                <p className="text-[12px] font-bold text-red-600 bg-red-50 border border-red-100 rounded-lg px-3 py-2 m-0">{error}</p>
+                <p className="text-[12px] font-bold text-red-600 bg-red-50 border border-red-100 rounded-lg px-3 py-2 m-0">
+                  {error}
+                </p>
               )}
 
               <button
@@ -160,11 +190,16 @@ export default function SupportWidget() {
                 disabled={isSending}
                 className="w-full flex items-center justify-center gap-2 py-3 rounded-full bg-black hover:bg-[#1a1a1a] text-white text-[13.5px] font-bold outline-none cursor-pointer transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
               >
-                <Send className="w-4 h-4" /> {isSending ? "Sending..." : "Send Message"}
+                <Send className="w-4 h-4" />{" "}
+                {isSending ? "Sending..." : "Send Message"}
               </button>
 
               <p className="text-center text-[11px] text-gray-500 font-medium leading-relaxed m-0">
-                You will get the answer from <span className="font-bold text-black">mrafaykh@outlook.com</span> within 24 hours.
+                You will get the answer from{" "}
+                <span className="font-bold text-black">
+                  mrafaykh@outlook.com
+                </span>{" "}
+                within 24 hours.
               </p>
             </form>
           )}
@@ -180,9 +215,13 @@ export default function SupportWidget() {
           type="button"
           onClick={() => setIsOpen(!isOpen)}
           aria-label="Open support"
-          className="w-14 h-14 rounded-full flex items-center justify-center shadow-[0_10px_30px_rgba(0,0,0,0.20)] outline-none cursor-pointer transition-all hover:scale-105 active:scale-95 bg-black text-white"
+          className="w-14 h-14 rounded-full flex items-center justify-center shadow-[0_10px_30px_rgba(0,0,0,0.20)] outline-none cursor-pointer transition-all hover:scale-105 active:scale-95 bg-[#4285F4] text-white"
         >
-          {isOpen ? <X className="w-6 h-6" /> : <MessageCircle className="w-6 h-6" />}
+          {isOpen ? (
+            <X className="w-6 h-6" />
+          ) : (
+            <MessageCircle className="w-6 h-6" />
+          )}
         </button>
       </div>
     </div>
