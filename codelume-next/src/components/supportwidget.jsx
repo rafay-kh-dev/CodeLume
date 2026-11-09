@@ -75,7 +75,7 @@ export default function SupportWidget() {
   };
 
   return (
-    <div className="fixed z-[70] right-4 bottom-28 sm:right-6 sm:bottom-6 flex flex-col items-end gap-3 font-jakarta">
+    <div className="fixed z-[70] right-4 bottom-34 sm:right-6 sm:bottom-6 flex flex-col items-end gap-3 font-jakarta">
       {/* Panel */}
       {isOpen && (
         <div className="w-[300px] max-w-[calc(100vw-2rem)] bg-white border border-gray-200 rounded-[20px] shadow-[0_20px_50px_rgba(0,0,0,0.16)] overflow-hidden">
