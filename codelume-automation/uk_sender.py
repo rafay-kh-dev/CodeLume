@@ -2,7 +2,6 @@ import csv, time, smtplib, random
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
-# ===== SETTING YAHAN BHARO =====
 SMTP_SERVER = "smtp-mail.outlook.com"  
 SMTP_PORT = 587
 SMTP_USER = "mrafaykh@outlook.com" 
@@ -12,7 +11,6 @@ FROM_NAME = "Rafay's CodeLume"
 DAILY_LIMIT = 50 
 DELAY_MIN = 30  
 DELAY_MAX = 60
-# ===============================
 
 TEMPLATE_REDESIGN = """Hi {name},
 
