@@ -75,14 +75,14 @@ export default function SupportWidget() {
   };
 
   return (
-    <div className="fixed z-[70] right-4 bottom-34 sm:right-6 sm:bottom-6 flex flex-col items-end gap-3 font-jakarta">
+    <div className="fixed right-5 bottom-34 sm:right-6 sm:bottom-6 flex flex-col items-end gap-3 font-jakarta">
       {/* Panel */}
       {isOpen && (
         <div className="w-[300px] max-w-[calc(100vw-2rem)] bg-white border border-gray-200 rounded-[20px] shadow-[0_20px_50px_rgba(0,0,0,0.16)] overflow-hidden">
           {/* Header */}
           <div className="flex items-start justify-between px-4 pt-4 pb-3 border-b border-gray-100">
             <div className="flex items-center gap-3">
-              <span className="w-9 h-9 rounded-full bg-black flex items-center justify-center shrink-0">
+              <span className="w-9 h-9 rounded-full bg-[#4285f4] flex items-center justify-center shrink-0">
                 <Headphones className="w-[18px] h-[18px] text-white" />
               </span>
               <div>
@@ -188,7 +188,7 @@ export default function SupportWidget() {
               <button
                 type="submit"
                 disabled={isSending}
-                className="w-full flex items-center justify-center gap-2 py-3 rounded-full bg-black hover:bg-[#1a1a1a] text-white text-[13.5px] font-bold outline-none cursor-pointer transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+                className="w-full flex items-center justify-center gap-2 py-3 rounded-full bg-[#4285f4] hover:bg-[#1a1a1a] text-white text-[13.5px] font-bold outline-none cursor-pointer transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
               >
                 <Send className="w-4 h-4" />{" "}
                 {isSending ? "Sending..." : "Send Message"}
@@ -196,7 +196,7 @@ export default function SupportWidget() {
 
               <p className="text-center text-[11px] text-gray-500 font-medium leading-relaxed m-0">
                 You will get the answer from{" "}
-                <span className="font-bold text-black">
+                <span className="font-bold text-[#4285f4]">
                   mrafaykh@outlook.com
                 </span>{" "}
                 within 24 hours.

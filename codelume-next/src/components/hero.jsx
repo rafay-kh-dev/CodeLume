@@ -53,7 +53,7 @@ const TypewriterText = ({ text }) => {
         } else {
           clearInterval(typingInterval);
         }
-      }, 45); 
+      }, 45);
     }, 400);
 
     return () => {
@@ -65,7 +65,7 @@ const TypewriterText = ({ text }) => {
   const lines = displayedText.split("\n");
   const fullLines = text.split("\n");
 
-  // Helper: Renders text character by character. 
+  // Helper: Renders text character by character.
   // Flat index mapping prevents any re-rendering of older characters.
   const renderLine = (lineStr, isVisible) => {
     return lineStr.split("").map((char, charIdx) => (
@@ -104,7 +104,7 @@ const TypewriterText = ({ text }) => {
             {idx !== lines.length - 1 && <br />}
           </React.Fragment>
         ))}
-        
+
         {/* Blinking Cursor - Moving naturally with the text */}
         <span
           className="inline-block w-[3px] sm:w-[4px] h-[0.8em] ml-1 sm:ml-1.5 animate-[pulse_1s_ease-in-out_infinite] align-middle translate-y-[-3px] sm:translate-y-[-4px] rounded-full"
