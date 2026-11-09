@@ -1,21 +1,16 @@
-
-# UK Sender - C:\CodeLume\uk_sender.py
-# Kaam: leads.csv se personalized emails bhejta hai, safe gap ke saath
-# Use: python uk_sender.py
-# Pehle neeche SMTP setting bharo
 import csv, time, smtplib, random
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
 # ===== SETTING YAHAN BHARO =====
-SMTP_SERVER = "smtp.gmail.com"  # Brevo ke liye: smtp-relay.brevo.com
+SMTP_SERVER = "smtp-mail.outlook.com"  
 SMTP_PORT = 587
-SMTP_USER = "TUMHARA_GMAIL@gmail.com"  # jis Gmail ka App Password banaya
-SMTP_PASS = "TUMHARA_16_LETTER_APP_PASSWORD"  # space ke bagair
-FROM_EMAIL = "rafay@codelume.online"
-FROM_NAME = "Muhammad Rafay - CodeLume"
-DAILY_LIMIT = 50  # Pehle hafte 50 se zyada mat bhejo
-DELAY_MIN = 30  # har email ke beech 30-60 sec gap
+SMTP_USER = "mrafaykh@outlook.com" 
+SMTP_PASS = "kpqojhxipqikrrxm" 
+FROM_EMAIL = "mrafaykh@outlook.com"
+FROM_NAME = "Rafay's CodeLume"
+DAILY_LIMIT = 50 
+DELAY_MIN = 30  
 DELAY_MAX = 60
 # ===============================
 
