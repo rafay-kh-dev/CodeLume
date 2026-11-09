@@ -1,6 +1,6 @@
 ## CodeLume® | Bespoke Web Engineering & Digital Hub
 
-![CodeLume Preview](/codelume-next/public/preview.png)
+![CodeLume Preview](/codelume-frontend/public/preview.png)
 
 CodeLume is the official digital flagship and engineering hub of independent Full-Stack Architect and UI/UX Designer **Rafay**. Engineered with Next.js (App Router) and Tailwind CSS, the platform showcases bespoke web applications, interactive client tools, and a custom "Antigravity White Enterprise" design system built for maximum conversion and speed.
 
