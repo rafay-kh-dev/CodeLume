@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import dynamic from "next/dynamic";
@@ -22,7 +22,7 @@ export default function AdminEditPost() {
   const { id } = useParams();
   const router = useRouter();
   const API_BASE_URL =
-    process.env.NEXT_PUBLIC_API_URL || "https://codelume-rb3h.onrender.com";
+    process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
@@ -197,30 +197,128 @@ export default function AdminEditPost() {
     }
   };
 
-  const modules = {
-    toolbar: [
-      [{ header: [2, 3, false] }],
-      ["bold", "italic", "underline", "strike", "blockquote"],
-      [{ list: "ordered" }, { list: "bullet" }],
-      ["link", "code-block", "image"],
-      ["clean"],
+  // NEW - Editor: Color + Ctrl+Shift Heading Shortcuts + Exact Format Paste (Same as Create Post)
+  const modules = useMemo(
+    () => ({
+      toolbar: [
+        [{ header: [1, 2, 3, false] }],
+        [{ color: [] }, { background: [] }],
+        ["bold", "italic", "underline", "strike", "blockquote"],
+        [{ list: "ordered" }, { list: "bullet" }],
+        ["link", "code-block", "image"],
+        ["clean"],
+      ],
+      // Exact format paste - Word / Google Docs / Website se jaisa copy kiya waisa hi paste hoga
+      clipboard: {
+        matchVisual: false,
+      },
+      keyboard: {
+        bindings: {
+          // Ctrl + Shift + 1 = Heading 1 (shortKey = Ctrl on Windows, Cmd on Mac)
+          header1: {
+            key: "1",
+            shortKey: true,
+            shiftKey: true,
+            handler: function (range) {
+              this.quill.format("header", 1);
+              return false;
+            },
+          },
+          header2: {
+            key: "2",
+            shortKey: true,
+            shiftKey: true,
+            handler: function (range) {
+              this.quill.format("header", 2);
+              return false;
+            },
+          },
+          header3: {
+            key: "3",
+            shortKey: true,
+            shiftKey: true,
+            handler: function (range) {
+              this.quill.format("header", 3);
+              return false;
+            },
+          },
+          headerNormal: {
+            key: "0",
+            shortKey: true,
+            shiftKey: true,
+            handler: function (range) {
+              this.quill.format("header", false);
+              return false;
+            },
+          },
+          // Backup - bina Shift ke bhi chal jaye: Ctrl + 1 / 2 / 3
+          header1NoShift: {
+            key: "1",
+            shortKey: true,
+            shiftKey: false,
+            handler: function (range) {
+              this.quill.format("header", 1);
+              return false;
+            },
+          },
+          header2NoShift: {
+            key: "2",
+            shortKey: true,
+            shiftKey: false,
+            handler: function (range) {
+              this.quill.format("header", 2);
+              return false;
+            },
+          },
+          header3NoShift: {
+            key: "3",
+            shortKey: true,
+            shiftKey: false,
+            handler: function (range) {
+              this.quill.format("header", 3);
+              return false;
+            },
+          },
+        },
+      },
+    }),
+    [],
+  );
+
+  // NEW - Formats: color / background allow karna zaroori hai warna paste pe color strip ho jata hai
+  const formats = useMemo(
+    () => [
+      "header",
+      "color",
+      "background",
+      "bold",
+      "italic",
+      "underline",
+      "strike",
+      "blockquote",
+      "list",
+      "link",
+      "code-block",
+      "image",
     ],
-  };
+    [],
+  );
 
   if (isLoading) {
     return (
-      <div className="w-full min-h-dvh flex items-center justify-center bg-[#030712] text-white">
+      <div className="w-full min-h-dvh flex items-center justify-center bg-[#f8f8f8] text-black">
         <h2 className="text-xl font-bold animate-pulse">Loading editor...</h2>
       </div>
     );
   }
 
   return (
-    <section className="w-full min-h-dvh pt-32 pb-24 bg-[#030712] font-jakarta">
+    <section className="w-full min-h-dvh pt-32 pb-24 bg-[#f8f8f8]">
       <style>
         {`
-          .ql-toolbar.ql-snow { border-color: rgba(255,255,255,0.1) !important; background-color: #0a0f1c; border-top-left-radius: 1rem; border-top-right-radius: 1rem; }
-          .ql-container.ql-snow { border-color: rgba(255,255,255,0.1) !important; background-color: #070b14; border-bottom-left-radius: 1rem; border-bottom-right-radius: 1rem; min-height: 600px; color: white; font-size: 16px; font-family: inherit; }
+          .ql-toolbar.ql-snow { border-color: #e5e7eb !important; background-color: #ffffff; border-top-left-radius: 1rem; border-top-right-radius: 1rem; }
+          .ql-container.ql-snow { border-color: #e5e7eb !important; background-color: #ffffff; border-bottom-left-radius: 1rem; border-bottom-right-radius: 1rem; min-height: 600px; color: #000000; font-size: 16px; font-family: inherit; }
+          .ql-editor.ql-blank::before { color: #9ca3af !important; }
         `}
       </style>
 
@@ -228,7 +326,7 @@ export default function AdminEditPost() {
         <div className="mb-8">
           <Link
             href="/admin/dashboard"
-            className="inline-flex items-center gap-2 text-slate-400 hover:text-[#3b82f6] transition-colors font-bold text-sm tracking-wide"
+            className="inline-flex items-center gap-2 text-gray-500 hover:text-[#4285F4] transition-colors font-medium text-sm tracking-wide"
           >
             <ArrowLeft size={16} />
             Back to Dashboard
@@ -237,13 +335,13 @@ export default function AdminEditPost() {
 
         <div className="mb-10 flex flex-col md:flex-row md:justify-between md:items-end gap-6">
           <div>
-            <h2 className="text-[12px] font-black text-[#3b82f6] uppercase tracking-[0.2em] mb-4 m-0">
+            <h2 className="text- font-bold text-[#4285F4] uppercase tracking-[0.2em] mb-4 m-0">
               CMS Dashboard
             </h2>
-            <h2 className="text-4xl sm:text-5xl font-black text-white m-0 tracking-tighter">
+            <h2 className="text-4xl sm:text-5xl font-bold text-black m-0 tracking-tight">
               Edit Post
             </h2>
-            <p className="text-slate-400 text-sm mt-2 font-medium">
+            <p className="text-gray-500 text-sm mt-2 font-medium">
               Currently editing: {formData.title}
             </p>
           </div>
@@ -252,14 +350,14 @@ export default function AdminEditPost() {
             <button
               onClick={(e) => handleSubmit(e, "draft")}
               disabled={isSaving || !formData.title}
-              className="px-6 py-3 rounded-xl bg-[#1e293b] text-white hover:bg-[#334155] transition-all font-bold tracking-wide disabled:opacity-50"
+              className="px-6 py-3 rounded-xl bg-gray-100 text-black hover:bg-gray-200 transition-all font-medium tracking-wide disabled:opacity-50"
             >
               Save as Draft
             </button>
             <button
               onClick={(e) => handleSubmit(e, "published")}
               disabled={isSaving || !formData.title}
-              className="flex items-center gap-2 px-8 py-3 rounded-xl bg-linear-to-r from-[#3b82f6] to-[#2563eb] text-white hover:from-[#2563eb] hover:to-[#1d4ed8] transition-all font-bold tracking-wide shadow-lg disabled:opacity-50"
+              className="flex items-center gap-2 px-8 py-3 rounded-xl bg-[#4285F4] hover:bg-[#3367d6] text-white transition-all font-medium tracking-wide shadow-sm disabled:opacity-50"
             >
               {isSaving ? (
                 <Loader2 className="w-5 h-5 animate-spin" />
@@ -273,14 +371,14 @@ export default function AdminEditPost() {
 
         {statusMessage && (
           <div
-            className={`p-4 mb-8 rounded-xl flex items-center gap-3 ${statusMessage.type === "success" ? "bg-green-500/10 text-green-500 border border-green-500/20" : "bg-red-500/10 text-red-500 border border-red-500/20"}`}
+            className={`p-4 mb-8 rounded-xl flex items-center gap-3 ${statusMessage.type === "success" ? "bg-green-50 text-green-600 border border-green-200" : "bg-red-50 text-red-500 border border-red-200"}`}
           >
             {statusMessage.type === "success" ? (
               <CheckCircle2 className="w-5 h-5" />
             ) : (
               <FileText className="w-5 h-5" />
             )}
-            <h2 className="m-0 text-inherit text-[15px] font-bold">
+            <h2 className="m-0 text-inherit text- font-medium">
               {statusMessage.text}
             </h2>
           </div>
@@ -289,7 +387,7 @@ export default function AdminEditPost() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 flex flex-col gap-8">
             <div className="flex flex-col gap-2">
-              <label className="text-slate-400 text-[13px] font-bold tracking-wider uppercase">
+              <label className="text-gray-500 text- font-medium tracking-wider uppercase">
                 Post Title
               </label>
               <input
@@ -298,26 +396,51 @@ export default function AdminEditPost() {
                 required
                 value={formData.title}
                 onChange={handleInputChange}
-                className="w-full bg-[#0a0f1c] border border-white/5 rounded-xl py-4 px-5 text-white placeholder-slate-600 focus:outline-none focus:border-[#3b82f6] transition-all font-bold text-2xl"
+                className="w-full bg-white border border-gray-200 rounded-xl py-4 px-5 text-black placeholder-gray-400 focus:outline-none focus:border-[#4285F4] transition-all font-bold text-2xl"
               />
             </div>
 
             <div className="flex flex-col gap-2">
-              <label className="text-slate-400 text-[13px] font-bold tracking-wider uppercase">
+              <label className="text-gray-500 text- font-medium tracking-wider uppercase">
                 Main Content
               </label>
-              <div className="rounded-xl overflow-hidden shadow-2xl">
+              <div className="rounded-xl overflow-hidden shadow-sm">
                 <ReactQuill
                   theme="snow"
                   value={content}
                   onChange={setContent}
                   modules={modules}
+                  formats={formats}
+                  placeholder="Start writing your masterpiece..."
                 />
+              </div>
+              {/* NEW - Shortcut hints */}
+              <div className="flex flex-wrap gap-x-4 gap-y-1 mt-1 text- text-gray-400">
+                <span>
+                  <b className="text-gray-600 font-semibold">Ctrl+Shift+1</b> =
+                  Heading 1
+                </span>
+                <span>
+                  <b className="text-gray-600 font-semibold">Ctrl+Shift+2</b> =
+                  Heading 2
+                </span>
+                <span>
+                  <b className="text-gray-600 font-semibold">Ctrl+Shift+3</b> =
+                  Heading 3
+                </span>
+                <span>
+                  <b className="text-gray-600 font-semibold">Ctrl+Shift+0</b> =
+                  Normal
+                </span>
+                <span>
+                  <b className="text-gray-600 font-semibold">Ctrl+V</b> = Exact
+                  Format Paste
+                </span>
               </div>
             </div>
 
             <div className="flex flex-col gap-2">
-              <label className="text-slate-400 text-[13px] font-bold tracking-wider uppercase">
+              <label className="text-gray-500 text- font-medium tracking-wider uppercase">
                 Short Excerpt
               </label>
               <textarea
@@ -325,21 +448,21 @@ export default function AdminEditPost() {
                 rows="3"
                 value={formData.excerpt}
                 onChange={handleInputChange}
-                className="w-full bg-[#0a0f1c] border border-white/5 rounded-xl py-4 px-5 text-white placeholder-slate-600 focus:outline-none focus:border-[#3b82f6] transition-all resize-none"
+                className="w-full bg-white border border-gray-200 rounded-xl py-4 px-5 text-black placeholder-gray-400 focus:outline-none focus:border-[#4285F4] transition-all resize-none"
               />
             </div>
           </div>
 
           <div className="flex flex-col gap-8">
-            <div className="bg-[#0a0f1c] border border-white/5 rounded-2xl p-6 flex flex-col gap-5">
+            <div className="bg-white border border-gray-200 rounded- p-6 flex flex-col gap-5 shadow-sm">
               <div className="flex items-center gap-2 mb-2">
-                <Settings className="w-5 h-5 text-[#3b82f6]" />
-                <h2 className="m-0 text-white font-bold text-lg">
+                <Settings className="w-5 h-5 text-[#4285F4]" />
+                <h2 className="m-0 text-black font-bold text-lg">
                   SEO & Structure
                 </h2>
               </div>
               <div className="flex flex-col gap-2">
-                <label className="text-slate-400 text-[12px] font-bold tracking-wider uppercase">
+                <label className="text-gray-500 text- font-medium tracking-wider uppercase">
                   Custom Slug
                 </label>
                 <input
@@ -347,11 +470,11 @@ export default function AdminEditPost() {
                   name="slug"
                   value={formData.slug}
                   onChange={handleInputChange}
-                  className="w-full bg-[#030712] border border-white/5 rounded-lg py-3 px-4 text-white text-sm focus:outline-none focus:border-[#3b82f6]"
+                  className="w-full bg-white border border-gray-200 rounded-lg py-3 px-4 text-black text-sm placeholder-gray-400 focus:outline-none focus:border-[#4285F4]"
                 />
               </div>
               <div className="flex flex-col gap-2">
-                <label className="text-slate-400 text-[12px] font-bold tracking-wider uppercase">
+                <label className="text-gray-500 text- font-medium tracking-wider uppercase">
                   Meta Title
                 </label>
                 <input
@@ -359,11 +482,11 @@ export default function AdminEditPost() {
                   name="metaTitle"
                   value={formData.metaTitle}
                   onChange={handleInputChange}
-                  className="w-full bg-[#030712] border border-white/5 rounded-lg py-3 px-4 text-white text-sm focus:outline-none focus:border-[#3b82f6]"
+                  className="w-full bg-white border border-gray-200 rounded-lg py-3 px-4 text-black text-sm placeholder-gray-400 focus:outline-none focus:border-[#4285F4]"
                 />
               </div>
               <div className="flex flex-col gap-2">
-                <label className="text-slate-400 text-[12px] font-bold tracking-wider uppercase">
+                <label className="text-gray-500 text- font-medium tracking-wider uppercase">
                   Meta Description
                 </label>
                 <textarea
@@ -371,38 +494,38 @@ export default function AdminEditPost() {
                   rows="4"
                   value={formData.metaDescription}
                   onChange={handleInputChange}
-                  className="w-full bg-[#030712] border border-white/5 rounded-lg py-3 px-4 text-white text-sm focus:outline-none focus:border-[#3b82f6] resize-none"
+                  className="w-full bg-white border border-gray-200 rounded-lg py-3 px-4 text-black text-sm placeholder-gray-400 focus:outline-none focus:border-[#4285F4] resize-none"
                 />
               </div>
             </div>
 
-            <div className="bg-[#0a0f1c] border border-white/5 rounded-2xl p-6 flex flex-col gap-5">
+            <div className="bg-white border border-gray-200 rounded- p-6 flex flex-col gap-5 shadow-sm">
               <div className="flex items-center gap-2 mb-2">
-                <ImageIcon className="w-5 h-5 text-[#3b82f6]" />
-                <h2 className="m-0 text-white font-bold text-lg">
+                <ImageIcon className="w-5 h-5 text-[#4285F4]" />
+                <h2 className="m-0 text-black font-bold text-lg">
                   Featured Media
                 </h2>
               </div>
               <div className="flex flex-col gap-2">
-                <label className="text-slate-400 text-[12px] font-bold tracking-wider uppercase">
+                <label className="text-gray-500 text- font-medium tracking-wider uppercase">
                   Update Cover Image
                 </label>
                 <input
                   type="file"
                   accept="image/*"
                   onChange={handleImageChange}
-                  className="block w-full text-sm text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#3b82f6]/10 file:text-[#3b82f6] hover:file:bg-[#3b82f6]/20 transition-all cursor-pointer"
+                  className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-medium file:bg-[#4285F4]/10 file:text-[#4285F4] hover:file:bg-[#4285F4]/20 transition-all cursor-pointer"
                 />
                 {imagePreview && (
                   <img
                     src={imagePreview}
                     alt="Preview"
-                    className="mt-4 w-full h-40 object-cover rounded-lg border border-white/10"
+                    className="mt-4 w-full h-40 object-cover rounded-lg border border-gray-200"
                   />
                 )}
               </div>
               <div className="flex flex-col gap-2">
-                <label className="text-slate-400 text-[12px] font-bold tracking-wider uppercase">
+                <label className="text-gray-500 text- font-medium tracking-wider uppercase">
                   Image Alt Text
                 </label>
                 <input
@@ -410,27 +533,27 @@ export default function AdminEditPost() {
                   name="imageAltText"
                   value={formData.imageAltText}
                   onChange={handleInputChange}
-                  className="w-full bg-[#030712] border border-white/5 rounded-lg py-3 px-4 text-white text-sm focus:outline-none focus:border-[#3b82f6]"
+                  className="w-full bg-white border border-gray-200 rounded-lg py-3 px-4 text-black text-sm placeholder-gray-400 focus:outline-none focus:border-[#4285F4]"
                 />
               </div>
             </div>
 
-            <div className="bg-[#0a0f1c] border border-white/5 rounded-2xl p-6 flex flex-col gap-5">
+            <div className="bg-white border border-gray-200 rounded- p-6 flex flex-col gap-5 shadow-sm">
               <div className="flex items-center gap-2 mb-2">
-                <Tag className="w-5 h-5 text-[#3b82f6]" />
-                <h2 className="m-0 text-white font-bold text-lg">
+                <Tag className="w-5 h-5 text-[#4285F4]" />
+                <h2 className="m-0 text-black font-bold text-lg">
                   Categorisation
                 </h2>
               </div>
               <div className="flex flex-col gap-2">
-                <label className="text-slate-400 text-[12px] font-bold tracking-wider uppercase">
+                <label className="text-gray-500 text- font-medium tracking-wider uppercase">
                   Category
                 </label>
                 <select
                   name="category"
                   value={formData.category}
                   onChange={handleInputChange}
-                  className="w-full bg-[#030712] border border-white/5 rounded-lg py-3 px-4 text-white text-sm focus:outline-none focus:border-[#3b82f6] appearance-none"
+                  className="w-full bg-white border border-gray-200 rounded-lg py-3 px-4 text-black text-sm focus:outline-none focus:border-[#4285F4] appearance-none"
                 >
                   {categories.length > 0 ? (
                     categories.map((cat) => (
@@ -444,7 +567,7 @@ export default function AdminEditPost() {
                 </select>
               </div>
               <div className="flex flex-col gap-2">
-                <label className="text-slate-400 text-[12px] font-bold tracking-wider uppercase">
+                <label className="text-gray-500 text- font-medium tracking-wider uppercase">
                   Tags (Comma Separated)
                 </label>
                 <input
@@ -452,7 +575,7 @@ export default function AdminEditPost() {
                   name="tags"
                   value={formData.tags}
                   onChange={handleInputChange}
-                  className="w-full bg-[#030712] border border-white/5 rounded-lg py-3 px-4 text-white text-sm focus:outline-none focus:border-[#3b82f6]"
+                  className="w-full bg-white border border-gray-200 rounded-lg py-3 px-4 text-black text-sm placeholder-gray-400 focus:outline-none focus:border-[#4285F4]"
                 />
               </div>
             </div>

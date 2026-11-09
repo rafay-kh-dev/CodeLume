@@ -1,7 +1,7 @@
 import ClientArticle from "./ClientArticle";
 
 const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL || "https://codelume-backend.onrender.com";
+  process.env.NEXT_PUBLIC_API_URL || "https://codelume-rb3h.onrender.com";
 
 // Fetch real blog data for metadata (SSR)
 async function getBlogBySlug(slug) {
@@ -113,7 +113,7 @@ export default async function Page({ params }) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: serializedSchemaMarkup }}
       />
-      <ClientArticle slug={slug} />
+      <ClientArticle slug={slug} initialBlog={post} />
     </>
   );
 }
