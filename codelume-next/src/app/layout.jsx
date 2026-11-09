@@ -12,14 +12,18 @@ const jakarta = Plus_Jakarta_Sans({
 });
 
 export const metadata = {
+  metadataBase: new URL("https://www.codelume.online"),
   title: "CodeLume® | Bespoke Web Engineering & Digital Solutions by Rafay",
   description:
     "Ready to upgrade your digital presence? Book a consultation with Rafay and let's build something exceptional together.",
+  alternates: {
+    canonical: "https://www.codelume.online",
+  },
   openGraph: {
     title: "CodeLume® | Bespoke Web Engineering & Digital Solutions by Rafay",
     description:
       "Ready to upgrade your digital presence? Book a consultation with Rafay and let's build something exceptional together.",
-    url: "https://codelume.online",
+    url: "https://www.codelume.online",
     siteName: "CodeLume",
     images: [
       {
@@ -29,7 +33,7 @@ export const metadata = {
         alt: "CodeLume Digital Agency",
       },
     ],
-    locale: "en_AU",
+    locale: "en_GB",
     type: "website",
   },
   twitter: {
