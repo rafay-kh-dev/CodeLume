@@ -2,7 +2,7 @@
 __pycache__/
 *.pyc
 
-# Leads - ye private hain, 【entity-GitHub¦canonical_name=GitHub】 pe nahi jani chahiye
+# Leads - ye private hain, GitHub pe nahi jani chahiye
 leads.csv
 leads_maps.csv
 hot_leads.csv
@@ -12,6 +12,7 @@ indexing_report.csv
 indexing_report.html
 gmail_profile/
 gmail_profile_chrome/
+gsc-key.json
 
 # Secrets
 .env
