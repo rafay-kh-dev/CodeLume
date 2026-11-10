@@ -2,10 +2,10 @@ import csv, time, smtplib, random
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
-SMTP_SERVER = "smtp-mail.outlook.com"  
+SMTP_SERVER = "smtp.seohubltd.com"  
 SMTP_PORT = 587
-SMTP_USER = "mrafaykh@outlook.com" 
-SMTP_PASS = "kpqojhxipqikrrxm" 
+SMTP_USER = "codelume@seohubltd.com" 
+SMTP_PASS = "rafaycodelume@123" 
 FROM_EMAIL = "mrafaykh@outlook.com"
 FROM_NAME = "Rafay's CodeLume"
 DAILY_LIMIT = 50 
