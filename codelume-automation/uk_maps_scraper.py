@@ -10,7 +10,7 @@ import time, csv, re
 from playwright.sync_api import sync_playwright
 
 # ===== YAHAN BADLO =====
-SEARCH_QUERY = "Estate Agents in London"  # <-- Yahan City + Niche badlo, jaise "Dentists in Manchester"
+SEARCH_QUERY = "Plumbers in Manchester"  # <-- Yahan City + Niche badlo, jaise "Dentists in Manchester"
 MAX_LEADS = 50  # Ek baar me kitne nikalne hain, 50 se zyada mat rakho warna Google block karega
 OUTPUT_FILE = "websites.txt"  # Finder isko padhega
 # =======================
