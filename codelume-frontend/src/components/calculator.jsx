@@ -33,7 +33,7 @@ const WhatsAppIcon = (props) => (
 );
 
 // Header wala Rafay's CodeLumeIcon - Full Branding ke liye header me yahi hai
-const Rafay's CodeLumeIcon = (props) => (
+const CodeLumeIcon = (props) => (
   <Code2 {...props} stroke="url(#antigravity-gradient)" strokeWidth={2.5} />
 );
 
@@ -103,7 +103,7 @@ export default function ProjectCalculator() {
       id: 5,
       name: "Full Branding",
       basePrice: 1499,
-      icon: Rafay's CodeLumeIcon,
+      icon: CodeLumeIcon,
       hex: "#EA4335",
       desc: "0-to-100 brand identity & web",
       chooseIf:
