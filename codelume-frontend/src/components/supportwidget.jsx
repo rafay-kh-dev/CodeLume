@@ -63,7 +63,7 @@ export default function SupportWidget() {
       const mailSubject = `Support: ${subject.trim()}`;
       const mailBody = `Subject: ${subject.trim()}\nFrom: ${email.trim()}\n\nMessage:\n${message.trim()}`;
       window.open(
-        `mailto:hello@Rafay's CodeLume.online?subject=${encodeURIComponent(mailSubject)}&body=${encodeURIComponent(mailBody)}`,
+        `mailto:hello@codelume.online?subject=${encodeURIComponent(mailSubject)}&body=${encodeURIComponent(mailBody)}`,
         "_blank",
       );
       setError(
@@ -75,10 +75,10 @@ export default function SupportWidget() {
   };
 
   return (
-    <div className="fixed right-5 bottom-34 sm:right-6 sm:bottom-6 flex flex-col items-end gap-3 font-jakarta">
+    <div className="fixed right-5 bottom-34 sm:right-6 sm:bottom-6 z-[100] flex flex-col items-end gap-3 font-jakarta">
       {/* Panel */}
       {isOpen && (
-        <div className="w-[300px] max-w-[calc(100vw-2rem)] bg-white border border-gray-200 rounded-[20px] shadow-[0_20px_50px_rgba(0,0,0,0.16)] overflow-hidden">
+        <div className="relative z-[101] w-[300px] max-w-[calc(100vw-2rem)] bg-white border border-gray-200 rounded-[20px] shadow-[0_20px_50px_rgba(0,0,0,0.16)] overflow-hidden">
           {/* Header */}
           <div className="flex items-start justify-between px-4 pt-4 pb-3 border-b border-gray-100">
             <div className="flex items-center gap-3">
