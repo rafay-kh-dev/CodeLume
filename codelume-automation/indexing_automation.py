@@ -1,5 +1,5 @@
 """
-CodeLume - Auto Indexing Automation (NO PIP NEEDED VERSION)
+Rafay's CodeLume - Auto Indexing Automation (NO PIP NEEDED VERSION)
 requests ki zaroorat nahi, sirf Python ka built-in urllib use hota hai.
 Isliye pip install karne ki zaroorat hi nahi.
 
@@ -12,10 +12,10 @@ ya
 import re, time, csv, urllib.request, urllib.error, ssl
 from datetime import datetime
 
-SITE = "https://www.codelume.online"
+SITE = "https://www.Rafay's CodeLume.online"
 SITEMAP_URL = f"{SITE}/sitemap.xml"
-API_BASE = "https://codelume-rb3h.onrender.com"
-HEADERS = {"User-Agent": "CodeLume-IndexBot/1.0"}
+API_BASE = "https://Rafay's CodeLume-rb3h.onrender.com"
+HEADERS = {"User-Agent": "Rafay's CodeLume-IndexBot/1.0"}
 
 def fetch(url, timeout=25):
     req = urllib.request.Request(url, headers=HEADERS)
@@ -68,8 +68,8 @@ def check_page(url):
         title = m.group(1).strip() if m else ""
         if not title or len(title) < 10:
             issues.append("Title missing ya bahut chhota")
-        if "codelume-backend" in html:
-            issues.append("Purana dead API (codelume-backend) abhi bhi page me hai")
+        if "Rafay's CodeLume-backend" in html:
+            issues.append("Purana dead API (Rafay's CodeLume-backend) abhi bhi page me hai")
         if not re.search(r'name="description"', html, re.I):
             issues.append("Meta description missing")
         if not re.search(r'rel="canonical"', html, re.I):
@@ -113,7 +113,7 @@ def auto_request_index():
 
 def main():
     print("="*60)
-    print(f"CodeLume Auto-Indexing - {datetime.now().strftime('%d %b %Y, %I:%M %p')}")
+    print(f"Rafay's CodeLume Auto-Indexing - {datetime.now().strftime('%d %b %Y, %I:%M %p')}")
     print("="*60)
     urls = get_all_urls()
     print(f"\nTotal pages: {len(urls)}\n")
@@ -140,7 +140,7 @@ def main():
         color = "#16a34a" if "HIGH" in r["indexed_chance"] else ("#f59e0b" if "MEDIUM" in r["indexed_chance"] else "#dc2626")
         iss = "<br>".join(r["issues"]) if r["issues"] else "✅ Koi issue nahi"
         rows += f"<tr><td>{r['url']}</td><td>{r['status']}</td><td>{r['load_time']}s</td><td style='color:{color};font-weight:bold'>{r['indexed_chance']}</td><td>{iss}</td></tr>"
-    html = f"<html><head><meta charset='utf-8'><title>CodeLume Indexing Report</title></head><body style='font-family:sans-serif;padding:20px'><h1>CodeLume Indexing Report - {datetime.now().strftime('%d %b %Y')}</h1><p>Total: {len(results)} | OK: {sum(1 for r in results if not r['issues'])} | Issue: {sum(1 for r in results if r['issues'])}</p><table border='1' cellpadding='8' cellspacing='0' style='border-collapse:collapse;width:100%'><tr><th>URL</th><th>Status</th><th>Speed</th><th>Index Chance</th><th>Issue</th></tr>{rows}</table></body></html>"
+    html = f"<html><head><meta charset='utf-8'><title>Rafay's CodeLume Indexing Report</title></head><body style='font-family:sans-serif;padding:20px'><h1>Rafay's CodeLume Indexing Report - {datetime.now().strftime('%d %b %Y')}</h1><p>Total: {len(results)} | OK: {sum(1 for r in results if not r['issues'])} | Issue: {sum(1 for r in results if r['issues'])}</p><table border='1' cellpadding='8' cellspacing='0' style='border-collapse:collapse;width:100%'><tr><th>URL</th><th>Status</th><th>Speed</th><th>Index Chance</th><th>Issue</th></tr>{rows}</table></body></html>"
     with open("indexing_report.html", "w", encoding="utf-8") as f:
         f.write(html)
     print("\n" + "="*60)

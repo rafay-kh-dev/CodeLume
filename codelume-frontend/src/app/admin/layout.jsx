@@ -1,5 +1,5 @@
 export const metadata = {
-  title: "Dashboard | CodeLume",
+  title: "Dashboard | Rafay's CodeLume",
   description: "Secure content management system and admin dashboard.",
   // Yeh line Google ko is folder ke kisi bhi page ko index karne se rokegi
   robots: {

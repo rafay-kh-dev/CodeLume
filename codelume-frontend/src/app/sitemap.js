@@ -1,5 +1,5 @@
 export default async function sitemap() {
-  const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://codelume-backend.onrender.com";
+  const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://Rafay's CodeLume-backend.onrender.com";
 
   // Fetch all your live blogs from the database
   let blogUrls = [];
@@ -12,7 +12,7 @@ export default async function sitemap() {
       const publishedBlogs = blogs.filter(post => post.status === "published");
 
       blogUrls = publishedBlogs.map((blog) => ({
-        url: `https://www.codelume.online/blogs/${blog.slug}`,
+        url: `https://www.Rafay's CodeLume.online/blogs/${blog.slug}`,
         lastModified: new Date(blog.updatedAt || blog.createdAt),
         changeFrequency: 'weekly',
         priority: 0.8,
@@ -25,25 +25,25 @@ export default async function sitemap() {
   // Define your core static pages
   const staticUrls = [
     {
-      url: 'https://www.codelume.online',
+      url: 'https://www.Rafay's CodeLume.online',
       lastModified: new Date(),
       changeFrequency: 'yearly',
       priority: 1,
     },
     {
-      url: 'https://www.codelume.online/about',
+      url: 'https://www.Rafay's CodeLume.online/about',
       lastModified: new Date(),
       changeFrequency: 'monthly',
       priority: 0.8,
     },
     {
-      url: 'https://www.codelume.online/services',
+      url: 'https://www.Rafay's CodeLume.online/services',
       lastModified: new Date(),
       changeFrequency: 'monthly',
       priority: 0.9,
     },
     {
-      url: 'https://www.codelume.online/blogs',
+      url: 'https://www.Rafay's CodeLume.online/blogs',
       lastModified: new Date(),
       changeFrequency: 'daily',
       priority: 0.9,

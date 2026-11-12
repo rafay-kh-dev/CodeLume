@@ -1,11 +1,11 @@
 import React from "react";
 
 export const metadata = {
-  title: "Privacy Policy | Rafay's CodeLume",
+  title: "Privacy Policy | Rafay's Rafay's CodeLume",
   description:
     "Our commitment to protecting your privacy and ensuring your personal information is handled in a safe and responsible manner in accordance with the Australian Privacy Principles (APPs).",
   alternates: {
-    canonical: "https://www.codelume.online/privacy",
+    canonical: "https://www.Rafay's CodeLume.online/privacy",
   },
 };
 
@@ -14,15 +14,15 @@ export default function PrivacyPolicyLayout({ children }) {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "WebPage",
-    name: "Privacy Policy | Rafay's CodeLume",
+    name: "Privacy Policy | Rafay's Rafay's CodeLume",
     description:
       "Our commitment to protecting your privacy and ensuring your personal information is handled in a safe and responsible manner in accordance with the Australian Privacy Principles (APPs).",
-    url: "https://www.codelume.online/privacy",
+    url: "https://www.Rafay's CodeLume.online/privacy",
     inLanguage: "en-AU",
     publisher: {
       "@type": "Organization",
-      name: "CodeLume",
-      url: "https://www.codelume.online",
+      name: "Rafay's CodeLume",
+      url: "https://www.Rafay's CodeLume.online",
     },
   };
 

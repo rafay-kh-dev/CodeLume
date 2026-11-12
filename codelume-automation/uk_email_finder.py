@@ -1,11 +1,11 @@
 
-# UK Leads Finder - C:\CodeLume\uk_email_finder.py
+# UK Leads Finder - C:\Rafay's CodeLume\uk_email_finder.py
 # Kaam: websites.txt se websites padh ke unka email + speed nikalta hai
 # Use: python uk_email_finder.py
 import re, csv, time, requests
 from urllib.parse import urljoin, urlparse
 
-HEADERS = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) CodeLume-LeadFinder"}
+HEADERS = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Rafay's CodeLume-LeadFinder"}
 EMAIL_RE = re.compile(r"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}")
 BAD = ["example@", "sentry@", "wixpress@", "noreply@", "no-reply@"]
 

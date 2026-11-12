@@ -449,7 +449,7 @@ export default function Hero() {
               strokeWidth={2.5}
             />
             <span className="font-semibold text-[16px] sm:text-[18px] tracking-tight text-black">
-              Rafay's CodeLume
+              Rafay's Rafay's CodeLume
             </span>
           </div>
 

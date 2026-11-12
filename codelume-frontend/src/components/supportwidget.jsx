@@ -42,7 +42,7 @@ export default function SupportWidget() {
         },
         body: JSON.stringify({
           access_key: WEB3FORMS_ACCESS_KEY,
-          subject: `Support: ${subject.trim()} - CodeLume`,
+          subject: `Support: ${subject.trim()} - Rafay's CodeLume`,
           from_name: "Need help?",
           name: email.trim(),
           email: email.trim(),
@@ -50,7 +50,7 @@ export default function SupportWidget() {
           // Reply-To user ka email taake tum Reply dabao to seedha user ko jaye
           replyto: email.trim(),
           // Auto-reply - user ko foran tumhari taraf se thanks wala mail jayega
-          autoresponse: `Hi,\n\nThanks for contacting CodeLume!\n\nI have received your message about "${subject.trim()}" and will respond as soon as possible from mrafaykh@outlook.com within 24 hours.\n\nThanks,\nRafay - CodeLume`,
+          autoresponse: `Hi,\n\nThanks for contacting Rafay's CodeLume!\n\nI have received your message about "${subject.trim()}" and will respond as soon as possible from mrafaykh@outlook.com within 24 hours.\n\nThanks,\nRafay - Rafay's CodeLume`,
         }),
       });
       const data = await res.json();
@@ -63,7 +63,7 @@ export default function SupportWidget() {
       const mailSubject = `Support: ${subject.trim()}`;
       const mailBody = `Subject: ${subject.trim()}\nFrom: ${email.trim()}\n\nMessage:\n${message.trim()}`;
       window.open(
-        `mailto:hello@codelume.online?subject=${encodeURIComponent(mailSubject)}&body=${encodeURIComponent(mailBody)}`,
+        `mailto:hello@Rafay's CodeLume.online?subject=${encodeURIComponent(mailSubject)}&body=${encodeURIComponent(mailBody)}`,
         "_blank",
       );
       setError(

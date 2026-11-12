@@ -1,7 +1,7 @@
 export const metadata = {
-  title: "SVG to React Converter | Rafay's CodeLume",
+  title: "SVG to React Converter | Rafay's Rafay's CodeLume",
   description:
-    "Instantly convert raw SVG files into clean, reusable React components. A free web engineering tool by CodeLume.",
+    "Instantly convert raw SVG files into clean, reusable React components. A free web engineering tool by Rafay's CodeLume.",
 };
 
 // Yeh hissa miss hone ki wajah se error aa raha tha
@@ -13,10 +13,10 @@ export default function SvgToReactLayout({ children }) {
     applicationCategory: "DeveloperApplication",
     operatingSystem: "All",
     description: "Instantly convert SVG files into reusable React components.",
-    url: "https://www.codelume.online/tools/svg-to-react",
+    url: "https://www.Rafay's CodeLume.online/tools/svg-to-react",
     creator: {
       "@type": "Organization",
-      name: "CodeLume",
+      name: "Rafay's CodeLume",
     },
     offers: {
       "@type": "Offer",

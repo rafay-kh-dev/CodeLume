@@ -17,7 +17,7 @@ const TypewriterHeading = ({ text }) => {
           observer.disconnect();
         }
       },
-      { threshold: 0.2 }
+      { threshold: 0.2 },
     );
 
     if (headingRef.current) {
@@ -110,7 +110,9 @@ export default function PrivacyPolicy() {
           className="inline-flex items-center gap-2 text-gray-500 hover:text-black transition-colors mb-10 group outline-none"
         >
           <ArrowLeft className="w-4 h-4 transform group-hover:-translate-x-1 transition-transform" />
-          <h2 className="text-[14px] font-bold m-0 tracking-wide">Back to Home</h2>
+          <h2 className="text-[14px] font-bold m-0 tracking-wide">
+            Back to Home
+          </h2>
         </Link>
 
         {/* Page Header */}
@@ -123,12 +125,11 @@ export default function PrivacyPolicy() {
 
         {/* Content Box */}
         <div className="bg-white border border-gray-200 rounded-[32px] p-8 sm:p-12 lg:p-16 shadow-sm relative overflow-hidden">
-          
           <div className="space-y-12">
             {/* Intro */}
             <div>
               <p className="text-[15px] sm:text-[16px] text-gray-500 font-medium leading-relaxed m-0">
-                At CodeLume, we are committed to protecting your privacy
+                At Rafay's CodeLume, we are committed to protecting your privacy
                 and ensuring your personal information is handled in a safe and
                 responsible manner. This Privacy Policy outlines how we collect,
                 use, disclose, and safeguard your data in accordance with

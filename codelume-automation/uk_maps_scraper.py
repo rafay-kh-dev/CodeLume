@@ -1,5 +1,5 @@
 
-# UK Maps Scraper - C:\CodeLume\uk_maps_scraper.py
+# UK Maps Scraper - C:\Rafay's CodeLume\uk_maps_scraper.py
 # Kaam: Google Maps se khud hi businesses + websites nikalta hai
 # Use: py uk_maps_scraper.py
 # Pehle install karo:

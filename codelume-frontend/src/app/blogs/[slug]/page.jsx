@@ -1,7 +1,8 @@
 import ClientArticle from "./ClientArticle";
 
 const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL || "https://codelume-rb3h.onrender.com";
+  process.env.NEXT_PUBLIC_API_URL ||
+  "https://Rafay's CodeLume-rb3h.onrender.com";
 
 // Fetch real blog data for metadata (SSR)
 async function getBlogBySlug(slug) {
@@ -36,16 +37,16 @@ export async function generateMetadata({ params }) {
   const description =
     post?.metaDescription ||
     post?.excerpt ||
-    `Read our comprehensive guide on ${formatTitle(slug)} by CodeLume engineers.`;
+    `Read our comprehensive guide on ${formatTitle(slug)} by Rafay's CodeLume engineers.`;
   const coverImage = post?.coverImage || null;
 
   return {
-    title: `${title} | CodeLume`,
+    title: `${title} | Rafay's CodeLume`,
     description,
     openGraph: {
-      title: `${title} | CodeLume`,
+      title: `${title} | Rafay's CodeLume`,
       description,
-      url: `https://www.codelume.online/blogs/${slug}`,
+      url: `https://www.Rafay's CodeLume.online/blogs/${slug}`,
       type: "article",
       ...(coverImage && {
         images: [{ url: coverImage, width: 1200, height: 630, alt: title }],
@@ -53,12 +54,12 @@ export async function generateMetadata({ params }) {
     },
     twitter: {
       card: "summary_large_image",
-      title: `${title} | CodeLume`,
+      title: `${title} | Rafay's CodeLume`,
       description,
       ...(coverImage && { images: [coverImage] }),
     },
     alternates: {
-      canonical: `https://www.codelume.online/blogs/${slug}`,
+      canonical: `https://www.Rafay's CodeLume.online/blogs/${slug}`,
     },
   };
 }
@@ -86,20 +87,20 @@ export default async function Page({ params }) {
       {
         "@type": "Person",
         name: "Rafay",
-        url: "https://www.codelume.online/about",
+        url: "https://www.Rafay's CodeLume.online/about",
       },
     ],
     publisher: {
       "@type": "Organization",
-      name: "CodeLume",
+      name: "Rafay's CodeLume",
       logo: {
         "@type": "ImageObject",
-        url: "https://www.codelume.online/icon.svg",
+        url: "https://www.Rafay's CodeLume.online/icon.svg",
       },
     },
     mainEntityOfPage: {
       "@type": "WebPage",
-      "@id": `https://www.codelume.online/blogs/${slug}`,
+      "@id": `https://www.Rafay's CodeLume.online/blogs/${slug}`,
     },
   };
   const serializedSchemaMarkup = JSON.stringify(schemaMarkup)

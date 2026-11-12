@@ -1,13 +1,13 @@
 export const metadata = {
-  title: "About | Rafay's CodeLume",
+  title: "About | Rafay's Rafay's CodeLume",
   description:
     "Learn about Rafay, a freelance web developer and UI/UX designer engineering high-performance digital platforms and driving targeted SEO traffic.",
   openGraph: {
-    title: "About | Rafay's CodeLume",
+    title: "About | Rafay's Rafay's CodeLume",
     description:
       "Learn about Rafay, a freelance web developer and UI/UX designer engineering high-performance digital platforms.",
-    url: "https://www.codelume.online/about",
-    siteName: "CodeLume",
+    url: "https://www.Rafay's CodeLume.online/about",
+    siteName: "Rafay's CodeLume",
     type: "website",
   },
 };
@@ -20,10 +20,10 @@ export default function AboutLayout({ children }) {
       "@type": "Person",
       name: "Rafay",
       jobTitle: "Freelance Web Developer & UI/UX Designer",
-      url: "https://www.codelume.online/about",
+      url: "https://www.Rafay's CodeLume.online/about",
       worksFor: {
         "@type": "Organization",
-        name: "CodeLume",
+        name: "Rafay's CodeLume",
       },
     },
   };

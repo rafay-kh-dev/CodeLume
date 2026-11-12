@@ -41,7 +41,7 @@ export default function CodeBlock({ code, language = "javascript" }) {
         customStyle={{
           margin: 0,
           padding: "1.25rem",
-          background: "#0a0f1c", // CodeLume dark background
+          background: "#0a0f1c", // Rafay's CodeLume dark background
           fontSize: "14px",
         }}
       >

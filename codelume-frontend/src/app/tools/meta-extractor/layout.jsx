@@ -1,7 +1,7 @@
 export const metadata = {
-  title: "Website Meta Tags Extractor & SEO Checker | Rafay's CodeLume",
+  title: "Website Meta Tags Extractor & SEO Checker | Rafay's Rafay's CodeLume",
   description:
-    "Instantly extract and analyse SEO metadata, Open Graph tags, and page structure from any URL. A free SEO engineering tool by CodeLume.",
+    "Instantly extract and analyse SEO metadata, Open Graph tags, and page structure from any URL. A free SEO engineering tool by Rafay's CodeLume.",
 };
 
 export default function MetaExtractorLayout({ children }) {
@@ -13,10 +13,10 @@ export default function MetaExtractorLayout({ children }) {
     operatingSystem: "All",
     description:
       "Instantly extract and analyse SEO metadata and Open Graph tags from any URL.",
-    url: "https://www.codelume.online/tools/meta-extractor",
+    url: "https://www.Rafay's CodeLume.online/tools/meta-extractor",
     creator: {
       "@type": "Organization",
-      name: "Rafay's CodeLume",
+      name: "Rafay's Rafay's CodeLume",
     },
     offers: {
       "@type": "Offer",

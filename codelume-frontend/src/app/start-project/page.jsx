@@ -125,17 +125,83 @@ export default function StartProject() {
 
   // All 11 Premium Services - Real Icons + Best for line in English
   const serviceOptions = [
-    { id: "MERN Stack", title: "MERN Stack", icon: ReactIcon, bestFor: "Best for: Web apps with login, dashboard, or complex features. Not a simple website." },
-    { id: "PHP Laravel", title: "PHP & Laravel", icon: Laravel, bestFor: "Best for: Businesses that need a strong backend, admin panel, or custom system." },
-    { id: "Angular", title: "Angular Web Apps", icon: Angular, bestFor: "Best for: Large companies that need a fast, structured enterprise app." },
-    { id: "Custom Platforms", title: "Custom Platforms", icon: GcpCloudMonitoring, bestFor: "Best for: Businesses with a unique process that no template can handle." },
-    { id: "WordPress", title: "WordPress Sites", icon: Wordpress, bestFor: "Best for: Small business, company website, or blog. Easy to manage yourself." },
-    { id: "Shopify", title: "Shopify Dev", icon: Shopify, bestFor: "Best for: Selling products online with cart, payment, and order management." },
-    { id: "Webflow", title: "Webflow Sites", icon: Webflow, bestFor: "Best for: Brands that need a beautiful, animated marketing website." },
-    { id: "API", title: "API Integrations", icon: GcpApiMonetization, bestFor: "Best for: Connecting Stripe, PayPal, CRM, or any third-party tool to your site." },
-    { id: "Mobile Apps", title: "Mobile Apps", icon: Flutter, bestFor: "Best for: Businesses that need an iOS and Android app for their customers." },
-    { id: "UI/UX Design", title: "UI/UX Design", icon: Figma, bestFor: "Best for: Only design in Figma, no development yet. You will build it later." },
-    { id: "Full Branding", title: "Full Branding", icon: Adobe, bestFor: "Best for: New brands that need logo, identity, and website together." },
+    {
+      id: "MERN Stack",
+      title: "MERN Stack",
+      icon: ReactIcon,
+      bestFor:
+        "Best for: Web apps with login, dashboard, or complex features. Not a simple website.",
+    },
+    {
+      id: "PHP Laravel",
+      title: "PHP & Laravel",
+      icon: Laravel,
+      bestFor:
+        "Best for: Businesses that need a strong backend, admin panel, or custom system.",
+    },
+    {
+      id: "Angular",
+      title: "Angular Web Apps",
+      icon: Angular,
+      bestFor:
+        "Best for: Large companies that need a fast, structured enterprise app.",
+    },
+    {
+      id: "Custom Platforms",
+      title: "Custom Platforms",
+      icon: GcpCloudMonitoring,
+      bestFor:
+        "Best for: Businesses with a unique process that no template can handle.",
+    },
+    {
+      id: "WordPress",
+      title: "WordPress Sites",
+      icon: Wordpress,
+      bestFor:
+        "Best for: Small business, company website, or blog. Easy to manage yourself.",
+    },
+    {
+      id: "Shopify",
+      title: "Shopify Dev",
+      icon: Shopify,
+      bestFor:
+        "Best for: Selling products online with cart, payment, and order management.",
+    },
+    {
+      id: "Webflow",
+      title: "Webflow Sites",
+      icon: Webflow,
+      bestFor:
+        "Best for: Brands that need a beautiful, animated marketing website.",
+    },
+    {
+      id: "API",
+      title: "API Integrations",
+      icon: GcpApiMonetization,
+      bestFor:
+        "Best for: Connecting Stripe, PayPal, CRM, or any third-party tool to your site.",
+    },
+    {
+      id: "Mobile Apps",
+      title: "Mobile Apps",
+      icon: Flutter,
+      bestFor:
+        "Best for: Businesses that need an iOS and Android app for their customers.",
+    },
+    {
+      id: "UI/UX Design",
+      title: "UI/UX Design",
+      icon: Figma,
+      bestFor:
+        "Best for: Only design in Figma, no development yet. You will build it later.",
+    },
+    {
+      id: "Full Branding",
+      title: "Full Branding",
+      icon: Adobe,
+      bestFor:
+        "Best for: New brands that need logo, identity, and website together.",
+    },
   ];
 
   const budgetOptions = ["$1k - $2.5k", "$2.5k - $5k", "$5k - $10k", "$10k+"];
@@ -167,11 +233,14 @@ export default function StartProject() {
     try {
       const res = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
         body: JSON.stringify({
           access_key: WEB3FORMS_ACCESS_KEY,
-          subject: `New Project: ${formData.services.join(", ") || "General Inquiry"} - CodeLume`,
-          from_name: "CodeLume Start Project",
+          subject: `New Project: ${formData.services.join(", ") || "General Inquiry"} - Rafay's CodeLume`,
+          from_name: "Rafay's CodeLume Start Project",
           name: formData.name,
           email: formData.email,
           message: `Name: ${formData.name}\nEmail: ${formData.email}\nCompany: ${formData.company || "(not entered)"}\n\nServices: ${formData.services.join(", ") || "(not selected)"}\nBudget: ${formData.budget || "(not selected)"}\nTimeline: ${formData.timeline || "(not selected)"}\n\nProject Details:\n${formData.details}`,
@@ -185,7 +254,9 @@ export default function StartProject() {
       window.scrollTo({ top: 0, behavior: "smooth" });
     } catch (error) {
       console.error("Web3Forms send error:", error);
-      alert("Failed to send. Please try again or email directly at mrafaykh@outlook.com");
+      alert(
+        "Failed to send. Please try again or email directly at mrafaykh@outlook.com",
+      );
     } finally {
       setIsSubmitting(false);
     }

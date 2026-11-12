@@ -704,7 +704,7 @@ export default function AdminCreatePost() {
                 </div>
                 <div>
                   <p className="text- font-bold text-black m-0">
-                    Rafay • CodeLume
+                    Rafay • Rafay's CodeLume
                   </p>
                   <p className="text- text-gray-400 m-0">
                     Just now • {wordCount} words

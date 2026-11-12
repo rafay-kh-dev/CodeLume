@@ -1,17 +1,17 @@
 import React from "react";
 
 export const metadata = {
-  title: "Blogs | Rafay's CodeLume",
+  title: "Blogs | Rafay's Rafay's CodeLume",
   description:
-    "Explore the latest articles, tutorials, and digital insights from CodeLume engineers.",
+    "Explore the latest articles, tutorials, and digital insights from Rafay's CodeLume engineers.",
   alternates: {
-    canonical: "https://www.codelume.online/blogs",
+    canonical: "https://www.Rafay's CodeLume.online/blogs",
   },
   openGraph: {
-    title: "Blogs | Rafay's CodeLume",
+    title: "Blogs | Rafay's Rafay's CodeLume",
     description:
-      "Explore the latest articles, tutorials, and digital insights from CodeLume engineers.",
-    url: "https://www.codelume.online/blogs",
+      "Explore the latest articles, tutorials, and digital insights from Rafay's CodeLume engineers.",
+    url: "https://www.Rafay's CodeLume.online/blogs",
     type: "website",
   },
 };

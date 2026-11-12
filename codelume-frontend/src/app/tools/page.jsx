@@ -169,7 +169,7 @@ export default function Tools() {
           <div className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-full bg-gray-50 border border-gray-200 shadow-sm mb-6">
             <Terminal className="w-4 h-4 text-black" />
             <h2 className="text-[11px] sm:text-[12px] font-extrabold text-gray-500 uppercase tracking-[0.2em] m-0">
-              CodeLume Utilities
+              Rafay's CodeLume Utilities
             </h2>
           </div>
 

@@ -4,10 +4,10 @@ from email.mime.multipart import MIMEMultipart
 
 SMTP_SERVER = "smtp.seohubltd.com"  
 SMTP_PORT = 587
-SMTP_USER = "codelume@seohubltd.com" 
-SMTP_PASS = "rafaycodelume@123" 
-FROM_EMAIL = "codelume@seohubltd.com"
-FROM_NAME = "Rafay's CodeLume"
+SMTP_USER = "Rafay's CodeLume@seohubltd.com" 
+SMTP_PASS = "rafayRafay's CodeLume@123" 
+FROM_EMAIL = "Rafay's CodeLume@seohubltd.com"
+FROM_NAME = "Rafay's Rafay's CodeLume"
 DAILY_LIMIT = 50 
 DELAY_MIN = 30  
 DELAY_MAX = 60
@@ -24,9 +24,9 @@ Would you like me to send you a free 1-page audit of your site - what is slow an
 
 Best regards,
 Muhammad Rafay
-CodeLume - Web Development Agency
-rafay@codelume.online
-https://www.codelume.online
+Rafay's CodeLume - Web Development Agency
+rafay@Rafay's CodeLume.online
+https://www.Rafay's CodeLume.online
 
 P.S. If you don't want emails from me, just reply STOP and I won't email again.
 """
@@ -41,9 +41,9 @@ Would you like me to send you a free ads plan for {city} - what it would cost an
 
 Best regards,
 Muhammad Rafay
-CodeLume - Web Development Agency
-rafay@codelume.online
-https://www.codelume.online
+Rafay's CodeLume - Web Development Agency
+rafay@Rafay's CodeLume.online
+https://www.Rafay's CodeLume.online
 
 P.S. If you don't want emails from me, just reply STOP and I won't email again.
 """

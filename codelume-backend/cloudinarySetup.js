@@ -14,7 +14,7 @@ cloudinary.config({
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
-    folder: 'codelume_media', // All your blog images will be saved in this folder
+    folder: 'Rafay's CodeLume_media', // All your blog images will be saved in this folder
     allowed_formats: ['jpg', 'png', 'jpeg', 'webp', 'svg']
   }
 });

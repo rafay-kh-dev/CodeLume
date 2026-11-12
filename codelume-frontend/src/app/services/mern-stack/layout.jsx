@@ -1,7 +1,7 @@
 export const metadata = {
-  title: "MERN Stack Development Services | CodeLume",
+  title: "MERN Stack Development Services | Rafay's CodeLume",
   description:
-    "Engineer lightning-fast, scalable web applications with CodeLume’s bespoke MERN stack (MongoDB, Express, React, Node.js) development services.",
+    "Engineer lightning-fast, scalable web applications with Rafay's CodeLume’s bespoke MERN stack (MongoDB, Express, React, Node.js) development services.",
 };
 
 export default function MernStackLayout({ children }) {
@@ -11,11 +11,11 @@ export default function MernStackLayout({ children }) {
     name: "MERN Stack Development",
     provider: {
       "@type": "Organization",
-      name: "CodeLume",
+      name: "Rafay's CodeLume",
     },
     description:
       "Bespoke MERN stack (MongoDB, Express, React, Node.js) development services for scalable web applications.",
-    url: "https://www.codelume.online/services/mern-stack",
+    url: "https://www.Rafay's CodeLume.online/services/mern-stack",
   };
 
   return (

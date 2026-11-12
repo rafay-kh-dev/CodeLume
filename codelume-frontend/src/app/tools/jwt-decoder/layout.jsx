@@ -1,7 +1,7 @@
 export const metadata = {
-  title: "JWT Token Decoder & Parser | CodeLume",
+  title: "JWT Token Decoder & Parser | Rafay's CodeLume",
   description:
-    "Securely decode, verify, and inspect JSON Web Tokens (JWT) directly in your browser. A free developer utility engineered by CodeLume.",
+    "Securely decode, verify, and inspect JSON Web Tokens (JWT) directly in your browser. A free developer utility engineered by Rafay's CodeLume.",
 };
 
 export default function JwtDecoderLayout({ children }) {
@@ -13,10 +13,10 @@ export default function JwtDecoderLayout({ children }) {
     operatingSystem: "All",
     description:
       "Securely decode and inspect JSON Web Tokens (JWT) directly in your browser.",
-    url: "https://www.codelume.online/tools/jwt-decoder",
+    url: "https://www.Rafay's CodeLume.online/tools/jwt-decoder",
     creator: {
       "@type": "Organization",
-      name: "CodeLume",
+      name: "Rafay's CodeLume",
     },
     offers: {
       "@type": "Offer",

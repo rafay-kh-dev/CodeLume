@@ -16,8 +16,8 @@ app.use(express.json());
 // CORS - sirf tumhari site + localhost allow, baqi block
 const allowedOrigins = [
   process.env.FRONTEND_URL,
-  'https://www.codelume.online',
-  'https://codelume.online',
+  'https://www.Rafay's CodeLume.online',
+  'https://Rafay's CodeLume.online',
   'http://localhost:3000',
 ].filter(Boolean);
 
@@ -81,7 +81,7 @@ app.post('/api/login', (req, res) => {
   const adminPassword = process.env.ADMIN_PASSWORD || 'rafay123';
 
   if (username === adminUsername && password === adminPassword) {
-    res.status(200).json({ message: 'Login successful', token: 'codelume-admin-auth-token-777' });
+    res.status(200).json({ message: 'Login successful', token: 'Rafay's CodeLume-admin-auth-token-777' });
   } else {
     res.status(401).json({ message: 'Invalid username or password' });
   }
@@ -89,7 +89,7 @@ app.post('/api/login', (req, res) => {
 
 // UptimeRobot Keep-Awake Route
 app.get('/', (req, res) => {
-  res.status(200).send('CodeLume Backend is Awake and Running!');
+  res.status(200).send('Rafay's CodeLume Backend is Awake and Running!');
 });
 
 // 1. CREATE A NEW BLOG POST
@@ -372,4 +372,4 @@ app.use((err, req, res, next) => {
   next();
 });
 
-app.listen(PORT, () => console.log(`CodeLume Backend API running on port ${PORT}`));
+app.listen(PORT, () => console.log(`Rafay's CodeLume Backend API running on port ${PORT}`));

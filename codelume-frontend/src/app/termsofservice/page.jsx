@@ -17,7 +17,7 @@ const TypewriterHeading = ({ text }) => {
           observer.disconnect();
         }
       },
-      { threshold: 0.2 }
+      { threshold: 0.2 },
     );
 
     if (headingRef.current) {
@@ -110,7 +110,9 @@ export default function TermsOfService() {
           className="inline-flex items-center gap-2 text-gray-500 hover:text-black transition-colors mb-10 group outline-none"
         >
           <ArrowLeft className="w-4 h-4 transform group-hover:-translate-x-1 transition-transform" />
-          <h2 className="text-[14px] font-bold m-0 tracking-wide">Back to Home</h2>
+          <h2 className="text-[14px] font-bold m-0 tracking-wide">
+            Back to Home
+          </h2>
         </Link>
 
         {/* Page Header */}
@@ -123,12 +125,11 @@ export default function TermsOfService() {
 
         {/* Content Box */}
         <div className="bg-white border border-gray-200 rounded-[32px] p-8 sm:p-12 lg:p-16 shadow-sm relative overflow-hidden">
-          
           <div className="space-y-12">
             {/* Intro */}
             <div>
               <p className="text-[15px] sm:text-[16px] text-gray-500 font-medium leading-relaxed m-0">
-                Welcome to CodeLume. By accessing or using our platform,
+                Welcome to Rafay's CodeLume. By accessing or using our platform,
                 you agree to be bound by these Terms of Service. Please read
                 them carefully before using our website or accessing our
                 educational materials and services.
@@ -166,7 +167,7 @@ export default function TermsOfService() {
               </div>
               <p className="text-[15px] sm:text-[16px] text-gray-500 font-medium leading-relaxed m-0 pl-0 sm:pl-14">
                 All content included on this site, such as text, graphics,
-                logos, and video tutorials, is the property of CodeLume
+                logos, and video tutorials, is the property of Rafay's CodeLume
                 and protected by international copyright laws. We grant you a
                 limited licence to access and make personal use of this site for
                 your own educational and professional purposes.

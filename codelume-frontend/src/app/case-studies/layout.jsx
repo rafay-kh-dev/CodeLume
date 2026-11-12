@@ -1,7 +1,7 @@
 export const metadata = {
-  title: "Case Studies | Rafay's CodeLume",
+  title: "Case Studies | Rafay's Rafay's CodeLume",
   description:
-    "Explore bespoke digital platforms, scalable web applications, and high-converting UI/UX designs engineered by CodeLume.",
+    "Explore bespoke digital platforms, scalable web applications, and high-converting UI/UX designs engineered by Rafay's CodeLume.",
 };
 
 export default function CaseStudiesLayout({ children }) {
@@ -11,7 +11,7 @@ export default function CaseStudiesLayout({ children }) {
     name: "Case Studies",
     description:
       "Explore bespoke digital platforms and high-converting UI/UX designs.",
-    url: "https://www.codelume.online/case-studies",
+    url: "https://www.Rafay's CodeLume.online/case-studies",
   };
 
   return (

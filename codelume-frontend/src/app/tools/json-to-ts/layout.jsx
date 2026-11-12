@@ -1,7 +1,7 @@
 export const metadata = {
-  title: "JSON to TypeScript Converter | CodeLume",
+  title: "JSON to TypeScript Converter | Rafay's CodeLume",
   description:
-    "Instantly convert JSON objects into clean, production-ready TypeScript interfaces. A free, secure developer tool engineered by CodeLume.",
+    "Instantly convert JSON objects into clean, production-ready TypeScript interfaces. A free, secure developer tool engineered by Rafay's CodeLume.",
 };
 
 export default function JsonToTsLayout({ children }) {
@@ -13,10 +13,10 @@ export default function JsonToTsLayout({ children }) {
     operatingSystem: "All",
     description:
       "Instantly convert JSON objects into clean TypeScript interfaces.",
-    url: "https://www.codelume.online/tools/json-to-ts",
+    url: "https://www.Rafay's CodeLume.online/tools/json-to-ts",
     creator: {
       "@type": "Organization",
-      name: "CodeLume",
+      name: "Rafay's CodeLume",
     },
     offers: {
       "@type": "Offer",

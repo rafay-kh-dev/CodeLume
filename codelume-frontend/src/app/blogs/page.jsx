@@ -111,7 +111,8 @@ export default function Blog() {
 
   // FIX: Purana backend URL tha - naya wala
   const API_BASE_URL =
-    process.env.NEXT_PUBLIC_API_URL || "https://codelume-rb3h.onrender.com";
+    process.env.NEXT_PUBLIC_API_URL ||
+    "https://Rafay's CodeLume-rb3h.onrender.com";
 
   useEffect(() => {
     let isCancelled = false;

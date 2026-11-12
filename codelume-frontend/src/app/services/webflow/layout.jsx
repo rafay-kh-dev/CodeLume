@@ -1,5 +1,5 @@
 export const metadata = {
-  title: "Webflow Development | CodeLume",
+  title: "Webflow Development | Rafay's CodeLume",
   description:
     "Award-winning, high-performance Webflow websites engineered for fluid animations and total content control.",
 };
@@ -9,10 +9,10 @@ export default function WebflowLayout({ children }) {
     "@context": "https://schema.org",
     "@type": "Service",
     name: "Webflow Development Services",
-    provider: { "@type": "Organization", name: "CodeLume" },
+    provider: { "@type": "Organization", name: "Rafay's CodeLume" },
     description:
       "High-performance Webflow websites engineered for fluid animations.",
-    url: "https://www.codelume.online/services/webflow",
+    url: "https://www.Rafay's CodeLume.online/services/webflow",
   };
 
   return (

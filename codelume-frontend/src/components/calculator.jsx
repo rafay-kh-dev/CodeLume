@@ -32,8 +32,8 @@ const WhatsAppIcon = (props) => (
   </svg>
 );
 
-// Header wala CodeLumeIcon - Full Branding ke liye header me yahi hai
-const CodeLumeIcon = (props) => (
+// Header wala Rafay's CodeLumeIcon - Full Branding ke liye header me yahi hai
+const Rafay's CodeLumeIcon = (props) => (
   <Code2 {...props} stroke="url(#antigravity-gradient)" strokeWidth={2.5} />
 );
 
@@ -103,7 +103,7 @@ export default function ProjectCalculator() {
       id: 5,
       name: "Full Branding",
       basePrice: 1499,
-      icon: CodeLumeIcon,
+      icon: Rafay's CodeLumeIcon,
       hex: "#EA4335",
       desc: "0-to-100 brand identity & web",
       chooseIf:
@@ -214,11 +214,11 @@ export default function ProjectCalculator() {
             .map((id) => addons.find((a) => a.id === id).name)
             .join(", ")
         : "None selected";
-    return `Hello Rafay! I just used the CodeLume Project Calculator:\n\nService: ${serviceName}\nScope: ${scopeName}\nTimeline: ${estimatedTime}\nAdd-ons: ${addonNames}\n\nEstimated Total: $${totalPrice} USD\n\nPlease let me know when we can schedule a quick consultation. Thanks!`;
+    return `Hello Rafay! I just used the Rafay's CodeLume Project Calculator:\n\nService: ${serviceName}\nScope: ${scopeName}\nTimeline: ${estimatedTime}\nAdd-ons: ${addonNames}\n\nEstimated Total: $${totalPrice} USD\n\nPlease let me know when we can schedule a quick consultation. Thanks!`;
   };
 
   const waLink = `https://wa.me/923347835980?text=${encodeURIComponent(generateMessage())}`;
-  const emailLink = `mailto:hello@codelume.online?subject=${encodeURIComponent("New Project Inquiry via CodeLume Calculator")}&body=${encodeURIComponent(generateMessage())}`;
+  const emailLink = `mailto:hello@Rafay's CodeLume.online?subject=${encodeURIComponent("New Project Inquiry via Rafay's CodeLume Calculator")}&body=${encodeURIComponent(generateMessage())}`;
 
   const CurrentServiceIcon =
     selectedService !== null ? services[selectedService].icon : Calculator;
@@ -249,7 +249,7 @@ export default function ProjectCalculator() {
 
   return (
     <>
-      {/* Header wala gradient - CodeLumeIcon ke liye, header me bhi yahi id hai */}
+      {/* Header wala gradient - Rafay's CodeLumeIcon ke liye, header me bhi yahi id hai */}
       <svg width="0" height="0" className="absolute pointer-events-none">
         <defs>
           <linearGradient

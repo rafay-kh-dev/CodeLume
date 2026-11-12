@@ -1,5 +1,5 @@
 export const metadata = {
-  title: "Custom PHP & Laravel Development | CodeLume",
+  title: "Custom PHP & Laravel Development | Rafay's CodeLume",
   description:
     "Secure, scalable, and high-performance backend architectures engineered with custom PHP and Laravel frameworks.",
 };
@@ -9,10 +9,10 @@ export default function PhpLaravelLayout({ children }) {
     "@context": "https://schema.org",
     "@type": "Service",
     name: "PHP & Laravel Development",
-    provider: { "@type": "Organization", name: "CodeLume" },
+    provider: { "@type": "Organization", name: "Rafay's CodeLume" },
     description:
       "Secure and scalable backend architectures engineered with custom PHP and Laravel.",
-    url: "https://www.codelume.online/services/php-laravel",
+    url: "https://www.Rafay's CodeLume.online/services/php-laravel",
   };
 
   return (

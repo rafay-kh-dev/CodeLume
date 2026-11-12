@@ -33,8 +33,8 @@ import {
 // CUSTOM ICONS (For New Services)
 // ==========================================
 
-// 1. CodeLume Icon (Full Branding)
-const CodeLumeIcon = (props) => (
+// 1. Rafay's CodeLume Icon (Full Branding)
+const Rafay's CodeLumeIcon = (props) => (
   <Code2 {...props} stroke="url(#antigravity-gradient)" strokeWidth={2.5} />
 );
 
@@ -147,7 +147,7 @@ const marketingServices = [
   {
     title: "Full Branding",
     link: "/services/full-branding",
-    icon: CodeLumeIcon,
+    icon: Rafay's CodeLumeIcon,
   },
   { title: "Google Ads", link: "/services/google-ads", icon: GoogleAdsIcon },
   { title: "Meta Ads", link: "/services/meta-ads", icon: MetaAdsIcon },
@@ -233,7 +233,7 @@ export default function Header() {
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
       `}</style>
 
-      {/* CORRECTED GRADIENT FOR CODELUME ICON */}
+      {/* CORRECTED GRADIENT FOR Rafay's CodeLume ICON */}
       <svg width="0" height="0" className="absolute pointer-events-none">
         <defs>
           <linearGradient
@@ -278,7 +278,7 @@ export default function Header() {
                 strokeWidth={2.5}
               />
               <h2 className="text-[15px] sm:text-[16px] font-semibold tracking-tight text-black m-0">
-                Rafay's CodeLume
+                Rafay's Rafay's CodeLume
               </h2>
             </Link>
 
@@ -350,7 +350,7 @@ export default function Header() {
                 <GitHubIcon className="w-[16px] h-[16px]" />
               </a>
               <a
-                href="https://www.youtube.com/@rafaycodelume"
+                href="https://www.youtube.com/@rafayRafay's CodeLume"
                 target="_blank"
                 rel="noreferrer"
                 aria-label="View LinkedIn profile"
@@ -360,21 +360,21 @@ export default function Header() {
                 <LinkedInIcon className="w-[15px] h-[15px]" />
               </a>
               <a
-                href="https://www.facebook.com/codelume"
+                href="https://www.facebook.com/Rafay's CodeLume"
                 target="_blank"
                 rel="noreferrer"
                 aria-label="View Facebook page"
-                title="Facebook - CodeLume"
+                title="Facebook - Rafay's CodeLume"
                 className="w-[32px] h-[32px] xl:w-[34px] xl:h-[34px] rounded-full bg-white/80 backdrop-blur border border-gray-200 flex items-center justify-center text-black hover:text-[#1877F2] hover:border-[#1877F2]/30 hover:shadow-sm hover:-translate-y-0.5 transition-all outline-none shrink-0"
               >
                 <FacebookIcon className="w-[16px] h-[16px]" />
               </a>
               <a
-                href="https://www.instagram.com/rafay-codelume/"
+                href="https://www.instagram.com/rafay-Rafay's CodeLume/"
                 target="_blank"
                 rel="noreferrer"
                 aria-label="View Instagram profile"
-                title="Instagram - @rafay-codelume"
+                title="Instagram - @rafay-Rafay's CodeLume"
                 className="w-[32px] h-[32px] xl:w-[34px] xl:h-[34px] rounded-full bg-white/80 backdrop-blur border border-gray-200 flex items-center justify-center text-black hover:text-[#E1306C] hover:border-[#E1306C]/30 hover:shadow-sm hover:-translate-y-0.5 transition-all outline-none shrink-0"
               >
                 <InstagramIcon className="w-[16px] h-[16px]" />
@@ -675,7 +675,7 @@ export default function Header() {
                 <GitHubIcon className="w-[18px] h-[18px]" />
               </a>
               <a
-                href="https://www.linkedin.com/in/rafay-codelume/"
+                href="https://www.linkedin.com/in/rafay-Rafay's CodeLume/"
                 target="_blank"
                 rel="noreferrer"
                 onClick={() => setMobileMenuOpen(false)}
@@ -686,7 +686,7 @@ export default function Header() {
                 <LinkedInIcon className="w-[17px] h-[17px]" />
               </a>
               <a
-                href="https://www.facebook.com/codelume"
+                href="https://www.facebook.com/Rafay's CodeLume"
                 target="_blank"
                 rel="noreferrer"
                 onClick={() => setMobileMenuOpen(false)}
@@ -697,7 +697,7 @@ export default function Header() {
                 <FacebookIcon className="w-[18px] h-[18px]" />
               </a>
               <a
-                href="https://www.instagram.com/rafay-codelume/"
+                href="https://www.instagram.com/rafay-Rafay's CodeLume/"
                 target="_blank"
                 rel="noreferrer"
                 onClick={() => setMobileMenuOpen(false)}

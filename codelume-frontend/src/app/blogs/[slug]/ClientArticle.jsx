@@ -5,7 +5,8 @@ import DOMPurify from "dompurify";
 import { ArrowLeft, Clock } from "lucide-react";
 
 const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL || "https://codelume-rb3h.onrender.com";
+  process.env.NEXT_PUBLIC_API_URL ||
+  "https://Rafay's CodeLume-rb3h.onrender.com";
 
 const cleanPastedHTML = (html) => {
   if (!html) return "";
@@ -67,7 +68,7 @@ const autoFormatContent = (html) => {
   const esc = (t) =>
     t.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
   // ALL CAPS heading ko Title Case me badlo - professional blogs ALL CAPS nahi use karte
-  // "WHY BUSINESSES CHOOSE CODELUME..." -> "Why Businesses Choose CodeLume for Web Development"
+  // "WHY BUSINESSES CHOOSE Rafay's CodeLume..." -> "Why Businesses Choose Rafay's CodeLume for Web Development"
   // Lowercase letters patle hote hain, to heading asani se fit hoti hai, aur word toot-ta nahi
   const toTitleCase = (str) => {
     const small = [
@@ -93,7 +94,8 @@ const autoFormatContent = (html) => {
       .map((w, idx) => {
         if (!w) return w;
         const clean = w.replace(/[^a-z0-9]/g, "");
-        if (clean === "codelume") return w.replace(/codelume/i, "CodeLume");
+        if (clean === "Rafay's CodeLume")
+          return w.replace(/Rafay's CodeLume/i, "Rafay's CodeLume");
         if (clean === "uk") return w.replace(/uk/i, "UK");
         if (clean === "seo") return w.replace(/seo/i, "SEO");
         if (idx !== 0 && small.includes(clean)) return w;
@@ -313,16 +315,16 @@ export default function ClientArticle({ slug, initialBlog = null }) {
           <div className="w-10 h-10 rounded-full overflow-hidden shrink-0 ring-1 ring-gray-200">
             <img
               src="/rafay-profile.webp"
-              alt="Rafay - CodeLume"
+              alt="Rafay - Rafay's CodeLume"
               className="w-full h-full object-cover object-center"
             />
           </div>
           <div>
             <p className="text-[14px] font-bold text-black m-0">
-              Rafay&apos;s CodeLume
+              Rafay&apos;s Rafay's CodeLume
             </p>
             <p className="text-[12px] text-gray-500 font-medium m-0">
-              Founder, CodeLume
+              Founder, Rafay's CodeLume
             </p>
           </div>
           <span className="text-gray-300 mx-1">•</span>

@@ -228,7 +228,7 @@ const InlineVoiceProfile = () => {
 };
 
 
-export default function AboutCodeLume() {
+export default function AboutRafay's CodeLume() {
   const whatIDo = [
     {
       icon: <Code size={22} />,
@@ -268,7 +268,7 @@ export default function AboutCodeLume() {
     {
       step: "01",
       title: "Select a Service",
-      desc: "Browse codelume.online and select the exact service you need.",
+      desc: "Browse Rafay's CodeLume.online and select the exact service you need.",
       icon: <MousePointerClick className="w-5 h-5 text-[#4285F4]" />,
     },
     {
@@ -303,7 +303,7 @@ export default function AboutCodeLume() {
 
       <div className="max-w-[1300px] mx-auto px-4 sm:px-10 lg:px-12 relative z-10 w-full">
         
-        {/* 1 & 2. Header: What is CodeLume */}
+        {/* 1 & 2. Header: What is Rafay's CodeLume */}
         <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-20 mt-4 sm:mt-10">
           <div className="inline-flex items-center justify-center gap-2 px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full bg-gray-50 border border-gray-200 shadow-sm mb-4 sm:mb-6">
             <UserCheck className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#4285F4]" />
@@ -315,7 +315,7 @@ export default function AboutCodeLume() {
           <TypewriterHeading text={"Hi, I am Rafay.\nSolo Web Developer."} />
 
           <p className="text-gray-500 font-medium text-[14px] sm:text-[17px] leading-relaxed mb-4 px-1 sm:px-0">
-            <strong>codelume.online</strong> is my personal website. You work directly with me, from first message to final delivery. No middlemen, no managers.
+            <strong>Rafay's CodeLume.online</strong> is my personal website. You work directly with me, from first message to final delivery. No middlemen, no managers.
           </p>
         </div>
 
@@ -345,7 +345,7 @@ export default function AboutCodeLume() {
           </div>
         </div>
 
-{/* 1. Who I Am & What is CodeLume Bento Box */}
+{/* 1. Who I Am & What is Rafay's CodeLume Bento Box */}
         <div className="bg-white border border-gray-200 rounded-[24px] sm:rounded-[32px] p-5 sm:p-10 lg:p-16 mb-14 sm:mb-20 shadow-sm flex flex-col lg:flex-row gap-8 sm:gap-12 items-center relative overflow-hidden">
           <div className="absolute top-0 right-0 w-48 sm:w-64 h-48 sm:h-64 bg-blue-50 rounded-full blur-[80px] -z-10" />
 
@@ -367,7 +367,7 @@ export default function AboutCodeLume() {
               My name is Rafay. I work solo as a Web Developer. My strong skill is Web Development, and I also have experience in SEO, Marketing, and Graphics Design.
             </p>
             <p className="text-gray-500 font-medium text-[14px] sm:text-[16px] leading-relaxed m-0">
-              When you order on CodeLume, you talk directly to the person who builds your website. I handle your project personally, and I reply within 24 hours.
+              When you order on Rafay's CodeLume, you talk directly to the person who builds your website. I handle your project personally, and I reply within 24 hours.
             </p>
 
             <ul className="space-y-2.5 sm:space-y-3 pt-1 sm:pt-2">
@@ -398,7 +398,7 @@ export default function AboutCodeLume() {
               What I Do
             </h2>
             <p className="text-gray-500 font-medium text-[14px] sm:text-[15px] m-0">
-              Services you can buy directly from me on CodeLume.
+              Services you can buy directly from me on Rafay's CodeLume.
             </p>
           </div>
 
@@ -589,7 +589,7 @@ export default function AboutCodeLume() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 pt-2 sm:pt-4">
               <a
-                href="https://www.linkedin.com/in/rafay-codelume/"
+                href="https://www.linkedin.com/in/rafay-Rafay's CodeLume/"
                 target="_blank"
                 rel="noreferrer"
                 className="flex-1 flex items-center justify-between px-4 sm:px-5 py-3.5 sm:py-4 rounded-xl sm:rounded-2xl bg-gray-50 hover:bg-gray-100 border border-gray-200 text-black font-bold text-[13.5px] sm:text-[14px] transition-all outline-none active:scale-[0.98]"
@@ -602,7 +602,7 @@ export default function AboutCodeLume() {
               </a>
 
               <a
-                href="https://www.facebook.com/codelume"
+                href="https://www.facebook.com/Rafay's CodeLume"
                 target="_blank"
                 rel="noreferrer"
                 className="flex-1 flex items-center justify-between px-4 sm:px-5 py-3.5 sm:py-4 rounded-xl sm:rounded-2xl bg-gray-50 hover:bg-gray-100 border border-gray-200 text-black font-bold text-[13.5px] sm:text-[14px] transition-all outline-none active:scale-[0.98]"
@@ -615,7 +615,7 @@ export default function AboutCodeLume() {
               </a>
 
               <a
-                href="https://www.instagram.com/rafay-codelume/"
+                href="https://www.instagram.com/rafay-Rafay's CodeLume/"
                 target="_blank"
                 rel="noreferrer"
                 className="flex-1 flex items-center justify-between px-4 sm:px-5 py-3.5 sm:py-4 rounded-xl sm:rounded-2xl bg-gray-50 hover:bg-gray-100 border border-gray-200 text-black font-bold text-[13.5px] sm:text-[14px] transition-all outline-none active:scale-[0.98] sm:col-span-2"
@@ -645,13 +645,13 @@ export default function AboutCodeLume() {
 
           <div className="flex flex-col md:flex-row justify-center items-stretch gap-3 sm:gap-4 w-full">
             <a
-              href="mailto:hello@codelume.online"
+              href="mailto:hello@Rafay's CodeLume.online"
               className="order-2 md:order-1 flex-1 flex items-center justify-center gap-2.5 px-6 py-3.5 sm:py-4 rounded-xl bg-white border border-gray-200 hover:border-gray-300 text-black font-bold text-[14px] sm:text-[15px] transition-all duration-300 w-full shadow-sm hover:-translate-y-0.5 outline-none active:scale-[0.98]"
             >
               <Gmail className="h-5 w-5 shrink-0" /> Email Directly
             </a>
 
-            {/* 🔥 UPDATED SELECT A SERVICE BUTTON: CodeLume Google Blue theme to match exactly! */}
+            {/* 🔥 UPDATED SELECT A SERVICE BUTTON: Rafay's CodeLume Google Blue theme to match exactly! */}
             <Link
               href="/services"
               className="order-1 md:order-2 flex-1 flex items-center justify-center gap-2.5 px-6 py-3.5 sm:py-4 rounded-xl bg-[#4285F4] hover:bg-[#3367D6] text-white font-bold text-[14px] sm:text-[15px] transition-all duration-300 w-full shadow-[0_4px_15px_rgba(66,133,244,0.25)] hover:shadow-[0_8px_20px_rgba(66,133,244,0.35)] hover:-translate-y-0.5 outline-none active:scale-[0.98]"

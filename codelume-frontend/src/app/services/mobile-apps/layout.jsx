@@ -1,5 +1,5 @@
 export const metadata = {
-  title: "Mobile App Development | CodeLume",
+  title: "Mobile App Development | Rafay's CodeLume",
   description:
     "High-performance iOS and Android mobile applications engineered with React Native and Flutter frameworks.",
 };
@@ -9,9 +9,9 @@ export default function MobileAppsLayout({ children }) {
     "@context": "https://schema.org",
     "@type": "Service",
     name: "Mobile App Development",
-    provider: { "@type": "Organization", name: "CodeLume" },
+    provider: { "@type": "Organization", name: "Rafay's CodeLume" },
     description: "High-performance iOS and Android mobile applications.",
-    url: "https://www.codelume.online/services/mobile-apps",
+    url: "https://www.Rafay's CodeLume.online/services/mobile-apps",
   };
 
   return (

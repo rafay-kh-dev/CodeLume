@@ -6,6 +6,6 @@ export default function robots() {
       // Strictly block crawlers from your admin dashboards
       disallow: ['/admin', '/admin/login', '/admin/dashboard', '/admin/create-post'],
     },
-    sitemap: 'https://www.codelume.online/sitemap.xml',
+    sitemap: 'https://www.Rafay's CodeLume.online/sitemap.xml',
   }
 }

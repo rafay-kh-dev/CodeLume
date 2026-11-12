@@ -1,11 +1,11 @@
 import React from "react";
 
 export const metadata = {
-  title: "Terms of Service | Rafay's CodeLume",
+  title: "Terms of Service | Rafay's Rafay's CodeLume",
   description:
     "By accessing or using our platform, you agree to be bound by these Terms of Service. Please read them carefully before using our website or accessing our educational materials.",
   alternates: {
-    canonical: "https://www.codelume.online/terms",
+    canonical: "https://www.Rafay's CodeLume.online/terms",
   },
 };
 
@@ -14,15 +14,15 @@ export default function TermsOfServiceLayout({ children }) {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "WebPage",
-    name: "Terms of Service | Rafay's CodeLume",
+    name: "Terms of Service | Rafay's Rafay's CodeLume",
     description:
       "By accessing or using our platform, you agree to be bound by these Terms of Service. Please read them carefully before using our website or accessing our educational materials.",
-    url: "https://www.codelume.online/terms",
+    url: "https://www.Rafay's CodeLume.online/terms",
     inLanguage: "en-AU",
     publisher: {
       "@type": "Organization",
-      name: "CodeLume",
-      url: "https://www.codelume.online",
+      name: "Rafay's CodeLume",
+      url: "https://www.Rafay's CodeLume.online",
     },
   };
 

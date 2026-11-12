@@ -12,25 +12,27 @@ const jakarta = Plus_Jakarta_Sans({
 });
 
 export const metadata = {
-  metadataBase: new URL("https://www.codelume.online"),
-  title: "Rafay's CodeLume | Bespoke Web Engineering & Digital Solutions",
+  metadataBase: new URL("https://www.Rafay's CodeLume.online"),
+  title:
+    "Rafay's Rafay's CodeLume | Bespoke Web Engineering & Digital Solutions",
   description:
     "Ready to upgrade your digital presence? Book a consultation with Rafay and let's build something exceptional together.",
   alternates: {
-    canonical: "https://www.codelume.online",
+    canonical: "https://www.Rafay's CodeLume.online",
   },
   openGraph: {
-    title: "CodeLume® | Bespoke Web Engineering & Digital Solutions by Rafay",
+    title:
+      "Rafay's CodeLume® | Bespoke Web Engineering & Digital Solutions by Rafay",
     description:
       "Ready to upgrade your digital presence? Book a consultation with Rafay and let's build something exceptional together.",
-    url: "https://www.codelume.online",
-    siteName: "CodeLume",
+    url: "https://www.Rafay's CodeLume.online",
+    siteName: "Rafay's CodeLume",
     images: [
       {
-        url: "/codelume-banner.jpg",
+        url: "/Rafay's CodeLume-banner.jpg",
         width: 1200,
         height: 630,
-        alt: "CodeLume Digital Agency",
+        alt: "Rafay's CodeLume Digital Agency",
       },
     ],
     locale: "en_GB",
@@ -38,10 +40,10 @@ export const metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "CodeLume® | Bespoke Web Engineering & Digital Agency",
+    title: "Rafay's CodeLume® | Bespoke Web Engineering & Digital Agency",
     description:
       "Ready to upgrade your digital presence? Book a consultation with Rafay and let's build something exceptional together.",
-    images: ["/codelume-banner.jpg"],
+    images: ["/Rafay's CodeLume-banner.jpg"],
   },
 };
 

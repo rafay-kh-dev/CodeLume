@@ -1,17 +1,17 @@
 export const metadata = {
-  title: "Start a Project | Rafay's CodeLume",
+  title: "Start a Project | Rafay's Rafay's CodeLume",
   description:
-    "Ready to upgrade your digital presence? Fill out your project requirements and let CodeLume engineer a high-performance solution for your business.",
+    "Ready to upgrade your digital presence? Fill out your project requirements and let Rafay's CodeLume engineer a high-performance solution for your business.",
 };
 
 export default function StartProjectLayout({ children }) {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "ContactPage",
-    name: "Start a Project with CodeLume",
+    name: "Start a Project with Rafay's CodeLume",
     description:
       "Contact Rafay to start engineering your custom web application or digital platform.",
-    url: "https://www.codelume.online/start-project",
+    url: "https://www.Rafay's CodeLume.online/start-project",
   };
 
   return (

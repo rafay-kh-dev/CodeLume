@@ -11,7 +11,8 @@ export default function AdminLogin() {
   const router = useRouter();
 
   const API_BASE_URL =
-    process.env.NEXT_PUBLIC_API_URL || "https://codelume-rb3h.onrender.com";
+    process.env.NEXT_PUBLIC_API_URL ||
+    "https://Rafay's CodeLume-rb3h.onrender.com";
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -102,7 +103,7 @@ export default function AdminLogin() {
           </button>
         </form>
         <p className="text-[12px] text-gray-400 mt-5 text-center">
-          CodeLume Admin • Only for site owner
+          Rafay's CodeLume Admin • Only for site owner
         </p>
       </div>
     </div>

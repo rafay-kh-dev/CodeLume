@@ -43,7 +43,8 @@ export default function AdminDashboard() {
   const [showTrashConfirm, setShowTrashConfirm] = useState(null);
 
   const API_BASE_URL =
-    process.env.NEXT_PUBLIC_API_URL || "https://codelume-rb3h.onrender.com";
+    process.env.NEXT_PUBLIC_API_URL ||
+    "https://Rafay's CodeLume-rb3h.onrender.com";
 
   useEffect(() => {
     const token = localStorage.getItem("adminToken");
@@ -395,7 +396,7 @@ export default function AdminDashboard() {
       <aside className="w-64 border-r border-gray-200 bg-white hidden md:flex flex-col p-6 fixed h-full">
         <div className="mb-10">
           <h2 className="text-2xl font-bold text-black tracking-tight m-0">
-            CodeLume<span className="text-[#4285F4]">.</span>
+            Rafay's CodeLume<span className="text-[#4285F4]">.</span>
           </h2>
           <p className="text-gray-400 text-xs font-medium uppercase tracking-widest mt-1">
             Workspace

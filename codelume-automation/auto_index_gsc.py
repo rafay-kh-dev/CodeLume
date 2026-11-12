@@ -7,7 +7,7 @@ SCOPES = ["https://www.googleapis.com/auth/indexing"]
 
 # Sitemap + API se URLs nikalte hain, wahi indexing_automation wali list
 import re, ssl
-SITE = "https://www.codelume.online"
+SITE = "https://www.Rafay's CodeLume.online"
 urls = [f"{SITE}/", f"{SITE}/blogs", f"{SITE}/services", f"{SITE}/about", f"{SITE}/start-project"]
 
 try:
