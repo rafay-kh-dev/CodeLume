@@ -38,11 +38,12 @@ const CodeLumeIcon = (props) => (
 );
 
 export default function ProjectCalculator() {
-  const [selectedService, setSelectedService] = useState(0);
-  const [selectedScope, setSelectedScope] = useState(0);
+  const [selectedService, setSelectedService] = useState(null);
+  const [selectedScope, setSelectedScope] = useState(null);
   const [selectedAddons, setSelectedAddons] = useState([]);
   const [isCapsuleOpen, setIsCapsuleOpen] = useState(false);
   const [isCalculatorVisible, setIsCalculatorVisible] = useState(false);
+  // Toggle logic: dobara click pe deselect. Capsule sirf tab jab kuch selected ho.
   const calculatorRef = useRef(null);
 
   // Services ke icons header se - webServices / marketingServices me yahi mapping hai
@@ -167,12 +168,22 @@ export default function ProjectCalculator() {
   ];
 
   const totalPrice =
-    services[selectedService].basePrice +
-    scopes[selectedScope].price +
+    (selectedService !== null ? services[selectedService].basePrice : 0) +
+    (selectedScope !== null ? scopes[selectedScope].price : 0) +
     selectedAddons.reduce((sum, id) => {
       const addon = addons.find((a) => a.id === id);
       return sum + (addon ? addon.price : 0);
     }, 0);
+
+  const handleServiceSelect = (index) => {
+    // Agar wahi dobara click kiya to deselect
+    setSelectedService(selectedService === index ? null : index);
+  };
+
+  const handleScopeSelect = (index) => {
+    // Agar wahi dobara click kiya to deselect
+    setSelectedScope(selectedScope === index ? null : index);
+  };
 
   const handleAddonToggle = (id) => {
     if (selectedAddons.includes(id)) {
@@ -182,10 +193,21 @@ export default function ProjectCalculator() {
     }
   };
 
+  // Capsule sirf tab jab kuch selected ho - sab deselect pe khud gayab
+  const hasSelection =
+    selectedService !== null ||
+    selectedScope !== null ||
+    selectedAddons.length > 0;
+
   const generateMessage = () => {
-    const serviceName = services[selectedService].name;
-    const scopeName = scopes[selectedScope].name;
-    const estimatedTime = scopes[selectedScope].time;
+    const serviceName =
+      selectedService !== null
+        ? services[selectedService].name
+        : "Not selected";
+    const scopeName =
+      selectedScope !== null ? scopes[selectedScope].name : "Not selected";
+    const estimatedTime =
+      selectedScope !== null ? scopes[selectedScope].time : "Not selected";
     const addonNames =
       selectedAddons.length > 0
         ? selectedAddons
@@ -198,8 +220,12 @@ export default function ProjectCalculator() {
   const waLink = `https://wa.me/923347835980?text=${encodeURIComponent(generateMessage())}`;
   const emailLink = `mailto:hello@codelume.online?subject=${encodeURIComponent("New Project Inquiry via CodeLume Calculator")}&body=${encodeURIComponent(generateMessage())}`;
 
-  const CurrentServiceIcon = services[selectedService].icon;
-  const CurrentScope = scopes[selectedScope];
+  const CurrentServiceIcon =
+    selectedService !== null ? services[selectedService].icon : Calculator;
+  const CurrentScope =
+    selectedScope !== null
+      ? scopes[selectedScope]
+      : { name: "No scope selected", time: "-", price: 0 };
 
   // View Services button sirf tab dikhega jab user calculator section me NAHI hai
   // Price Calculator button: sirf tab dikhega jab user kisi aur section pe hai
@@ -287,7 +313,7 @@ export default function ProjectCalculator() {
                       <button
                         key={service.id}
                         type="button"
-                        onClick={() => setSelectedService(index)}
+                        onClick={() => handleServiceSelect(index)}
                         className={`group flex flex-col items-start p-6 sm:p-7 rounded-2xl border text-left transition-all duration-200 outline-none cursor-pointer relative overflow-hidden ${
                           isSelected
                             ? "bg-white border-[#4285F4] shadow-[0_8px_20px_rgba(66,133,244,0.12)]"
@@ -357,7 +383,7 @@ export default function ProjectCalculator() {
                       <button
                         key={scope.id}
                         type="button"
-                        onClick={() => setSelectedScope(index)}
+                        onClick={() => handleScopeSelect(index)}
                         className={`flex flex-col items-start p-6 rounded-2xl border text-left transition-all duration-200 outline-none cursor-pointer ${
                           isSelected
                             ? "bg-white border-[#4285F4] shadow-[0_8px_20px_rgba(66,133,244,0.12)]"
@@ -414,7 +440,7 @@ export default function ProjectCalculator() {
                     </p>
                   </div>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
                   {addons.map((addon) => {
                     const AddonIcon = addon.icon;
                     const isSelected = selectedAddons.includes(addon.id);
@@ -462,168 +488,176 @@ export default function ProjectCalculator() {
       </section>
 
       {/* CAPSULE - Same file, same design, only added a signal on normal state */}
-      <div className="fixed bottom-3 sm:bottom-5 left-0 right-0 z-[60] px-3 sm:px-6 flex justify-center pointer-events-none">
-        <div className="pointer-events-auto w-full max-w-[340px] sm:max-w-[820px]">
-          {/* View Services - sirf jab user calculator section me NAHI hai, section me aate hi gayab */}
-          {!isCalculatorVisible && (
-            <button
-              type="button"
-              onClick={scrollToCalculator}
-              className="w-full flex items-center justify-between px-4 py-2 mb-1.5 rounded-full bg-[#4285F4] text-white text-[12px] sm:text-[13px] font-bold shadow-md hover:bg-gray-900 transition-colors outline-none cursor-pointer"
-            >
-              <span className="flex items-center gap-2">
-                <Calculator className="w-3.5 h-3.5" /> Price Calculator
-              </span>
-              <span className="flex items-center gap-1">
-                View Services <ArrowRight className="w-3.5 h-3.5" />
-              </span>
-            </button>
-          )}
-          <div className="bg-white border border-gray-200 rounded-[24px] shadow-[0_16px_40px_rgba(0,0,0,0.14)] overflow-hidden">
-            <button
-              type="button"
-              onClick={() => setIsCapsuleOpen(!isCapsuleOpen)}
-              className="w-full flex items-center gap-3 p-3 pl-3 pr-3 cursor-pointer outline-none text-left bg-white hover:bg-gray-50/50 transition-colors"
-            >
-              <span className="w-11 h-11 rounded-full bg-gray-50 border border-gray-200 flex items-center justify-center shrink-0">
-                <CurrentServiceIcon className="w-5 h-5 text-gray-800" />
-              </span>
-              <span className="flex-1 min-w-0 text-left">
-                <span className="flex items-center gap-2">
-                  <span className="text-[15px] font-bold text-black truncate">
-                    {services[selectedService].name}
-                  </span>
-                </span>
-                <span className="block text-[12px] text-gray-500 font-medium truncate mt-0.5">
-                  {CurrentScope.name} • {CurrentScope.time} •{" "}
-                  {selectedAddons.length > 0
-                    ? `${selectedAddons.length} add-on${selectedAddons.length > 1 ? "s" : ""}`
-                    : "No add-ons"}
-                </span>
-              </span>
-              <span className="shrink-0 text-right">
-                <span className="block text-[20px] font-bold text-black leading-none">
-                  ${totalPrice}{" "}
-                  <span className="text-[11px] text-gray-400 font-bold">
-                    USD
-                  </span>
-                </span>
-                <span className="block text-[11px] font-bold text-[#137333] mt-1">
-                  Now ${Math.round(totalPrice / 2)} • Later $
-                  {totalPrice - Math.round(totalPrice / 2)}
-                </span>
-              </span>
-              <span
-                className={`w-8 h-8 rounded-full bg-gray-100 border border-gray-200 flex items-center justify-center shrink-0 transition-transform duration-300 ${isCapsuleOpen ? "rotate-180" : ""}`}
+      {hasSelection && (
+        <div className="fixed bottom-3 sm:bottom-5 left-0 right-0 z-[60] px-3 sm:px-6 flex justify-center pointer-events-none">
+          <div className="pointer-events-auto w-full max-w-[340px] sm:max-w-[820px]">
+            {/* View Services - sirf jab user calculator section me NAHI hai, section me aate hi gayab */}
+            {!isCalculatorVisible && (
+              <button
+                type="button"
+                onClick={scrollToCalculator}
+                className="w-full flex items-center justify-between px-4 py-2 mb-1.5 rounded-full bg-[#4285F4] text-white text-[12px] sm:text-[13px] font-bold shadow-md hover:bg-gray-900 transition-colors outline-none cursor-pointer"
               >
-                <ChevronDown className="w-4 h-4 text-black" />
-              </span>
-            </button>
-            <div
-              className={`overflow-hidden transition-all duration-300 ease-out ${isCapsuleOpen ? "max-h-[480px] opacity-100" : "max-h-0 opacity-0"}`}
-            >
-              <div className="border-t border-gray-100 bg-gray-50/60 px-4 sm:px-5 py-4">
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-                  <div className="bg-white border border-gray-100 rounded-2xl p-4 shadow-sm">
-                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest m-0">
-                      Service
-                    </p>
-                    <div className="flex items-center gap-2 mt-1.5">
-                      <CurrentServiceIcon className="w-4 h-4 text-gray-700 shrink-0" />
-                      <p className="text-[14px] font-bold text-black m-0 leading-tight">
-                        {services[selectedService].name}
+                <span className="flex items-center gap-2">
+                  <Calculator className="w-3.5 h-3.5" /> Price Calculator
+                </span>
+                <span className="flex items-center gap-1">
+                  View Services <ArrowRight className="w-3.5 h-3.5" />
+                </span>
+              </button>
+            )}
+            <div className="bg-white border border-gray-200 rounded-[24px] shadow-[0_16px_40px_rgba(0,0,0,0.14)] overflow-hidden">
+              <button
+                type="button"
+                onClick={() => setIsCapsuleOpen(!isCapsuleOpen)}
+                className="w-full flex items-center gap-3 p-3 pl-3 pr-3 cursor-pointer outline-none text-left bg-white hover:bg-gray-50/50 transition-colors"
+              >
+                <span className="w-11 h-11 rounded-full bg-gray-50 border border-gray-200 flex items-center justify-center shrink-0">
+                  <CurrentServiceIcon className="w-5 h-5 text-gray-800" />
+                </span>
+                <span className="flex-1 min-w-0 text-left">
+                  <span className="flex items-center gap-2">
+                    <span className="text-[15px] font-bold text-black truncate">
+                      {selectedService !== null
+                        ? services[selectedService].name
+                        : "Select a service"}
+                    </span>
+                  </span>
+                  <span className="block text-[12px] text-gray-500 font-medium truncate mt-0.5">
+                    {CurrentScope.name} • {CurrentScope.time} •{" "}
+                    {selectedAddons.length > 0
+                      ? `${selectedAddons.length} add-on${selectedAddons.length > 1 ? "s" : ""}`
+                      : "No add-ons"}
+                  </span>
+                </span>
+                <span className="shrink-0 text-right">
+                  <span className="block text-[20px] font-bold text-black leading-none">
+                    ${totalPrice}{" "}
+                    <span className="text-[11px] text-gray-400 font-bold">
+                      USD
+                    </span>
+                  </span>
+                  <span className="block text-[11px] font-bold text-[#137333] mt-1">
+                    Now ${Math.round(totalPrice / 2)} • Later $
+                    {totalPrice - Math.round(totalPrice / 2)}
+                  </span>
+                </span>
+                <span
+                  className={`w-8 h-8 rounded-full bg-gray-100 border border-gray-200 flex items-center justify-center shrink-0 transition-transform duration-300 ${isCapsuleOpen ? "rotate-180" : ""}`}
+                >
+                  <ChevronDown className="w-4 h-4 text-black" />
+                </span>
+              </button>
+              <div
+                className={`overflow-hidden transition-all duration-300 ease-out ${isCapsuleOpen ? "max-h-[480px] opacity-100" : "max-h-0 opacity-0"}`}
+              >
+                <div className="border-t border-gray-100 bg-gray-50/60 px-4 sm:px-5 py-4">
+                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+                    <div className="bg-white border border-gray-100 rounded-2xl p-4 shadow-sm">
+                      <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest m-0">
+                        Service
+                      </p>
+                      <div className="flex items-center gap-2 mt-1.5">
+                        <CurrentServiceIcon className="w-4 h-4 text-gray-700 shrink-0" />
+                        <p className="text-[14px] font-bold text-black m-0 leading-tight">
+                          {selectedService !== null
+                            ? services[selectedService].name
+                            : "Not selected"}
+                        </p>
+                      </div>
+                      <p className="text-[12px] font-bold text-gray-400 m-0 mt-1">
+                        {selectedService !== null
+                          ? `$${services[selectedService].basePrice}`
+                          : "-"}
                       </p>
                     </div>
-                    <p className="text-[12px] font-bold text-gray-400 m-0 mt-1">
-                      ${services[selectedService].basePrice}
-                    </p>
-                  </div>
-                  <div className="bg-white border border-gray-100 rounded-2xl p-4 shadow-sm">
-                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest m-0">
-                      Project Size
-                    </p>
-                    <p className="text-[14px] font-bold text-black m-0 mt-1.5">
-                      {CurrentScope.name}
-                    </p>
-                    <p className="text-[12px] font-bold text-gray-400 m-0 mt-1">
-                      {CurrentScope.price === 0
-                        ? "Included"
-                        : `+$${CurrentScope.price}`}
-                    </p>
-                  </div>
-                  <div className="bg-white border border-gray-100 rounded-2xl p-4 shadow-sm">
-                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest m-0">
-                      Timeline
-                    </p>
-                    <p className="text-[14px] font-bold text-[#4285F4] m-0 mt-1.5">
-                      {CurrentScope.time}
-                    </p>
-                    <p className="text-[12px] text-gray-500 font-medium m-0 mt-1">
-                      50/50 payment
-                    </p>
-                  </div>
-                  <div className="bg-white border border-gray-100 rounded-2xl p-4 shadow-sm">
-                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest m-0">
-                      Add-ons
-                    </p>
-                    {selectedAddons.length === 0 ? (
-                      <p className="text-[13px] font-medium text-gray-500 m-0 mt-1.5">
-                        None selected
+                    <div className="bg-white border border-gray-100 rounded-2xl p-4 shadow-sm">
+                      <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest m-0">
+                        Project Size
                       </p>
-                    ) : (
-                      <div className="mt-1.5 space-y-1">
-                        {selectedAddons.map((id) => {
-                          const ad = addons.find((a) => a.id === id);
-                          if (!ad) return null;
-                          return (
-                            <p
-                              key={id}
-                              className="text-[12px] font-medium text-black m-0 truncate"
-                            >
-                              ✓ {ad.name} • +${ad.price}
-                            </p>
-                          );
-                        })}
-                      </div>
-                    )}
+                      <p className="text-[14px] font-bold text-black m-0 mt-1.5">
+                        {CurrentScope.name}
+                      </p>
+                      <p className="text-[12px] font-bold text-gray-400 m-0 mt-1">
+                        {CurrentScope.price === 0
+                          ? "Included"
+                          : `+$${CurrentScope.price}`}
+                      </p>
+                    </div>
+                    <div className="bg-white border border-gray-100 rounded-2xl p-4 shadow-sm">
+                      <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest m-0">
+                        Timeline
+                      </p>
+                      <p className="text-[14px] font-bold text-[#4285F4] m-0 mt-1.5">
+                        {CurrentScope.time}
+                      </p>
+                      <p className="text-[12px] text-gray-500 font-medium m-0 mt-1">
+                        50/50 payment
+                      </p>
+                    </div>
+                    <div className="bg-white border border-gray-100 rounded-2xl p-4 shadow-sm">
+                      <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest m-0">
+                        Add-ons
+                      </p>
+                      {selectedAddons.length === 0 ? (
+                        <p className="text-[13px] font-medium text-gray-500 m-0 mt-1.5">
+                          None selected
+                        </p>
+                      ) : (
+                        <div className="mt-1.5 space-y-1">
+                          {selectedAddons.map((id) => {
+                            const ad = addons.find((a) => a.id === id);
+                            if (!ad) return null;
+                            return (
+                              <p
+                                key={id}
+                                className="text-[12px] font-medium text-black m-0 truncate"
+                              >
+                                ✓ {ad.name} • +${ad.price}
+                              </p>
+                            );
+                          })}
+                        </div>
+                      )}
+                    </div>
                   </div>
-                </div>
-                <div
-                  className="flex flex-col sm:flex-row items-stretch gap-2.5 mt-4"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <a
-                    href={waLink}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="flex-1 flex items-center justify-center gap-2 px-5 py-3.5 rounded-full bg-[#25D366] hover:bg-[#1eb85a] text-white font-bold text-[13.5px] transition-colors whitespace-nowrap"
+                  <div
+                    className="flex flex-col sm:flex-row items-stretch gap-2.5 mt-4"
+                    onClick={(e) => e.stopPropagation()}
                   >
-                    <WhatsAppIcon className="w-[18px] h-[18px] shrink-0 text-white" />{" "}
-                    WhatsApp
-                  </a>
-                  <a
-                    href={emailLink}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="flex-1 flex items-center justify-center gap-2 px-5 py-3.5 rounded-full bg-[black] hover:bg-[#1a1a1a] text-white font-bold text-[13.5px] transition-colors whitespace-nowrap"
-                  >
-                    <Gmail className="w-[20px] h-[20px] shrink-0" /> Email
-                  </a>
+                    <a
+                      href={waLink}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="flex-1 flex items-center justify-center gap-2 px-5 py-3.5 rounded-full bg-[#25D366] hover:bg-[#1eb85a] text-white font-bold text-[13.5px] transition-colors whitespace-nowrap"
+                    >
+                      <WhatsAppIcon className="w-[18px] h-[18px] shrink-0 text-white" />{" "}
+                      WhatsApp
+                    </a>
+                    <a
+                      href={emailLink}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="flex-1 flex items-center justify-center gap-2 px-5 py-3.5 rounded-full bg-[black] hover:bg-[#1a1a1a] text-white font-bold text-[13.5px] transition-colors whitespace-nowrap"
+                    >
+                      <Gmail className="w-[20px] h-[20px] shrink-0" /> Email
+                    </a>
+                  </div>
+                  <p className="text-center text-[11.5px] text-gray-500 font-medium m-0 mt-3">
+                    This is only an inquiry, not a payment. • ⭐ 4.9 Rating •
+                    40+ Projects • 24h Reply
+                  </p>
                 </div>
-                <p className="text-center text-[11.5px] text-gray-500 font-medium m-0 mt-3">
-                  This is only an inquiry, not a payment. • ⭐ 4.9 Rating • 40+
-                  Projects • 24h Reply
-                </p>
               </div>
             </div>
+            <p className="text-center text-[11px] text-gray-400 font-medium m-0 mt-2 hidden sm:block">
+              {isCapsuleOpen
+                ? "Click capsule to close"
+                : "Click capsule to expand"}
+            </p>
           </div>
-          <p className="text-center text-[11px] text-gray-400 font-medium m-0 mt-2 hidden sm:block">
-            {isCapsuleOpen
-              ? "Click capsule to close"
-              : "Click capsule to expand"}
-          </p>
         </div>
-      </div>
+      )}
     </>
   );
 }
