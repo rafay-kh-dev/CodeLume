@@ -34,7 +34,7 @@ import {
 // ==========================================
 
 // 1. Rafay's CodeLume Icon (Full Branding)
-const Rafay's CodeLumeIcon = (props) => (
+const CodeLumeIcon = (props) => (
   <Code2 {...props} stroke="url(#antigravity-gradient)" strokeWidth={2.5} />
 );
 
@@ -147,7 +147,7 @@ const marketingServices = [
   {
     title: "Full Branding",
     link: "/services/full-branding",
-    icon: Rafay's CodeLumeIcon,
+    icon: CodeLumeIcon,
   },
   { title: "Google Ads", link: "/services/google-ads", icon: GoogleAdsIcon },
   { title: "Meta Ads", link: "/services/meta-ads", icon: MetaAdsIcon },
@@ -278,7 +278,7 @@ export default function Header() {
                 strokeWidth={2.5}
               />
               <h2 className="text-[15px] sm:text-[16px] font-semibold tracking-tight text-black m-0">
-                Rafay's Rafay's CodeLume
+                Rafay's CodeLume
               </h2>
             </Link>
 

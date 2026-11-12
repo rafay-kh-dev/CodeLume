@@ -12,13 +12,13 @@ const jakarta = Plus_Jakarta_Sans({
 });
 
 export const metadata = {
-  metadataBase: new URL("https://www.Rafay's CodeLume.online"),
+  metadataBase: new URL("https://www.CodeLume.online"),
   title:
     "Rafay's Rafay's CodeLume | Bespoke Web Engineering & Digital Solutions",
   description:
     "Ready to upgrade your digital presence? Book a consultation with Rafay and let's build something exceptional together.",
   alternates: {
-    canonical: "https://www.Rafay's CodeLume.online",
+    canonical: "https://www.CodeLume.online",
   },
   openGraph: {
     title:

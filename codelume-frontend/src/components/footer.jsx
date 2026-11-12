@@ -28,7 +28,7 @@ export default function Footer() {
   const resources = [
     { name: "Read My Blogs", path: "/blogs" },
     { name: "Case Studies", path: "/case-studies" },
-    { name: "About Rafay's CodeLume", path: "/about-Rafay's CodeLume" },
+    { name: "About Rafay's CodeLume", path: "/about" },
     { name: "Start a Project", path: "/start-project" },
   ];
 
@@ -36,7 +36,7 @@ export default function Footer() {
     {
       name: "Facebook",
       icon: Facebook,
-      link: "https://www.facebook.com/Rafay's CodeLume",
+      link: "https://www.facebook.com/CodeLume",
     },
     { name: "Telegram", icon: Telegram, link: "https://t.me/RafayKH" },
     { name: "WhatsApp", icon: Whatsapp, link: "https://wa.me/923347835980" },
@@ -53,13 +53,13 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="w-full bg-white font-jakarta pt-20 flex flex-col overflow-hidden">
+    <footer className="relative z-0 w-full bg-white font-jakarta pt-20 flex flex-col overflow-hidden">
       {/* Top Section */}
-      <div className="max-w-[1300px] mx-auto px-6 sm:px-10 lg:px-12 w-full flex flex-col lg:flex-row justify-between gap-16 lg:gap-8 mb-20 relative z-10">
+      <div className="max-w-[1300px] mx-auto px-6 sm:px-10 lg:px-12 w-full flex flex-col lg:flex-row justify-between gap-16 lg:gap-8 mb-20 relative z-0">
         {/* Left Side */}
         <div className="flex flex-col items-start max-w-sm">
           <h2 className="text-3xl sm:text-4xl font-medium text-black tracking-tight leading-tight m-0 mb-8">
-            Experience liftoff <br /> with Rafay's CodeLume.
+            Experience liftoff <br /> with CodeLume.
           </h2>
 
           <div className="flex items-center gap-5">
@@ -140,25 +140,25 @@ export default function Footer() {
       </div>
 
       {/* Massive Background Text Watermark - FIXED: font-bold instead of font-black, leading-[1] to prevent cutting */}
-      <div className="w-full overflow-hidden flex justify-center pointer-events-none select-none px-4 mb-10">
+      <div className="relative z-0 w-full overflow-hidden flex justify-center pointer-events-none select-none px-4 mb-10">
         <h1 className="text-[10vw] md:text-[10vw] font-bold tracking-tighter text-[#111827] m-0 leading-[1] text-center w-full pb-2">
-          Rafay's Rafay's CodeLume
+          Rafay's CodeLume
         </h1>
       </div>
 
       {/* Bottom Bar */}
-      <div className="border-t border-gray-100 bg-white">
+      <div className="relative z-0 border-t border-gray-100 bg-white">
         <div className="max-w-[1300px] mx-auto px-6 sm:px-10 lg:px-12 py-6 flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-2">
             <Code2 className="w-5 h-5 text-gray-700" strokeWidth={2.5} />
             <span className="text-[16px] font-bold text-gray-700 tracking-tight">
-              Rafay's Rafay's CodeLume
+              Rafay's CodeLume
             </span>
           </div>
 
           <div className="flex items-center gap-6 sm:gap-8 flex-wrap justify-center">
             <span className="text-[13px] font-medium text-gray-500 hidden sm:block">
-              © 2026 Rafay's Rafay's CodeLume
+              © 2026 Rafay's CodeLume
             </span>
             <Link
               href="/about"
