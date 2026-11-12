@@ -160,23 +160,25 @@ export default function Footer() {
             <span className="text-[13px] font-medium text-gray-500 hidden sm:block">
               © 2026 Rafay's CodeLume
             </span>
-            <Link
-              href="/about"
-              className="text-[13px] font-medium text-gray-500 hover:text-black transition-colors outline-none"
-            >
-              About Rafay's CodeLume
-            </Link>
+
             <Link
               href="/privacy-policy"
               className="text-[13px] font-medium text-gray-500 hover:text-black transition-colors outline-none"
             >
               Privacy
             </Link>
+
             <Link
               href="/terms-of-service"
               className="text-[13px] font-medium text-gray-500 hover:text-black transition-colors outline-none"
             >
               Terms
+            </Link>
+            <Link
+              href="/about"
+              className="text-[13px] font-medium text-gray-500 hover:text-black transition-colors outline-none"
+            >
+              About Rafay's CodeLume
             </Link>
           </div>
         </div>
