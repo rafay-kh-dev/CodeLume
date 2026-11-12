@@ -141,8 +141,8 @@ export default function Footer() {
 
       {/* Massive Background Text Watermark - FIXED: font-bold instead of font-black, leading-[1] to prevent cutting */}
       <div className="w-full overflow-hidden flex justify-center pointer-events-none select-none px-4 mb-10">
-        <h1 className="text-[17vw] md:text-[15vw] font-bold tracking-tighter text-[#111827] m-0 leading-[1] text-center w-full pb-2">
-          CodeLume
+        <h1 className="text-[10vw] md:text-[10vw] font-bold tracking-tighter text-[#111827] m-0 leading-[1] text-center w-full pb-2">
+          Rafay's CodeLume
         </h1>
       </div>
 
@@ -152,13 +152,13 @@ export default function Footer() {
           <div className="flex items-center gap-2">
             <Code2 className="w-5 h-5 text-gray-700" strokeWidth={2.5} />
             <span className="text-[16px] font-bold text-gray-700 tracking-tight">
-              CodeLume
+              Rafay's CodeLume
             </span>
           </div>
 
           <div className="flex items-center gap-6 sm:gap-8 flex-wrap justify-center">
             <span className="text-[13px] font-medium text-gray-500 hidden sm:block">
-              © 2026 CodeLume
+              © 2026 Rafay's CodeLume
             </span>
             <Link
               href="/about"

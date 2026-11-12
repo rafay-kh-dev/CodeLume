@@ -1,5 +1,5 @@
 export const metadata = {
-  title: "SVG to React Converter | CodeLume",
+  title: "SVG to React Converter | Rafay's CodeLume",
   description:
     "Instantly convert raw SVG files into clean, reusable React components. A free web engineering tool by CodeLume.",
 };

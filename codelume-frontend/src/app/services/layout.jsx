@@ -1,9 +1,9 @@
 export const metadata = {
-  title: "Services | CodeLume",
+  title: "Services | Rafay's CodeLume",
   description:
     "Explore CodeLume’s bespoke digital services, including MERN Stack development, headless Shopify, custom WordPress platforms, and UI/UX design.",
   openGraph: {
-    title: "Services | CodeLume",
+    title: "Services | Rafay's CodeLume",
     description:
       "Explore CodeLume’s bespoke digital services, including MERN Stack development, headless Shopify, and custom platforms.",
     url: "https://www.codelume.online/services",

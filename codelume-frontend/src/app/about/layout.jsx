@@ -1,9 +1,9 @@
 export const metadata = {
-  title: "About | CodeLume",
+  title: "About | Rafay's CodeLume",
   description:
     "Learn about Rafay, a freelance web developer and UI/UX designer engineering high-performance digital platforms and driving targeted SEO traffic.",
   openGraph: {
-    title: "About | CodeLume",
+    title: "About | Rafay's CodeLume",
     description:
       "Learn about Rafay, a freelance web developer and UI/UX designer engineering high-performance digital platforms.",
     url: "https://www.codelume.online/about",

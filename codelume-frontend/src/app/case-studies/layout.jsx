@@ -1,5 +1,5 @@
 export const metadata = {
-  title: "Case Studies | CodeLume",
+  title: "Case Studies | Rafay's CodeLume",
   description:
     "Explore bespoke digital platforms, scalable web applications, and high-converting UI/UX designs engineered by CodeLume.",
 };

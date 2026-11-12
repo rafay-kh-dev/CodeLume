@@ -1,7 +1,7 @@
 import React from "react";
 
 export const metadata = {
-  title: "Terms of Service | CodeLume",
+  title: "Terms of Service | Rafay's CodeLume",
   description:
     "By accessing or using our platform, you agree to be bound by these Terms of Service. Please read them carefully before using our website or accessing our educational materials.",
   alternates: {
@@ -14,7 +14,7 @@ export default function TermsOfServiceLayout({ children }) {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "WebPage",
-    name: "Terms of Service | CodeLume",
+    name: "Terms of Service | Rafay's CodeLume",
     description:
       "By accessing or using our platform, you agree to be bound by these Terms of Service. Please read them carefully before using our website or accessing our educational materials.",
     url: "https://www.codelume.online/terms",

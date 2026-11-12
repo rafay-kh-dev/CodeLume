@@ -1,7 +1,7 @@
 import React from "react";
 
 export const metadata = {
-  title: "Privacy Policy | CodeLume",
+  title: "Privacy Policy | Rafay's CodeLume",
   description:
     "Our commitment to protecting your privacy and ensuring your personal information is handled in a safe and responsible manner in accordance with the Australian Privacy Principles (APPs).",
   alternates: {
@@ -14,7 +14,7 @@ export default function PrivacyPolicyLayout({ children }) {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "WebPage",
-    name: "Privacy Policy | CodeLume",
+    name: "Privacy Policy | Rafay's CodeLume",
     description:
       "Our commitment to protecting your privacy and ensuring your personal information is handled in a safe and responsible manner in accordance with the Australian Privacy Principles (APPs).",
     url: "https://www.codelume.online/privacy",

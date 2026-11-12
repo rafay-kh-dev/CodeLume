@@ -63,10 +63,14 @@ const InstagramIcon = (props) => (
   </svg>
 );
 
-
 // 2. Meta Ads Icon - FIXED: viewBox matched to artwork, no translate, no duplicate gradient IDs
 const MetaAdsIcon = (props) => (
-  <svg viewBox="0 0 256 170" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
+  <svg
+    viewBox="0 0 256 170"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    {...props}
+  >
     <path
       fill="#0082FB"
       d="M27.651 112.136c0 9.775 2.146 17.28 4.95 21.82 3.677 5.947 9.16 8.466 14.751 8.466 7.211 0 13.808-1.79 26.52-19.372 10.185-14.092 22.186-33.874 30.26-46.275l13.675-21.01c9.499-14.591 20.493-30.811 33.1-41.806C161.196 4.985 172.298 0 183.47 0c18.758 0 36.625 10.87 50.3 31.257C248.735 53.584 256 81.707 256 110.729c0 17.253-3.4 29.93-9.187 39.946-5.591 9.686-16.488 19.363-34.818 19.363v-27.616c15.695 0 19.612-14.422 19.612-30.927 0-23.52-5.484-49.623-17.564-68.273-8.574-13.23-19.684-21.313-31.907-21.313-13.22 0-23.859 9.97-35.815 27.75-6.356 9.445-12.882 20.956-20.208 33.944l-8.066 14.289c-16.203 28.728-20.307 35.271-28.408 46.07-14.2 18.91-26.324 26.076-42.287 26.076-18.935 0-30.91-8.2-38.325-20.556C2.973 139.413 0 126.202 0 111.148l27.651.988Z"
@@ -274,7 +278,7 @@ export default function Header() {
                 strokeWidth={2.5}
               />
               <h2 className="text-[15px] sm:text-[16px] font-semibold tracking-tight text-black m-0">
-                CodeLume
+                Rafay's CodeLume
               </h2>
             </Link>
 
@@ -335,10 +339,46 @@ export default function Header() {
             {/* GitHub - Icon only, so it does not compete with Start Project CTA */}
             {/* Socials - compact professional group */}
             <div className="hidden lg:flex items-center gap-2">
-              <a href="https://github.com/rafay-kh-dev" target="_blank" rel="noreferrer" aria-label="View GitHub profile" title="GitHub - @rafay-kh-dev" className="w-[32px] h-[32px] xl:w-[34px] xl:h-[34px] rounded-full bg-white/80 backdrop-blur border border-gray-200 flex items-center justify-center text-black hover:border-black hover:shadow-sm hover:-translate-y-0.5 transition-all outline-none shrink-0"><GitHubIcon className="w-[16px] h-[16px]" /></a>
-              <a href="https://www.youtube.com/@rafaycodelume" target="_blank" rel="noreferrer" aria-label="View LinkedIn profile" title="LinkedIn - Rafay" className="w-[32px] h-[32px] xl:w-[34px] xl:h-[34px] rounded-full bg-white/80 backdrop-blur border border-gray-200 flex items-center justify-center text-black hover:text-[#FF0000] hover:border-[#FF0000]/30 hover:shadow-sm hover:-translate-y-0.5 transition-all outline-none shrink-0"><LinkedInIcon className="w-[15px] h-[15px]" /></a>
-              <a href="https://www.facebook.com/codelume" target="_blank" rel="noreferrer" aria-label="View Facebook page" title="Facebook - CodeLume" className="w-[32px] h-[32px] xl:w-[34px] xl:h-[34px] rounded-full bg-white/80 backdrop-blur border border-gray-200 flex items-center justify-center text-black hover:text-[#1877F2] hover:border-[#1877F2]/30 hover:shadow-sm hover:-translate-y-0.5 transition-all outline-none shrink-0"><FacebookIcon className="w-[16px] h-[16px]" /></a>
-              <a href="https://www.instagram.com/rafay-codelume/" target="_blank" rel="noreferrer" aria-label="View Instagram profile" title="Instagram - @rafay-codelume" className="w-[32px] h-[32px] xl:w-[34px] xl:h-[34px] rounded-full bg-white/80 backdrop-blur border border-gray-200 flex items-center justify-center text-black hover:text-[#E1306C] hover:border-[#E1306C]/30 hover:shadow-sm hover:-translate-y-0.5 transition-all outline-none shrink-0"><InstagramIcon className="w-[16px] h-[16px]" /></a>
+              <a
+                href="https://github.com/rafay-kh-dev"
+                target="_blank"
+                rel="noreferrer"
+                aria-label="View GitHub profile"
+                title="GitHub - @rafay-kh-dev"
+                className="w-[32px] h-[32px] xl:w-[34px] xl:h-[34px] rounded-full bg-white/80 backdrop-blur border border-gray-200 flex items-center justify-center text-black hover:border-black hover:shadow-sm hover:-translate-y-0.5 transition-all outline-none shrink-0"
+              >
+                <GitHubIcon className="w-[16px] h-[16px]" />
+              </a>
+              <a
+                href="https://www.youtube.com/@rafaycodelume"
+                target="_blank"
+                rel="noreferrer"
+                aria-label="View LinkedIn profile"
+                title="LinkedIn - Rafay"
+                className="w-[32px] h-[32px] xl:w-[34px] xl:h-[34px] rounded-full bg-white/80 backdrop-blur border border-gray-200 flex items-center justify-center text-black hover:text-[#FF0000] hover:border-[#FF0000]/30 hover:shadow-sm hover:-translate-y-0.5 transition-all outline-none shrink-0"
+              >
+                <LinkedInIcon className="w-[15px] h-[15px]" />
+              </a>
+              <a
+                href="https://www.facebook.com/codelume"
+                target="_blank"
+                rel="noreferrer"
+                aria-label="View Facebook page"
+                title="Facebook - CodeLume"
+                className="w-[32px] h-[32px] xl:w-[34px] xl:h-[34px] rounded-full bg-white/80 backdrop-blur border border-gray-200 flex items-center justify-center text-black hover:text-[#1877F2] hover:border-[#1877F2]/30 hover:shadow-sm hover:-translate-y-0.5 transition-all outline-none shrink-0"
+              >
+                <FacebookIcon className="w-[16px] h-[16px]" />
+              </a>
+              <a
+                href="https://www.instagram.com/rafay-codelume/"
+                target="_blank"
+                rel="noreferrer"
+                aria-label="View Instagram profile"
+                title="Instagram - @rafay-codelume"
+                className="w-[32px] h-[32px] xl:w-[34px] xl:h-[34px] rounded-full bg-white/80 backdrop-blur border border-gray-200 flex items-center justify-center text-black hover:text-[#E1306C] hover:border-[#E1306C]/30 hover:shadow-sm hover:-translate-y-0.5 transition-all outline-none shrink-0"
+              >
+                <InstagramIcon className="w-[16px] h-[16px]" />
+              </a>
             </div>
             <Link
               href="/start-project"
@@ -623,12 +663,54 @@ export default function Header() {
               Start Project
             </Link>
             <div className="flex items-center justify-center gap-3 mt-3">
-              <a href="https://github.com/rafay-kh-dev" target="_blank" rel="noreferrer" onClick={() => setMobileMenuOpen(false)} aria-label="GitHub" title="GitHub" className="w-11 h-11 rounded-full bg-white border border-gray-200 flex items-center justify-center text-black active:scale-95 transition-transform shrink-0"><GitHubIcon className="w-[18px] h-[18px]" /></a>
-              <a href="https://www.linkedin.com/in/rafay-codelume/" target="_blank" rel="noreferrer" onClick={() => setMobileMenuOpen(false)} aria-label="LinkedIn" title="LinkedIn" className="w-11 h-11 rounded-full bg-white border border-gray-200 flex items-center justify-center text-black active:scale-95 transition-transform shrink-0"><LinkedInIcon className="w-[17px] h-[17px]" /></a>
-              <a href="https://www.facebook.com/codelume" target="_blank" rel="noreferrer" onClick={() => setMobileMenuOpen(false)} aria-label="Facebook" title="Facebook" className="w-11 h-11 rounded-full bg-white border border-gray-200 flex items-center justify-center text-black active:scale-95 transition-transform shrink-0"><FacebookIcon className="w-[18px] h-[18px]" /></a>
-              <a href="https://www.instagram.com/rafay-codelume/" target="_blank" rel="noreferrer" onClick={() => setMobileMenuOpen(false)} aria-label="Instagram" title="Instagram" className="w-11 h-11 rounded-full bg-white border border-gray-200 flex items-center justify-center text-black active:scale-95 transition-transform shrink-0"><InstagramIcon className="w-[18px] h-[18px]" /></a>
+              <a
+                href="https://github.com/rafay-kh-dev"
+                target="_blank"
+                rel="noreferrer"
+                onClick={() => setMobileMenuOpen(false)}
+                aria-label="GitHub"
+                title="GitHub"
+                className="w-11 h-11 rounded-full bg-white border border-gray-200 flex items-center justify-center text-black active:scale-95 transition-transform shrink-0"
+              >
+                <GitHubIcon className="w-[18px] h-[18px]" />
+              </a>
+              <a
+                href="https://www.linkedin.com/in/rafay-codelume/"
+                target="_blank"
+                rel="noreferrer"
+                onClick={() => setMobileMenuOpen(false)}
+                aria-label="LinkedIn"
+                title="LinkedIn"
+                className="w-11 h-11 rounded-full bg-white border border-gray-200 flex items-center justify-center text-black active:scale-95 transition-transform shrink-0"
+              >
+                <LinkedInIcon className="w-[17px] h-[17px]" />
+              </a>
+              <a
+                href="https://www.facebook.com/codelume"
+                target="_blank"
+                rel="noreferrer"
+                onClick={() => setMobileMenuOpen(false)}
+                aria-label="Facebook"
+                title="Facebook"
+                className="w-11 h-11 rounded-full bg-white border border-gray-200 flex items-center justify-center text-black active:scale-95 transition-transform shrink-0"
+              >
+                <FacebookIcon className="w-[18px] h-[18px]" />
+              </a>
+              <a
+                href="https://www.instagram.com/rafay-codelume/"
+                target="_blank"
+                rel="noreferrer"
+                onClick={() => setMobileMenuOpen(false)}
+                aria-label="Instagram"
+                title="Instagram"
+                className="w-11 h-11 rounded-full bg-white border border-gray-200 flex items-center justify-center text-black active:scale-95 transition-transform shrink-0"
+              >
+                <InstagramIcon className="w-[18px] h-[18px]" />
+              </a>
             </div>
-            <p className="text-center text-[12px] text-gray-400 font-medium mt-2">Follow me on socials</p>
+            <p className="text-center text-[12px] text-gray-400 font-medium mt-2">
+              Follow me on socials
+            </p>
           </div>
         </div>
       </div>
