@@ -53,8 +53,8 @@ export default function RootLayout({ children }) {
       <body className="font-jakarta bg-white text-black antialiased selection:bg-[#4285F4]/20">
         <Header />
         {children}
-        <SupportWidget />
         <Footer />
+        <SupportWidget />
       </body>
     </html>
   );
