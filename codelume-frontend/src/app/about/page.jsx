@@ -19,20 +19,15 @@ import {
   ShieldCheck,
   Star,
   BadgeCheck,
-  Clock
+  Clock,
 } from "lucide-react";
 import { Whatsapp, Gmail } from "@thesvg/react";
+import { FaYoutube } from "react-icons/fa";
 
 // Custom Brand SVGs to prevent Lucide build errors
 const GitHubIcon = (props) => (
   <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
     <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
-  </svg>
-);
-
-const LinkedInIcon = (props) => (
-  <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
-    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z" />
   </svg>
 );
 
@@ -228,7 +223,7 @@ const InlineVoiceProfile = () => {
 };
 
 
-export default function AboutRafay's CodeLume() {
+export default function AboutRafaysCodeLume() {
   const whatIDo = [
     {
       icon: <Code size={22} />,
@@ -268,7 +263,7 @@ export default function AboutRafay's CodeLume() {
     {
       step: "01",
       title: "Select a Service",
-      desc: "Browse Rafay's CodeLume.online and select the exact service you need.",
+      desc: "Browse codelume.online and select the exact service you need.",
       icon: <MousePointerClick className="w-5 h-5 text-[#4285F4]" />,
     },
     {
@@ -315,7 +310,7 @@ export default function AboutRafay's CodeLume() {
           <TypewriterHeading text={"Hi, I am Rafay.\nSolo Web Developer."} />
 
           <p className="text-gray-500 font-medium text-[14px] sm:text-[17px] leading-relaxed mb-4 px-1 sm:px-0">
-            <strong>Rafay's CodeLume.online</strong> is my personal website. You work directly with me, from first message to final delivery. No middlemen, no managers.
+            <strong>Rafay's CodeLume</strong> is my personal website. You work directly with me, from first message to final delivery. No middlemen, no managers.
           </p>
         </div>
 
@@ -552,7 +547,7 @@ export default function AboutRafay's CodeLume() {
 
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-2 sm:pt-4">
               <a
-                href="https://github.com/rafay-kh-dev"
+                href="https://github.com/rafaycodelume"
                 target="_blank"
                 rel="noreferrer"
                 className="flex-1 flex items-center justify-between px-4 sm:px-5 py-3.5 sm:py-4 rounded-xl sm:rounded-2xl bg-gray-50 hover:bg-gray-100 border border-gray-200 text-black font-bold text-[13.5px] sm:text-[14px] transition-all outline-none active:scale-[0.98]"
@@ -583,26 +578,26 @@ export default function AboutRafay's CodeLume() {
                 Connect on Socials
               </h2>
               <p className="text-gray-500 font-medium text-[14px] sm:text-[15px] leading-relaxed mb-5 sm:mb-6">
-                All profiles are verified. Connect with me directly on LinkedIn, Facebook and Instagram.
+                All profiles are verified. Connect with me directly on YouTube, Facebook and Instagram.
               </p>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 pt-2 sm:pt-4">
               <a
-                href="https://www.linkedin.com/in/rafay-Rafay's CodeLume/"
+                href="https://www.youtube.com/@rafaycodelume"
                 target="_blank"
                 rel="noreferrer"
                 className="flex-1 flex items-center justify-between px-4 sm:px-5 py-3.5 sm:py-4 rounded-xl sm:rounded-2xl bg-gray-50 hover:bg-gray-100 border border-gray-200 text-black font-bold text-[13.5px] sm:text-[14px] transition-all outline-none active:scale-[0.98]"
               >
                 <span className="flex items-center gap-2.5 sm:gap-3">
-                  <LinkedInIcon className="w-5 h-5 shrink-0" />
-                  LinkedIn Profile
+                  <FaYoutube className="w-5 h-5 shrink-0" />
+                  YouTube Channel
                 </span>
                 <ArrowUpRight className="w-4 h-4 text-gray-400 shrink-0" />
               </a>
 
               <a
-                href="https://www.facebook.com/Rafay's CodeLume"
+                href="https://www.facebook.com/rafaycodelume"
                 target="_blank"
                 rel="noreferrer"
                 className="flex-1 flex items-center justify-between px-4 sm:px-5 py-3.5 sm:py-4 rounded-xl sm:rounded-2xl bg-gray-50 hover:bg-gray-100 border border-gray-200 text-black font-bold text-[13.5px] sm:text-[14px] transition-all outline-none active:scale-[0.98]"
@@ -615,7 +610,7 @@ export default function AboutRafay's CodeLume() {
               </a>
 
               <a
-                href="https://www.instagram.com/rafay-Rafay's CodeLume/"
+                href="https://www.instagram.com/rafaycodelume/"
                 target="_blank"
                 rel="noreferrer"
                 className="flex-1 flex items-center justify-between px-4 sm:px-5 py-3.5 sm:py-4 rounded-xl sm:rounded-2xl bg-gray-50 hover:bg-gray-100 border border-gray-200 text-black font-bold text-[13.5px] sm:text-[14px] transition-all outline-none active:scale-[0.98] sm:col-span-2"
@@ -645,7 +640,7 @@ export default function AboutRafay's CodeLume() {
 
           <div className="flex flex-col md:flex-row justify-center items-stretch gap-3 sm:gap-4 w-full">
             <a
-              href="mailto:hello@Rafay's CodeLume.online"
+              href="mailto:hello@codelume.online"
               className="order-2 md:order-1 flex-1 flex items-center justify-center gap-2.5 px-6 py-3.5 sm:py-4 rounded-xl bg-white border border-gray-200 hover:border-gray-300 text-black font-bold text-[14px] sm:text-[15px] transition-all duration-300 w-full shadow-sm hover:-translate-y-0.5 outline-none active:scale-[0.98]"
             >
               <Gmail className="h-5 w-5 shrink-0" /> Email Directly

@@ -241,7 +241,7 @@ export default function JsonToTs() {
               value={jsonInput}
               onChange={handleInputChange}
               placeholder={
-                '{\n  "id": 1,\n  "name": "Rafay's CodeLume",\n  "isActive": true\n}'
+                '{\n  "id": 1,\n  "name": "Rafay\'s CodeLume",\n  "isActive": true\n}'
               }
               className={`w-full h-[500px] bg-white border rounded-[24px] p-6 sm:p-8 text-black font-mono text-[14px] leading-relaxed outline-none transition-all duration-300 resize-none shadow-sm hover:shadow-md ${
                 error

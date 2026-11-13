@@ -1,3 +1,5 @@
+const SITE_URL = "https://codelume.online";
+
 export default function robots() {
   return {
     rules: {
@@ -6,6 +8,6 @@ export default function robots() {
       // Strictly block crawlers from your admin dashboards
       disallow: ['/admin', '/admin/login', '/admin/dashboard', '/admin/create-post'],
     },
-    sitemap: 'https://www.Rafay's CodeLume.online/sitemap.xml',
-  }
+    sitemap: `${SITE_URL}/sitemap.xml`,
+  };
 }
